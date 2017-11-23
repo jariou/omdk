@@ -7,8 +7,6 @@ __all__ = [
 
 from interface import Interface
 
-from oasis_utils.oasis_keys_lookup_service_utils import KeysLookupServiceFactory
-
 
 class OasisExposureTransformsManagerInterface(Interface):
     """

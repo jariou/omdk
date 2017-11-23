@@ -1,2 +1,2 @@
 from oasis_utils.oasis_keys_lookup_service_utils import *
-from OasisExposureTransformsManagerInterface import *
+from .exposure_transforms import *
