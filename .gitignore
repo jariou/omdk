@@ -99,3 +99,10 @@ ENV/
 
 # mypy
 .mypy_cache/
+
+# OS X Finder meta file
+.DS_Store
+
+# top-level CSV and JSON files
+.csv
+.json
