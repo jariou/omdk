@@ -8,18 +8,23 @@ __all__ = [
 from interface import implements
 
 from OasisExposureTransformsManagerInterface import OasisExposureTransformsManagerInterface
+from OasisTransformsFilesPipeline import OasisTransformsFilesPipeline
 
 from oasis_utils.oasis_keys_lookup_service_utils import KeysLookupServiceFactory as klsf
 
 
 class OasisExposureTransformsManager(implements(OasisExposureTransformsManagerInterface)):
 
-    def __init__(self):
+    def __init__(self, oasis_models=None):
         """
         Class constructor - not generally to be used directly.
         """
         self.manager = {}
-        self.klsf = klsf
+        self.manager['klsf'] = klsf()
+        self.manager['models'] = {}
+        if oasis_models:
+            for model in oasis_models:
+                model.resources['transforms_files_pipeline'] = OasisTransformsFilesPipeline()
 
 
     @classmethod
