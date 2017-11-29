@@ -24,73 +24,88 @@ class OasisExposureTransformsManagerInterface(Interface):
         pass
 
 
-    def transform_source_to_canonical(self, oasis_model, *args, **kwargs):
+    def transform_source_to_canonical(self, oasis_model, **kwargs):
         """
         Transforms the source exposures/locations file for a given
-        ``oasis_model`` object, with the path given in the object ``resources``
-        dict, optionally using additional resources specified in ``args``
-        and/or ``kwargs``.
+        ``oasis_model`` object to a canonical/standard Oasis format.
 
-        It is up to the specific implementation of this class of how to use
-        these resources to effect the transformation.
+        All the required resources must be provided in the ``kwargs`` dict.
+
+        It is up to the specific implementation of this class of how these
+        resources will be named in ``kwargs`` and how they will be used to
+        effect the transformation.
         
         The transform is generic by default, but could be supplier specific if
         required.
 
         Returns a reference to the file object and also stores this in the
-        model object resources dict.
+        transforms files pipeline in the model object resources dict.
         """
         pass
 
 
-    def transform_canonical_to_model(self, oasis_model, *args, **kwargs):
+    def transform_canonical_to_model(self, oasis_model, **kwargs):
         """
         Transforms the canonical exposures/locations file for a given
-        ``oasis_model``, object, with the path given in the object
-        ``resources`` dict, and in the format expected by an Oasis keys lookup
-        service, optionally using additional resources specified in ``args``
-        and/or ``kwargs``.
+        ``oasis_model`` object to a format understood by Oasis keys lookup
+        services.
+
+        All the required resources must be provided in the ``kwargs`` dict.
+
+        It is up to the specific implementation of this class of how these
+        resources will be named in ``kwargs`` and how they will be used to
+        effect the transformation.
 
         Returns a reference to the file object and also stores this in the
-        model object resources dict.
+        transforms files pipeline in the model object resources dict.
          """
         pass
 
 
-    def transform_model_to_oasis_keys(self, oasis_model, *args, **kwargs):
+    def transform_model_to_oasis_keys(self, oasis_model, **kwargs):
         """
         Transforms the model exposures/locations file for a given
-        ``oasis_model``,  object, with the path given in the object
-        ``resources`` dict, to an Oasis keys CSV file, as used to generate the
-        Oasis files, using the lookup service factory class in ``oasis_utils``,
-        namely
+        ``oasis_model`` object to the Oasis keys CSV file format:
+
+            ``LocID,PerilID,CoverageID,AreaPerilID,VulnerabilityID``
+
+
+        All the required resources must be provided in the ``kwargs`` dict.
+
+        It is up to the specific implementation of this class of how these
+        resources will be named in ``kwargs`` and how they will be used to
+        effect the transformation.
+
+        A "standard" implementation should use the lookup service factory
+        class in ``oasis_utils`` (a submodule of `omdk`) namely
         
             ``oasis_utils.oasis_keys_lookup_service_utils.KeysLookupServiceFactory``
 
-
-        optionally using additional resources specified in ``args`` and/or
-        ``kwargs``.
-
         Returns a reference to the file object and also stores this in the
-        model object resources dict.
+        transforms files pipeline in the model object resources dict.
         """
         pass
 
 
-    def load_canonical_profile(self, oasis_model, *args,  **kwargs):
+    def load_canonical_profile(self, oasis_model, **kwargs):
         """
         Loads a JSON file representing the canonical exposures profile for a
-        given ``oasis_model``, optionally using any additional resources
-        specified in the `args` and ``kwargs` arguments.
+        given ``oasis_model``.
 
-        Returns the profile as a dict, and also stores this in the
-        model object resources dict.
+        All the required resources must be provided in the ``kwargs`` dict.
+
+        It is up to the specific implementation of this class of how these
+        resources will be named in ``kwargs`` and how they will be used to
+        effect the transformation.
+
+        Returns the profile as a dict, and also stores this in the transforms
+        files pipeline in the model object resources dict.
 
         """
         pass
 
 
-    def generate_oasis_files(self, oasis_model, *args, **kwargs):
+    def generate_oasis_files(self, oasis_model, **kwargs):
         """
         For a given ``oasis_model`` generates the standard Oasis files, namely
 
@@ -98,10 +113,13 @@ class OasisExposureTransformsManagerInterface(Interface):
             ``coverages.csv``
             ``gulsummaryxref.csv``
 
-        optionally using any additional resources specified in the `args` and
-        ``kwargs` arguments.
+        All the required resources must be provided in the ``kwargs`` dict.
 
-        In addition to generating the files it also stores these in the model
-        object resources dict.
+        It is up to the specific implementation of this class of how these
+        resources will be named in ``kwargs`` and how they will be used to
+        effect the transformation.
+
+        In addition to generating the files it also stores these in the
+        transforms files pipeline in the model object resources dict.
         """
         pass
