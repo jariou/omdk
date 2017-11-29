@@ -109,7 +109,7 @@ class OasisExposureTransformsManager(implements(OasisExposureTransformsManagerIn
 
         model_exposures_file_path = os.path.abspath(kwargs['model_exposures_file_path'])
         lookup_service = kwargs['lookup_service']
-        output_file_path = kwargs['output_file_path']
+        output_file_path = os.path.abspath(kwargs['output_file_path'])
 
         oasis_keys_file, _ = self.manager['klsf'].save_lookup_records(
             lookup_service=lookup_service,
