@@ -24,64 +24,84 @@ class OasisExposureTransformsManagerInterface(Interface):
         pass
 
 
-    def transform_source_to_canonical(self, source_exposures_file_path, supplier_id=None):
+    def transform_source_to_canonical(self, oasis_model, *args, **kwargs):
         """
-        Transforms the source exposures/locations file specified in the given
-        path to a canonical exposures/locations file. The transform is generic
-        by default, but could be supplier specific if required.
+        Transforms the source exposures/locations file for a given
+        ``oasis_model`` object, with the path given in the object ``resources``
+        dict, optionally using additional resources specified in ``args``
+        and/or ``kwargs``.
 
-        Returns a reference to the file object and also updates a storage dict
-        to store the file as an attribute.
+        It is up to the specific implementation of this class of how to use
+        these resources to effect the transformation.
+        
+        The transform is generic by default, but could be supplier specific if
+        required.
+
+        Returns a reference to the file object and also stores this in the
+        model object resources dict.
         """
         pass
 
 
-    def transform_canonical_to_model(self, supplier_id, model_id, canonical_exposures_file_path):
+    def transform_canonical_to_model(self, oasis_model, *args, **kwargs):
         """
-        Transforms the canonical exposures/locations file specified in the
-        given path to a model exposures file, as expected by an Oasis keys
-        lookup service.
+        Transforms the canonical exposures/locations file for a given
+        ``oasis_model``, object, with the path given in the object
+        ``resources`` dict, and in the format expected by an Oasis keys lookup
+        service, optionally using additional resources specified in ``args``
+        and/or ``kwargs``.
 
-        Returns a reference to the file object and also updates a storage dict
-        to store the file as an attribute.
+        Returns a reference to the file object and also stores this in the
+        model object resources dict.
          """
         pass
 
 
-    def transform_model_to_oasis_keys(self, supplier_id, model_id, model_exposures_file_path):
+    def transform_model_to_oasis_keys(self, oasis_model, *args, **kwargs):
         """
-        Transforms the model exposures/locations file specified in the given
-        path to an Oasis keys file, as used to generate the Oasis files, using
-        the lookup service factory class in ``oasis_utils``, namely
+        Transforms the model exposures/locations file for a given
+        ``oasis_model``,  object, with the path given in the object
+        ``resources`` dict, to an Oasis keys CSV file, as used to generate the
+        Oasis files, using the lookup service factory class in ``oasis_utils``,
+        namely
         
             ``oasis_utils.oasis_keys_lookup_service_utils.KeysLookupServiceFactory``
 
-        Returns a reference to the file object and also updates a storage dict
-        to store the file as an attribute.
+
+        optionally using additional resources specified in ``args`` and/or
+        ``kwargs``.
+
+        Returns a reference to the file object and also stores this in the
+        model object resources dict.
         """
         pass
 
 
-    def load_canonical_profile(self, canonical_exposures_profile):
+    def load_canonical_profile(self, oasis_model, *args,  **kwargs):
         """
-        Loads a JSON file representing the canonical exposures profile
-        for a given supplier, which is indicated in the profile itself.
+        Loads a JSON file representing the canonical exposures profile for a
+        given ``oasis_model``, optionally using any additional resources
+        specified in the `args` and ``kwargs` arguments.
 
-        Returns the profile as a dict, and also stores it as an attribute.
+        Returns the profile as a dict, and also stores this in the
+        model object resources dict.
+
         """
         pass
 
 
-    def generate_oasis_files(self, supplier_id, model_id, files=None):
+    def generate_oasis_files(self, oasis_model, *args, **kwargs):
         """
-        Generates the standard Oasis files, namely
+        For a given ``oasis_model`` generates the standard Oasis files, namely
 
             ``items.csv``
             ``coverages.csv``
-            ``GulSummaryXref.csv``
+            ``gulsummaryxref.csv``
 
-        The argument ``files`` can be used to specify a list of specific Oasis
-        file types to generate; by default this is ``None`` so that all the 
-        standard files will be generated.
+        optionally using any additional resources specified in the `args` and
+        ``kwargs` arguments.
+
+        In addition to generating the files it also stores these in the model
+        object resources dict.
         """
         pass
