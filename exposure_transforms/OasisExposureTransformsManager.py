@@ -6,12 +6,13 @@ __all__ = [
 ]
 
 import os
+import subprocess
 import sys
 
 from interface import implements
 
 from OasisExposureTransformsManagerInterface import OasisExposureTransformsManagerInterface
-from OasisTransformsFilesPipeline import OasisTransformsFilesPipeline
+from OasisExposureTransformsFilesPipeline import OasisExposureTransformsFilesPipeline
 
 if os.getcwd().split(os.path.sep)[-1] == 'exposure_transforms':
     sys.path.insert(0, os.path.abspath('../'))
@@ -30,7 +31,7 @@ class OasisExposureTransformsManager(implements(OasisExposureTransformsManagerIn
         self.manager['models'] = {}
         if oasis_models:
             for model in oasis_models:
-                model.resources['transforms_files_pipeline'] = OasisTransformsFilesPipeline()
+                model.resources['transforms_files_pipeline'] = OasisExposureTransformsFilesPipeline()
                 model_key = '{}-{}-{}'.format(model.supplier_id, model.model_id, model.model_version_id)
                 self.manager['models'][model_key] = model
 
@@ -61,7 +62,11 @@ class OasisExposureTransformsManager(implements(OasisExposureTransformsManagerIn
         Returns a reference to the file object and also stores this in the
         transforms files pipeline in the model object resources dict.
         """
-        pass
+        validation_file_path = kwargs['validation_file_path']
+        transformation_file_path = kwargs['transformation_file_path']
+        source_exposures_file_path = kwargs['source_exposures_file_path']
+        canonical_exposures_file_path = kwargs['canonical_exposures_file_path']
+
 
 
     def transform_canonical_to_model(self, oasis_model, **kwargs):

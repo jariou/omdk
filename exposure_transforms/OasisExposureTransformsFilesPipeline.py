@@ -2,10 +2,10 @@
 # -*- coding: utf-8 -*-
 
 __all__ = [
-    'OasisTransformsFilesPipeline'
+    'OasisExposureTransformsFilesPipeline'
 ]
 
-class OasisTransformsFilesPipeline(object):
+class OasisExposureTransformsFilesPipeline(object):
 
     def __init__(self,
         source_exposures_file=None,

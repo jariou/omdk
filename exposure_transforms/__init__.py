@@ -1,3 +1,3 @@
-from OasisExposureTransformsManagerInterface import *
-from OasisExposureTransformsManager import *
-from OasisTransformsFilesPipeline import *
+from .OasisExposureTransformsManagerInterface import *
+from .OasisExposureTransformsManager import *
+from .OasisExposureTransformsFilesPipeline import *
