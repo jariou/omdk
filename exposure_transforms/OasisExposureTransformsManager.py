@@ -44,7 +44,7 @@ class OasisExposureTransformsManager(implements(OasisExposureTransformsManagerIn
         return cls(oasis_models=oasis_models)
 
 
-    def transform_source_to_canonical(self, oasis_model, *args, **kwargs):
+    def transform_source_to_canonical(self, oasis_model, **kwargs):
         """
         Transforms the source exposures/locations file for a given
         ``oasis_model`` object to a canonical/standard Oasis format.
@@ -64,7 +64,7 @@ class OasisExposureTransformsManager(implements(OasisExposureTransformsManagerIn
         pass
 
 
-    def transform_canonical_to_model(self, oasis_model, *args, **kwargs):
+    def transform_canonical_to_model(self, oasis_model, **kwargs):
         """
         Transforms the canonical exposures/locations file for a given
         ``oasis_model`` object to a format understood by Oasis keys lookup
@@ -83,7 +83,7 @@ class OasisExposureTransformsManager(implements(OasisExposureTransformsManagerIn
 
 
 
-    def transform_model_to_oasis_keys(self, oasis_model, *args, **kwargs):
+    def transform_model_to_oasis_keys(self, oasis_model, **kwargs):
         """
         Transforms the model exposures/locations file for a given
         ``oasis_model`` object to the Oasis keys CSV file format:
@@ -122,7 +122,7 @@ class OasisExposureTransformsManager(implements(OasisExposureTransformsManagerIn
         return oasis_keys_file
 
 
-    def load_canonical_profile(self, oasis_model, *args,  **kwargs):
+    def load_canonical_profile(self, oasis_model, **kwargs):
         """
         Loads a JSON file representing the canonical exposures profile for a
         given ``oasis_model``.
@@ -140,7 +140,7 @@ class OasisExposureTransformsManager(implements(OasisExposureTransformsManagerIn
         pass
 
 
-    def generate_oasis_files(self, oasis_model, *args, **kwargs):
+    def generate_oasis_files(self, oasis_model, **kwargs):
         """
         For a given ``oasis_model`` generates the standard Oasis files, namely
 
