@@ -1,0 +1,598 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Module Documentation &#8212; omdk 0.1 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="First Steps" href="first-steps.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-documentation">
+<h1>Module Documentation<a class="headerlink" href="#module-documentation" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="module-OasisModel">
+<span id="oasismodel"></span><h2><code class="docutils literal"><span class="pre">OasisModel</span></code><a class="headerlink" href="#module-OasisModel" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="OasisModel.OasisModel">
+<em class="property">class </em><code class="descclassname">OasisModel.</code><code class="descname">OasisModel</code><span class="sig-paren">(</span><em>model_supplier_id</em>, <em>model_id</em>, <em>model_version_id</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/OasisModel.html#OasisModel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#OasisModel.OasisModel" title="Permalink to this definition">¶</a></dt>
+<dd><p>A simple object representation of Oasis models and their resources - an
+Oasis model is viewed as a combination of a specific supplier, model ID
+and model version, and the constructor requires these three arguments
+for creating a new Oasis model object. Each model object also has a
+resources dictionary that can be used to “attach” any resources by clients,
+e.g. a lookup service instance, a transforms files pipeline etc.</p>
+<dl class="attribute">
+<dt id="OasisModel.OasisModel.model_id">
+<code class="descname">model_id</code><a class="headerlink" href="#OasisModel.OasisModel.model_id" title="Permalink to this definition">¶</a></dt>
+<dd><p>Model ID property - getter only.</p>
+<blockquote>
+<div><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">getter:</th><td class="field-body">Gets the model ID</td>
+</tr>
+<tr class="field-even field"><th class="field-name">type:</th><td class="field-body">string</td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="OasisModel.OasisModel.model_version_id">
+<code class="descname">model_version_id</code><a class="headerlink" href="#OasisModel.OasisModel.model_version_id" title="Permalink to this definition">¶</a></dt>
+<dd><p>Model version ID property - getter only.</p>
+<blockquote>
+<div><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">getter:</th><td class="field-body">Gets the model version ID</td>
+</tr>
+<tr class="field-even field"><th class="field-name">type:</th><td class="field-body">string</td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="OasisModel.OasisModel.resources">
+<code class="descname">resources</code><a class="headerlink" href="#OasisModel.OasisModel.resources" title="Permalink to this definition">¶</a></dt>
+<dd><p>Model resources dictionary property.</p>
+<blockquote>
+<div><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">getter:</th><td class="field-body">Gets the attached resource in the model resources dict
+using the optional resource <code class="docutils literal"><span class="pre">key</span></code> argument. If <code class="docutils literal"><span class="pre">key</span></code>
+is not given then the entire resources dict is returned.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">setter:</th><td class="field-body">Sets the value of the optional resource <code class="docutils literal"><span class="pre">key</span></code> in the
+resources dict to <code class="docutils literal"><span class="pre">val</span></code>. If no <code class="docutils literal"><span class="pre">key</span></code> is given then
+<code class="docutils literal"><span class="pre">val</span></code> is assumed to be a new resources dict and is
+used to replace the existing dict.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">deleter:</th><td class="field-body">Deletes the value of the specified resource <code class="docutils literal"><span class="pre">key</span></code> in
+the resources dict. If no <code class="docutils literal"><span class="pre">key</span></code> is given then the
+entire existing dict is cleared.</td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="OasisModel.OasisModel.supplier_id">
+<code class="descname">supplier_id</code><a class="headerlink" href="#OasisModel.OasisModel.supplier_id" title="Permalink to this definition">¶</a></dt>
+<dd><p>Model supplier ID property - getter only.</p>
+<blockquote>
+<div><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">getter:</th><td class="field-body">Gets the model supplier ID</td>
+</tr>
+<tr class="field-even field"><th class="field-name">type:</th><td class="field-body">string</td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-exposure_transforms.OasisExposureTransformsManagerInterface">
+<span id="exposure-transforms-oasisexposuretransformsmanagerinterface"></span><h2><code class="docutils literal"><span class="pre">exposure_transforms.OasisExposureTransformsManagerInterface</span></code><a class="headerlink" href="#module-exposure_transforms.OasisExposureTransformsManagerInterface" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="exposure_transforms.OasisExposureTransformsManagerInterface.OasisExposureTransformsManagerInterface">
+<em class="property">class </em><code class="descclassname">exposure_transforms.OasisExposureTransformsManagerInterface.</code><code class="descname">OasisExposureTransformsManagerInterface</code><a class="reference internal" href="_modules/exposure_transforms/OasisExposureTransformsManagerInterface.html#OasisExposureTransformsManagerInterface"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#exposure_transforms.OasisExposureTransformsManagerInterface.OasisExposureTransformsManagerInterface" title="Permalink to this definition">¶</a></dt>
+<dd><p>An interface for defining the service methods of an Oasis exposure
+transforms manager.</p>
+<dl class="attribute">
+<dt id="exposure_transforms.OasisExposureTransformsManagerInterface.OasisExposureTransformsManagerInterface._signatures">
+<code class="descname">_signatures</code><em class="property"> = {'transform_canonical_to_model': &lt;interface.typed_signature.TypedSignature object&gt;, 'create': &lt;interface.typed_signature.TypedSignature object&gt;, 'load_canonical_profile': &lt;interface.typed_signature.TypedSignature object&gt;, 'generate_oasis_files': &lt;interface.typed_signature.TypedSignature object&gt;, 'transform_source_to_canonical': &lt;interface.typed_signature.TypedSignature object&gt;, 'transform_model_to_oasis_keys': &lt;interface.typed_signature.TypedSignature object&gt;}</em><a class="headerlink" href="#exposure_transforms.OasisExposureTransformsManagerInterface.OasisExposureTransformsManagerInterface._signatures" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="classmethod">
+<dt id="exposure_transforms.OasisExposureTransformsManagerInterface.OasisExposureTransformsManagerInterface.create">
+<em class="property">classmethod </em><code class="descname">create</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/exposure_transforms/OasisExposureTransformsManagerInterface.html#OasisExposureTransformsManagerInterface.create"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#exposure_transforms.OasisExposureTransformsManagerInterface.OasisExposureTransformsManagerInterface.create" title="Permalink to this definition">¶</a></dt>
+<dd><p>Class method that returns an instance of an Oasis exposure transforms
+manager.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="exposure_transforms.OasisExposureTransformsManagerInterface.OasisExposureTransformsManagerInterface.generate_oasis_files">
+<code class="descname">generate_oasis_files</code><span class="sig-paren">(</span><em>oasis_model</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/exposure_transforms/OasisExposureTransformsManagerInterface.html#OasisExposureTransformsManagerInterface.generate_oasis_files"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#exposure_transforms.OasisExposureTransformsManagerInterface.OasisExposureTransformsManagerInterface.generate_oasis_files" title="Permalink to this definition">¶</a></dt>
+<dd><p>For a given <code class="docutils literal"><span class="pre">oasis_model</span></code> generates the standard Oasis files, namely</p>
+<blockquote>
+<div><code class="docutils literal"><span class="pre">items.csv</span></code>
+<code class="docutils literal"><span class="pre">coverages.csv</span></code>
+<code class="docutils literal"><span class="pre">gulsummaryxref.csv</span></code></div></blockquote>
+<p>All the required resources must be provided in the <code class="docutils literal"><span class="pre">kwargs</span></code> dict.</p>
+<p>It is up to the specific implementation of this class of how these
+resources will be named in <code class="docutils literal"><span class="pre">kwargs</span></code> and how they will be used to
+effect the transformation.</p>
+<p>In addition to generating the files it also stores these in the
+transforms files pipeline in the model object resources dict.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="exposure_transforms.OasisExposureTransformsManagerInterface.OasisExposureTransformsManagerInterface.load_canonical_profile">
+<code class="descname">load_canonical_profile</code><span class="sig-paren">(</span><em>oasis_model</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/exposure_transforms/OasisExposureTransformsManagerInterface.html#OasisExposureTransformsManagerInterface.load_canonical_profile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#exposure_transforms.OasisExposureTransformsManagerInterface.OasisExposureTransformsManagerInterface.load_canonical_profile" title="Permalink to this definition">¶</a></dt>
+<dd><p>Loads a JSON file representing the canonical exposures profile for a
+given <code class="docutils literal"><span class="pre">oasis_model</span></code>.</p>
+<p>All the required resources must be provided in the <code class="docutils literal"><span class="pre">kwargs</span></code> dict.</p>
+<p>It is up to the specific implementation of this class of how these
+resources will be named in <code class="docutils literal"><span class="pre">kwargs</span></code> and how they will be used to
+effect the transformation.</p>
+<p>Returns the profile as a dict, and also stores this in the transforms
+files pipeline in the model object resources dict.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="exposure_transforms.OasisExposureTransformsManagerInterface.OasisExposureTransformsManagerInterface.transform_canonical_to_model">
+<code class="descname">transform_canonical_to_model</code><span class="sig-paren">(</span><em>oasis_model</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/exposure_transforms/OasisExposureTransformsManagerInterface.html#OasisExposureTransformsManagerInterface.transform_canonical_to_model"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#exposure_transforms.OasisExposureTransformsManagerInterface.OasisExposureTransformsManagerInterface.transform_canonical_to_model" title="Permalink to this definition">¶</a></dt>
+<dd><p>Transforms the canonical exposures/locations file for a given
+<code class="docutils literal"><span class="pre">oasis_model</span></code> object to a format understood by Oasis keys lookup
+services.</p>
+<p>All the required resources must be provided in the <code class="docutils literal"><span class="pre">kwargs</span></code> dict.</p>
+<p>It is up to the specific implementation of this class of how these
+resources will be named in <code class="docutils literal"><span class="pre">kwargs</span></code> and how they will be used to
+effect the transformation.</p>
+<p>Returns a reference to the file object and also stores this in the
+transforms files pipeline in the model object resources dict.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="exposure_transforms.OasisExposureTransformsManagerInterface.OasisExposureTransformsManagerInterface.transform_model_to_oasis_keys">
+<code class="descname">transform_model_to_oasis_keys</code><span class="sig-paren">(</span><em>oasis_model</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/exposure_transforms/OasisExposureTransformsManagerInterface.html#OasisExposureTransformsManagerInterface.transform_model_to_oasis_keys"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#exposure_transforms.OasisExposureTransformsManagerInterface.OasisExposureTransformsManagerInterface.transform_model_to_oasis_keys" title="Permalink to this definition">¶</a></dt>
+<dd><p>Transforms the model exposures/locations file for a given
+<code class="docutils literal"><span class="pre">oasis_model</span></code> object to the Oasis keys CSV file format:</p>
+<blockquote>
+<div><code class="docutils literal"><span class="pre">LocID,PerilID,CoverageID,AreaPerilID,VulnerabilityID</span></code></div></blockquote>
+<p>All the required resources must be provided in the <code class="docutils literal"><span class="pre">kwargs</span></code> dict.</p>
+<p>It is up to the specific implementation of this class of how these
+resources will be named in <code class="docutils literal"><span class="pre">kwargs</span></code> and how they will be used to
+effect the transformation.</p>
+<p>A “standard” implementation should use the lookup service factory
+class in <code class="docutils literal"><span class="pre">oasis_utils</span></code> (a submodule of <cite>omdk</cite>) namely</p>
+<blockquote>
+<div><code class="docutils literal"><span class="pre">oasis_utils.oasis_keys_lookup_service_utils.KeysLookupServiceFactory</span></code></div></blockquote>
+<p>Returns a reference to the file object and also stores this in the
+transforms files pipeline in the model object resources dict.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="exposure_transforms.OasisExposureTransformsManagerInterface.OasisExposureTransformsManagerInterface.transform_source_to_canonical">
+<code class="descname">transform_source_to_canonical</code><span class="sig-paren">(</span><em>oasis_model</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/exposure_transforms/OasisExposureTransformsManagerInterface.html#OasisExposureTransformsManagerInterface.transform_source_to_canonical"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#exposure_transforms.OasisExposureTransformsManagerInterface.OasisExposureTransformsManagerInterface.transform_source_to_canonical" title="Permalink to this definition">¶</a></dt>
+<dd><p>Transforms the source exposures/locations file for a given
+<code class="docutils literal"><span class="pre">oasis_model</span></code> object to a canonical/standard Oasis format.</p>
+<p>All the required resources must be provided in the <code class="docutils literal"><span class="pre">kwargs</span></code> dict.</p>
+<p>It is up to the specific implementation of this class of how these
+resources will be named in <code class="docutils literal"><span class="pre">kwargs</span></code> and how they will be used to
+effect the transformation.</p>
+<p>The transform is generic by default, but could be supplier specific if
+required.</p>
+<p>Returns a reference to the file object and also stores this in the
+transforms files pipeline in the model object resources dict.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-exposure_transforms.OasisExposureTransformsManager">
+<span id="exposure-transforms-oasisexposuretransformsmanager"></span><h2><code class="docutils literal"><span class="pre">exposure_transforms.OasisExposureTransformsManager</span></code><a class="headerlink" href="#module-exposure_transforms.OasisExposureTransformsManager" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="exposure_transforms.OasisExposureTransformsManager.OasisExposureTransformsManager">
+<em class="property">class </em><code class="descclassname">exposure_transforms.OasisExposureTransformsManager.</code><code class="descname">OasisExposureTransformsManager</code><span class="sig-paren">(</span><em>oasis_models=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/exposure_transforms/OasisExposureTransformsManager.html#OasisExposureTransformsManager"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#exposure_transforms.OasisExposureTransformsManager.OasisExposureTransformsManager" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="attribute">
+<dt id="exposure_transforms.OasisExposureTransformsManager.OasisExposureTransformsManager._interfaces">
+<code class="descname">_interfaces</code><em class="property"> = frozenset([])</em><a class="headerlink" href="#exposure_transforms.OasisExposureTransformsManager.OasisExposureTransformsManager._interfaces" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="classmethod">
+<dt id="exposure_transforms.OasisExposureTransformsManager.OasisExposureTransformsManager.create">
+<em class="property">classmethod </em><code class="descname">create</code><span class="sig-paren">(</span><em>oasis_models=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/exposure_transforms/OasisExposureTransformsManager.html#OasisExposureTransformsManager.create"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#exposure_transforms.OasisExposureTransformsManager.OasisExposureTransformsManager.create" title="Permalink to this definition">¶</a></dt>
+<dd><p>Class method that returns an instance of an Oasis exposure transforms
+manager.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="exposure_transforms.OasisExposureTransformsManager.OasisExposureTransformsManager.generate_oasis_files">
+<code class="descname">generate_oasis_files</code><span class="sig-paren">(</span><em>oasis_model</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/exposure_transforms/OasisExposureTransformsManager.html#OasisExposureTransformsManager.generate_oasis_files"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#exposure_transforms.OasisExposureTransformsManager.OasisExposureTransformsManager.generate_oasis_files" title="Permalink to this definition">¶</a></dt>
+<dd><p>For a given <code class="docutils literal"><span class="pre">oasis_model</span></code> generates the standard Oasis files, namely</p>
+<blockquote>
+<div><code class="docutils literal"><span class="pre">items.csv</span></code>
+<code class="docutils literal"><span class="pre">coverages.csv</span></code>
+<code class="docutils literal"><span class="pre">gulsummaryxref.csv</span></code></div></blockquote>
+<p>All the required resources must be provided in the <code class="docutils literal"><span class="pre">kwargs</span></code> dict.</p>
+<p>It is up to the specific implementation of this class of how these
+resources will be named in <code class="docutils literal"><span class="pre">kwargs</span></code> and how they will be used to
+effect the transformation.</p>
+<p>In addition to generating the files it also stores these in the
+transforms files pipeline in the model object resources dict.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="exposure_transforms.OasisExposureTransformsManager.OasisExposureTransformsManager.load_canonical_profile">
+<code class="descname">load_canonical_profile</code><span class="sig-paren">(</span><em>oasis_model</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/exposure_transforms/OasisExposureTransformsManager.html#OasisExposureTransformsManager.load_canonical_profile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#exposure_transforms.OasisExposureTransformsManager.OasisExposureTransformsManager.load_canonical_profile" title="Permalink to this definition">¶</a></dt>
+<dd><p>Loads a JSON file representing the canonical exposures profile for a
+given <code class="docutils literal"><span class="pre">oasis_model</span></code>.</p>
+<p>All the required resources must be provided in the <code class="docutils literal"><span class="pre">kwargs</span></code> dict.</p>
+<p>It is up to the specific implementation of this class of how these
+resources will be named in <code class="docutils literal"><span class="pre">kwargs</span></code> and how they will be used to
+effect the transformation.</p>
+<p>Returns the profile as a dict, and also stores this in the transforms
+files pipeline in the model object resources dict.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="exposure_transforms.OasisExposureTransformsManager.OasisExposureTransformsManager.transform_canonical_to_model">
+<code class="descname">transform_canonical_to_model</code><span class="sig-paren">(</span><em>oasis_model</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/exposure_transforms/OasisExposureTransformsManager.html#OasisExposureTransformsManager.transform_canonical_to_model"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#exposure_transforms.OasisExposureTransformsManager.OasisExposureTransformsManager.transform_canonical_to_model" title="Permalink to this definition">¶</a></dt>
+<dd><p>Transforms the canonical exposures/locations file for a given
+<code class="docutils literal"><span class="pre">oasis_model</span></code> object to a format understood by Oasis keys lookup
+services.</p>
+<p>All the required resources must be provided in the <code class="docutils literal"><span class="pre">kwargs</span></code> dict.</p>
+<p>It is up to the specific implementation of this class of how these
+resources will be named in <code class="docutils literal"><span class="pre">kwargs</span></code> and how they will be used to
+effect the transformation.</p>
+<p>Returns a reference to the file object and also stores this in the
+transforms files pipeline in the model object resources dict.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="exposure_transforms.OasisExposureTransformsManager.OasisExposureTransformsManager.transform_model_to_oasis_keys">
+<code class="descname">transform_model_to_oasis_keys</code><span class="sig-paren">(</span><em>oasis_model</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/exposure_transforms/OasisExposureTransformsManager.html#OasisExposureTransformsManager.transform_model_to_oasis_keys"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#exposure_transforms.OasisExposureTransformsManager.OasisExposureTransformsManager.transform_model_to_oasis_keys" title="Permalink to this definition">¶</a></dt>
+<dd><p>Transforms the model exposures/locations file for a given
+<code class="docutils literal"><span class="pre">oasis_model</span></code> object to the Oasis keys CSV file format:</p>
+<blockquote>
+<div><code class="docutils literal"><span class="pre">LocID,PerilID,CoverageID,AreaPerilID,VulnerabilityID</span></code></div></blockquote>
+<p>All the required resources must be provided in the <code class="docutils literal"><span class="pre">kwargs</span></code> dict.</p>
+<p>It is up to the specific implementation of this class of how these
+resources will be named in <code class="docutils literal"><span class="pre">kwargs</span></code> and how they will be used to
+effect the transformation.</p>
+<p>A “standard” implementation should use the lookup service factory
+class in <code class="docutils literal"><span class="pre">oasis_utils</span></code> (a submodule of <cite>omdk</cite>) namely</p>
+<blockquote>
+<div><code class="docutils literal"><span class="pre">oasis_utils.oasis_keys_lookup_service_utils.KeysLookupServiceFactory</span></code></div></blockquote>
+<p>Returns a reference to the file object and also stores this in the
+transforms files pipeline in the model object resources dict.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="exposure_transforms.OasisExposureTransformsManager.OasisExposureTransformsManager.transform_source_to_canonical">
+<code class="descname">transform_source_to_canonical</code><span class="sig-paren">(</span><em>oasis_model</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/exposure_transforms/OasisExposureTransformsManager.html#OasisExposureTransformsManager.transform_source_to_canonical"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#exposure_transforms.OasisExposureTransformsManager.OasisExposureTransformsManager.transform_source_to_canonical" title="Permalink to this definition">¶</a></dt>
+<dd><p>Transforms the source exposures/locations file for a given
+<code class="docutils literal"><span class="pre">oasis_model</span></code> object to a canonical/standard Oasis format.</p>
+<p>All the required resources must be provided in the <code class="docutils literal"><span class="pre">kwargs</span></code> dict.</p>
+<p>It is up to the specific implementation of this class of how these
+resources will be named in <code class="docutils literal"><span class="pre">kwargs</span></code> and how they will be used to
+effect the transformation.</p>
+<p>The transform is generic by default, but could be supplier specific if
+required.</p>
+<p>Returns a reference to the file object and also stores this in the
+transforms files pipeline in the model object resources dict.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-exposure_transforms.OasisExposureTransformsFilesPipeline">
+<span id="exposure-transforms-oasisexposuretransformsfilespipeline"></span><h2><code class="docutils literal"><span class="pre">exposure_transforms.OasisExposureTransformsFilesPipeline</span></code><a class="headerlink" href="#module-exposure_transforms.OasisExposureTransformsFilesPipeline" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="exposure_transforms.OasisExposureTransformsFilesPipeline.OasisExposureTransformsFilesPipeline">
+<em class="property">class </em><code class="descclassname">exposure_transforms.OasisExposureTransformsFilesPipeline.</code><code class="descname">OasisExposureTransformsFilesPipeline</code><span class="sig-paren">(</span><em>source_exposures_file=None</em>, <em>canonical_exposures_profile=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/exposure_transforms/OasisExposureTransformsFilesPipeline.html#OasisExposureTransformsFilesPipeline"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#exposure_transforms.OasisExposureTransformsFilesPipeline.OasisExposureTransformsFilesPipeline" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="attribute">
+<dt id="exposure_transforms.OasisExposureTransformsFilesPipeline.OasisExposureTransformsFilesPipeline.canonical_exposures_profile">
+<code class="descname">canonical_exposures_profile</code><a class="headerlink" href="#exposure_transforms.OasisExposureTransformsFilesPipeline.OasisExposureTransformsFilesPipeline.canonical_exposures_profile" title="Permalink to this definition">¶</a></dt>
+<dd><p>Canonical exposures profile property.</p>
+<blockquote>
+<div><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">getter:</th><td class="field-body">Gets the actual file object</td>
+</tr>
+<tr class="field-even field"><th class="field-name">setter:</th><td class="field-body">Sets the file to the specified file object</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">deleter:</th><td class="field-body">Deletes the file object</td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="exposure_transforms.OasisExposureTransformsFilesPipeline.OasisExposureTransformsFilesPipeline.coverages_file">
+<code class="descname">coverages_file</code><a class="headerlink" href="#exposure_transforms.OasisExposureTransformsFilesPipeline.OasisExposureTransformsFilesPipeline.coverages_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Oasis coverages file property.</p>
+<blockquote>
+<div><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">getter:</th><td class="field-body">Gets the actual file object</td>
+</tr>
+<tr class="field-even field"><th class="field-name">setter:</th><td class="field-body">Sets the file to the specified file object</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">deleter:</th><td class="field-body">Deletes the file object</td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="exposure_transforms.OasisExposureTransformsFilesPipeline.OasisExposureTransformsFilesPipeline.coverges_file">
+<code class="descname">coverges_file</code><a class="headerlink" href="#exposure_transforms.OasisExposureTransformsFilesPipeline.OasisExposureTransformsFilesPipeline.coverges_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Oasis coverages file property.</p>
+<blockquote>
+<div><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">getter:</th><td class="field-body">Gets the actual file object</td>
+</tr>
+<tr class="field-even field"><th class="field-name">setter:</th><td class="field-body">Sets the file to the specified file object</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">deleter:</th><td class="field-body">Deletes the file object</td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="exposure_transforms.OasisExposureTransformsFilesPipeline.OasisExposureTransformsFilesPipeline.create">
+<em class="property">classmethod </em><code class="descname">create</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/exposure_transforms/OasisExposureTransformsFilesPipeline.html#OasisExposureTransformsFilesPipeline.create"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#exposure_transforms.OasisExposureTransformsFilesPipeline.OasisExposureTransformsFilesPipeline.create" title="Permalink to this definition">¶</a></dt>
+<dd><p>Class method that returns an instance of an Oasis transforms files
+pipeline.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="exposure_transforms.OasisExposureTransformsFilesPipeline.OasisExposureTransformsFilesPipeline.gulsummaryxref_file">
+<code class="descname">gulsummaryxref_file</code><a class="headerlink" href="#exposure_transforms.OasisExposureTransformsFilesPipeline.OasisExposureTransformsFilesPipeline.gulsummaryxref_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>GUL summary file property.</p>
+<blockquote>
+<div><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">getter:</th><td class="field-body">Gets the actual file object</td>
+</tr>
+<tr class="field-even field"><th class="field-name">setter:</th><td class="field-body">Sets the file to the specified file object</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">deleter:</th><td class="field-body">Deletes the file object</td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="exposure_transforms.OasisExposureTransformsFilesPipeline.OasisExposureTransformsFilesPipeline.items_file">
+<code class="descname">items_file</code><a class="headerlink" href="#exposure_transforms.OasisExposureTransformsFilesPipeline.OasisExposureTransformsFilesPipeline.items_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Oasis items file property.</p>
+<blockquote>
+<div><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">getter:</th><td class="field-body">Gets the actual file object</td>
+</tr>
+<tr class="field-even field"><th class="field-name">setter:</th><td class="field-body">Sets the file to the specified file object</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">deleter:</th><td class="field-body">Deletes the file object</td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="exposure_transforms.OasisExposureTransformsFilesPipeline.OasisExposureTransformsFilesPipeline.keys_file">
+<code class="descname">keys_file</code><a class="headerlink" href="#exposure_transforms.OasisExposureTransformsFilesPipeline.OasisExposureTransformsFilesPipeline.keys_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Oasis keys file property.</p>
+<blockquote>
+<div><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">getter:</th><td class="field-body">Gets the actual file object</td>
+</tr>
+<tr class="field-even field"><th class="field-name">setter:</th><td class="field-body">Sets the file to the specified file object</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">deleter:</th><td class="field-body">Deletes the file object</td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="exposure_transforms.OasisExposureTransformsFilesPipeline.OasisExposureTransformsFilesPipeline.model_exposures_file">
+<code class="descname">model_exposures_file</code><a class="headerlink" href="#exposure_transforms.OasisExposureTransformsFilesPipeline.OasisExposureTransformsFilesPipeline.model_exposures_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Model exposures file property.</p>
+<blockquote>
+<div><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">getter:</th><td class="field-body">Gets the actual file object</td>
+</tr>
+<tr class="field-even field"><th class="field-name">setter:</th><td class="field-body">Sets the file to the specified file object</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">deleter:</th><td class="field-body">Deletes the file object</td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="exposure_transforms.OasisExposureTransformsFilesPipeline.OasisExposureTransformsFilesPipeline.oasis_files">
+<code class="descname">oasis_files</code><a class="headerlink" href="#exposure_transforms.OasisExposureTransformsFilesPipeline.OasisExposureTransformsFilesPipeline.oasis_files" title="Permalink to this definition">¶</a></dt>
+<dd><p>Oasis files set property - getter only.</p>
+<blockquote>
+<div><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">getter:</th><td class="field-body">Gets the complete set of generated Oasis files, including
+<code class="docutils literal"><span class="pre">items.csv</span></code>, <code class="docutils literal"><span class="pre">coverages.csv</span></code>, <cite>gulsummaryxref.csv</cite>.</td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="exposure_transforms.OasisExposureTransformsFilesPipeline.OasisExposureTransformsFilesPipeline.source_exposures_file">
+<code class="descname">source_exposures_file</code><a class="headerlink" href="#exposure_transforms.OasisExposureTransformsFilesPipeline.OasisExposureTransformsFilesPipeline.source_exposures_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Source exposures file property.</p>
+<blockquote>
+<div><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">getter:</th><td class="field-body">Gets the actual file object</td>
+</tr>
+<tr class="field-even field"><th class="field-name">setter:</th><td class="field-body">Sets the file to the specified file object</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">deleter:</th><td class="field-body">Deletes the file object</td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">omdk</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="repository-management.html">Repository Management</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sphinx.html">Sphinx Docs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="first-steps.html">First Steps</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Module Documentation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#module-OasisModel"><code class="docutils literal"><span class="pre">OasisModel</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-exposure_transforms.OasisExposureTransformsManagerInterface"><code class="docutils literal"><span class="pre">exposure_transforms.OasisExposureTransformsManagerInterface</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-exposure_transforms.OasisExposureTransformsManager"><code class="docutils literal"><span class="pre">exposure_transforms.OasisExposureTransformsManager</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-exposure_transforms.OasisExposureTransformsFilesPipeline"><code class="docutils literal"><span class="pre">exposure_transforms.OasisExposureTransformsFilesPipeline</span></code></a></li>
+</ul>
+</li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="first-steps.html" title="previous chapter">First Steps</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, Oasis Loss Modelling Framework (v. 1.0, 30 November, 2017)..
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="_sources/modules.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
