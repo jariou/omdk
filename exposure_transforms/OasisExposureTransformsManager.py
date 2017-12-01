@@ -5,6 +5,7 @@ __all__ = [
     'OasisExposureTransformsManager'
 ]
 
+import io
 import os
 import subprocess
 import sys
@@ -31,8 +32,10 @@ class OasisExposureTransformsManager(implements(OasisExposureTransformsManagerIn
         self.manager['models'] = {}
         if oasis_models:
             for model in oasis_models:
-                model.resources['transforms_files_pipeline'] = OasisExposureTransformsFilesPipeline()
-                model_key = '{}-{}-{}'.format(model.supplier_id, model.model_id, model.model_version_id)
+                if 'transforms_files_pipeline' in model.resources:
+                    if not model.resources['transforms_files_pipeline']:
+                        model.resources['transforms_files_pipeline'] = OasisExposureTransformsFilesPipeline()
+                model_key = '{}/{}/{}'.format(model.supplier_id, model.model_id, model.model_version_id)
                 self.manager['models'][model_key] = model
 
 
@@ -43,6 +46,71 @@ class OasisExposureTransformsManager(implements(OasisExposureTransformsManagerIn
         manager.
         """
         return cls(oasis_models=oasis_models)
+
+
+    def clear_files_pipeline(self, oasis_model, **kwargs):
+        """
+        Clears the exposure transforms files pipeline for the given
+        ``oasis_model`` optionally using additional arguments in the ``kwargs``
+        dict.
+
+        In the design of the exposure transform framework a model's files
+        pipeline is an object value in its resources dict with the key
+        ``transforms_files_pipeline`` and is thereby accessible with
+
+            `oasis_model.resources['transforms_files_pipeline']`
+
+        This returns an object of type
+
+            `exposure_transforms.OasisExposureTransformsFilesPipeline`
+
+        which stores the different files in the transformation stages for the
+        model as property attributes, e.g.
+
+            `oasis_model.resources['transforms_files_pipeline'].source_exposures_file`
+
+        A standard implementation could either assign a new object of this
+        type in the call to ``clear_files_pipeline``, or set some subset of the
+        file attributes of this pipelines object to null.
+        """
+        pass
+
+
+    def start_files_pipeline(self, oasis_model, **kwargs):
+        """
+        Starts the exposure transforms pipeline for the given ``oasis_model``,
+        i.e. the generation of the canonical exposures files, keys file
+        and finally the Oasis files.
+
+        It is up to the specific implementation of a manager of whether to
+        use the model object resources dict or additional optional arguments
+        in ``kwargs`` for this process.
+
+        In a standard implementation of the manager the call to
+        `start_files_pipeline` should trigger calls to the individual methods for
+        performing file transformations in a normal sequence, e.g.
+
+            `transform_source_to_canonical`
+            `transform_canonical_to_model`
+            `transform_model_to_keys`
+            `load_canonical_profile`
+            `generate_oasis_files`
+
+        and the generated files should be stored as attributes in the given
+        model object's transforms files pipeline.
+        """
+        pass
+
+
+    def save_files_pipeline(self, oasis_model, **kwargs):
+        """
+        Saves the files in the given ``oasis_model``'s transforms files
+        pipeline to some data store, e.g. local filesystem, database etc.
+
+        It is up to the specific implementation of the manager as to what type
+        of store to use for saving pipelines.
+        """
+        pass
 
 
     def transform_source_to_canonical(self, oasis_model, **kwargs):
@@ -66,7 +134,6 @@ class OasisExposureTransformsManager(implements(OasisExposureTransformsManagerIn
         transformation_file_path = kwargs['transformation_file_path']
         source_exposures_file_path = kwargs['source_exposures_file_path']
         canonical_exposures_file_path = kwargs['canonical_exposures_file_path']
-
 
 
     def transform_canonical_to_model(self, oasis_model, **kwargs):
@@ -95,7 +162,6 @@ class OasisExposureTransformsManager(implements(OasisExposureTransformsManagerIn
 
             ``LocID,PerilID,CoverageID,AreaPerilID,VulnerabilityID``
 
-
         All the required resources must be provided in the ``kwargs`` dict.
 
         It is up to the specific implementation of this class of how these
@@ -110,9 +176,15 @@ class OasisExposureTransformsManager(implements(OasisExposureTransformsManagerIn
         Returns a reference to the file object and also stores this in the
         transforms files pipeline in the model object resources dict.
         """
-        pass
+        if not oasis_model.resources['transforms_files_pipeline'].model_exposures_file:
+            if 'model_exposures_file' in kwargs:
+                oasis_model.resources['transforms_files_pipeline'].model_exposures_file = kwargs['model_exposures_file']
+            elif 'model_exposures_file_path' in kwargs:
+                with io.open(kwargs['model_exposures_file_path'], 'r', encoding='utf-8') as f:
+                    oasis_model.resources['transforms_files_pipeline'].model_exposures_file = f
+            else:
+                raise Exception('No model exposures file or file path provided')
 
-        model_exposures_file_path = os.path.abspath(kwargs['model_exposures_file_path'])
         lookup_service = kwargs['lookup_service']
         output_file_path = os.path.abspath(kwargs['output_file_path'])
 
@@ -123,7 +195,7 @@ class OasisExposureTransformsManager(implements(OasisExposureTransformsManagerIn
             format='oasis_keys'
         )
 
-        oasis_model.resources['transforms_files_pipeline'].model_exposures_file = oasis_keys_file
+        oasis_model.resources['transforms_files_pipeline'].oasis_keys_file = oasis_keys_file
         return oasis_keys_file
 
 

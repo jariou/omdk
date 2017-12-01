@@ -16,12 +16,15 @@ class OasisExposureTransformsFilesPipeline(object):
 
 
     @classmethod
-    def create(cls):
+    def create(cls, source_exposures_file=None, canonical_exposures_profile=None):
         """
         Class method that returns an instance of an Oasis transforms files
         pipeline.
         """
-        return cls()
+        return cls(
+            source_exposures_file=source_exposures_file,
+            canonical_exposures_profile=canonical_exposures_profile
+        )
 
 
     @property
@@ -147,7 +150,7 @@ class OasisExposureTransformsFilesPipeline(object):
 
 
     @coverages_file.setter
-    def coverges_file(self, f):
+    def coverages_file(self, f):
         self._coverages_file = f
 
 
