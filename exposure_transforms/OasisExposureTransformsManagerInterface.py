@@ -10,8 +10,8 @@ from interface import Interface
 
 class OasisExposureTransformsManagerInterface(Interface):
     """
-    An interface for defining the service methods of an Oasis exposure
-    transforms manager.
+    An interface for defining the behaviour of an Oasis exposure transforms
+    manager.
     """
 
 

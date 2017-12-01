@@ -27,7 +27,19 @@ class OasisModel(object):
         self._supplier_id = model_supplier_id
         self._model_id = model_id
         self._model_version_id = model_version_id
+        self._key = '{}/{}/{}'.format(model_supplier_id, model_id, model_version_id)
         self._resources = {}
+
+
+    @property
+    def key(self):
+    """
+    Model key - getter only. Format is
+
+        :getter: Returns <model supplier ID>/<model ID>/<model version ID>
+        :type: string
+    """
+    return self._key
 
 
     @property
