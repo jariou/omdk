@@ -30,6 +30,9 @@ class OasisExposureTransformsManagerInterface(Interface):
         ``oasis_model`` optionally using additional arguments in the ``kwargs``
         dict.
 
+        All the required resources must be provided either in the model object
+        resources dict or the ``kwargs`` dict.
+
         In the design of the exposure transform framework a model's files
         pipeline is an object value in its resources dict with the key
         ``transforms_files_pipeline`` and is thereby accessible with
@@ -58,6 +61,9 @@ class OasisExposureTransformsManagerInterface(Interface):
         i.e. the generation of the canonical exposures files, keys file
         and finally the Oasis files.
 
+        All the required resources must be provided either in the model object
+        resources dict or the ``kwargs`` dict.
+
         It is up to the specific implementation of a manager of whether to
         use the model object resources dict or additional optional arguments
         in ``kwargs`` for this process.
@@ -83,6 +89,9 @@ class OasisExposureTransformsManagerInterface(Interface):
         Saves the files in the given ``oasis_model``'s transforms files
         pipeline to some data store, e.g. local filesystem, database etc.
 
+        All the required resources must be provided either in the model object
+        resources dict or the ``kwargs`` dict.
+
         It is up to the specific implementation of the manager as to what type
         of store to use for saving pipelines.
         """
@@ -94,7 +103,8 @@ class OasisExposureTransformsManagerInterface(Interface):
         Transforms the source exposures/locations file for a given
         ``oasis_model`` object to a canonical/standard Oasis format.
 
-        All the required resources must be provided in the ``kwargs`` dict.
+        All the required resources must be provided either in the model object
+        resources dict or the ``kwargs`` dict.
 
         It is up to the specific implementation of this class of how these
         resources will be named in ``kwargs`` and how they will be used to
@@ -115,7 +125,8 @@ class OasisExposureTransformsManagerInterface(Interface):
         ``oasis_model`` object to a format understood by Oasis keys lookup
         services.
 
-        All the required resources must be provided in the ``kwargs`` dict.
+        All the required resources must be provided either in the model object
+        resources dict or the ``kwargs`` dict.
 
         It is up to the specific implementation of this class of how these
         resources will be named in ``kwargs`` and how they will be used to
@@ -135,7 +146,8 @@ class OasisExposureTransformsManagerInterface(Interface):
             ``LocID,PerilID,CoverageID,AreaPerilID,VulnerabilityID``
 
 
-        All the required resources must be provided in the ``kwargs`` dict.
+        All the required resources must be provided either in the model object
+        resources dict or the ``kwargs`` dict.
 
         It is up to the specific implementation of this class of how these
         resources will be named in ``kwargs`` and how they will be used to
@@ -157,7 +169,8 @@ class OasisExposureTransformsManagerInterface(Interface):
         Loads a JSON file representing the canonical exposures profile for a
         given ``oasis_model``.
 
-        All the required resources must be provided in the ``kwargs`` dict.
+        All the required resources must be provided either in the model object
+        resources dict or the ``kwargs`` dict.
 
         It is up to the specific implementation of this class of how these
         resources will be named in ``kwargs`` and how they will be used to
@@ -178,7 +191,8 @@ class OasisExposureTransformsManagerInterface(Interface):
             ``coverages.csv``
             ``gulsummaryxref.csv``
 
-        All the required resources must be provided in the ``kwargs`` dict.
+        All the required resources must be provided either in the model object
+        resources dict or the ``kwargs`` dict.
 
         It is up to the specific implementation of this class of how these
         resources will be named in ``kwargs`` and how they will be used to
