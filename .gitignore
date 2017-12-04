@@ -106,3 +106,7 @@ ENV/
 # top-level CSV and JSON files
 .csv
 .json
+
+# tests and tests/data folders
+tests/
+tests/data
