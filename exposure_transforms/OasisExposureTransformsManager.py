@@ -21,6 +21,7 @@ if os.getcwd().split(os.path.sep)[-1] == 'exposure_transforms':
 from oasis_utils import (
     KeysLookupServiceFactory as klsf,
     OasisException,
+    run_mono_script,
 )
 
 
@@ -38,9 +39,9 @@ class OasisExposureTransformsManager(implements(OasisExposureTransformsManagerIn
             for model in oasis_models:
                 if 'transforms_files_pipeline' in model.resources:
                     if not model.resources['transforms_files_pipeline']:
-                        model.resources['transforms_files_pipeline'] = OasisExposureTransformsFilesPipeline()
+                        model.resources['transforms_files_pipeline'] = OasisExposureTransformsFilesPipeline.create()
                 else:
-                    model.resources['transforms_files_pipeline'] = OasisExposureTransformsFilesPipeline()
+                    model.resources['transforms_files_pipeline'] = OasisExposureTransformsFilesPipeline.create()
                 
                 self.manager['models'][model.key] = model
 
@@ -60,7 +61,7 @@ class OasisExposureTransformsManager(implements(OasisExposureTransformsManagerIn
         ``oasis_model`` optionally using additional arguments in the ``kwargs``
         dict.
         """
-        oasis_model.resources['transforms_files_pipeline'] = OasisExposureTransformsFilesPipeline()
+        oasis_model.resources['transforms_files_pipeline'] = OasisExposureTransformsFilesPipeline.create()
         self.manager['models'][oasis_model.key] = oasis_model
 
 
@@ -91,26 +92,28 @@ class OasisExposureTransformsManager(implements(OasisExposureTransformsManagerIn
         """
         if not with_model_resources:
             xtrans_path = kwargs['xtrans_path']
-            validation_file = kwargs['validation_file']
-            transformation_file = kwargs['transformation_file']
-            source_exposures_file = kwargs['source_exposures_file']
+            source_exposures_file_path = kwargs['source_exposures_file_path']
+            source_exposures_validation_file_path = kwargs['source_exposures_validation_file_path']
+            source_to_canonical_exposures_transformation_file_path = kwargs['source_to_canonical_exposures_transformation_file_path']
             canonical_exposures_file_path = kwargs['canonical_exposures_file_path']
         else:
             xtrans_path = oasis_model.resources['xtrans_path']
-            validation_file = oasis_model.resources['validation_file']
-            transformation_file = oasis_model.resources['transformation_file']
-            source_exposures_file = oasis_model.resources['transforms_files_pipeline'].source_exposures_file
-            canonical_exposures_file_path = oasis_model.resources['canonical_exposures_file_path']
+            source_exposures_file_path = oasis_model.resources['transforms_files_pipeline'].source_exposures_file.name
+            source_exposures_validation_file_path = oasis_model.resources['transforms_files_pipeline'].source_exposures_validation_file.name
+            source_to_canonical_exposures_transformation_file_path = oasis_model.resources['transforms_files_pipeline'].source_to_canonical_exposures_transformation_file.name
+            canonical_exposures_file_path = oasis_model.resources['transforms_files_pipeline'].canonical_exposures_file.name
 
-        transform_cmd = 'mono {} -d {} -c {} -t {} -o {} -s'.format(
-            xtrans_path,
-            validation_file.name,
-            source_exposures_file.name,
-            transformation_file,
-            canonical_exposures_file_path
-        )
-        
-        subprocess.check_call(transform_cmd.split())
+        xtrans_args = {
+            'd': source_exposures_validation_file_path,
+            'c': source_exposures_file_path,
+            't': source_to_canonical_exposures_transformation_file_path,
+            'o': canonical_exposures_file_path
+        }
+
+        try:
+            run_mono_script(xtrans_path, xtrans_args)
+        except OasisException as e:
+            raise e
 
         with io.open(canonical_exposures_file_path, 'r', encoding='utf-8') as f:
             if not with_model_resources:
@@ -130,7 +133,38 @@ class OasisExposureTransformsManager(implements(OasisExposureTransformsManagerIn
         Returns a reference to the file object and also stores this in the
         transforms files pipeline in the model object resources dict.
         """
-        pass
+        if not with_model_resources:
+            xtrans_path = kwargs['xtrans_path']
+            canonical_exposures_file_path = kwargs['canonical_exposures_file_path']
+            canonical_exposures_validation_file_path = kwargs['canonical_exposures_validation_file_path']
+            canonical_to_model_exposures_transformation_file_path = kwargs['canonical_to_model_exposures_transformation_file_path']
+            model_exposures_file_path = kwargs['model_exposures_file_path']
+        else:
+            xtrans_path = oasis_model.resources['xtrans_path']
+            canonical_exposures_file_path = oasis_model.resources['transforms_files_pipeline'].canonical_exposures_file.name
+            canonical_exposures_validation_file_path = oasis_model.resources['transforms_files_pipeline'].canonical_exposures_validation_file.name
+            canonical_to_model_exposures_transformation_file_path = oasis_model.resources['transforms_files_pipeline'].canonical_to_model_exposures_transformation_file.name
+            model_exposures_file_path = oasis_model.resources['transforms_files_pipeline'].model_exposures_file.name
+
+        xtrans_args = {
+            'd': canonical_exposures_validation_file_path,
+            'c': canonical_exposures_file_path,
+            't': canonical_to_model_exposures_transformation_file_path,
+            'o': model_exposures_file_path
+        }
+
+        try:
+            run_mono_script(xtrans_path, xtrans_args)
+        except OasisException as e:
+            raise e
+
+        with io.open(canonical_exposures_file_path, 'r', encoding='utf-8') as f:
+            if not with_model_resources:
+                return f
+
+            oasis_model.resources['transforms_files_pipeline'].canonical_exposures_file = f
+            self.manager['models'][oasis_model.key] = oasis_model
+            return oasis_model
 
 
     def transform_model_to_oasis_keys(self, oasis_model, with_model_resources=True, **kwargs):
@@ -144,17 +178,17 @@ class OasisExposureTransformsManager(implements(OasisExposureTransformsManagerIn
         transforms files pipeline in the model object resources dict.
         """
         if not with_model_resources:
-            model_exposures_file = kwargs['model_exposures_file']
+            model_exposures_file_path = kwargs['model_exposures_file_path']
             lookup_service = kwargs['lookup_service']
             keys_file_path = kwargs['keys_file_path']
         else:
-            model_exposures_file = oasis_model.resources['transforms_files_pipeline'].model_exposures_file
+            model_exposures_file_path = oasis_model.resources['transforms_files_pipeline'].model_exposures_file.name
             lookup_service = oasis_model.resources['lookup_service']
-            keys_file_path = oasis_model.resources['keys_file_path']
+            keys_file_path = oasis_model.resources['transforms_files_pipeline'].keys_file.name
 
         oasis_keys_file, _ = self.manager['klsf'].save_lookup_records(
             lookup_service=lookup_service,
-            model_exposures_file_path=model_exposures_file.name,
+            model_exposures_file_path=model_exposures_file_path,
             output_file_path=keys_file_path,
             format='oasis_keys'
         )

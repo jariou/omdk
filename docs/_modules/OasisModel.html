@@ -57,7 +57,7 @@
 <span class="sd">    e.g. a lookup service instance, a transforms files pipeline etc.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="OasisModel.__init__"><a class="viewcode-back" href="../modules.html#OasisModel.OasisModel.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">model_supplier_id</span><span class="p">,</span>
         <span class="n">model_id</span><span class="p">,</span>
@@ -69,7 +69,19 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_supplier_id</span> <span class="o">=</span> <span class="n">model_supplier_id</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_model_id</span> <span class="o">=</span> <span class="n">model_id</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_model_version_id</span> <span class="o">=</span> <span class="n">model_version_id</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_resources</span> <span class="o">=</span> <span class="p">{}</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_key</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">{}</span><span class="s1">/</span><span class="si">{}</span><span class="s1">/</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">model_supplier_id</span><span class="p">,</span> <span class="n">model_id</span><span class="p">,</span> <span class="n">model_version_id</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_resources</span> <span class="o">=</span> <span class="p">{}</span>
+
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">key</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Model key - getter only. Format is</span>
+
+<span class="sd">            :getter: Returns &lt;model supplier ID&gt;/&lt;model ID&gt;/&lt;model version ID&gt;</span>
+<span class="sd">            :type: string</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_key</span>
 
 
     <span class="nd">@property</span>
@@ -190,7 +202,7 @@
       <div class="clearer"></div>
     </div>
     <div class="footer">
-      &copy;2017, Oasis Loss Modelling Framework (v. 1.0, 30 November, 2017)..
+      &copy;2017, Oasis Loss Modelling Framework (v. 1.0, 30 November, 2017).
       
       |
       Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.3</a>

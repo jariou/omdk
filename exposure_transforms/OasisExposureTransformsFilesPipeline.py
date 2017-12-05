@@ -9,21 +9,41 @@ class OasisExposureTransformsFilesPipeline(object):
 
     def __init__(self,
         source_exposures_file=None,
-        canonical_exposures_profile=None
+        source_exposures_validation_file=None,
+        source_to_canonical_exposures_transformation_file=None,
+        canonical_exposures_profile=None,
+        canonical_exposures_validation_file=None,
+        canonical_to_model_exposures_transformation_file=None
     ):
         self._source_exposures_file = source_exposures_file
+        self._source_exposures_validation_file = source_exposures_validation_file
+        self._source_to_canonical_exposures_transformation_file = source_to_canonical_exposures_transformation_file
         self._canonical_exposures_profile = canonical_exposures_profile
+        self._canonical_exposures_validation_file = canonical_exposures_validation_file
+        self._canonical_to_model_exposures_transformation_file = canonical_to_model_exposures_transformation_file
 
 
     @classmethod
-    def create(cls, source_exposures_file=None, canonical_exposures_profile=None):
+    def create(
+        cls,
+        source_exposures_file=None,
+        source_exposures_validation_file=None,
+        source_to_canonical_exposures_transformation_file=None,
+        canonical_exposures_profile=None,
+        canonical_exposures_validation_file=None,
+        canonical_to_model_exposures_transformation_file=None
+    ):
         """
         Class method that returns an instance of an Oasis transforms files
         pipeline.
         """
         return cls(
             source_exposures_file=source_exposures_file,
-            canonical_exposures_profile=canonical_exposures_profile
+            source_exposures_validation_file=source_exposures_validation_file,
+            source_to_canonical_exposures_transformation_file=source_to_canonical_exposures_transformation_file,
+            canonical_exposures_profile=canonical_exposures_profile,
+            canonical_exposures_validation_file=canonical_exposures_validation_file,
+            canonical_to_model_exposures_transformation_file=canonical_to_model_exposures_transformation_file
         )
 
 
@@ -50,6 +70,50 @@ class OasisExposureTransformsFilesPipeline(object):
 
 
     @property
+    def source_exposures_validation_file(self):
+        """
+        Source exposures validation file property.
+
+            :getter: Gets the actual file object
+            :setter: Sets the file to the specified file object
+            :deleter: Deletes the file object
+        """
+        return self._source_exposures_validation_file
+
+
+    @source_exposures_validation_file.setter
+    def source_exposures_validation_file(self, f):
+        self._source_exposures_validation_file = f
+
+
+    @source_exposures_validation_file.deleter
+    def source_exposures_validation_file(self):
+        del self._source_exposures_validation_file
+
+
+    @property
+    def source_to_canonical_exposures_transformation_file(self):
+        """
+        Source -> canonical exposures transformation file property.
+
+            :getter: Gets the actual file object
+            :setter: Sets the file to the specified file object
+            :deleter: Deletes the file object
+        """
+        return self._source_to_canonical_exposures_transformation_file
+
+
+    @source_to_canonical_exposures_transformation_file.setter
+    def source_to_canonical_exposures_transformation_file(self, f):
+        self._source_to_canonical_exposures_transformation_file = f
+
+
+    @source_to_canonical_exposures_transformation_file.deleter
+    def source_to_canonical_exposures_transformation_file(self):
+        del self._source_to_canonical_exposures_transformation_file
+
+
+    @property
     def canonical_exposures_profile(self):
         """
         Canonical exposures profile property.
@@ -69,6 +133,50 @@ class OasisExposureTransformsFilesPipeline(object):
     @canonical_exposures_profile.deleter
     def canonical_exposures_profile(self):
         del self._canonical_exposures_profile
+
+
+    @property
+    def canonical_exposures_validation_file(self):
+        """
+        Canonical exposures validation file property.
+
+            :getter: Gets the actual file object
+            :setter: Sets the file to the specified file object
+            :deleter: Deletes the file object
+        """
+        return self._canonical_exposures_file
+
+
+    @canonical_exposures_validation_file.setter
+    def canonical_exposures_validation_file(self, f):
+        self._canonical_exposures_validation_file = f
+
+
+    @canonical_exposures_validation_file.deleter
+    def canonical_exposures_validation_file(self):
+        del self._canonical_exposures_validation_file
+
+
+    @property
+    def canonical_to_model_exposures_transformation_file(self):
+        """
+        Canonical -> model exposures file property.
+
+            :getter: Gets the actual file object
+            :setter: Sets the file to the specified file object
+            :deleter: Deletes the file object
+        """
+        return self._canonical_to_model_exposures_transformation_file
+
+
+    @canonical_to_model_exposures_transformation_file.setter
+    def canonical_to_model_exposures_transformation_file(self, f):
+        self._canonical_to_model_exposures_transformation_file = f
+
+
+    @canonical_to_model_exposures_transformation_file.deleter
+    def canonical_to_model_exposures_transformation_file(self):
+        del self._canonical_to_model_exposures_transformation_file
 
 
     @property

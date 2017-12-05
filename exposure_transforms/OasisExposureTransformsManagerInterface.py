@@ -16,7 +16,7 @@ class OasisExposureTransformsManagerInterface(Interface):
 
 
     @classmethod
-    def create(cls):
+    def create(cls, oasis_models=None):
         """
         Class method that returns an instance of an Oasis exposure transforms
         manager.

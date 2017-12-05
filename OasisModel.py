@@ -33,13 +33,13 @@ class OasisModel(object):
 
     @property
     def key(self):
-    """
-    Model key - getter only. Format is
+        """
+        Model key - getter only. Format is
 
-        :getter: Returns <model supplier ID>/<model ID>/<model version ID>
-        :type: string
-    """
-    return self._key
+            :getter: Returns <model supplier ID>/<model ID>/<model version ID>
+            :type: string
+        """
+        return self._key
 
 
     @property
