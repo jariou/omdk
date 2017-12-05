@@ -47,10 +47,12 @@ class OasisExposureTransformsManager(implements(OasisExposureTransformsManagerIn
 
 
     @classmethod
-    def create(cls, oasis_models=None):
+    def create(cls, oasis_models=None, **kwargs):
         """
         Class method that returns an instance of an Oasis exposure transforms
-        manager.
+        manager. The optional ``oasis_models`` argument should be a list of
+        Oasis model objects (``omdk.OasisModel.OasisModel``), and any
+        additional resources can be specified in ``kwargs``.
         """
         return cls(oasis_models=oasis_models)
 
@@ -87,8 +89,18 @@ class OasisExposureTransformsManager(implements(OasisExposureTransformsManagerIn
         Transforms the source exposures/locations file for a given
         ``oasis_model`` object to a canonical/standard Oasis format.
 
-        Returns a reference to the file object and also stores this in the
-        transforms files pipeline in the model object resources dict.
+        By default it is assumed that all the resources required for the
+        transformation are present in the model object's resources dict, 
+        specifically its transforms files pipeline  - this is indicated by the
+        optional ``with_model_resources`` variable which is ``True`` by
+        default. In this case the generated file is stored in the appropriate
+        attribute of the model object's transforms files pipeline, the
+        manager's model dict is updated, and the model object returned.
+
+        If not then ``with_model_resources`` should be set to ``False``, in
+        which case all the resources required for the transformation should be
+        present in the optional ``kwargs`` dict as named arguments. In this
+        case only the generated canonical file is returned.
         """
         if not with_model_resources:
             xtrans_path = kwargs['xtrans_path']
@@ -130,8 +142,18 @@ class OasisExposureTransformsManager(implements(OasisExposureTransformsManagerIn
         ``oasis_model`` object to a format understood by Oasis keys lookup
         services.
 
-        Returns a reference to the file object and also stores this in the
-        transforms files pipeline in the model object resources dict.
+        By default it is assumed that all the resources required for the
+        transformation are present in the model object's resources dict, 
+        specifically its transforms files pipeline  - this is indicated by the
+        optional ``with_model_resources`` variable which is ``True`` by
+        default. In this case the generated file is stored in the appropriate
+        attribute of the model object's transforms files pipeline, the
+        manager's model dict is updated, and the model object returned.
+
+        If not then ``with_model_resources`` should be set to ``False``, in
+        which case all the resources required for the transformation should be
+        present in the optional ``kwargs`` dict as named arguments. In this
+        case only the generated canonical file is returned.
         """
         if not with_model_resources:
             xtrans_path = kwargs['xtrans_path']
@@ -174,8 +196,18 @@ class OasisExposureTransformsManager(implements(OasisExposureTransformsManagerIn
 
             ``LocID,PerilID,CoverageID,AreaPerilID,VulnerabilityID``
 
-        Returns a reference to the file object and also stores this in the
-        transforms files pipeline in the model object resources dict.
+        By default it is assumed that all the resources required for the
+        transformation are present in the model object's resources dict, 
+        specifically its transforms files pipeline  - this is indicated by the
+        optional ``with_model_resources`` variable which is ``True`` by
+        default. In this case the generated file is stored in the appropriate
+        attribute of the model object's transforms files pipeline, the
+        manager's model dict is updated, and the model object returned.
+
+        If not then ``with_model_resources`` should be set to ``False``, in
+        which case all the resources required for the transformation should be
+        present in the optional ``kwargs`` dict as named arguments. In this
+        case only the generated canonical file is returned.
         """
         if not with_model_resources:
             model_exposures_file_path = kwargs['model_exposures_file_path']

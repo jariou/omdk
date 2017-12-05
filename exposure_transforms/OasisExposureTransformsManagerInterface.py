@@ -14,12 +14,20 @@ class OasisExposureTransformsManagerInterface(Interface):
     manager.
     """
 
+    def __init__(self, oasis_models=None):
+        """
+        Class constructor - not generally to be used directly.
+        """
+        pass
+
 
     @classmethod
-    def create(cls, oasis_models=None):
+    def create(cls, oasis_models=None, **kwargs):
         """
         Class method that returns an instance of an Oasis exposure transforms
-        manager.
+        manager. The optional ``oasis_models`` argument should be a list of
+        Oasis model objects (``omdk.OasisModel.OasisModel``), and any
+        additional resources can be specified in ``kwargs``.
         """
         pass
 
@@ -112,9 +120,6 @@ class OasisExposureTransformsManagerInterface(Interface):
         
         The transform is generic by default, but could be supplier specific if
         required.
-
-        Returns a reference to the file object and also stores this in the
-        transforms files pipeline in the model object resources dict.
         """
         pass
 
@@ -131,10 +136,7 @@ class OasisExposureTransformsManagerInterface(Interface):
         It is up to the specific implementation of this class of how these
         resources will be named in ``kwargs`` and how they will be used to
         effect the transformation.
-
-        Returns a reference to the file object and also stores this in the
-        transforms files pipeline in the model object resources dict.
-         """
+        """
         pass
 
 
@@ -157,9 +159,6 @@ class OasisExposureTransformsManagerInterface(Interface):
         class in ``oasis_utils`` (a submodule of `omdk`) namely
         
             ``oasis_utils.oasis_keys_lookup_service_utils.KeysLookupServiceFactory``
-
-        Returns a reference to the file object and also stores this in the
-        transforms files pipeline in the model object resources dict.
         """
         pass
 
@@ -175,10 +174,6 @@ class OasisExposureTransformsManagerInterface(Interface):
         It is up to the specific implementation of this class of how these
         resources will be named in ``kwargs`` and how they will be used to
         effect the transformation.
-
-        Returns the profile as a dict, and also stores this in the transforms
-        files pipeline in the model object resources dict.
-
         """
         pass
 
@@ -197,8 +192,5 @@ class OasisExposureTransformsManagerInterface(Interface):
         It is up to the specific implementation of this class of how these
         resources will be named in ``kwargs`` and how they will be used to
         effect the transformation.
-
-        In addition to generating the files it also stores these in the
-        transforms files pipeline in the model object resources dict.
         """
         pass

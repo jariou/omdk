@@ -89,10 +89,12 @@
 
 
 <div class="viewcode-block" id="OasisExposureTransformsManager.create"><a class="viewcode-back" href="../../modules.html#exposure_transforms.OasisExposureTransformsManager.OasisExposureTransformsManager.create">[docs]</a>    <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">oasis_models</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">oasis_models</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Class method that returns an instance of an Oasis exposure transforms</span>
-<span class="sd">        manager.</span>
+<span class="sd">        manager. The optional ``oasis_models`` argument should be a list of</span>
+<span class="sd">        Oasis model objects (``omdk.OasisModel.OasisModel``), and any</span>
+<span class="sd">        additional resources can be specified in ``kwargs``.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">oasis_models</span><span class="o">=</span><span class="n">oasis_models</span><span class="p">)</span></div>
 
@@ -129,8 +131,18 @@
 <span class="sd">        Transforms the source exposures/locations file for a given</span>
 <span class="sd">        ``oasis_model`` object to a canonical/standard Oasis format.</span>
 
-<span class="sd">        Returns a reference to the file object and also stores this in the</span>
-<span class="sd">        transforms files pipeline in the model object resources dict.</span>
+<span class="sd">        By default it is assumed that all the resources required for the</span>
+<span class="sd">        transformation are present in the model object&#39;s resources dict, </span>
+<span class="sd">        specifically its transforms files pipeline  - this is indicated by the</span>
+<span class="sd">        optional ``with_model_resources`` variable which is ``True`` by</span>
+<span class="sd">        default. In this case the generated file is stored in the appropriate</span>
+<span class="sd">        attribute of the model object&#39;s transforms files pipeline, the</span>
+<span class="sd">        manager&#39;s model dict is updated, and the model object returned.</span>
+
+<span class="sd">        If not then ``with_model_resources`` should be set to ``False``, in</span>
+<span class="sd">        which case all the resources required for the transformation should be</span>
+<span class="sd">        present in the optional ``kwargs`` dict as named arguments. In this</span>
+<span class="sd">        case only the generated canonical file is returned.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">with_model_resources</span><span class="p">:</span>
             <span class="n">xtrans_path</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;xtrans_path&#39;</span><span class="p">]</span>
@@ -172,8 +184,18 @@
 <span class="sd">        ``oasis_model`` object to a format understood by Oasis keys lookup</span>
 <span class="sd">        services.</span>
 
-<span class="sd">        Returns a reference to the file object and also stores this in the</span>
-<span class="sd">        transforms files pipeline in the model object resources dict.</span>
+<span class="sd">        By default it is assumed that all the resources required for the</span>
+<span class="sd">        transformation are present in the model object&#39;s resources dict, </span>
+<span class="sd">        specifically its transforms files pipeline  - this is indicated by the</span>
+<span class="sd">        optional ``with_model_resources`` variable which is ``True`` by</span>
+<span class="sd">        default. In this case the generated file is stored in the appropriate</span>
+<span class="sd">        attribute of the model object&#39;s transforms files pipeline, the</span>
+<span class="sd">        manager&#39;s model dict is updated, and the model object returned.</span>
+
+<span class="sd">        If not then ``with_model_resources`` should be set to ``False``, in</span>
+<span class="sd">        which case all the resources required for the transformation should be</span>
+<span class="sd">        present in the optional ``kwargs`` dict as named arguments. In this</span>
+<span class="sd">        case only the generated canonical file is returned.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">with_model_resources</span><span class="p">:</span>
             <span class="n">xtrans_path</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;xtrans_path&#39;</span><span class="p">]</span>
@@ -216,8 +238,18 @@
 
 <span class="sd">            ``LocID,PerilID,CoverageID,AreaPerilID,VulnerabilityID``</span>
 
-<span class="sd">        Returns a reference to the file object and also stores this in the</span>
-<span class="sd">        transforms files pipeline in the model object resources dict.</span>
+<span class="sd">        By default it is assumed that all the resources required for the</span>
+<span class="sd">        transformation are present in the model object&#39;s resources dict, </span>
+<span class="sd">        specifically its transforms files pipeline  - this is indicated by the</span>
+<span class="sd">        optional ``with_model_resources`` variable which is ``True`` by</span>
+<span class="sd">        default. In this case the generated file is stored in the appropriate</span>
+<span class="sd">        attribute of the model object&#39;s transforms files pipeline, the</span>
+<span class="sd">        manager&#39;s model dict is updated, and the model object returned.</span>
+
+<span class="sd">        If not then ``with_model_resources`` should be set to ``False``, in</span>
+<span class="sd">        which case all the resources required for the transformation should be</span>
+<span class="sd">        present in the optional ``kwargs`` dict as named arguments. In this</span>
+<span class="sd">        case only the generated canonical file is returned.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">with_model_resources</span><span class="p">:</span>
             <span class="n">model_exposures_file_path</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;model_exposures_file_path&#39;</span><span class="p">]</span>

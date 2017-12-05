@@ -56,12 +56,20 @@
 <span class="sd">    manager.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">oasis_models</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Class constructor - not generally to be used directly.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span>
+
 
 <div class="viewcode-block" id="OasisExposureTransformsManagerInterface.create"><a class="viewcode-back" href="../../modules.html#exposure_transforms.OasisExposureTransformsManagerInterface.OasisExposureTransformsManagerInterface.create">[docs]</a>    <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">oasis_models</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">oasis_models</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Class method that returns an instance of an Oasis exposure transforms</span>
-<span class="sd">        manager.</span>
+<span class="sd">        manager. The optional ``oasis_models`` argument should be a list of</span>
+<span class="sd">        Oasis model objects (``omdk.OasisModel.OasisModel``), and any</span>
+<span class="sd">        additional resources can be specified in ``kwargs``.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">pass</span></div>
 
@@ -154,9 +162,6 @@
 <span class="sd">        </span>
 <span class="sd">        The transform is generic by default, but could be supplier specific if</span>
 <span class="sd">        required.</span>
-
-<span class="sd">        Returns a reference to the file object and also stores this in the</span>
-<span class="sd">        transforms files pipeline in the model object resources dict.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">pass</span></div>
 
@@ -173,10 +178,7 @@
 <span class="sd">        It is up to the specific implementation of this class of how these</span>
 <span class="sd">        resources will be named in ``kwargs`` and how they will be used to</span>
 <span class="sd">        effect the transformation.</span>
-
-<span class="sd">        Returns a reference to the file object and also stores this in the</span>
-<span class="sd">        transforms files pipeline in the model object resources dict.</span>
-<span class="sd">         &quot;&quot;&quot;</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">pass</span></div>
 
 
@@ -199,9 +201,6 @@
 <span class="sd">        class in ``oasis_utils`` (a submodule of `omdk`) namely</span>
 <span class="sd">        </span>
 <span class="sd">            ``oasis_utils.oasis_keys_lookup_service_utils.KeysLookupServiceFactory``</span>
-
-<span class="sd">        Returns a reference to the file object and also stores this in the</span>
-<span class="sd">        transforms files pipeline in the model object resources dict.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">pass</span></div>
 
@@ -217,10 +216,6 @@
 <span class="sd">        It is up to the specific implementation of this class of how these</span>
 <span class="sd">        resources will be named in ``kwargs`` and how they will be used to</span>
 <span class="sd">        effect the transformation.</span>
-
-<span class="sd">        Returns the profile as a dict, and also stores this in the transforms</span>
-<span class="sd">        files pipeline in the model object resources dict.</span>
-
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">pass</span></div>
 
@@ -239,9 +234,6 @@
 <span class="sd">        It is up to the specific implementation of this class of how these</span>
 <span class="sd">        resources will be named in ``kwargs`` and how they will be used to</span>
 <span class="sd">        effect the transformation.</span>
-
-<span class="sd">        In addition to generating the files it also stores these in the</span>
-<span class="sd">        transforms files pipeline in the model object resources dict.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">pass</span></div></div>
 </pre></div>

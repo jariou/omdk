@@ -159,12 +159,12 @@ entire existing dict is cleared.</td>
 <span id="exposure-transforms-oasisexposuretransformsmanagerinterface"></span><h2><code class="docutils literal"><span class="pre">exposure_transforms.OasisExposureTransformsManagerInterface</span></code><a class="headerlink" href="#module-exposure_transforms.OasisExposureTransformsManagerInterface" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="exposure_transforms.OasisExposureTransformsManagerInterface.OasisExposureTransformsManagerInterface">
-<em class="property">class </em><code class="descclassname">exposure_transforms.OasisExposureTransformsManagerInterface.</code><code class="descname">OasisExposureTransformsManagerInterface</code><a class="reference internal" href="_modules/exposure_transforms/OasisExposureTransformsManagerInterface.html#OasisExposureTransformsManagerInterface"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#exposure_transforms.OasisExposureTransformsManagerInterface.OasisExposureTransformsManagerInterface" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">exposure_transforms.OasisExposureTransformsManagerInterface.</code><code class="descname">OasisExposureTransformsManagerInterface</code><span class="sig-paren">(</span><em>oasis_models=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/exposure_transforms/OasisExposureTransformsManagerInterface.html#OasisExposureTransformsManagerInterface"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#exposure_transforms.OasisExposureTransformsManagerInterface.OasisExposureTransformsManagerInterface" title="Permalink to this definition">¶</a></dt>
 <dd><p>An interface for defining the behaviour of an Oasis exposure transforms
 manager.</p>
 <dl class="attribute">
 <dt id="exposure_transforms.OasisExposureTransformsManagerInterface.OasisExposureTransformsManagerInterface._signatures">
-<code class="descname">_signatures</code><em class="property"> = {'transform_canonical_to_model': &lt;interface.typed_signature.TypedSignature object&gt;, 'save_files_pipeline': &lt;interface.typed_signature.TypedSignature object&gt;, 'create': &lt;interface.typed_signature.TypedSignature object&gt;, 'load_canonical_profile': &lt;interface.typed_signature.TypedSignature object&gt;, 'generate_oasis_files': &lt;interface.typed_signature.TypedSignature object&gt;, 'clear_files_pipeline': &lt;interface.typed_signature.TypedSignature object&gt;, 'start_files_pipeline': &lt;interface.typed_signature.TypedSignature object&gt;, 'transform_source_to_canonical': &lt;interface.typed_signature.TypedSignature object&gt;, 'transform_model_to_oasis_keys': &lt;interface.typed_signature.TypedSignature object&gt;}</em><a class="headerlink" href="#exposure_transforms.OasisExposureTransformsManagerInterface.OasisExposureTransformsManagerInterface._signatures" title="Permalink to this definition">¶</a></dt>
+<code class="descname">_signatures</code><em class="property"> = {'transform_canonical_to_model': &lt;interface.typed_signature.TypedSignature object&gt;, 'save_files_pipeline': &lt;interface.typed_signature.TypedSignature object&gt;, 'create': &lt;interface.typed_signature.TypedSignature object&gt;, 'load_canonical_profile': &lt;interface.typed_signature.TypedSignature object&gt;, 'generate_oasis_files': &lt;interface.typed_signature.TypedSignature object&gt;, 'clear_files_pipeline': &lt;interface.typed_signature.TypedSignature object&gt;, 'start_files_pipeline': &lt;interface.typed_signature.TypedSignature object&gt;, 'transform_source_to_canonical': &lt;interface.typed_signature.TypedSignature object&gt;, 'transform_model_to_oasis_keys': &lt;interface.typed_signature.TypedSignature object&gt;, '__init__': &lt;interface.typed_signature.TypedSignature object&gt;}</em><a class="headerlink" href="#exposure_transforms.OasisExposureTransformsManagerInterface.OasisExposureTransformsManagerInterface._signatures" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
@@ -194,9 +194,11 @@ file attributes of this pipelines object to null.</p>
 
 <dl class="classmethod">
 <dt id="exposure_transforms.OasisExposureTransformsManagerInterface.OasisExposureTransformsManagerInterface.create">
-<em class="property">classmethod </em><code class="descname">create</code><span class="sig-paren">(</span><em>oasis_models=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/exposure_transforms/OasisExposureTransformsManagerInterface.html#OasisExposureTransformsManagerInterface.create"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#exposure_transforms.OasisExposureTransformsManagerInterface.OasisExposureTransformsManagerInterface.create" title="Permalink to this definition">¶</a></dt>
+<em class="property">classmethod </em><code class="descname">create</code><span class="sig-paren">(</span><em>oasis_models=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/exposure_transforms/OasisExposureTransformsManagerInterface.html#OasisExposureTransformsManagerInterface.create"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#exposure_transforms.OasisExposureTransformsManagerInterface.OasisExposureTransformsManagerInterface.create" title="Permalink to this definition">¶</a></dt>
 <dd><p>Class method that returns an instance of an Oasis exposure transforms
-manager.</p>
+manager. The optional <code class="docutils literal"><span class="pre">oasis_models</span></code> argument should be a list of
+Oasis model objects (<code class="docutils literal"><span class="pre">omdk.OasisModel.OasisModel</span></code>), and any
+additional resources can be specified in <code class="docutils literal"><span class="pre">kwargs</span></code>.</p>
 </dd></dl>
 
 <dl class="method">
@@ -212,8 +214,6 @@ resources dict or the <code class="docutils literal"><span class="pre">kwargs</s
 <p>It is up to the specific implementation of this class of how these
 resources will be named in <code class="docutils literal"><span class="pre">kwargs</span></code> and how they will be used to
 effect the transformation.</p>
-<p>In addition to generating the files it also stores these in the
-transforms files pipeline in the model object resources dict.</p>
 </dd></dl>
 
 <dl class="method">
@@ -226,8 +226,6 @@ resources dict or the <code class="docutils literal"><span class="pre">kwargs</s
 <p>It is up to the specific implementation of this class of how these
 resources will be named in <code class="docutils literal"><span class="pre">kwargs</span></code> and how they will be used to
 effect the transformation.</p>
-<p>Returns the profile as a dict, and also stores this in the transforms
-files pipeline in the model object resources dict.</p>
 </dd></dl>
 
 <dl class="method">
@@ -276,8 +274,6 @@ resources dict or the <code class="docutils literal"><span class="pre">kwargs</s
 <p>It is up to the specific implementation of this class of how these
 resources will be named in <code class="docutils literal"><span class="pre">kwargs</span></code> and how they will be used to
 effect the transformation.</p>
-<p>Returns a reference to the file object and also stores this in the
-transforms files pipeline in the model object resources dict.</p>
 </dd></dl>
 
 <dl class="method">
@@ -296,8 +292,6 @@ effect the transformation.</p>
 class in <code class="docutils literal"><span class="pre">oasis_utils</span></code> (a submodule of <cite>omdk</cite>) namely</p>
 <blockquote>
 <div><code class="docutils literal"><span class="pre">oasis_utils.oasis_keys_lookup_service_utils.KeysLookupServiceFactory</span></code></div></blockquote>
-<p>Returns a reference to the file object and also stores this in the
-transforms files pipeline in the model object resources dict.</p>
 </dd></dl>
 
 <dl class="method">
@@ -312,8 +306,6 @@ resources will be named in <code class="docutils literal"><span class="pre">kwar
 effect the transformation.</p>
 <p>The transform is generic by default, but could be supplier specific if
 required.</p>
-<p>Returns a reference to the file object and also stores this in the
-transforms files pipeline in the model object resources dict.</p>
 </dd></dl>
 
 </dd></dl>
@@ -339,9 +331,11 @@ dict.</p>
 
 <dl class="classmethod">
 <dt id="exposure_transforms.OasisExposureTransformsManager.OasisExposureTransformsManager.create">
-<em class="property">classmethod </em><code class="descname">create</code><span class="sig-paren">(</span><em>oasis_models=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/exposure_transforms/OasisExposureTransformsManager.html#OasisExposureTransformsManager.create"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#exposure_transforms.OasisExposureTransformsManager.OasisExposureTransformsManager.create" title="Permalink to this definition">¶</a></dt>
+<em class="property">classmethod </em><code class="descname">create</code><span class="sig-paren">(</span><em>oasis_models=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/exposure_transforms/OasisExposureTransformsManager.html#OasisExposureTransformsManager.create"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#exposure_transforms.OasisExposureTransformsManager.OasisExposureTransformsManager.create" title="Permalink to this definition">¶</a></dt>
 <dd><p>Class method that returns an instance of an Oasis exposure transforms
-manager.</p>
+manager. The optional <code class="docutils literal"><span class="pre">oasis_models</span></code> argument should be a list of
+Oasis model objects (<code class="docutils literal"><span class="pre">omdk.OasisModel.OasisModel</span></code>), and any
+additional resources can be specified in <code class="docutils literal"><span class="pre">kwargs</span></code>.</p>
 </dd></dl>
 
 <dl class="method">
@@ -386,8 +380,17 @@ and finally the Oasis files.</p>
 <dd><p>Transforms the canonical exposures/locations file for a given
 <code class="docutils literal"><span class="pre">oasis_model</span></code> object to a format understood by Oasis keys lookup
 services.</p>
-<p>Returns a reference to the file object and also stores this in the
-transforms files pipeline in the model object resources dict.</p>
+<p>By default it is assumed that all the resources required for the
+transformation are present in the model object’s resources dict, 
+specifically its transforms files pipeline  - this is indicated by the
+optional <code class="docutils literal"><span class="pre">with_model_resources</span></code> variable which is <code class="docutils literal"><span class="pre">True</span></code> by
+default. In this case the generated file is stored in the appropriate
+attribute of the model object’s transforms files pipeline, the
+manager’s model dict is updated, and the model object returned.</p>
+<p>If not then <code class="docutils literal"><span class="pre">with_model_resources</span></code> should be set to <code class="docutils literal"><span class="pre">False</span></code>, in
+which case all the resources required for the transformation should be
+present in the optional <code class="docutils literal"><span class="pre">kwargs</span></code> dict as named arguments. In this
+case only the generated canonical file is returned.</p>
 </dd></dl>
 
 <dl class="method">
@@ -397,8 +400,17 @@ transforms files pipeline in the model object resources dict.</p>
 <code class="docutils literal"><span class="pre">oasis_model</span></code> object to the Oasis keys CSV file format:</p>
 <blockquote>
 <div><code class="docutils literal"><span class="pre">LocID,PerilID,CoverageID,AreaPerilID,VulnerabilityID</span></code></div></blockquote>
-<p>Returns a reference to the file object and also stores this in the
-transforms files pipeline in the model object resources dict.</p>
+<p>By default it is assumed that all the resources required for the
+transformation are present in the model object’s resources dict, 
+specifically its transforms files pipeline  - this is indicated by the
+optional <code class="docutils literal"><span class="pre">with_model_resources</span></code> variable which is <code class="docutils literal"><span class="pre">True</span></code> by
+default. In this case the generated file is stored in the appropriate
+attribute of the model object’s transforms files pipeline, the
+manager’s model dict is updated, and the model object returned.</p>
+<p>If not then <code class="docutils literal"><span class="pre">with_model_resources</span></code> should be set to <code class="docutils literal"><span class="pre">False</span></code>, in
+which case all the resources required for the transformation should be
+present in the optional <code class="docutils literal"><span class="pre">kwargs</span></code> dict as named arguments. In this
+case only the generated canonical file is returned.</p>
 </dd></dl>
 
 <dl class="method">
@@ -406,8 +418,17 @@ transforms files pipeline in the model object resources dict.</p>
 <code class="descname">transform_source_to_canonical</code><span class="sig-paren">(</span><em>oasis_model</em>, <em>with_model_resources=True</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/exposure_transforms/OasisExposureTransformsManager.html#OasisExposureTransformsManager.transform_source_to_canonical"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#exposure_transforms.OasisExposureTransformsManager.OasisExposureTransformsManager.transform_source_to_canonical" title="Permalink to this definition">¶</a></dt>
 <dd><p>Transforms the source exposures/locations file for a given
 <code class="docutils literal"><span class="pre">oasis_model</span></code> object to a canonical/standard Oasis format.</p>
-<p>Returns a reference to the file object and also stores this in the
-transforms files pipeline in the model object resources dict.</p>
+<p>By default it is assumed that all the resources required for the
+transformation are present in the model object’s resources dict, 
+specifically its transforms files pipeline  - this is indicated by the
+optional <code class="docutils literal"><span class="pre">with_model_resources</span></code> variable which is <code class="docutils literal"><span class="pre">True</span></code> by
+default. In this case the generated file is stored in the appropriate
+attribute of the model object’s transforms files pipeline, the
+manager’s model dict is updated, and the model object returned.</p>
+<p>If not then <code class="docutils literal"><span class="pre">with_model_resources</span></code> should be set to <code class="docutils literal"><span class="pre">False</span></code>, in
+which case all the resources required for the transformation should be
+present in the optional <code class="docutils literal"><span class="pre">kwargs</span></code> dict as named arguments. In this
+case only the generated canonical file is returned.</p>
 </dd></dl>
 
 </dd></dl>
