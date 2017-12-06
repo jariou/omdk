@@ -180,11 +180,11 @@ class OasisExposureTransformsManager(implements(OasisExposureTransformsManagerIn
         except OasisException as e:
             raise e
 
-        with io.open(canonical_exposures_file_path, 'r', encoding='utf-8') as f:
+        with io.open(model_exposures_file_path, 'r', encoding='utf-8') as f:
             if not with_model_resources:
                 return f
 
-            oasis_model.resources['transforms_files_pipeline'].canonical_exposures_file = f
+            oasis_model.resources['transforms_files_pipeline'].model_exposures_file = f
             self.manager['models'][oasis_model.key] = oasis_model
             return oasis_model
 
