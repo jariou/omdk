@@ -288,7 +288,7 @@ class OasisExposureTransformsManager(implements(OasisExposureTransformsManagerIn
             lookup_service = oasis_model.resources['lookup_service']
             keys_file_path = oasis_model.resources['transforms_files_pipeline'].keys_file.name
 
-        oasis_keys_file, _ = self.manager['klsf'].save_lookup_records(
+        oasis_keys_file, _ = self.keys_lookup_service_factory.save_lookup_records(
             lookup_service=lookup_service,
             model_exposures_file_path=model_exposures_file_path,
             output_file_path=keys_file_path,
