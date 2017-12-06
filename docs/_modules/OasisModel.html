@@ -131,7 +131,7 @@
 <span class="sd">                     ``val`` is assumed to be a new resources dict and is</span>
 <span class="sd">                     used to replace the existing dict.</span>
 
-<span class="sd">            :deleter: Deletes the value of the specified resource ``key`` in</span>
+<span class="sd">            :deleter: Deletes the value of the optional resource ``key`` in</span>
 <span class="sd">                      the resources dict. If no ``key`` is given then the</span>
 <span class="sd">                      entire existing dict is cleared.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -139,7 +139,7 @@
 
     
     <span class="nd">@resources</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span> <span class="nf">resources</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">val</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">resources</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">val</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">key</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_resources</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="n">key</span><span class="p">:</span> <span class="n">val</span><span class="p">})</span>
         <span class="k">else</span><span class="p">:</span>

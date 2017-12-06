@@ -89,7 +89,7 @@ class OasisModel(object):
                      ``val`` is assumed to be a new resources dict and is
                      used to replace the existing dict.
 
-            :deleter: Deletes the value of the specified resource ``key`` in
+            :deleter: Deletes the value of the optional resource ``key`` in
                       the resources dict. If no ``key`` is given then the
                       entire existing dict is cleared.
         """
@@ -97,7 +97,7 @@ class OasisModel(object):
 
     
     @resources.setter
-    def resources(self, val, key=None):
+    def resources(self, key=None, val=None):
         if key:
             self._resources.update({key: val})
         else:

@@ -125,7 +125,7 @@ resources dict to <code class="docutils literal"><span class="pre">val</span></c
 <code class="docutils literal"><span class="pre">val</span></code> is assumed to be a new resources dict and is
 used to replace the existing dict.</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">deleter:</th><td class="field-body">Deletes the value of the specified resource <code class="docutils literal"><span class="pre">key</span></code> in
+<tr class="field-odd field"><th class="field-name">deleter:</th><td class="field-body">Deletes the value of the optional resource <code class="docutils literal"><span class="pre">key</span></code> in
 the resources dict. If no <code class="docutils literal"><span class="pre">key</span></code> is given then the
 entire existing dict is cleared.</td>
 </tr>
@@ -159,7 +159,7 @@ entire existing dict is cleared.</td>
 <span id="exposure-transforms-oasisexposuretransformsmanagerinterface"></span><h2><code class="docutils literal"><span class="pre">exposure_transforms.OasisExposureTransformsManagerInterface</span></code><a class="headerlink" href="#module-exposure_transforms.OasisExposureTransformsManagerInterface" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="exposure_transforms.OasisExposureTransformsManagerInterface.OasisExposureTransformsManagerInterface">
-<em class="property">class </em><code class="descclassname">exposure_transforms.OasisExposureTransformsManagerInterface.</code><code class="descname">OasisExposureTransformsManagerInterface</code><span class="sig-paren">(</span><em>oasis_models=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/exposure_transforms/OasisExposureTransformsManagerInterface.html#OasisExposureTransformsManagerInterface"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#exposure_transforms.OasisExposureTransformsManagerInterface.OasisExposureTransformsManagerInterface" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">exposure_transforms.OasisExposureTransformsManagerInterface.</code><code class="descname">OasisExposureTransformsManagerInterface</code><span class="sig-paren">(</span><em>keys_lookup_service_factory=None</em>, <em>oasis_models=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/exposure_transforms/OasisExposureTransformsManagerInterface.html#OasisExposureTransformsManagerInterface"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#exposure_transforms.OasisExposureTransformsManagerInterface.OasisExposureTransformsManagerInterface" title="Permalink to this definition">¶</a></dt>
 <dd><p>An interface for defining the behaviour of an Oasis exposure transforms
 manager.</p>
 <dl class="attribute">
@@ -315,7 +315,7 @@ required.</p>
 <span id="exposure-transforms-oasisexposuretransformsmanager"></span><h2><code class="docutils literal"><span class="pre">exposure_transforms.OasisExposureTransformsManager</span></code><a class="headerlink" href="#module-exposure_transforms.OasisExposureTransformsManager" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="exposure_transforms.OasisExposureTransformsManager.OasisExposureTransformsManager">
-<em class="property">class </em><code class="descclassname">exposure_transforms.OasisExposureTransformsManager.</code><code class="descname">OasisExposureTransformsManager</code><span class="sig-paren">(</span><em>oasis_models=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/exposure_transforms/OasisExposureTransformsManager.html#OasisExposureTransformsManager"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#exposure_transforms.OasisExposureTransformsManager.OasisExposureTransformsManager" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">exposure_transforms.OasisExposureTransformsManager.</code><code class="descname">OasisExposureTransformsManager</code><span class="sig-paren">(</span><em>keys_lookup_service_factory=None</em>, <em>oasis_models=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/exposure_transforms/OasisExposureTransformsManager.html#OasisExposureTransformsManager"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#exposure_transforms.OasisExposureTransformsManager.OasisExposureTransformsManager" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="attribute">
 <dt id="exposure_transforms.OasisExposureTransformsManager.OasisExposureTransformsManager._interfaces">
 <code class="descname">_interfaces</code><em class="property"> = frozenset([])</em><a class="headerlink" href="#exposure_transforms.OasisExposureTransformsManager.OasisExposureTransformsManager._interfaces" title="Permalink to this definition">¶</a></dt>
@@ -350,6 +350,27 @@ additional resources can be specified in <code class="docutils literal"><span cl
 transforms files pipeline in the model object resources dict.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt id="exposure_transforms.OasisExposureTransformsManager.OasisExposureTransformsManager.keys_lookup_service_factory">
+<code class="descname">keys_lookup_service_factory</code><a class="headerlink" href="#exposure_transforms.OasisExposureTransformsManager.OasisExposureTransformsManager.keys_lookup_service_factory" title="Permalink to this definition">¶</a></dt>
+<dd><p>Keys lookup service factory property.</p>
+<blockquote>
+<div><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">getter:</th><td class="field-body">Gets the current keys lookup service factory instance</td>
+</tr>
+<tr class="field-even field"><th class="field-name">setter:</th><td class="field-body">Sets the current keys lookup service factory instance to
+the given instance</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">deleter:</th><td class="field-body">Deletes the current keys lookup service factory instance</td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+</dd></dl>
+
 <dl class="method">
 <dt id="exposure_transforms.OasisExposureTransformsManager.OasisExposureTransformsManager.load_canonical_profile">
 <code class="descname">load_canonical_profile</code><span class="sig-paren">(</span><em>oasis_model</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/exposure_transforms/OasisExposureTransformsManager.html#OasisExposureTransformsManager.load_canonical_profile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#exposure_transforms.OasisExposureTransformsManager.OasisExposureTransformsManager.load_canonical_profile" title="Permalink to this definition">¶</a></dt>
@@ -357,6 +378,37 @@ transforms files pipeline in the model object resources dict.</p>
 given <code class="docutils literal"><span class="pre">oasis_model</span></code>.</p>
 <p>Returns the profile as a dict, and also stores this in the transforms
 files pipeline in the model object resources dict.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="exposure_transforms.OasisExposureTransformsManager.OasisExposureTransformsManager.models">
+<code class="descname">models</code><a class="headerlink" href="#exposure_transforms.OasisExposureTransformsManager.OasisExposureTransformsManager.models" title="Permalink to this definition">¶</a></dt>
+<dd><p>Model objects dictionary property.</p>
+<blockquote>
+<div><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">getter:</th><td class="field-body"><p class="first">Gets the model in the models dict using the optional
+<code class="docutils literal"><span class="pre">key</span></code> argument. If <code class="docutils literal"><span class="pre">key</span></code> is not given then the dict
+is returned.</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">setter:</th><td class="field-body"><p class="first">Sets the value of the optional <code class="docutils literal"><span class="pre">key</span></code> in the models dict
+to <code class="docutils literal"><span class="pre">val</span></code> where <code class="docutils literal"><span class="pre">val</span></code> is assumed to be an Oasis model
+object (<code class="docutils literal"><span class="pre">omdk.OasisModel.OasisModel</span></code>).</p>
+<p>If no <code class="docutils literal"><span class="pre">key</span></code> is given then <code class="docutils literal"><span class="pre">val</span></code> is assumed to be a new
+models dict and is used to replace the existing dict.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">deleter:</th><td class="field-body"><p class="first last">Deletes the value of the optional <code class="docutils literal"><span class="pre">key</span></code> in the models
+dict. If no <code class="docutils literal"><span class="pre">key</span></code> is given then the entire existing
+dict is cleared.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
 </dd></dl>
 
 <dl class="method">

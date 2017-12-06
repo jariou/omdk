@@ -14,7 +14,7 @@ class OasisExposureTransformsManagerInterface(Interface):
     manager.
     """
 
-    def __init__(self, oasis_models=None):
+    def __init__(self, keys_lookup_service_factory=None, oasis_models=None):
         """
         Class constructor - not generally to be used directly.
         """

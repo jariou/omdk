@@ -28,13 +28,17 @@ from oasis_utils import (
 class OasisExposureTransformsManager(implements(OasisExposureTransformsManagerInterface)):
 
 
-    def __init__(self, oasis_models=None):
+    def __init__(self, keys_lookup_service_factory=None, oasis_models=None):
         """
         Class constructor - not generally to be used directly.
         """
-        self.manager = {}
-        self.manager['klsf'] = klsf()
-        self.manager['models'] = {}
+        self._keys_lookup_service_factory = (
+            keys_lookup_service_factory if keys_lookup_service_factory
+            else klsf()
+        )
+        
+        self._models = {}
+        
         if oasis_models:
             for model in oasis_models:
                 if 'transforms_files_pipeline' in model.resources:
@@ -43,7 +47,73 @@ class OasisExposureTransformsManager(implements(OasisExposureTransformsManagerIn
                 else:
                     model.resources['transforms_files_pipeline'] = OasisExposureTransformsFilesPipeline.create()
                 
-                self.manager['models'][model.key] = model
+                self._models[model.key] = model
+
+
+    @property
+    def keys_lookup_service_factory(self):
+        """
+        Keys lookup service factory property.
+
+            :getter: Gets the current keys lookup service factory instance
+            :setter: Sets the current keys lookup service factory instance to
+                     the given instance
+            :deleter: Deletes the current keys lookup service factory instance
+        """
+        return self._keys_lookup_service_factory
+
+
+    @keys_lookup_service_factory.setter
+    def keys_lookup_service_factory(self, keys_lookup_service_factory):
+        self._keys_lookup_service_factory = keys_lookup_service_factory
+
+
+    @keys_lookup_service_factory.deleter
+    def keys_lookup_service_factory(self):
+        del self._keys_lookup_service_factory
+
+
+    @property
+    def models(self, key=None):
+        """
+        Model objects dictionary property.
+
+            :getter: Gets the model in the models dict using the optional
+                     ``key`` argument. If ``key`` is not given then the dict
+                     is returned.
+
+            :setter: Sets the value of the optional ``key`` in the models dict
+                     to ``val`` where ``val`` is assumed to be an Oasis model
+                     object (``omdk.OasisModel.OasisModel``).
+
+                     If no ``key`` is given then ``val`` is assumed to be a new
+                     models dict and is used to replace the existing dict.
+
+            :deleter: Deletes the value of the optional ``key`` in the models
+                      dict. If no ``key`` is given then the entire existing
+                      dict is cleared.
+        """
+        return self._models[key] if key else self._models
+
+
+    @models.setter
+    def models(self, key=None, val=None):
+        if key:
+            model = val
+            if 'transforms_files_pipeline' not in model.resources:
+                model.resources['transforms_files_pipeline'] = OasisExposureTransformsFilesPipeline.create()
+                self._models[key] = model
+        else:
+            self._models.clear()
+            self._models.update(val)
+
+
+    @models.deleter
+    def models(self, key=None):
+        if key:
+            del self._models[key]
+        else:
+            self._models.clear()
 
 
     @classmethod
@@ -64,7 +134,7 @@ class OasisExposureTransformsManager(implements(OasisExposureTransformsManagerIn
         dict.
         """
         oasis_model.resources['transforms_files_pipeline'] = OasisExposureTransformsFilesPipeline.create()
-        self.manager['models'][oasis_model.key] = oasis_model
+        self.models[oasis_model.key] = oasis_model
 
 
     def start_files_pipeline(self, oasis_model, **kwargs):
@@ -132,7 +202,7 @@ class OasisExposureTransformsManager(implements(OasisExposureTransformsManagerIn
                 return f
 
             oasis_model.resources['transforms_files_pipeline'].canonical_exposures_file = f
-            self.manager['models'][oasis_model.key] = oasis_model
+            self.models[oasis_model.key] = oasis_model
             return oasis_model
 
 
@@ -185,7 +255,7 @@ class OasisExposureTransformsManager(implements(OasisExposureTransformsManagerIn
                 return f
 
             oasis_model.resources['transforms_files_pipeline'].model_exposures_file = f
-            self.manager['models'][oasis_model.key] = oasis_model
+            self.models[oasis_model.key] = oasis_model
             return oasis_model
 
 
@@ -229,7 +299,7 @@ class OasisExposureTransformsManager(implements(OasisExposureTransformsManagerIn
             return oasis_keys_file
 
         oasis_model.resources['transforms_files_pipeline'].oasis_keys_file = oasis_keys_file
-        self.manager['models'][oasis_model.key] = oasis_model
+        self.models[oasis_model.key] = oasis_model
 
         return oasis_model
 

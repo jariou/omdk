@@ -70,13 +70,17 @@
 <div class="viewcode-block" id="OasisExposureTransformsManager"><a class="viewcode-back" href="../../modules.html#exposure_transforms.OasisExposureTransformsManager.OasisExposureTransformsManager">[docs]</a><span class="k">class</span> <span class="nc">OasisExposureTransformsManager</span><span class="p">(</span><span class="n">implements</span><span class="p">(</span><span class="n">OasisExposureTransformsManagerInterface</span><span class="p">)):</span>
 
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">oasis_models</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">keys_lookup_service_factory</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">oasis_models</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Class constructor - not generally to be used directly.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">manager</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">manager</span><span class="p">[</span><span class="s1">&#39;klsf&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">klsf</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">manager</span><span class="p">[</span><span class="s1">&#39;models&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_keys_lookup_service_factory</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">keys_lookup_service_factory</span> <span class="k">if</span> <span class="n">keys_lookup_service_factory</span>
+            <span class="k">else</span> <span class="n">klsf</span><span class="p">()</span>
+        <span class="p">)</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">_models</span> <span class="o">=</span> <span class="p">{}</span>
+        
         <span class="k">if</span> <span class="n">oasis_models</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">model</span> <span class="ow">in</span> <span class="n">oasis_models</span><span class="p">:</span>
                 <span class="k">if</span> <span class="s1">&#39;transforms_files_pipeline&#39;</span> <span class="ow">in</span> <span class="n">model</span><span class="o">.</span><span class="n">resources</span><span class="p">:</span>
@@ -85,7 +89,73 @@
                 <span class="k">else</span><span class="p">:</span>
                     <span class="n">model</span><span class="o">.</span><span class="n">resources</span><span class="p">[</span><span class="s1">&#39;transforms_files_pipeline&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">OasisExposureTransformsFilesPipeline</span><span class="o">.</span><span class="n">create</span><span class="p">()</span>
                 
-                <span class="bp">self</span><span class="o">.</span><span class="n">manager</span><span class="p">[</span><span class="s1">&#39;models&#39;</span><span class="p">][</span><span class="n">model</span><span class="o">.</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">model</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_models</span><span class="p">[</span><span class="n">model</span><span class="o">.</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">model</span>
+
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">keys_lookup_service_factory</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Keys lookup service factory property.</span>
+
+<span class="sd">            :getter: Gets the current keys lookup service factory instance</span>
+<span class="sd">            :setter: Sets the current keys lookup service factory instance to</span>
+<span class="sd">                     the given instance</span>
+<span class="sd">            :deleter: Deletes the current keys lookup service factory instance</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_keys_lookup_service_factory</span>
+
+
+    <span class="nd">@keys_lookup_service_factory</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">keys_lookup_service_factory</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">keys_lookup_service_factory</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_keys_lookup_service_factory</span> <span class="o">=</span> <span class="n">keys_lookup_service_factory</span>
+
+
+    <span class="nd">@keys_lookup_service_factory</span><span class="o">.</span><span class="n">deleter</span>
+    <span class="k">def</span> <span class="nf">keys_lookup_service_factory</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">_keys_lookup_service_factory</span>
+
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">models</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Model objects dictionary property.</span>
+
+<span class="sd">            :getter: Gets the model in the models dict using the optional</span>
+<span class="sd">                     ``key`` argument. If ``key`` is not given then the dict</span>
+<span class="sd">                     is returned.</span>
+
+<span class="sd">            :setter: Sets the value of the optional ``key`` in the models dict</span>
+<span class="sd">                     to ``val`` where ``val`` is assumed to be an Oasis model</span>
+<span class="sd">                     object (``omdk.OasisModel.OasisModel``).</span>
+
+<span class="sd">                     If no ``key`` is given then ``val`` is assumed to be a new</span>
+<span class="sd">                     models dict and is used to replace the existing dict.</span>
+
+<span class="sd">            :deleter: Deletes the value of the optional ``key`` in the models</span>
+<span class="sd">                      dict. If no ``key`` is given then the entire existing</span>
+<span class="sd">                      dict is cleared.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_models</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="k">if</span> <span class="n">key</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">_models</span>
+
+
+    <span class="nd">@models</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">models</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">val</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">key</span><span class="p">:</span>
+            <span class="n">model</span> <span class="o">=</span> <span class="n">val</span>
+            <span class="k">if</span> <span class="s1">&#39;transforms_files_pipeline&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">model</span><span class="o">.</span><span class="n">resources</span><span class="p">:</span>
+                <span class="n">model</span><span class="o">.</span><span class="n">resources</span><span class="p">[</span><span class="s1">&#39;transforms_files_pipeline&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">OasisExposureTransformsFilesPipeline</span><span class="o">.</span><span class="n">create</span><span class="p">()</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_models</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">model</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_models</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_models</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">val</span><span class="p">)</span>
+
+
+    <span class="nd">@models</span><span class="o">.</span><span class="n">deleter</span>
+    <span class="k">def</span> <span class="nf">models</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">key</span><span class="p">:</span>
+            <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">_models</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_models</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
 
 
 <div class="viewcode-block" id="OasisExposureTransformsManager.create"><a class="viewcode-back" href="../../modules.html#exposure_transforms.OasisExposureTransformsManager.OasisExposureTransformsManager.create">[docs]</a>    <span class="nd">@classmethod</span>
@@ -106,7 +176,7 @@
 <span class="sd">        dict.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">oasis_model</span><span class="o">.</span><span class="n">resources</span><span class="p">[</span><span class="s1">&#39;transforms_files_pipeline&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">OasisExposureTransformsFilesPipeline</span><span class="o">.</span><span class="n">create</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">manager</span><span class="p">[</span><span class="s1">&#39;models&#39;</span><span class="p">][</span><span class="n">oasis_model</span><span class="o">.</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">oasis_model</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">models</span><span class="p">[</span><span class="n">oasis_model</span><span class="o">.</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">oasis_model</span></div>
 
 
 <div class="viewcode-block" id="OasisExposureTransformsManager.start_files_pipeline"><a class="viewcode-back" href="../../modules.html#exposure_transforms.OasisExposureTransformsManager.OasisExposureTransformsManager.start_files_pipeline">[docs]</a>    <span class="k">def</span> <span class="nf">start_files_pipeline</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">oasis_model</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
@@ -174,7 +244,7 @@
                 <span class="k">return</span> <span class="n">f</span>
 
             <span class="n">oasis_model</span><span class="o">.</span><span class="n">resources</span><span class="p">[</span><span class="s1">&#39;transforms_files_pipeline&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">canonical_exposures_file</span> <span class="o">=</span> <span class="n">f</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">manager</span><span class="p">[</span><span class="s1">&#39;models&#39;</span><span class="p">][</span><span class="n">oasis_model</span><span class="o">.</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">oasis_model</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">models</span><span class="p">[</span><span class="n">oasis_model</span><span class="o">.</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">oasis_model</span>
             <span class="k">return</span> <span class="n">oasis_model</span></div>
 
 
@@ -227,7 +297,7 @@
                 <span class="k">return</span> <span class="n">f</span>
 
             <span class="n">oasis_model</span><span class="o">.</span><span class="n">resources</span><span class="p">[</span><span class="s1">&#39;transforms_files_pipeline&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">model_exposures_file</span> <span class="o">=</span> <span class="n">f</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">manager</span><span class="p">[</span><span class="s1">&#39;models&#39;</span><span class="p">][</span><span class="n">oasis_model</span><span class="o">.</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">oasis_model</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">models</span><span class="p">[</span><span class="n">oasis_model</span><span class="o">.</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">oasis_model</span>
             <span class="k">return</span> <span class="n">oasis_model</span></div>
 
 
@@ -271,7 +341,7 @@
             <span class="k">return</span> <span class="n">oasis_keys_file</span>
 
         <span class="n">oasis_model</span><span class="o">.</span><span class="n">resources</span><span class="p">[</span><span class="s1">&#39;transforms_files_pipeline&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">oasis_keys_file</span> <span class="o">=</span> <span class="n">oasis_keys_file</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">manager</span><span class="p">[</span><span class="s1">&#39;models&#39;</span><span class="p">][</span><span class="n">oasis_model</span><span class="o">.</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">oasis_model</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">models</span><span class="p">[</span><span class="n">oasis_model</span><span class="o">.</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">oasis_model</span>
 
         <span class="k">return</span> <span class="n">oasis_model</span></div>
 
