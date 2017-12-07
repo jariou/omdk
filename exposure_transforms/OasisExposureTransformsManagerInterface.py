@@ -140,7 +140,7 @@ class OasisExposureTransformsManagerInterface(Interface):
         pass
 
 
-    def transform_model_to_oasis_keys(self, oasis_model, **kwargs):
+    def transform_model_to_keys(self, oasis_model, **kwargs):
         """
         Transforms the model exposures/locations file for a given
         ``oasis_model`` object to the Oasis keys CSV file format:

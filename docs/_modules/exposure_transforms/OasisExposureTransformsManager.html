@@ -185,7 +185,16 @@
 <span class="sd">        i.e. the generation of the canonical exposures files, keys file</span>
 <span class="sd">        and finally the Oasis files.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">pass</span></div>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">oasis_model</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">transform_source_to_canonical</span><span class="p">(</span><span class="n">oasis_model</span><span class="p">)</span>
+            <span class="n">oasis_model</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">canonical_to_model</span><span class="p">(</span><span class="n">oasis_model</span><span class="p">)</span>
+            <span class="n">oasis_model</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_to_keys</span><span class="p">(</span><span class="n">oasis_model</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">load_canonical_profile</span><span class="p">(</span><span class="n">oasis_model</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">generate_oasis_files</span><span class="p">(</span><span class="n">oasis_model</span><span class="p">)</span>
+        <span class="k">except</span> <span class="n">OasisException</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">e</span>
+
+        <span class="k">return</span> <span class="n">oasis_model</span></div>
 
 
 <div class="viewcode-block" id="OasisExposureTransformsManager.save_files_pipeline"><a class="viewcode-back" href="../../modules.html#exposure_transforms.OasisExposureTransformsManager.OasisExposureTransformsManager.save_files_pipeline">[docs]</a>    <span class="k">def</span> <span class="nf">save_files_pipeline</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">oasis_model</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
@@ -301,7 +310,7 @@
             <span class="k">return</span> <span class="n">oasis_model</span></div>
 
 
-<div class="viewcode-block" id="OasisExposureTransformsManager.transform_model_to_oasis_keys"><a class="viewcode-back" href="../../modules.html#exposure_transforms.OasisExposureTransformsManager.OasisExposureTransformsManager.transform_model_to_oasis_keys">[docs]</a>    <span class="k">def</span> <span class="nf">transform_model_to_oasis_keys</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">oasis_model</span><span class="p">,</span> <span class="n">with_model_resources</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="OasisExposureTransformsManager.transform_model_to_keys"><a class="viewcode-back" href="../../modules.html#exposure_transforms.OasisExposureTransformsManager.OasisExposureTransformsManager.transform_model_to_keys">[docs]</a>    <span class="k">def</span> <span class="nf">transform_model_to_keys</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">oasis_model</span><span class="p">,</span> <span class="n">with_model_resources</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Transforms the model exposures/locations file for a given</span>
 <span class="sd">        ``oasis_model`` object to the Oasis keys CSV file format:</span>

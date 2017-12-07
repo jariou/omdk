@@ -2,8 +2,16 @@
 # -*- coding: utf-8 -*-
 
 __all__ = [
-    'OasisModel'
+    'OasisModel',
+    'OasisModelFactory'
 ]
+
+import os
+
+if os.getcwd().split(os.path.sep)[-1] == 'models':
+    sys.path.insert(0, os.path.abspath('../'))
+
+from oasis_utils import KeysLookupServiceFactory as klsf
 
 class OasisModel(object):
     """
@@ -19,7 +27,8 @@ class OasisModel(object):
         self,
         model_supplier_id,
         model_id,
-        model_version_id
+        model_version_id,
+        resources=None
     ):
         """
         Constructor - requires supplier ID, model ID and model version ID.
@@ -28,7 +37,7 @@ class OasisModel(object):
         self._model_id = model_id
         self._model_version_id = model_version_id
         self._key = '{}/{}/{}'.format(model_supplier_id, model_id, model_version_id)
-        self._resources = {}
+        self._resources = resources if resources else {}
 
 
     @property
@@ -111,3 +120,40 @@ class OasisModel(object):
             del self._resources[key]
         else:
             self._resources.clear()
+
+
+    def get_keys(self, model_exposures_file_path):
+        """
+        Generates keys lookup records for a given model exposures file using
+        the keys lookup service factory (`oasis_utils.oasis_keys_lookup_service_utils.OasisKeysLookupServiceFactory`).
+        """
+        for record in klsf.get_keys(
+            lookup_service=self.resources['lookup_service'],
+            model_exposures_file_path=model_exposures_file_path
+        ):
+            yield record
+
+
+class OasisModelFactory(object):
+    """
+    Factory class for creating Oasis model objects.
+    """
+    
+    @classmethod
+    def create(
+        cls,
+        model_supplier_id,
+        model_id,
+        model_version_id,
+        resources=None
+    ):
+        """
+        Service method to instantiate Oasis model objects with attached
+        resource dicts.
+        """
+        return OasisModel(
+            model_supplier_id=model_supplier_id,
+            model_id=model_id,
+            model_version_id=model_version_id,
+            resources=resources
+        )

@@ -2,10 +2,10 @@
 Module Documentation
 ====================
 
-``OasisModel``
---------------
+``models.OasisModel``
+---------------------
 
-.. automodule:: OasisModel
+.. automodule:: models.OasisModel
    :members:
    :private-members:
    :undoc-members:

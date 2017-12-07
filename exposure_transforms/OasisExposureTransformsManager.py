@@ -143,7 +143,16 @@ class OasisExposureTransformsManager(implements(OasisExposureTransformsManagerIn
         i.e. the generation of the canonical exposures files, keys file
         and finally the Oasis files.
         """
-        pass
+        try:
+            oasis_model = self.transform_source_to_canonical(oasis_model)
+            oasis_model = self.canonical_to_model(oasis_model)
+            oasis_model = self.model_to_keys(oasis_model)
+            self.load_canonical_profile(oasis_model)
+            self.generate_oasis_files(oasis_model)
+        except OasisException as e:
+            raise e
+
+        return oasis_model
 
 
     def save_files_pipeline(self, oasis_model, **kwargs):
@@ -259,7 +268,7 @@ class OasisExposureTransformsManager(implements(OasisExposureTransformsManagerIn
             return oasis_model
 
 
-    def transform_model_to_oasis_keys(self, oasis_model, with_model_resources=True, **kwargs):
+    def transform_model_to_keys(self, oasis_model, with_model_resources=True, **kwargs):
         """
         Transforms the model exposures/locations file for a given
         ``oasis_model`` object to the Oasis keys CSV file format:
