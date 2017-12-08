@@ -63,7 +63,7 @@
 <span class="kn">from</span> <span class="nn">oasis_utils</span> <span class="k">import</span> <span class="p">(</span>
     <span class="n">KeysLookupServiceFactory</span> <span class="k">as</span> <span class="n">klsf</span><span class="p">,</span>
     <span class="n">OasisException</span><span class="p">,</span>
-    <span class="n">run_mono_script</span><span class="p">,</span>
+    <span class="n">run_mono_executable</span><span class="p">,</span>
 <span class="p">)</span>
 
 
@@ -244,7 +244,7 @@
         <span class="p">}</span>
 
         <span class="k">try</span><span class="p">:</span>
-            <span class="n">run_mono_script</span><span class="p">(</span><span class="n">xtrans_path</span><span class="p">,</span> <span class="n">xtrans_args</span><span class="p">)</span>
+            <span class="n">run_mono_executable</span><span class="p">(</span><span class="n">xtrans_path</span><span class="p">,</span> <span class="n">xtrans_args</span><span class="p">)</span>
         <span class="k">except</span> <span class="n">OasisException</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">e</span>
 
@@ -289,6 +289,15 @@
             <span class="n">canonical_to_model_exposures_transformation_file_path</span> <span class="o">=</span> <span class="n">oasis_model</span><span class="o">.</span><span class="n">resources</span><span class="p">[</span><span class="s1">&#39;transforms_files_pipeline&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">canonical_to_model_exposures_transformation_file</span><span class="o">.</span><span class="n">name</span>
             <span class="n">model_exposures_file_path</span> <span class="o">=</span> <span class="n">oasis_model</span><span class="o">.</span><span class="n">resources</span><span class="p">[</span><span class="s1">&#39;transforms_files_pipeline&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">model_exposures_file</span><span class="o">.</span><span class="n">name</span>
 
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">xtrans_path</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">OasisException</span><span class="p">(</span><span class="s1">&#39;No file path provided for &quot;xtrans.exe&quot;&#39;</span><span class="p">)</span>
+
+        
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">lookup_service</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">OasisException</span><span class="p">(</span><span class="s1">&#39;No lookup service provided&#39;</span><span class="p">)</span>
+
         <span class="n">xtrans_args</span> <span class="o">=</span> <span class="p">{</span>
             <span class="s1">&#39;d&#39;</span><span class="p">:</span> <span class="n">canonical_exposures_validation_file_path</span><span class="p">,</span>
             <span class="s1">&#39;c&#39;</span><span class="p">:</span> <span class="n">canonical_exposures_file_path</span><span class="p">,</span>
@@ -297,7 +306,7 @@
         <span class="p">}</span>
 
         <span class="k">try</span><span class="p">:</span>
-            <span class="n">run_mono_script</span><span class="p">(</span><span class="n">xtrans_path</span><span class="p">,</span> <span class="n">xtrans_args</span><span class="p">)</span>
+            <span class="n">run_mono_executable</span><span class="p">(</span><span class="n">xtrans_path</span><span class="p">,</span> <span class="n">xtrans_args</span><span class="p">)</span>
         <span class="k">except</span> <span class="n">OasisException</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">e</span>
 
@@ -331,16 +340,28 @@
 <span class="sd">        case only the generated canonical file is returned.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">with_model_resources</span><span class="p">:</span>
+            <span class="n">model_exposures</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;model_exposures&#39;</span><span class="p">]</span>
             <span class="n">model_exposures_file_path</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;model_exposures_file_path&#39;</span><span class="p">]</span>
             <span class="n">lookup_service</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;lookup_service&#39;</span><span class="p">]</span>
             <span class="n">keys_file_path</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;keys_file_path&#39;</span><span class="p">]</span>
         <span class="k">else</span><span class="p">:</span>
+            <span class="n">model_exposures</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;model_exposures&#39;</span><span class="p">]</span>
             <span class="n">model_exposures_file_path</span> <span class="o">=</span> <span class="n">oasis_model</span><span class="o">.</span><span class="n">resources</span><span class="p">[</span><span class="s1">&#39;transforms_files_pipeline&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">model_exposures_file</span><span class="o">.</span><span class="n">name</span>
             <span class="n">lookup_service</span> <span class="o">=</span> <span class="n">oasis_model</span><span class="o">.</span><span class="n">resources</span><span class="p">[</span><span class="s1">&#39;lookup_service&#39;</span><span class="p">]</span>
             <span class="n">keys_file_path</span> <span class="o">=</span> <span class="n">oasis_model</span><span class="o">.</span><span class="n">resources</span><span class="p">[</span><span class="s1">&#39;transforms_files_pipeline&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">keys_file</span><span class="o">.</span><span class="n">name</span>
 
-        <span class="n">oasis_keys_file</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">keys_lookup_service_factory</span><span class="o">.</span><span class="n">save_lookup_records</span><span class="p">(</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">any</span><span class="p">([</span><span class="n">model_exposures</span><span class="p">,</span> <span class="n">model_exposures_file_path</span><span class="p">]):</span>
+            <span class="k">raise</span> <span class="n">OasisException</span><span class="p">(</span><span class="s1">&#39;No model exposures or model exposures file path provided&#39;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">lookup_service</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">OasisException</span><span class="p">(</span><span class="s1">&#39;No lookup service provided&#39;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">keys_file_path</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">OasisException</span><span class="p">(</span><span class="s1">&#39;No file path provided for the keys file&#39;</span><span class="p">)</span>
+
+        <span class="n">oasis_keys_file</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">keys_lookup_service_factory</span><span class="o">.</span><span class="n">save_keys</span><span class="p">(</span>
             <span class="n">lookup_service</span><span class="o">=</span><span class="n">lookup_service</span><span class="p">,</span>
+            <span class="n">model_exposures</span><span class="o">=</span><span class="n">model_exposures</span><span class="p">,</span>
             <span class="n">model_exposures_file_path</span><span class="o">=</span><span class="n">model_exposures_file_path</span><span class="p">,</span>
             <span class="n">output_file_path</span><span class="o">=</span><span class="n">keys_file_path</span><span class="p">,</span>
             <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;oasis_keys&#39;</span>

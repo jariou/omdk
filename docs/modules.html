@@ -55,9 +55,11 @@ resources dictionary that can be used to “attach” any resources by clients,
 e.g. a lookup service instance, a transforms files pipeline etc.</p>
 <dl class="method">
 <dt id="models.OasisModel.OasisModel.get_keys">
-<code class="descname">get_keys</code><span class="sig-paren">(</span><em>model_exposures_file_path</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/models/OasisModel.html#OasisModel.get_keys"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#models.OasisModel.OasisModel.get_keys" title="Permalink to this definition">¶</a></dt>
-<dd><p>Generates keys lookup records for a given model exposures file using
-the keys lookup service factory (<cite>oasis_utils.oasis_keys_lookup_service_utils.OasisKeysLookupServiceFactory</cite>).</p>
+<code class="descname">get_keys</code><span class="sig-paren">(</span><em>model_exposures=None</em>, <em>model_exposures_file_path=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/models/OasisModel.html#OasisModel.get_keys"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#models.OasisModel.OasisModel.get_keys" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates keys lookup records to file - requires either the string
+content of a model exposures file or the path of such a file, and
+also a lookup service instance for the model attached to the model
+object’s resources dict property.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -139,6 +141,19 @@ entire existing dict is cleared.</td>
 </tbody>
 </table>
 </div></blockquote>
+</dd></dl>
+
+<dl class="method">
+<dt id="models.OasisModel.OasisModel.save_keys">
+<code class="descname">save_keys</code><span class="sig-paren">(</span><em>model_exposures=None</em>, <em>model_exposures_file_path=None</em>, <em>output_file_path=None</em>, <em>format='oasis_keys'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/models/OasisModel.html#OasisModel.save_keys"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#models.OasisModel.OasisModel.save_keys" title="Permalink to this definition">¶</a></dt>
+<dd><p>Saves keys lookup records to file - requires either the string
+content of a model exposures file or the path of such a file, a lookup
+service instance for the model attached to the model object’s
+resources dict property, path of the output file to save, and 
+the format of the output file (<cite>oasis_keys</cite> for Oasis keys file
+format or <cite>list_keys</cite> for a list of JSON records).</p>
+<p>Returns a pair <code class="docutils literal"><span class="pre">(f,</span> <span class="pre">n)</span></code> where <code class="docutils literal"><span class="pre">f</span></code> is the output file object
+and <code class="docutils literal"><span class="pre">n</span></code> is the number of records written to the file.</p>
 </dd></dl>
 
 <dl class="attribute">

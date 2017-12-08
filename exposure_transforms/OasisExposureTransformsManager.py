@@ -21,7 +21,7 @@ if os.getcwd().split(os.path.sep)[-1] == 'exposure_transforms':
 from oasis_utils import (
     KeysLookupServiceFactory as klsf,
     OasisException,
-    run_mono_script,
+    run_mono_executable,
 )
 
 
@@ -202,7 +202,7 @@ class OasisExposureTransformsManager(implements(OasisExposureTransformsManagerIn
         }
 
         try:
-            run_mono_script(xtrans_path, xtrans_args)
+            run_mono_executable(xtrans_path, xtrans_args)
         except OasisException as e:
             raise e
 
@@ -247,6 +247,15 @@ class OasisExposureTransformsManager(implements(OasisExposureTransformsManagerIn
             canonical_to_model_exposures_transformation_file_path = oasis_model.resources['transforms_files_pipeline'].canonical_to_model_exposures_transformation_file.name
             model_exposures_file_path = oasis_model.resources['transforms_files_pipeline'].model_exposures_file.name
 
+
+        if not xtrans_path:
+            raise OasisException('No file path provided for "xtrans.exe"')
+
+        
+
+        if not lookup_service:
+            raise OasisException('No lookup service provided')
+
         xtrans_args = {
             'd': canonical_exposures_validation_file_path,
             'c': canonical_exposures_file_path,
@@ -255,7 +264,7 @@ class OasisExposureTransformsManager(implements(OasisExposureTransformsManagerIn
         }
 
         try:
-            run_mono_script(xtrans_path, xtrans_args)
+            run_mono_executable(xtrans_path, xtrans_args)
         except OasisException as e:
             raise e
 
@@ -289,16 +298,28 @@ class OasisExposureTransformsManager(implements(OasisExposureTransformsManagerIn
         case only the generated canonical file is returned.
         """
         if not with_model_resources:
+            model_exposures = kwargs['model_exposures']
             model_exposures_file_path = kwargs['model_exposures_file_path']
             lookup_service = kwargs['lookup_service']
             keys_file_path = kwargs['keys_file_path']
         else:
+            model_exposures = kwargs['model_exposures']
             model_exposures_file_path = oasis_model.resources['transforms_files_pipeline'].model_exposures_file.name
             lookup_service = oasis_model.resources['lookup_service']
             keys_file_path = oasis_model.resources['transforms_files_pipeline'].keys_file.name
 
-        oasis_keys_file, _ = self.keys_lookup_service_factory.save_lookup_records(
+        if not any([model_exposures, model_exposures_file_path]):
+            raise OasisException('No model exposures or model exposures file path provided')
+
+        if not lookup_service:
+            raise OasisException('No lookup service provided')
+
+        if not keys_file_path:
+            raise OasisException('No file path provided for the keys file')
+
+        oasis_keys_file, _ = self.keys_lookup_service_factory.save_keys(
             lookup_service=lookup_service,
+            model_exposures=model_exposures,
             model_exposures_file_path=model_exposures_file_path,
             output_file_path=keys_file_path,
             format='oasis_keys'

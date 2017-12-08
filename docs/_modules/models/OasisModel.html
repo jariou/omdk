@@ -53,7 +53,11 @@
 <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">sep</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;models&#39;</span><span class="p">:</span>
     <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="s1">&#39;../&#39;</span><span class="p">))</span>
 
-<span class="kn">from</span> <span class="nn">oasis_utils</span> <span class="k">import</span> <span class="n">KeysLookupServiceFactory</span> <span class="k">as</span> <span class="n">klsf</span>
+<span class="kn">from</span> <span class="nn">oasis_utils</span> <span class="k">import</span> <span class="p">(</span>
+    <span class="n">KeysLookupServiceFactory</span> <span class="k">as</span> <span class="n">klsf</span><span class="p">,</span>
+    <span class="n">OasisException</span><span class="p">,</span>
+<span class="p">)</span>
+
 
 <div class="viewcode-block" id="OasisModel"><a class="viewcode-back" href="../../modules.html#models.OasisModel.OasisModel">[docs]</a><span class="k">class</span> <span class="nc">OasisModel</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
@@ -164,16 +168,69 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">_resources</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
 
 
-<div class="viewcode-block" id="OasisModel.get_keys"><a class="viewcode-back" href="../../modules.html#models.OasisModel.OasisModel.get_keys">[docs]</a>    <span class="k">def</span> <span class="nf">get_keys</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model_exposures_file_path</span><span class="p">):</span>
+<div class="viewcode-block" id="OasisModel.get_keys"><a class="viewcode-back" href="../../modules.html#models.OasisModel.OasisModel.get_keys">[docs]</a>    <span class="k">def</span> <span class="nf">get_keys</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model_exposures</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">model_exposures_file_path</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Generates keys lookup records for a given model exposures file using</span>
-<span class="sd">        the keys lookup service factory (`oasis_utils.oasis_keys_lookup_service_utils.OasisKeysLookupServiceFactory`).</span>
+<span class="sd">        Generates keys lookup records to file - requires either the string</span>
+<span class="sd">        content of a model exposures file or the path of such a file, and</span>
+<span class="sd">        also a lookup service instance for the model attached to the model</span>
+<span class="sd">        object&#39;s resources dict property.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">any</span><span class="p">([</span><span class="n">model_exposures</span><span class="p">,</span> <span class="n">model_exposures_file_path</span><span class="p">]):</span>
+            <span class="k">raise</span> <span class="n">OasisException</span><span class="p">(</span><span class="s1">&#39;No model exposures or model exposures file path provided&#39;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="s1">&#39;lookup_service&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">resources</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">OasisException</span><span class="p">(</span>
+                <span class="s1">&#39;No lookup service attached to the model &#39;</span>
+                <span class="s1">&#39;- please attach a lookup service for this model in the resources dict property&#39;</span>
+            <span class="p">)</span>
+
         <span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">klsf</span><span class="o">.</span><span class="n">get_keys</span><span class="p">(</span>
             <span class="n">lookup_service</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">resources</span><span class="p">[</span><span class="s1">&#39;lookup_service&#39;</span><span class="p">],</span>
+            <span class="n">model_exposures</span><span class="o">=</span><span class="n">model_exposures</span><span class="p">,</span>
             <span class="n">model_exposures_file_path</span><span class="o">=</span><span class="n">model_exposures_file_path</span>
         <span class="p">):</span>
-            <span class="k">yield</span> <span class="n">record</span></div></div>
+            <span class="k">yield</span> <span class="n">record</span></div>
+
+
+<div class="viewcode-block" id="OasisModel.save_keys"><a class="viewcode-back" href="../../modules.html#models.OasisModel.OasisModel.save_keys">[docs]</a>    <span class="k">def</span> <span class="nf">save_keys</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">model_exposures</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">model_exposures_file_path</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">output_file_path</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;oasis_keys&#39;</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Saves keys lookup records to file - requires either the string</span>
+<span class="sd">        content of a model exposures file or the path of such a file, a lookup</span>
+<span class="sd">        service instance for the model attached to the model object&#39;s</span>
+<span class="sd">        resources dict property, path of the output file to save, and </span>
+<span class="sd">        the format of the output file (`oasis_keys` for Oasis keys file</span>
+<span class="sd">        format or `list_keys` for a list of JSON records).</span>
+
+<span class="sd">        Returns a pair ``(f, n)`` where ``f`` is the output file object</span>
+<span class="sd">        and ``n`` is the number of records written to the file.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">any</span><span class="p">([</span><span class="n">model_exposures</span><span class="p">,</span> <span class="n">model_exposures_file_path</span><span class="p">]):</span>
+            <span class="k">raise</span> <span class="n">OasisException</span><span class="p">(</span><span class="s1">&#39;No model exposures or model exposures file path provided&#39;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="s1">&#39;lookup_service&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">resources</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">OasisException</span><span class="p">(</span>
+                <span class="s1">&#39;No lookup service attached to the model &#39;</span>
+                <span class="s1">&#39;- please attach a lookup service for this model in the resources dict property&#39;</span>
+            <span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">output_file_path</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">OasisException</span><span class="p">(</span><span class="s1">&#39;No output file path provided&#39;</span><span class="p">)</span>
+
+        <span class="n">f</span><span class="p">,</span> <span class="n">n</span> <span class="o">=</span> <span class="n">klsf</span><span class="o">.</span><span class="n">save_keys</span><span class="p">(</span>
+            <span class="n">lookup_service</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">resources</span><span class="p">[</span><span class="s1">&#39;lookup_service&#39;</span><span class="p">],</span>
+            <span class="n">model_exposures</span><span class="o">=</span><span class="n">model_exposures</span><span class="p">,</span>
+            <span class="n">model_exposures_file_path</span><span class="o">=</span><span class="n">model_exposures_file_path</span><span class="p">,</span>
+            <span class="n">output_file_path</span><span class="o">=</span><span class="n">output_file_path</span><span class="p">,</span>
+            <span class="nb">format</span><span class="o">=</span><span class="nb">format</span>
+        <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">f</span><span class="p">,</span> <span class="n">n</span></div></div>
 
 
 <div class="viewcode-block" id="OasisModelFactory"><a class="viewcode-back" href="../../modules.html#models.OasisModel.OasisModelFactory">[docs]</a><span class="k">class</span> <span class="nc">OasisModelFactory</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>

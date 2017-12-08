@@ -11,7 +11,11 @@ import os
 if os.getcwd().split(os.path.sep)[-1] == 'models':
     sys.path.insert(0, os.path.abspath('../'))
 
-from oasis_utils import KeysLookupServiceFactory as klsf
+from oasis_utils import (
+    KeysLookupServiceFactory as klsf,
+    OasisException,
+)
+
 
 class OasisModel(object):
     """
@@ -122,16 +126,69 @@ class OasisModel(object):
             self._resources.clear()
 
 
-    def get_keys(self, model_exposures_file_path):
+    def get_keys(self, model_exposures=None, model_exposures_file_path=None):
         """
-        Generates keys lookup records for a given model exposures file using
-        the keys lookup service factory (`oasis_utils.oasis_keys_lookup_service_utils.OasisKeysLookupServiceFactory`).
+        Generates keys lookup records to file - requires either the string
+        content of a model exposures file or the path of such a file, and
+        also a lookup service instance for the model attached to the model
+        object's resources dict property.
         """
+        if not any([model_exposures, model_exposures_file_path]):
+            raise OasisException('No model exposures or model exposures file path provided')
+
+        if 'lookup_service' not in self.resources:
+            raise OasisException(
+                'No lookup service attached to the model '
+                '- please attach a lookup service for this model in the resources dict property'
+            )
+
         for record in klsf.get_keys(
             lookup_service=self.resources['lookup_service'],
+            model_exposures=model_exposures,
             model_exposures_file_path=model_exposures_file_path
         ):
             yield record
+
+
+    def save_keys(
+        self,
+        model_exposures=None,
+        model_exposures_file_path=None,
+        output_file_path=None,
+        format='oasis_keys'
+    ):
+        """
+        Saves keys lookup records to file - requires either the string
+        content of a model exposures file or the path of such a file, a lookup
+        service instance for the model attached to the model object's
+        resources dict property, path of the output file to save, and 
+        the format of the output file (`oasis_keys` for Oasis keys file
+        format or `list_keys` for a list of JSON records).
+
+        Returns a pair ``(f, n)`` where ``f`` is the output file object
+        and ``n`` is the number of records written to the file.
+        """
+        if not any([model_exposures, model_exposures_file_path]):
+            raise OasisException('No model exposures or model exposures file path provided')
+
+        if 'lookup_service' not in self.resources:
+            raise OasisException(
+                'No lookup service attached to the model '
+                '- please attach a lookup service for this model in the resources dict property'
+            )
+
+        if not output_file_path:
+            raise OasisException('No output file path provided')
+
+        f, n = klsf.save_keys(
+            lookup_service=self.resources['lookup_service'],
+            model_exposures=model_exposures,
+            model_exposures_file_path=model_exposures_file_path,
+            output_file_path=output_file_path,
+            format=format
+        )
+
+        return f, n
 
 
 class OasisModelFactory(object):
