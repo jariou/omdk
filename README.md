@@ -3,8 +3,6 @@ Oasis Model Development Kit (OMDK)
 
 OMDK provides a Python framework and utilities for building, developing, running and testing Oasis models.
 
-The package documentation can be found at https://oasislmf.github.io/omdk/.
-
 # Repository Management
 
 ## Cloning the repository

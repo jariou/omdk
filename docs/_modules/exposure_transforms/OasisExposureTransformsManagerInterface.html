@@ -64,7 +64,7 @@
 
 
 <div class="viewcode-block" id="OasisExposureTransformsManagerInterface.create"><a class="viewcode-back" href="../../modules.html#exposure_transforms.OasisExposureTransformsManagerInterface.OasisExposureTransformsManagerInterface.create">[docs]</a>    <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">oasis_models</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">keys_lookup_service_factory</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">oasis_models</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Class method that returns an instance of an Oasis exposure transforms</span>
 <span class="sd">        manager. The optional ``oasis_models`` argument should be a list of</span>
@@ -182,9 +182,9 @@
         <span class="k">pass</span></div>
 
 
-<div class="viewcode-block" id="OasisExposureTransformsManagerInterface.transform_model_to_keys"><a class="viewcode-back" href="../../modules.html#exposure_transforms.OasisExposureTransformsManagerInterface.OasisExposureTransformsManagerInterface.transform_model_to_keys">[docs]</a>    <span class="k">def</span> <span class="nf">transform_model_to_keys</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">oasis_model</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="OasisExposureTransformsManagerInterface.get_keys_file"><a class="viewcode-back" href="../../modules.html#exposure_transforms.OasisExposureTransformsManagerInterface.OasisExposureTransformsManagerInterface.get_keys_file">[docs]</a>    <span class="k">def</span> <span class="nf">get_keys_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">oasis_model</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Transforms the model exposures/locations file for a given</span>
+<span class="sd">        Generates the model exposures/locations file for a given</span>
 <span class="sd">        ``oasis_model`` object to the Oasis keys CSV file format:</span>
 
 <span class="sd">            ``LocID,PerilID,CoverageID,AreaPerilID,VulnerabilityID``</span>
@@ -216,6 +216,27 @@
 <span class="sd">        It is up to the specific implementation of this class of how these</span>
 <span class="sd">        resources will be named in ``kwargs`` and how they will be used to</span>
 <span class="sd">        effect the transformation.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span></div>
+
+
+<div class="viewcode-block" id="OasisExposureTransformsManagerInterface.generate_items_file"><a class="viewcode-back" href="../../modules.html#exposure_transforms.OasisExposureTransformsManagerInterface.OasisExposureTransformsManagerInterface.generate_items_file">[docs]</a>    <span class="k">def</span> <span class="nf">generate_items_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">oasis_model</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Generates an items file for the given ``oasis_model``.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span></div>
+
+
+<div class="viewcode-block" id="OasisExposureTransformsManagerInterface.generate_coverages_file"><a class="viewcode-back" href="../../modules.html#exposure_transforms.OasisExposureTransformsManagerInterface.OasisExposureTransformsManagerInterface.generate_coverages_file">[docs]</a>    <span class="k">def</span> <span class="nf">generate_coverages_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">oasis_model</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Generates a coverages file for the given ``oasis_model``.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span></div>
+
+
+<div class="viewcode-block" id="OasisExposureTransformsManagerInterface.generate_gulsummaryxref_file"><a class="viewcode-back" href="../../modules.html#exposure_transforms.OasisExposureTransformsManagerInterface.OasisExposureTransformsManagerInterface.generate_gulsummaryxref_file">[docs]</a>    <span class="k">def</span> <span class="nf">generate_gulsummaryxref_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">oasis_model</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Generates a gulsummaryxref file for the given ``oasis_model``.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">pass</span></div>
 

@@ -6,7 +6,9 @@ __all__ = [
 ]
 
 import io
+import json
 import os
+import pandas as pd
 import subprocess
 import sys
 
@@ -16,7 +18,7 @@ from OasisExposureTransformsManagerInterface import OasisExposureTransformsManag
 from OasisExposureTransformsFilesPipeline import OasisExposureTransformsFilesPipeline
 
 if os.getcwd().split(os.path.sep)[-1] == 'exposure_transforms':
-    sys.path.insert(0, os.path.abspath('../'))
+    sys.path.insert(0, os.path.abspath(os.pardir))
 
 from oasis_utils import (
     KeysLookupServiceFactory as klsf,
@@ -48,6 +50,18 @@ class OasisExposureTransformsManager(implements(OasisExposureTransformsManagerIn
                     model.resources['transforms_files_pipeline'] = OasisExposureTransformsFilesPipeline.create()
                 
                 self._models[model.key] = model
+
+
+
+    @classmethod
+    def create(cls, keys_lookup_service_factory=None, oasis_models=None):
+        """
+        Class method that returns an instance of an Oasis exposure transforms
+        manager. The optional ``oasis_models`` argument should be a list of
+        Oasis model objects (``omdk.OasisModel.OasisModel``), and any
+        additional resources can be specified in ``kwargs``.
+        """
+        return cls(keys_lookup_service_factory=keys_lookup_service_factory, oasis_models=oasis_models)
 
 
     @property
@@ -116,17 +130,6 @@ class OasisExposureTransformsManager(implements(OasisExposureTransformsManagerIn
             self._models.clear()
 
 
-    @classmethod
-    def create(cls, oasis_models=None, **kwargs):
-        """
-        Class method that returns an instance of an Oasis exposure transforms
-        manager. The optional ``oasis_models`` argument should be a list of
-        Oasis model objects (``omdk.OasisModel.OasisModel``), and any
-        additional resources can be specified in ``kwargs``.
-        """
-        return cls(oasis_models=oasis_models)
-
-
     def clear_files_pipeline(self, oasis_model, **kwargs):
         """
         Clears the exposure transforms files pipeline for the given
@@ -135,6 +138,7 @@ class OasisExposureTransformsManager(implements(OasisExposureTransformsManagerIn
         """
         oasis_model.resources['transforms_files_pipeline'] = OasisExposureTransformsFilesPipeline.create()
         self.models[oasis_model.key] = oasis_model
+        return oasis_model
 
 
     def start_files_pipeline(self, oasis_model, **kwargs):
@@ -181,24 +185,44 @@ class OasisExposureTransformsManager(implements(OasisExposureTransformsManagerIn
         present in the optional ``kwargs`` dict as named arguments. In this
         case only the generated canonical file is returned.
         """
+        omr = oasis_model.resources
+        tfp = omr['transforms_files_pipeline']
+
         if not with_model_resources:
-            xtrans_path = kwargs['xtrans_path']
-            source_exposures_file_path = kwargs['source_exposures_file_path']
-            source_exposures_validation_file_path = kwargs['source_exposures_validation_file_path']
-            source_to_canonical_exposures_transformation_file_path = kwargs['source_to_canonical_exposures_transformation_file_path']
-            canonical_exposures_file_path = kwargs['canonical_exposures_file_path']
+            xtrans_path = kwargs['xtrans_path'] if 'xtrans_path' in kwargs else None
+            input_file_path = kwargs['source_exposures_file_path']  if 'source_exposures_file_path' in kwargs else None
+            validation_file_path = kwargs['source_exposures_validation_file_path'] if 'source_exposures_validation_file_path' in kwargs else None
+            transformation_file_path = kwargs['source_to_canonical_exposures_transformation_file_path'] if 'source_to_canonical_exposures_transformation_file_path' in kwargs else None
+            output_file_path = kwargs['canonical_exposures_file_path'] if 'canonical_exposures_file_path' in kwargs else None
         else:
-            xtrans_path = oasis_model.resources['xtrans_path']
-            source_exposures_file_path = oasis_model.resources['transforms_files_pipeline'].source_exposures_file.name
-            source_exposures_validation_file_path = oasis_model.resources['transforms_files_pipeline'].source_exposures_validation_file.name
-            source_to_canonical_exposures_transformation_file_path = oasis_model.resources['transforms_files_pipeline'].source_to_canonical_exposures_transformation_file.name
-            canonical_exposures_file_path = oasis_model.resources['transforms_files_pipeline'].canonical_exposures_file.name
+            xtrans_path = omr['xtrans_path'] if 'xtrans_path' in omr else None
+            input_file_path = tfp.source_exposures_file.name if tfp.source_exposures_file else None
+            validation_file_path = omr['source_exposures_validation_file_path'] if 'source_exposures_validation_file_path' in omr else None
+            transformation_file_path = omr['source_to_canonical_exposures_transformation_file_path'] if 'source_to_canonical_exposures_transformation_file_path' in omr else None
+            output_file_path = tfp.canonical_exposures_file.name if tfp.canonical_exposures_file else None
+
+        (
+            xtrans_path,
+            input_file_path,
+            validation_file_path,
+            transformation_file_path,
+            output_file_path
+        ) = map(
+                os.path.abspath,
+                [
+                    xtrans_path,
+                    input_file_path,
+                    validation_file_path,
+                    transformation_file_path,
+                    output_file_path
+                ]
+        )        
 
         xtrans_args = {
-            'd': source_exposures_validation_file_path,
-            'c': source_exposures_file_path,
-            't': source_to_canonical_exposures_transformation_file_path,
-            'o': canonical_exposures_file_path
+            'd': validation_file_path,
+            'c': input_file_path,
+            't': transformation_file_path,
+            'o': output_file_path
         }
 
         try:
@@ -206,16 +230,16 @@ class OasisExposureTransformsManager(implements(OasisExposureTransformsManagerIn
         except OasisException as e:
             raise e
 
-        with io.open(canonical_exposures_file_path, 'r', encoding='utf-8') as f:
+        with io.open(output_file_path, 'r', encoding='utf-8') as f:
             if not with_model_resources:
                 return f
 
-            oasis_model.resources['transforms_files_pipeline'].canonical_exposures_file = f
+            tfp.canonical_exposures_file = f
             self.models[oasis_model.key] = oasis_model
             return oasis_model
 
 
-    def transform_canonical_to_model(self, oasis_model, **kwargs):
+    def transform_canonical_to_model(self, oasis_model, with_model_resources=True, **kwargs):
         """
         Transforms the canonical exposures/locations file for a given
         ``oasis_model`` object to a format understood by Oasis keys lookup
@@ -234,33 +258,44 @@ class OasisExposureTransformsManager(implements(OasisExposureTransformsManagerIn
         present in the optional ``kwargs`` dict as named arguments. In this
         case only the generated canonical file is returned.
         """
+        omr = oasis_model.resources
+        tfp = omr['transforms_files_pipeline']
+
         if not with_model_resources:
-            xtrans_path = kwargs['xtrans_path']
-            canonical_exposures_file_path = kwargs['canonical_exposures_file_path']
-            canonical_exposures_validation_file_path = kwargs['canonical_exposures_validation_file_path']
-            canonical_to_model_exposures_transformation_file_path = kwargs['canonical_to_model_exposures_transformation_file_path']
-            model_exposures_file_path = kwargs['model_exposures_file_path']
+            xtrans_path = kwargs['xtrans_path'] if 'xtrans_path' in kwargs else None
+            input_file_path = kwargs['source_exposures_file_path']  if 'source_exposures_file_path' in kwargs else None
+            validation_file_path = kwargs['source_exposures_validation_file_path'] if 'source_exposures_validation_file_path' in kwargs else None
+            transformation_file_path = kwargs['source_to_canonical_exposures_transformation_file_path'] if 'source_to_canonical_exposures_transformation_file_path' in kwargs else None
+            output_file_path = kwargs['canonical_exposures_file_path'] if 'canonical_exposures_file_path' in kwargs else None
         else:
-            xtrans_path = oasis_model.resources['xtrans_path']
-            canonical_exposures_file_path = oasis_model.resources['transforms_files_pipeline'].canonical_exposures_file.name
-            canonical_exposures_validation_file_path = oasis_model.resources['transforms_files_pipeline'].canonical_exposures_validation_file.name
-            canonical_to_model_exposures_transformation_file_path = oasis_model.resources['transforms_files_pipeline'].canonical_to_model_exposures_transformation_file.name
-            model_exposures_file_path = oasis_model.resources['transforms_files_pipeline'].model_exposures_file.name
+            xtrans_path = omr['xtrans_path'] if 'xtrans_path' in omr else None
+            input_file_path = tfp.canonical_exposures_file.name if tfp.canonical_exposures_file else None
+            validation_file_path = omr['canonical_exposures_validation_file_path'] if 'canonical_exposures_validation_file_path' in omr else None
+            transformation_file_path = omr['canonical_to_model_exposures_transformation_file_path'] if 'canonical_to_model_exposures_transformation_file_path' in omr else None
+            output_file_path = tfp.model_exposures_file.name if tfp.model_exposures_file else None
 
-
-        if not xtrans_path:
-            raise OasisException('No file path provided for "xtrans.exe"')
-
-        
-
-        if not lookup_service:
-            raise OasisException('No lookup service provided')
+        (
+            xtrans_path,
+            input_file_path,
+            validation_file_path,
+            transformation_file_path,
+            output_file_path
+        ) = map(
+            os.path.abspath,
+            [
+                xtrans_path,
+                input_file_path,
+                validation_file_path,
+                transformation_file_path,
+                output_file_path
+            ]
+        )
 
         xtrans_args = {
-            'd': canonical_exposures_validation_file_path,
-            'c': canonical_exposures_file_path,
-            't': canonical_to_model_exposures_transformation_file_path,
-            'o': model_exposures_file_path
+            'd': validation_file_path,
+            'c': input_file_path,
+            't': transformation_file_path,
+            'o': output_file_path
         }
 
         try:
@@ -268,21 +303,41 @@ class OasisExposureTransformsManager(implements(OasisExposureTransformsManagerIn
         except OasisException as e:
             raise e
 
-        with io.open(model_exposures_file_path, 'r', encoding='utf-8') as f:
+        with io.open(output_file_path, 'r', encoding='utf-8') as f:
             if not with_model_resources:
                 return f
 
-            oasis_model.resources['transforms_files_pipeline'].model_exposures_file = f
+            tfp.model_exposures_file = f
             self.models[oasis_model.key] = oasis_model
             return oasis_model
 
 
-    def transform_model_to_keys(self, oasis_model, with_model_resources=True, **kwargs):
+    def transform(oasis_model, with_model_resources=True, transform_type=None, **kwargs):
         """
-        Transforms the model exposures/locations file for a given
+        A parent method for the individual methods which implement the
+
+            source exposures -> canonical exposures
+            canonical exposures -> model exposures
+        
+        transformations. If the transform_type is `source_to_canonical` then
+        the ``transform_source_to_canonical`` is called, or else if the
+        transform type is `canonical_to_model` then the
+        ``transform_canonical_to_model`` method is called.
+        """
+        if transform_type == 'source_to_canonical':
+            return transform_source_to_canonical(oasis_model, with_model_resources, kwargs)
+        elif transform_type == 'canonical_to_model':
+            return transform_canonical_to_model(oasis_model, with_model_resources, kwargs)
+
+
+    def get_keys_file(self, oasis_model, with_model_resources=True, **kwargs):
+        """
+        Generates the model exposures/locations file for a given
         ``oasis_model`` object to the Oasis keys CSV file format:
 
             ``LocID,PerilID,CoverageID,AreaPerilID,VulnerabilityID``
+
+        using the lookup service defined for this model.
 
         By default it is assumed that all the resources required for the
         transformation are present in the model object's resources dict, 
@@ -297,25 +352,33 @@ class OasisExposureTransformsManager(implements(OasisExposureTransformsManagerIn
         present in the optional ``kwargs`` dict as named arguments. In this
         case only the generated canonical file is returned.
         """
+        omr = oasis_model.resources
+        tfp = omr['transforms_files_pipeline']        
+
         if not with_model_resources:
-            model_exposures = kwargs['model_exposures']
-            model_exposures_file_path = kwargs['model_exposures_file_path']
-            lookup_service = kwargs['lookup_service']
-            keys_file_path = kwargs['keys_file_path']
+            model_exposures = kwargs['model_exposures'] if 'model_exposures' in kwargs else None
+            model_exposures_file_path = kwargs['model_exposures_file_path']  if 'model_exposures_file_path' in kwargs else None
+            lookup_service = kwargs['lookup_service']  if 'lookup_service' in kwargs else None
+            keys_file_path = kwargs['keys_file_path']  if 'keys_file_path' in kwargs else None
         else:
-            model_exposures = kwargs['model_exposures']
-            model_exposures_file_path = oasis_model.resources['transforms_files_pipeline'].model_exposures_file.name
-            lookup_service = oasis_model.resources['lookup_service']
-            keys_file_path = oasis_model.resources['transforms_files_pipeline'].keys_file.name
+            model_exposures = omr['model_exposures'] if 'model_exposures' in omr else None
+            model_exposures_file_path = tfp.model_exposures_file.name if tfp.model_exposures_file else None
+            lookup_service = omr['lookup_service'] if 'lookup_service' in omr else None
+            keys_file_path = tfp.keys_file.name if tfp.keys_file else None
 
         if not any([model_exposures, model_exposures_file_path]):
-            raise OasisException('No model exposures or model exposures file path provided')
+            raise OasisException('No model exposures or model exposures file path provided for {}'.format(oasis_model))
 
         if not lookup_service:
-            raise OasisException('No lookup service provided')
+            raise OasisException('No lookup service provided for {}'.format(oasis_model))
 
         if not keys_file_path:
-            raise OasisException('No file path provided for the keys file')
+            raise OasisException('No file path provided for the keys file for {}'.format(oasis_model))
+
+        (
+            model_exposures_file_path,
+            keys_file_path
+        ) = map(os.path.abspath, [model_exposures_file_path, keys_file_path])
 
         oasis_keys_file, _ = self.keys_lookup_service_factory.save_keys(
             lookup_service=lookup_service,
@@ -328,19 +391,196 @@ class OasisExposureTransformsManager(implements(OasisExposureTransformsManagerIn
         if not with_model_resources:
             return oasis_keys_file
 
-        oasis_model.resources['transforms_files_pipeline'].oasis_keys_file = oasis_keys_file
+        tfp.oasis_keys_file = oasis_keys_file
         self.models[oasis_model.key] = oasis_model
 
         return oasis_model
 
 
-    def load_canonical_profile(self, oasis_model, **kwargs):
+    def load_canonical_profile(self, oasis_model, with_model_resources=True, **kwargs):
         """
-        Loads a JSON file representing the canonical exposures profile for a
-        given ``oasis_model``.
+        Loads a JSON string or JSON file representation of the canonical
+        exposures profile for a given ``oasis_model``, stores this in the
+        model object's resources dict, and returns the object.
+        """
+        omr = oasis_model.resources
+        tfp = omr['transforms_files_pipeline']
 
-        Returns the profile as a dict, and also stores this in the transforms
-        files pipeline in the model object resources dict.
+        if not with_model_resources:
+            canonical_exposures_profile_json = kwargs['canonical_exposures_profile_json'] if 'canonical_exposures_profile_json' in kwargs else None
+            canonical_exposures_profile_json_path = kwargs['canonical_exposures_profile_json_path']  if 'canonical_exposures_profile_json_path' in kwargs else None
+        else:
+            canonical_exposures_profile_json = omr['canonical_exposures_profile_json']  if 'canonical_exposures_profile_json' in omr else None
+            canonical_exposures_profile_json_path = omr['canonical_exposures_profile_json_path'] if 'canonical_exposures_profile_json_path' in omr else None
+
+        if not any([canonical_exposures_profile_json, canonical_exposures_profile_json_path]):
+            raise OasisException(
+                "No canonical exposures profile JSON or JSON file path provided for {} - "
+                "this must be provided either in the model object's resources dict "
+                "or as optional keyword argument, using the field name / keyword name "
+                "'canonical_exposures_profile_json' if providing a JSON string or "
+                "'canonical_exposures_profile_json_path' if providing a full JSON file path.".
+                format(str(oasis_model))
+            )
+
+        if canonical_exposures_profile_json:
+            try:
+                canonical_exposures_profile = json.loads(canonical_exposures_profile_json)
+            except ValueError:
+                raise OasisException("Canonical exposures profile JSON is invalid for {}.".format(str(oasis_model)))
+        elif canonical_exposures_profile_json_path:
+            try:
+                with io.open(canonical_exposures_profile_json_path, 'r', encoding='utf-8') as f:
+                    canonical_exposures_profile = json.load(f)
+            except (IOError, ValueError):
+                raise OasisException("Canonical exposures profile JSON file path invalid or file is not valid JSON for {}.".format(str(oasis_model)))
+
+        if not with_model_resources:
+            return canonical_exposures_profile
+
+        oasis_model.resources['canonical_exposures_profile'] = canonical_exposures_profile
+        self.models[oasis_model.key] = oasis_model
+
+        return oasis_model
+
+
+    def generate_items_file(self, oasis_model, with_model_resources=True, **kwargs):
+        """
+        Generates an items file for the given ``oasis_model``.
+        """
+        omr = oasis_model.resources
+        tfp = omr['transforms_files_pipeline']
+
+        if not with_model_resources:
+            canonical_exposures_file_path = kwargs['canonical_exposures_file_path'] if 'canonical_exposures_file_path' in kwargs else None
+            keys_file_path = kwargs['keys_file_path']  if 'keys_file_path' in kwargs else None
+            canonical_exposures_profile = kwargs['canonical_exposures_profile']  if 'canonical_exposures_profile' in kwargs else None
+            canonical_exposures_profile_json = kwargs['canonical_exposures_profile_json']  if 'canonical_exposures_profile_json' in kwargs else None
+            canonical_exposures_profile_json_path = kwargs['canonical_exposures_profile_json_path'] if 'canonical_exposures_profile_json_path' in kwargs else None
+        else:
+            canonical_exposures_file_path = tfp.canonical_exposures_file.name if tfp.canonical_exposures_file else None
+            keys_file_path = tfp.keys_file.name  if tfp.keys_file else None
+            canonical_exposures_profile = omr['canonical_exposures_profile']  if 'canonical_exposures_profile' in omr else None
+            canonical_exposures_profile_json = omr['canonical_exposures_profile_json']  if 'canonical_exposures_profile_json' in omr else None
+            canonical_exposures_profile_json_path = omr['canonical_exposures_profile_json_path']  if 'canonical_exposures_profile_json_path' in omr else None
+
+        if not canonical_exposures_file_path:
+            raise OasisException(
+                "No canonical exposures file path provided for {} - "
+                "this must be provided either as an attribute of the transforms "
+                "files pipeline object in the model object's resources dict, "
+                "or as optional keyword argument, using the field name / keyword name "
+                "'canonical_exposures_file_path'.".
+                format(str(oasis_model))
+            )
+
+        if not keys_file_path:
+            raise OasisException(
+                "No keys file path provided for {} - "
+                "this must be provided either as an attribute of the transforms "
+                "files pipeline object in the model object's resources dict, "
+                "or as optional keyword argument, using the field name / keyword name "
+                "'keys_file_path'.".
+                format(str(oasis_model))
+
+            )
+
+        if not any([canonical_exposures, canonical_exposures_profile_json, canonical_exposures_profile_json_path]):
+            raise OasisException(
+                "No canonical exposures profile dict, profile JSON or JSON file path provided for {} - "
+                "this must be provided either in the model object's resources dict "
+                "or as optional keyword argument, using the field name / keyword name "
+                "'canonical_exposures_profile' if providing a dict, "
+                "or 'canonical_exposures_profile_json' if providing a JSON string, "
+                "or 'canonical_exposures_profile_json_path' if providing a JSON file path.".
+                format(str(oasis_model))
+            )
+
+        with io.open(canonical_exposures_file_path, 'r', encoding='utf-8') as cf:
+            with io.open(keys_file_path, 'r', encoding='utf-8') as kf:
+                canexp_df = pd.read_csv(io.StringIO(cf.read()))
+                canexp_df = canexp_df.where(canexp_df.notnull(), None)
+                canexp_df.columns = map(str.lower, canexp_df.columns)
+
+                keys_df = pd.read_csv(io.StringIO(kf.read()))
+                keys_df = keys_df.rename(columns={'CoverageID': 'CoverageType'})
+                keys_df = keys_df.where(keys_df.notnull(), None)
+                keys_df.columns = map(str.lower, keys_df.columns)
+
+        if not canonical_exposures_profile:
+            if canonical_exposures_profile_json:
+                try:
+                    canonical_exposures_profile = json.loads(canonical_exposures_profile_json)
+                except ValueError:
+                    raise OasisException("Canonical exposures profile JSON is invalid for {}.".format(str(oasis_model)))
+            else:
+                try:
+                    with io.open(canonical_exposures_profile_json_path, 'r', encoding='utf-8') as jp:
+                        canonical_exposures_profile = json.load(jp)
+                except (IOError, ValueError):
+                    raise OasisException("Canonical exposures profile JSON file path invalid or file is not valid JSON for {}.".format(str(oasis_model)))
+
+        tiv_fields = sorted(map(
+            lambda f: canonical_exposures_profile[f],
+            filter(lambda k: canonical_exposures_profile[k]['FieldName'] == 'TIV', canonical_exposures_profile)
+        ))
+
+        items_df = pd.DataFrame(columns=['item_id', 'coverage_id', 'areaperil_id', 'vulnerability_id', 'group_id'])
+
+        items = []
+        for i in range(len(keys_df)):
+            ki = keys_df.iloc[i]
+            print('Processing keys item {}'.format(ki.to_json()))
+
+            ci_df = canexp_df[canexp_df['row_id'] == ki['locid']]
+
+            if ci_df.empty:
+                raise OasisException("No matching canonical exposure item found in canonical exposures data frame for keys item {}.".format(ki))
+            elif len(ci_df) > 1:
+                raise OasisException("Duplicate canonical exposure items found in canonical exposures data frame for keys item {}.".format(ki))
+
+            ci = ci_df.iloc[0]
+
+            tiv_field = filter(
+                    lambda f: f['CoverageTypeId'] == ki['coveragetype'],
+                    tiv_fields
+            )[0]
+
+            if ci[tiv_field['ProfileElementName'].lower()] > 0:
+                it = {
+                    'item_id': ci['row_id'],
+                    'coverage_id': i,
+                    'areaperil_id': ki['areaperilid'],
+                    'vulnerability_id': ki['vulnerabilityid'],
+                    'group_id': 1
+                }
+                print('Appending item {}'.format(it))
+                items.append(it)
+
+        items_df = items_df.append(items)
+
+        items_df.to_csv(path_or_buf=keys_file_path, encoding='utf-8', chunksize=1000, index=False)
+
+        with io.open(keys_file_path, 'r', encoding='utf-8') as f:
+            if not with_model_exposures:
+                return f
+
+            tfp.keys_file = f
+            self.models[oasis_model.key] = oasis_model
+
+            return oasis_model
+
+
+    def generate_coverages_file(self, oasis_model, **kwargs):
+        """
+        Generates a coverages file for the given ``oasis_model``.
+        """
+        pass
+
+
+    def generate_gulsummaryxref_file(self, oasis_model, **kwargs):
+        """
+        Generates a gulsummaryxref file for the given ``oasis_model``.
         """
         pass
 
