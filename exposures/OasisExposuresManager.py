@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 __all__ = [
-    'OasisExposureTransformsManager'
+    'OasisExposuresManager'
 ]
 
 import io
@@ -14,10 +14,10 @@ import sys
 
 from interface import implements
 
-from OasisExposureTransformsManagerInterface import OasisExposureTransformsManagerInterface
-from OasisExposureTransformsFilesPipeline import OasisExposureTransformsFilesPipeline
+from OasisExposuresManagerInterface import OasisExposuresManagerInterface
+from OasisFilesPipeline import OasisFilesPipeline
 
-if os.getcwd().split(os.path.sep)[-1] == 'exposure_transforms':
+if os.getcwd().split(os.path.sep)[-1] == 'exposures':
     sys.path.insert(0, os.path.abspath(os.pardir))
 
 from oasis_utils import (
@@ -27,7 +27,7 @@ from oasis_utils import (
 )
 
 
-class OasisExposureTransformsManager(implements(OasisExposureTransformsManagerInterface)):
+class OasisExposuresManager(implements(OasisExposuresManagerInterface)):
 
 
     def __init__(self, keys_lookup_service_factory=None, oasis_models=None):
@@ -43,11 +43,11 @@ class OasisExposureTransformsManager(implements(OasisExposureTransformsManagerIn
         
         if oasis_models:
             for model in oasis_models:
-                if 'transforms_files_pipeline' in model.resources:
-                    if not model.resources['transforms_files_pipeline']:
-                        model.resources['transforms_files_pipeline'] = OasisExposureTransformsFilesPipeline.create()
+                if 'oasis_files_pipeline' in model.resources:
+                    if not model.resources['oasis_files_pipeline']:
+                        model.resources['oasis_files_pipeline'] = OasisFilesPipeline.create()
                 else:
-                    model.resources['transforms_files_pipeline'] = OasisExposureTransformsFilesPipeline.create()
+                    model.resources['oasis_files_pipeline'] = OasisFilesPipeline.create()
                 
                 self._models[model.key] = model
 
@@ -56,7 +56,7 @@ class OasisExposureTransformsManager(implements(OasisExposureTransformsManagerIn
     @classmethod
     def create(cls, keys_lookup_service_factory=None, oasis_models=None):
         """
-        Class method that returns an instance of an Oasis exposure transforms
+        Class method that returns an instance of an Oasis exposures
         manager. The optional ``oasis_models`` argument should be a list of
         Oasis model objects (``omdk.OasisModel.OasisModel``), and any
         additional resources can be specified in ``kwargs``.
@@ -114,8 +114,8 @@ class OasisExposureTransformsManager(implements(OasisExposureTransformsManagerIn
     def models(self, key=None, val=None):
         if key:
             model = val
-            if 'transforms_files_pipeline' not in model.resources:
-                model.resources['transforms_files_pipeline'] = OasisExposureTransformsFilesPipeline.create()
+            if 'oasis_files_pipeline' not in model.resources:
+                model.resources['oasis_files_pipeline'] = OasisFilesPipeline.create()
                 self._models[key] = model
         else:
             self._models.clear()
@@ -136,7 +136,7 @@ class OasisExposureTransformsManager(implements(OasisExposureTransformsManagerIn
         ``oasis_model`` optionally using additional arguments in the ``kwargs``
         dict.
         """
-        oasis_model.resources['transforms_files_pipeline'] = OasisExposureTransformsFilesPipeline.create()
+        oasis_model.resources['oasis_files_pipeline'] = OasisFilesPipeline.create()
         self.models[oasis_model.key] = oasis_model
         return oasis_model
 
@@ -186,7 +186,7 @@ class OasisExposureTransformsManager(implements(OasisExposureTransformsManagerIn
         case only the generated canonical file is returned.
         """
         omr = oasis_model.resources
-        tfp = omr['transforms_files_pipeline']
+        tfp = omr['oasis_files_pipeline']
 
         if not with_model_resources:
             xtrans_path = kwargs['xtrans_path'] if 'xtrans_path' in kwargs else None
@@ -259,7 +259,7 @@ class OasisExposureTransformsManager(implements(OasisExposureTransformsManagerIn
         case only the generated canonical file is returned.
         """
         omr = oasis_model.resources
-        tfp = omr['transforms_files_pipeline']
+        tfp = omr['oasis_files_pipeline']
 
         if not with_model_resources:
             xtrans_path = kwargs['xtrans_path'] if 'xtrans_path' in kwargs else None
@@ -353,7 +353,7 @@ class OasisExposureTransformsManager(implements(OasisExposureTransformsManagerIn
         case only the generated canonical file is returned.
         """
         omr = oasis_model.resources
-        tfp = omr['transforms_files_pipeline']        
+        tfp = omr['oasis_files_pipeline']        
 
         if not with_model_resources:
             model_exposures = kwargs['model_exposures'] if 'model_exposures' in kwargs else None
@@ -404,7 +404,7 @@ class OasisExposureTransformsManager(implements(OasisExposureTransformsManagerIn
         model object's resources dict, and returns the object.
         """
         omr = oasis_model.resources
-        tfp = omr['transforms_files_pipeline']
+        tfp = omr['oasis_files_pipeline']
 
         if not with_model_resources:
             canonical_exposures_profile_json = kwargs['canonical_exposures_profile_json'] if 'canonical_exposures_profile_json' in kwargs else None
@@ -449,7 +449,7 @@ class OasisExposureTransformsManager(implements(OasisExposureTransformsManagerIn
         Generates an items file for the given ``oasis_model``.
         """
         omr = oasis_model.resources
-        tfp = omr['transforms_files_pipeline']
+        tfp = omr['oasis_files_pipeline']
 
         if not with_model_resources:
             canonical_exposures_file_path = kwargs['canonical_exposures_file_path'] if 'canonical_exposures_file_path' in kwargs else None

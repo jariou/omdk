@@ -2,16 +2,15 @@
 # -*- coding: utf-8 -*-
 
 __all__ = [
-    'OasisExposureTransformsManagerInterface'
+    'OasisExposuresManagerInterface'
 ]
 
 from interface import Interface
 
 
-class OasisExposureTransformsManagerInterface(Interface):
+class OasisExposuresManagerInterface(Interface):
     """
-    An interface for defining the behaviour of an Oasis exposure transforms
-    manager.
+    An interface for defining the behaviour of an Oasis exposures manager.
     """
 
     def __init__(self, keys_lookup_service_factory=None, oasis_models=None):
@@ -24,7 +23,7 @@ class OasisExposureTransformsManagerInterface(Interface):
     @classmethod
     def create(cls, keys_lookup_service_factory=None, oasis_models=None, **kwargs):
         """
-        Class method that returns an instance of an Oasis exposure transforms
+        Class method that returns an instance of an Oasis exposures
         manager. The optional ``oasis_models`` argument should be a list of
         Oasis model objects (``omdk.OasisModel.OasisModel``), and any
         additional resources can be specified in ``kwargs``.

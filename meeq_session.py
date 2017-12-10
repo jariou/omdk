@@ -12,7 +12,7 @@ from models import OasisModelFactory as omf
 
 meeq = omf.create('Catrisks', 'MEEQ', '0.0.0.6', resources={'lookup_service': meeq_kls})
 
-from exposure_transforms import OasisExposureTransformsManager as oetm
+from exposures import OasisExposuresManager as oem
 
 manager = oetm.create(oasis_models=[meeq])
 
@@ -29,8 +29,8 @@ with io.open('tests/data/input/Catrisks/MEEQ/test/catrisks_meeq_source_loc.csv',
     with io.open('tests/data/input/Catrisks/MEEQ/test/catrisks_meeq_can_loc.csv', 'w', encoding='utf-8') as c:
         with io.open('tests/data/input/Catrisks/MEEQ/test/catrisks_meeq_model_loc.csv', 'w', encoding='utf-8') as m:
             with io.open('tests/data/input/Catrisks/MEEQ/test/catrisks_meeq_keys.csv', 'w', encoding='utf-8') as k:
-                meeq.resources['transforms_files_pipeline'].source_exposures_file = s
-                meeq.resources['transforms_files_pipeline'].canonical_exposures_file = c
-                meeq.resources['transforms_files_pipeline'].model_exposures_file = m
-                meeq.resources['transforms_files_pipeline'].keys_file = k
+                meeq.resources['oasis_files_pipeline'].source_exposures_file = s
+                meeq.resources['oasis_files_pipeline'].canonical_exposures_file = c
+                meeq.resources['oasis_files_pipeline'].model_exposures_file = m
+                meeq.resources['oasis_files_pipeline'].keys_file = k
 

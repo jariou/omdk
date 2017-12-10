@@ -10,26 +10,26 @@ Module Documentation
    :private-members:
    :undoc-members:
 
-``exposure_transforms.OasisExposureTransformsManagerInterface``
+``exposures.OasisExposuresManagerInterface``
 ---------------------------------------------------------------
 
-.. automodule:: exposure_transforms.OasisExposureTransformsManagerInterface
+.. automodule:: exposures.OasisExposuresManagerInterface
    :members:
    :private-members:
    :undoc-members:
 
-``exposure_transforms.OasisExposureTransformsManager``
+``exposures.OasisExposuresManager``
 ------------------------------------------------------
 
-.. automodule:: exposure_transforms.OasisExposureTransformsManager
+.. automodule:: exposures.OasisExposuresManager
    :members:
    :private-members:
    :undoc-members:
 
-``exposure_transforms.OasisExposureTransformsFilesPipeline``
+``exposures.OasisFilesPipeline``
 ------------------------------------------------------------
 
-.. automodule:: exposure_transforms.OasisExposureTransformsFilesPipeline
+.. automodule:: exposures.OasisFilesPipeline
    :members:
    :private-members:
    :undoc-members:

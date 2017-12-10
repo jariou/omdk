@@ -1,0 +1,320 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>exposures.OasisExposuresManagerInterface &#8212; omdk 0.1 documentation</title>
+    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for exposures.OasisExposuresManagerInterface</h1><div class="highlight"><pre>
+<span></span><span class="ch">#!/usr/bin/env python</span>
+<span class="c1"># -*- coding: utf-8 -*-</span>
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s1">&#39;OasisExposuresManagerInterface&#39;</span>
+<span class="p">]</span>
+
+<span class="kn">from</span> <span class="nn">interface</span> <span class="k">import</span> <span class="n">Interface</span>
+
+
+<div class="viewcode-block" id="OasisExposuresManagerInterface"><a class="viewcode-back" href="../../modules.html#exposures.OasisExposuresManagerInterface.OasisExposuresManagerInterface">[docs]</a><span class="k">class</span> <span class="nc">OasisExposuresManagerInterface</span><span class="p">(</span><span class="n">Interface</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    An interface for defining the behaviour of an Oasis exposures manager.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">keys_lookup_service_factory</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">oasis_models</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Class constructor - not generally to be used directly.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span>
+
+
+<div class="viewcode-block" id="OasisExposuresManagerInterface.create"><a class="viewcode-back" href="../../modules.html#exposures.OasisExposuresManagerInterface.OasisExposuresManagerInterface.create">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">keys_lookup_service_factory</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">oasis_models</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Class method that returns an instance of an Oasis exposures</span>
+<span class="sd">        manager. The optional ``oasis_models`` argument should be a list of</span>
+<span class="sd">        Oasis model objects (``omdk.OasisModel.OasisModel``), and any</span>
+<span class="sd">        additional resources can be specified in ``kwargs``.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span></div>
+
+
+<div class="viewcode-block" id="OasisExposuresManagerInterface.clear_files_pipeline"><a class="viewcode-back" href="../../modules.html#exposures.OasisExposuresManagerInterface.OasisExposuresManagerInterface.clear_files_pipeline">[docs]</a>    <span class="k">def</span> <span class="nf">clear_files_pipeline</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">oasis_model</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Clears the exposure transforms files pipeline for the given</span>
+<span class="sd">        ``oasis_model`` optionally using additional arguments in the ``kwargs``</span>
+<span class="sd">        dict.</span>
+
+<span class="sd">        All the required resources must be provided either in the model object</span>
+<span class="sd">        resources dict or the ``kwargs`` dict.</span>
+
+<span class="sd">        In the design of the exposure transform framework a model&#39;s files</span>
+<span class="sd">        pipeline is an object value in its resources dict with the key</span>
+<span class="sd">        ``transforms_files_pipeline`` and is thereby accessible with</span>
+
+<span class="sd">            `oasis_model.resources[&#39;transforms_files_pipeline&#39;]`</span>
+
+<span class="sd">        This returns an object of type</span>
+
+<span class="sd">            `exposure_transforms.OasisExposureTransformsFilesPipeline`</span>
+
+<span class="sd">        which stores the different files in the transformation stages for the</span>
+<span class="sd">        model as property attributes, e.g.</span>
+
+<span class="sd">            `oasis_model.resources[&#39;transforms_files_pipeline&#39;].source_exposures_file`</span>
+
+<span class="sd">        A standard implementation could either assign a new object of this</span>
+<span class="sd">        type in the call to ``clear_files_pipeline``, or set some subset of the</span>
+<span class="sd">        file attributes of this pipelines object to null.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span></div>
+
+
+<div class="viewcode-block" id="OasisExposuresManagerInterface.start_files_pipeline"><a class="viewcode-back" href="../../modules.html#exposures.OasisExposuresManagerInterface.OasisExposuresManagerInterface.start_files_pipeline">[docs]</a>    <span class="k">def</span> <span class="nf">start_files_pipeline</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">oasis_model</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Starts the exposure transforms pipeline for the given ``oasis_model``,</span>
+<span class="sd">        i.e. the generation of the canonical exposures files, keys file</span>
+<span class="sd">        and finally the Oasis files.</span>
+
+<span class="sd">        All the required resources must be provided either in the model object</span>
+<span class="sd">        resources dict or the ``kwargs`` dict.</span>
+
+<span class="sd">        It is up to the specific implementation of a manager of whether to</span>
+<span class="sd">        use the model object resources dict or additional optional arguments</span>
+<span class="sd">        in ``kwargs`` for this process.</span>
+
+<span class="sd">        In a standard implementation of the manager the call to</span>
+<span class="sd">        `start_files_pipeline` should trigger calls to the individual methods for</span>
+<span class="sd">        performing file transformations in a normal sequence, e.g.</span>
+
+<span class="sd">            `transform_source_to_canonical`</span>
+<span class="sd">            `transform_canonical_to_model`</span>
+<span class="sd">            `transform_model_to_keys`</span>
+<span class="sd">            `load_canonical_profile`</span>
+<span class="sd">            `generate_oasis_files`</span>
+
+<span class="sd">        and the generated files should be stored as attributes in the given</span>
+<span class="sd">        model object&#39;s transforms files pipeline.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span></div>
+
+
+<div class="viewcode-block" id="OasisExposuresManagerInterface.save_files_pipeline"><a class="viewcode-back" href="../../modules.html#exposures.OasisExposuresManagerInterface.OasisExposuresManagerInterface.save_files_pipeline">[docs]</a>    <span class="k">def</span> <span class="nf">save_files_pipeline</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">oasis_model</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Saves the files in the given ``oasis_model``&#39;s transforms files</span>
+<span class="sd">        pipeline to some data store, e.g. local filesystem, database etc.</span>
+
+<span class="sd">        All the required resources must be provided either in the model object</span>
+<span class="sd">        resources dict or the ``kwargs`` dict.</span>
+
+<span class="sd">        It is up to the specific implementation of the manager as to what type</span>
+<span class="sd">        of store to use for saving pipelines.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span></div>
+
+
+<div class="viewcode-block" id="OasisExposuresManagerInterface.transform_source_to_canonical"><a class="viewcode-back" href="../../modules.html#exposures.OasisExposuresManagerInterface.OasisExposuresManagerInterface.transform_source_to_canonical">[docs]</a>    <span class="k">def</span> <span class="nf">transform_source_to_canonical</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">oasis_model</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Transforms the source exposures/locations file for a given</span>
+<span class="sd">        ``oasis_model`` object to a canonical/standard Oasis format.</span>
+
+<span class="sd">        All the required resources must be provided either in the model object</span>
+<span class="sd">        resources dict or the ``kwargs`` dict.</span>
+
+<span class="sd">        It is up to the specific implementation of this class of how these</span>
+<span class="sd">        resources will be named in ``kwargs`` and how they will be used to</span>
+<span class="sd">        effect the transformation.</span>
+<span class="sd">        </span>
+<span class="sd">        The transform is generic by default, but could be supplier specific if</span>
+<span class="sd">        required.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span></div>
+
+
+<div class="viewcode-block" id="OasisExposuresManagerInterface.transform_canonical_to_model"><a class="viewcode-back" href="../../modules.html#exposures.OasisExposuresManagerInterface.OasisExposuresManagerInterface.transform_canonical_to_model">[docs]</a>    <span class="k">def</span> <span class="nf">transform_canonical_to_model</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">oasis_model</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Transforms the canonical exposures/locations file for a given</span>
+<span class="sd">        ``oasis_model`` object to a format understood by Oasis keys lookup</span>
+<span class="sd">        services.</span>
+
+<span class="sd">        All the required resources must be provided either in the model object</span>
+<span class="sd">        resources dict or the ``kwargs`` dict.</span>
+
+<span class="sd">        It is up to the specific implementation of this class of how these</span>
+<span class="sd">        resources will be named in ``kwargs`` and how they will be used to</span>
+<span class="sd">        effect the transformation.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span></div>
+
+
+<div class="viewcode-block" id="OasisExposuresManagerInterface.get_keys_file"><a class="viewcode-back" href="../../modules.html#exposures.OasisExposuresManagerInterface.OasisExposuresManagerInterface.get_keys_file">[docs]</a>    <span class="k">def</span> <span class="nf">get_keys_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">oasis_model</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Generates the model exposures/locations file for a given</span>
+<span class="sd">        ``oasis_model`` object to the Oasis keys CSV file format:</span>
+
+<span class="sd">            ``LocID,PerilID,CoverageID,AreaPerilID,VulnerabilityID``</span>
+
+
+<span class="sd">        All the required resources must be provided either in the model object</span>
+<span class="sd">        resources dict or the ``kwargs`` dict.</span>
+
+<span class="sd">        It is up to the specific implementation of this class of how these</span>
+<span class="sd">        resources will be named in ``kwargs`` and how they will be used to</span>
+<span class="sd">        effect the transformation.</span>
+
+<span class="sd">        A &quot;standard&quot; implementation should use the lookup service factory</span>
+<span class="sd">        class in ``oasis_utils`` (a submodule of `omdk`) namely</span>
+<span class="sd">        </span>
+<span class="sd">            ``oasis_utils.oasis_keys_lookup_service_utils.KeysLookupServiceFactory``</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span></div>
+
+
+<div class="viewcode-block" id="OasisExposuresManagerInterface.load_canonical_profile"><a class="viewcode-back" href="../../modules.html#exposures.OasisExposuresManagerInterface.OasisExposuresManagerInterface.load_canonical_profile">[docs]</a>    <span class="k">def</span> <span class="nf">load_canonical_profile</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">oasis_model</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Loads a JSON file representing the canonical exposures profile for a</span>
+<span class="sd">        given ``oasis_model``.</span>
+
+<span class="sd">        All the required resources must be provided either in the model object</span>
+<span class="sd">        resources dict or the ``kwargs`` dict.</span>
+
+<span class="sd">        It is up to the specific implementation of this class of how these</span>
+<span class="sd">        resources will be named in ``kwargs`` and how they will be used to</span>
+<span class="sd">        effect the transformation.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span></div>
+
+
+<div class="viewcode-block" id="OasisExposuresManagerInterface.generate_items_file"><a class="viewcode-back" href="../../modules.html#exposures.OasisExposuresManagerInterface.OasisExposuresManagerInterface.generate_items_file">[docs]</a>    <span class="k">def</span> <span class="nf">generate_items_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">oasis_model</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Generates an items file for the given ``oasis_model``.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span></div>
+
+
+<div class="viewcode-block" id="OasisExposuresManagerInterface.generate_coverages_file"><a class="viewcode-back" href="../../modules.html#exposures.OasisExposuresManagerInterface.OasisExposuresManagerInterface.generate_coverages_file">[docs]</a>    <span class="k">def</span> <span class="nf">generate_coverages_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">oasis_model</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Generates a coverages file for the given ``oasis_model``.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span></div>
+
+
+<div class="viewcode-block" id="OasisExposuresManagerInterface.generate_gulsummaryxref_file"><a class="viewcode-back" href="../../modules.html#exposures.OasisExposuresManagerInterface.OasisExposuresManagerInterface.generate_gulsummaryxref_file">[docs]</a>    <span class="k">def</span> <span class="nf">generate_gulsummaryxref_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">oasis_model</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Generates a gulsummaryxref file for the given ``oasis_model``.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span></div>
+
+
+<div class="viewcode-block" id="OasisExposuresManagerInterface.generate_oasis_files"><a class="viewcode-back" href="../../modules.html#exposures.OasisExposuresManagerInterface.OasisExposuresManagerInterface.generate_oasis_files">[docs]</a>    <span class="k">def</span> <span class="nf">generate_oasis_files</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">oasis_model</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        For a given ``oasis_model`` generates the standard Oasis files, namely</span>
+
+<span class="sd">            ``items.csv``</span>
+<span class="sd">            ``coverages.csv``</span>
+<span class="sd">            ``gulsummaryxref.csv``</span>
+
+<span class="sd">        All the required resources must be provided either in the model object</span>
+<span class="sd">        resources dict or the ``kwargs`` dict.</span>
+
+<span class="sd">        It is up to the specific implementation of this class of how these</span>
+<span class="sd">        resources will be named in ``kwargs`` and how they will be used to</span>
+<span class="sd">        effect the transformation.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span></div></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../index.html">omdk</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../repository-management.html">Repository Management</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sphinx.html">Sphinx Docs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../first-steps.html">First Steps</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">Module Documentation</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, Oasis Loss Modelling Framework (v. 1.0, 30 November, 2017).
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

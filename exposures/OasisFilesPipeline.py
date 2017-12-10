@@ -2,10 +2,10 @@
 # -*- coding: utf-8 -*-
 
 __all__ = [
-    'OasisExposureTransformsFilesPipeline'
+    'OasisFilesPipeline'
 ]
 
-class OasisExposureTransformsFilesPipeline(object):
+class OasisFilesPipeline(object):
 
     def __init__(
         self,
@@ -39,8 +39,8 @@ class OasisExposureTransformsFilesPipeline(object):
         keys_file=None
     ):
         """
-        Class method that returns an instance of an Oasis transforms files
-        pipeline.
+        Class method that returns an instance of an Oasis files pipeline
+        as used in exposures management.
         """
         return cls(
             source_exposures_file=source_exposures_file,
