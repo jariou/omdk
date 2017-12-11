@@ -5,15 +5,21 @@ __all__ = [
     'OasisFilesPipeline'
 ]
 
+__author__ = "Sandeep Murthy"
+__copyright__ = "Oasis Loss Modelling Framework 2017"
+
+
 class OasisFilesPipeline(object):
 
     def __init__(
         self,
+        model_key=None,
         source_exposures_file=None,
         canonical_exposures_file=None,
         model_exposures_file=None,
         keys_file=None
     ):
+        self._model_key = model_key
         self._source_exposures_file = source_exposures_file
         self._canonical_exposures_file = canonical_exposures_file
         self._model_exposures_file = model_exposures_file
@@ -33,6 +39,7 @@ class OasisFilesPipeline(object):
     @classmethod
     def create(
         cls,
+        model_key=None,
         source_exposures_file=None,
         canonical_exposures_file=None,
         model_exposures_file=None,
@@ -43,11 +50,21 @@ class OasisFilesPipeline(object):
         as used in exposures management.
         """
         return cls(
+            model_key=model_key,
             source_exposures_file=source_exposures_file,
             canonical_exposures_file=canonical_exposures_file,
             model_exposures_file=model_exposures_file,
             keys_file=keys_file
         )
+
+    @property
+    def model_key(self):
+        """
+        Model key property - getter only.
+
+            :getter: Gets the key of model to which the pipeline is attached.
+        """
+        return self._model_key
 
 
     @property
@@ -216,3 +233,15 @@ class OasisFilesPipeline(object):
                      ``items.csv``, ``coverages.csv``, `gulsummaryxref.csv`.
         """
         return self._oasis_files
+
+
+    def __str__(self):
+        return '{}: {}'.format(self.__repr__(), self.model_key)
+
+
+    def __repr__(self):
+        return '{}: {}'.format(self.__class__, self.__dict__)
+
+
+    def _repr_pretty_(self, p, cycle):
+       p.text(str(self) if not cycle else '...')

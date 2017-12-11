@@ -7,7 +7,6 @@ Module Documentation
 
 .. automodule:: models.OasisModel
    :members:
-   :private-members:
    :undoc-members:
 
 ``exposures.OasisExposuresManagerInterface``
@@ -15,7 +14,6 @@ Module Documentation
 
 .. automodule:: exposures.OasisExposuresManagerInterface
    :members:
-   :private-members:
    :undoc-members:
 
 ``exposures.OasisExposuresManager``
@@ -23,7 +21,6 @@ Module Documentation
 
 .. automodule:: exposures.OasisExposuresManager
    :members:
-   :private-members:
    :undoc-members:
 
 ``exposures.OasisFilesPipeline``
@@ -31,5 +28,4 @@ Module Documentation
 
 .. automodule:: exposures.OasisFilesPipeline
    :members:
-   :private-members:
    :undoc-members:

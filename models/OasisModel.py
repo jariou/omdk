@@ -16,6 +16,9 @@ from oasis_utils import (
     OasisException,
 )
 
+__author__ = "Sandeep Murthy"
+__copyright__ = "Oasis Loss Modelling Framework 2017"
+
 
 class OasisModel(object):
     """

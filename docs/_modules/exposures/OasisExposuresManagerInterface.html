@@ -49,13 +49,16 @@
 
 <span class="kn">from</span> <span class="nn">interface</span> <span class="k">import</span> <span class="n">Interface</span>
 
+<span class="n">__author__</span> <span class="o">=</span> <span class="s2">&quot;Sandeep Murthy&quot;</span>
+<span class="n">__copyright__</span> <span class="o">=</span> <span class="s2">&quot;Oasis Loss Modelling Framework 2017&quot;</span>
+
 
 <div class="viewcode-block" id="OasisExposuresManagerInterface"><a class="viewcode-back" href="../../modules.html#exposures.OasisExposuresManagerInterface.OasisExposuresManagerInterface">[docs]</a><span class="k">class</span> <span class="nc">OasisExposuresManagerInterface</span><span class="p">(</span><span class="n">Interface</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    An interface for defining the behaviour of an Oasis exposures manager.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">keys_lookup_service_factory</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">oasis_models</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">oasis_models</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Class constructor - not generally to be used directly.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -63,7 +66,7 @@
 
 
 <div class="viewcode-block" id="OasisExposuresManagerInterface.create"><a class="viewcode-back" href="../../modules.html#exposures.OasisExposuresManagerInterface.OasisExposuresManagerInterface.create">[docs]</a>    <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">keys_lookup_service_factory</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">oasis_models</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">oasis_models</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Class method that returns an instance of an Oasis exposures</span>
 <span class="sd">        manager. The optional ``oasis_models`` argument should be a list of</span>
@@ -181,7 +184,7 @@
         <span class="k">pass</span></div>
 
 
-<div class="viewcode-block" id="OasisExposuresManagerInterface.get_keys_file"><a class="viewcode-back" href="../../modules.html#exposures.OasisExposuresManagerInterface.OasisExposuresManagerInterface.get_keys_file">[docs]</a>    <span class="k">def</span> <span class="nf">get_keys_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">oasis_model</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="OasisExposuresManagerInterface.get_keys"><a class="viewcode-back" href="../../modules.html#exposures.OasisExposuresManagerInterface.OasisExposuresManagerInterface.get_keys">[docs]</a>    <span class="k">def</span> <span class="nf">get_keys</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">oasis_model</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Generates the model exposures/locations file for a given</span>
 <span class="sd">        ``oasis_model`` object to the Oasis keys CSV file format:</span>

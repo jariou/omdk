@@ -47,15 +47,21 @@
     <span class="s1">&#39;OasisFilesPipeline&#39;</span>
 <span class="p">]</span>
 
+<span class="n">__author__</span> <span class="o">=</span> <span class="s2">&quot;Sandeep Murthy&quot;</span>
+<span class="n">__copyright__</span> <span class="o">=</span> <span class="s2">&quot;Oasis Loss Modelling Framework 2017&quot;</span>
+
+
 <div class="viewcode-block" id="OasisFilesPipeline"><a class="viewcode-back" href="../../modules.html#exposures.OasisFilesPipeline.OasisFilesPipeline">[docs]</a><span class="k">class</span> <span class="nc">OasisFilesPipeline</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
+        <span class="n">model_key</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">source_exposures_file</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">canonical_exposures_file</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">model_exposures_file</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">keys_file</span><span class="o">=</span><span class="kc">None</span>
     <span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_model_key</span> <span class="o">=</span> <span class="n">model_key</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_source_exposures_file</span> <span class="o">=</span> <span class="n">source_exposures_file</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_canonical_exposures_file</span> <span class="o">=</span> <span class="n">canonical_exposures_file</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_model_exposures_file</span> <span class="o">=</span> <span class="n">model_exposures_file</span>
@@ -75,6 +81,7 @@
 <div class="viewcode-block" id="OasisFilesPipeline.create"><a class="viewcode-back" href="../../modules.html#exposures.OasisFilesPipeline.OasisFilesPipeline.create">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">create</span><span class="p">(</span>
         <span class="bp">cls</span><span class="p">,</span>
+        <span class="n">model_key</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">source_exposures_file</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">canonical_exposures_file</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">model_exposures_file</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -85,11 +92,21 @@
 <span class="sd">        as used in exposures management.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span>
+            <span class="n">model_key</span><span class="o">=</span><span class="n">model_key</span><span class="p">,</span>
             <span class="n">source_exposures_file</span><span class="o">=</span><span class="n">source_exposures_file</span><span class="p">,</span>
             <span class="n">canonical_exposures_file</span><span class="o">=</span><span class="n">canonical_exposures_file</span><span class="p">,</span>
             <span class="n">model_exposures_file</span><span class="o">=</span><span class="n">model_exposures_file</span><span class="p">,</span>
             <span class="n">keys_file</span><span class="o">=</span><span class="n">keys_file</span>
         <span class="p">)</span></div>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">model_key</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Model key property - getter only.</span>
+
+<span class="sd">            :getter: Gets the key of model to which the pipeline is attached.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_model_key</span>
 
 
     <span class="nd">@property</span>
@@ -257,7 +274,19 @@
 <span class="sd">            :getter: Gets the complete set of generated Oasis files, including</span>
 <span class="sd">                     ``items.csv``, ``coverages.csv``, `gulsummaryxref.csv`.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_oasis_files</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_oasis_files</span>
+
+
+    <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s1">&#39;</span><span class="si">{}</span><span class="s1">: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="fm">__repr__</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_key</span><span class="p">)</span>
+
+
+    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s1">&#39;</span><span class="si">{}</span><span class="s1">: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">)</span>
+
+
+    <span class="k">def</span> <span class="nf">_repr_pretty_</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">cycle</span><span class="p">):</span>
+       <span class="n">p</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">cycle</span> <span class="k">else</span> <span class="s1">&#39;...&#39;</span><span class="p">)</span></div>
 </pre></div>
 
           </div>

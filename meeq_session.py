@@ -1,3 +1,10 @@
+"""
+Session to perform MEEQ exposure transforms using the Oasis exposure management
+framework in the OMDK repository
+
+    https://github.com/OasisLMF/OMDK
+"""
+
 import io
 import os
 import sys
@@ -8,29 +15,26 @@ from oasis_utils import KeysLookupServiceFactory as klsf
 
 _, meeq_kls = klsf.create('../Catrisks/keys_data/MEEQ', '../Catrisks/keys_data/MEEQ/ModelVersion.csv', '../Catrisks/src/keys_server')
 
-from models import OasisModelFactory as omf
+from omdk.models import OasisModelFactory as omf
 
-meeq = omf.create('Catrisks', 'MEEQ', '0.0.0.6', resources={'lookup_service': meeq_kls})
+meeq_resources = resources = {
+    'lookup_service': meeq_kls,
+    'output_basedirpath': os.path.abspath('omdk/Files'),
+    'xtrans_path': os.path.abspath('Flamingo/xtrans/test/xtrans.exe'),
+    'source_exposures_file_path': os.path.abspath('Catrisks/keys_data/MEEQ/MEEQ_loc.csv'),
+    'source_exposures_validation_file_path': os.path.abspath('Catrisks/flamingo/ValidationFiles/Catrisks_SourceLoc.xsd'),
+    'source_to_canonical_exposures_transformation_file_path': os.path.abspath('Catrisks/flamingo/TransformationFiles/MappingMapToCatrisks_CanLoc_A.xslt'),
+    'canonical_exposures_validation_file_path': os.path.abspath('Catrisks/flamingo/ValidationFiles/Catrisks_CanLoc_B.xsd'),
+    'canonical_to_model_exposures_transformation_file_path': os.path.abspath('Catrisks/flamingo/TransformationFiles/MappingMapToCatrisks_ModelLoc.xslt'),
+    'canonical_exposures_profile_json_path': os.path.abspath('omdk/canonical_exposures_profiles/catrisks_canonical_profile.json')
+}
 
-from exposures import OasisExposuresManager as oem
+meeq = omf.create('Catrisks', 'MEEQ', '0.0.0.6', resources=resources)
 
-manager = oetm.create(oasis_models=[meeq])
+from omdk.exposures import OasisExposuresManager as oem
 
-meeq = manager.models[meeq.key]
+manager = oem.create(oasis_models=[meeq])
 
-meeq.resources['xtrans_path'] = os.path.abspath('../Flamingo/xtrans/test/xtrans.exe')
-meeq.resources['canonical_exposures_profile_json_path'] = os.path.abspath('canonical_exposures_profiles/catrisks_canonical_profile.json')
-meeq.resources['source_exposures_validation_file_path'] = os.path.abspath('../Catrisks/flamingo/ValidationFiles/Catrisks_SourceLoc.xsd')
-meeq.resources['source_to_canonical_exposures_transformation_file_path'] = os.path.abspath('../Catrisks/flamingo/TransformationFiles/MappingMapToCatrisks_CanLoc_A.xslt')
-meeq.resources['canonical_exposures_validation_file_path'] = os.path.abspath('../Catrisks/flamingo/ValidationFiles/Catrisks_CanLoc_B.xsd')
-meeq.resources['canonical_to_model_exposures_transformation_file_path'] = os.path.abspath('../Catrisks/flamingo/TransformationFiles/MappingMapToCatrisks_ModelLoc.xslt')
+manager.start_files_pipeline(meeq)
 
-with io.open('tests/data/input/Catrisks/MEEQ/test/catrisks_meeq_source_loc.csv', 'r', encoding='utf-8') as s:
-    with io.open('tests/data/input/Catrisks/MEEQ/test/catrisks_meeq_can_loc.csv', 'w', encoding='utf-8') as c:
-        with io.open('tests/data/input/Catrisks/MEEQ/test/catrisks_meeq_model_loc.csv', 'w', encoding='utf-8') as m:
-            with io.open('tests/data/input/Catrisks/MEEQ/test/catrisks_meeq_keys.csv', 'w', encoding='utf-8') as k:
-                meeq.resources['oasis_files_pipeline'].source_exposures_file = s
-                meeq.resources['oasis_files_pipeline'].canonical_exposures_file = c
-                meeq.resources['oasis_files_pipeline'].model_exposures_file = m
-                meeq.resources['oasis_files_pipeline'].keys_file = k
-
+oasis_files = meeq.resources['oasis_files_pipeline'].oasis_files

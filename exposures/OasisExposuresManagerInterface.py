@@ -7,13 +7,16 @@ __all__ = [
 
 from interface import Interface
 
+__author__ = "Sandeep Murthy"
+__copyright__ = "Oasis Loss Modelling Framework 2017"
+
 
 class OasisExposuresManagerInterface(Interface):
     """
     An interface for defining the behaviour of an Oasis exposures manager.
     """
 
-    def __init__(self, keys_lookup_service_factory=None, oasis_models=None):
+    def __init__(self, oasis_models=None):
         """
         Class constructor - not generally to be used directly.
         """
@@ -21,7 +24,7 @@ class OasisExposuresManagerInterface(Interface):
 
 
     @classmethod
-    def create(cls, keys_lookup_service_factory=None, oasis_models=None, **kwargs):
+    def create(cls, oasis_models=None, **kwargs):
         """
         Class method that returns an instance of an Oasis exposures
         manager. The optional ``oasis_models`` argument should be a list of
@@ -139,7 +142,7 @@ class OasisExposuresManagerInterface(Interface):
         pass
 
 
-    def get_keys_file(self, oasis_model, **kwargs):
+    def get_keys(self, oasis_model, **kwargs):
         """
         Generates the model exposures/locations file for a given
         ``oasis_model`` object to the Oasis keys CSV file format:
