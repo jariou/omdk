@@ -39,7 +39,7 @@ import os
 
 from oasis_utils import KeysLookupServiceFactory as klsf
 
-model_info, meeq_kls = klsf.create(
+meeq_info, meeq_kls = klsf.create(
     model_keys_data_path='Catrisks/keys_data/MEEQ',
     model_version_file_path='Catrisks/keys_data/MEEQ/ModelVersion.csv',
     lookup_service_package_path='Catrisks/src/keys_server'
@@ -60,9 +60,9 @@ meeq_resources = {
 }
 
 meeq = omf.create(
-    model_info['supplier_id'],
-    model_info['model_id'],
-    model_info['model_version_id'],
+    meeq_info['supplier_id'],
+    meeq_info['model_id'],
+    meeq_info['model_version_id'],
     resources=meeq_resources
 )
 
