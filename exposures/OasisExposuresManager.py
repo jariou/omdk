@@ -582,7 +582,7 @@ class OasisExposuresManager(implements(OasisExposuresManagerInterface)):
             ``oasis_model`` (``omdk.models.OasisModel.OasisModel``): The model object with its
             Oasis files pipeline cleared.
         """
-        oasis_model.resources['oasis_files_pipeline'] = OasisFilesPipeline.create()
+        oasis_model.resources['oasis_files_pipeline'] = OasisFilesPipeline.create(model_key=oasis_model.key)
         self.models[oasis_model.key] = oasis_model
 
         return oasis_model

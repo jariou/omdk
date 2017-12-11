@@ -624,7 +624,7 @@
 <span class="sd">            ``oasis_model`` (``omdk.models.OasisModel.OasisModel``): The model object with its</span>
 <span class="sd">            Oasis files pipeline cleared.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">oasis_model</span><span class="o">.</span><span class="n">resources</span><span class="p">[</span><span class="s1">&#39;oasis_files_pipeline&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">OasisFilesPipeline</span><span class="o">.</span><span class="n">create</span><span class="p">()</span>
+        <span class="n">oasis_model</span><span class="o">.</span><span class="n">resources</span><span class="p">[</span><span class="s1">&#39;oasis_files_pipeline&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">OasisFilesPipeline</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">model_key</span><span class="o">=</span><span class="n">oasis_model</span><span class="o">.</span><span class="n">key</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">models</span><span class="p">[</span><span class="n">oasis_model</span><span class="o">.</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">oasis_model</span>
 
         <span class="k">return</span> <span class="n">oasis_model</span></div>
