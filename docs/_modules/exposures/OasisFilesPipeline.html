@@ -5,7 +5,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>exposure_transforms.OasisExposureTransformsFilesPipeline &#8212; omdk 0.1 documentation</title>
+    <title>exposures.OasisFilesPipeline &#8212; omdk 0.1 documentation</title>
     <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
@@ -39,15 +39,15 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <h1>Source code for exposure_transforms.OasisExposureTransformsFilesPipeline</h1><div class="highlight"><pre>
+  <h1>Source code for exposures.OasisFilesPipeline</h1><div class="highlight"><pre>
 <span></span><span class="ch">#!/usr/bin/env python</span>
 <span class="c1"># -*- coding: utf-8 -*-</span>
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="s1">&#39;OasisExposureTransformsFilesPipeline&#39;</span>
+    <span class="s1">&#39;OasisFilesPipeline&#39;</span>
 <span class="p">]</span>
 
-<div class="viewcode-block" id="OasisExposureTransformsFilesPipeline"><a class="viewcode-back" href="../../modules.html#exposure_transforms.OasisExposureTransformsFilesPipeline.OasisExposureTransformsFilesPipeline">[docs]</a><span class="k">class</span> <span class="nc">OasisExposureTransformsFilesPipeline</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<div class="viewcode-block" id="OasisFilesPipeline"><a class="viewcode-back" href="../../modules.html#exposures.OasisFilesPipeline.OasisFilesPipeline">[docs]</a><span class="k">class</span> <span class="nc">OasisFilesPipeline</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -72,7 +72,7 @@
         <span class="p">}</span>
 
 
-<div class="viewcode-block" id="OasisExposureTransformsFilesPipeline.create"><a class="viewcode-back" href="../../modules.html#exposure_transforms.OasisExposureTransformsFilesPipeline.OasisExposureTransformsFilesPipeline.create">[docs]</a>    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="OasisFilesPipeline.create"><a class="viewcode-back" href="../../modules.html#exposures.OasisFilesPipeline.OasisFilesPipeline.create">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">create</span><span class="p">(</span>
         <span class="bp">cls</span><span class="p">,</span>
         <span class="n">source_exposures_file</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -81,8 +81,8 @@
         <span class="n">keys_file</span><span class="o">=</span><span class="kc">None</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Class method that returns an instance of an Oasis transforms files</span>
-<span class="sd">        pipeline.</span>
+<span class="sd">        Class method that returns an instance of an Oasis files pipeline</span>
+<span class="sd">        as used in exposures management.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span>
             <span class="n">source_exposures_file</span><span class="o">=</span><span class="n">source_exposures_file</span><span class="p">,</span>

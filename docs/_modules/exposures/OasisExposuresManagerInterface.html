@@ -5,7 +5,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>exposure_transforms.OasisExposureTransformsManagerInterface &#8212; omdk 0.1 documentation</title>
+    <title>exposures.OasisExposuresManagerInterface &#8212; omdk 0.1 documentation</title>
     <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
@@ -39,21 +39,20 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <h1>Source code for exposure_transforms.OasisExposureTransformsManagerInterface</h1><div class="highlight"><pre>
+  <h1>Source code for exposures.OasisExposuresManagerInterface</h1><div class="highlight"><pre>
 <span></span><span class="ch">#!/usr/bin/env python</span>
 <span class="c1"># -*- coding: utf-8 -*-</span>
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="s1">&#39;OasisExposureTransformsManagerInterface&#39;</span>
+    <span class="s1">&#39;OasisExposuresManagerInterface&#39;</span>
 <span class="p">]</span>
 
 <span class="kn">from</span> <span class="nn">interface</span> <span class="k">import</span> <span class="n">Interface</span>
 
 
-<div class="viewcode-block" id="OasisExposureTransformsManagerInterface"><a class="viewcode-back" href="../../modules.html#exposure_transforms.OasisExposureTransformsManagerInterface.OasisExposureTransformsManagerInterface">[docs]</a><span class="k">class</span> <span class="nc">OasisExposureTransformsManagerInterface</span><span class="p">(</span><span class="n">Interface</span><span class="p">):</span>
+<div class="viewcode-block" id="OasisExposuresManagerInterface"><a class="viewcode-back" href="../../modules.html#exposures.OasisExposuresManagerInterface.OasisExposuresManagerInterface">[docs]</a><span class="k">class</span> <span class="nc">OasisExposuresManagerInterface</span><span class="p">(</span><span class="n">Interface</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    An interface for defining the behaviour of an Oasis exposure transforms</span>
-<span class="sd">    manager.</span>
+<span class="sd">    An interface for defining the behaviour of an Oasis exposures manager.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">keys_lookup_service_factory</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">oasis_models</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
@@ -63,10 +62,10 @@
         <span class="k">pass</span>
 
 
-<div class="viewcode-block" id="OasisExposureTransformsManagerInterface.create"><a class="viewcode-back" href="../../modules.html#exposure_transforms.OasisExposureTransformsManagerInterface.OasisExposureTransformsManagerInterface.create">[docs]</a>    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="OasisExposuresManagerInterface.create"><a class="viewcode-back" href="../../modules.html#exposures.OasisExposuresManagerInterface.OasisExposuresManagerInterface.create">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">keys_lookup_service_factory</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">oasis_models</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Class method that returns an instance of an Oasis exposure transforms</span>
+<span class="sd">        Class method that returns an instance of an Oasis exposures</span>
 <span class="sd">        manager. The optional ``oasis_models`` argument should be a list of</span>
 <span class="sd">        Oasis model objects (``omdk.OasisModel.OasisModel``), and any</span>
 <span class="sd">        additional resources can be specified in ``kwargs``.</span>
@@ -74,7 +73,7 @@
         <span class="k">pass</span></div>
 
 
-<div class="viewcode-block" id="OasisExposureTransformsManagerInterface.clear_files_pipeline"><a class="viewcode-back" href="../../modules.html#exposure_transforms.OasisExposureTransformsManagerInterface.OasisExposureTransformsManagerInterface.clear_files_pipeline">[docs]</a>    <span class="k">def</span> <span class="nf">clear_files_pipeline</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">oasis_model</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="OasisExposuresManagerInterface.clear_files_pipeline"><a class="viewcode-back" href="../../modules.html#exposures.OasisExposuresManagerInterface.OasisExposuresManagerInterface.clear_files_pipeline">[docs]</a>    <span class="k">def</span> <span class="nf">clear_files_pipeline</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">oasis_model</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Clears the exposure transforms files pipeline for the given</span>
 <span class="sd">        ``oasis_model`` optionally using additional arguments in the ``kwargs``</span>
@@ -105,7 +104,7 @@
         <span class="k">pass</span></div>
 
 
-<div class="viewcode-block" id="OasisExposureTransformsManagerInterface.start_files_pipeline"><a class="viewcode-back" href="../../modules.html#exposure_transforms.OasisExposureTransformsManagerInterface.OasisExposureTransformsManagerInterface.start_files_pipeline">[docs]</a>    <span class="k">def</span> <span class="nf">start_files_pipeline</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">oasis_model</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="OasisExposuresManagerInterface.start_files_pipeline"><a class="viewcode-back" href="../../modules.html#exposures.OasisExposuresManagerInterface.OasisExposuresManagerInterface.start_files_pipeline">[docs]</a>    <span class="k">def</span> <span class="nf">start_files_pipeline</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">oasis_model</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Starts the exposure transforms pipeline for the given ``oasis_model``,</span>
 <span class="sd">        i.e. the generation of the canonical exposures files, keys file</span>
@@ -134,7 +133,7 @@
         <span class="k">pass</span></div>
 
 
-<div class="viewcode-block" id="OasisExposureTransformsManagerInterface.save_files_pipeline"><a class="viewcode-back" href="../../modules.html#exposure_transforms.OasisExposureTransformsManagerInterface.OasisExposureTransformsManagerInterface.save_files_pipeline">[docs]</a>    <span class="k">def</span> <span class="nf">save_files_pipeline</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">oasis_model</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="OasisExposuresManagerInterface.save_files_pipeline"><a class="viewcode-back" href="../../modules.html#exposures.OasisExposuresManagerInterface.OasisExposuresManagerInterface.save_files_pipeline">[docs]</a>    <span class="k">def</span> <span class="nf">save_files_pipeline</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">oasis_model</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Saves the files in the given ``oasis_model``&#39;s transforms files</span>
 <span class="sd">        pipeline to some data store, e.g. local filesystem, database etc.</span>
@@ -148,7 +147,7 @@
         <span class="k">pass</span></div>
 
 
-<div class="viewcode-block" id="OasisExposureTransformsManagerInterface.transform_source_to_canonical"><a class="viewcode-back" href="../../modules.html#exposure_transforms.OasisExposureTransformsManagerInterface.OasisExposureTransformsManagerInterface.transform_source_to_canonical">[docs]</a>    <span class="k">def</span> <span class="nf">transform_source_to_canonical</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">oasis_model</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="OasisExposuresManagerInterface.transform_source_to_canonical"><a class="viewcode-back" href="../../modules.html#exposures.OasisExposuresManagerInterface.OasisExposuresManagerInterface.transform_source_to_canonical">[docs]</a>    <span class="k">def</span> <span class="nf">transform_source_to_canonical</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">oasis_model</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Transforms the source exposures/locations file for a given</span>
 <span class="sd">        ``oasis_model`` object to a canonical/standard Oasis format.</span>
@@ -166,7 +165,7 @@
         <span class="k">pass</span></div>
 
 
-<div class="viewcode-block" id="OasisExposureTransformsManagerInterface.transform_canonical_to_model"><a class="viewcode-back" href="../../modules.html#exposure_transforms.OasisExposureTransformsManagerInterface.OasisExposureTransformsManagerInterface.transform_canonical_to_model">[docs]</a>    <span class="k">def</span> <span class="nf">transform_canonical_to_model</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">oasis_model</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="OasisExposuresManagerInterface.transform_canonical_to_model"><a class="viewcode-back" href="../../modules.html#exposures.OasisExposuresManagerInterface.OasisExposuresManagerInterface.transform_canonical_to_model">[docs]</a>    <span class="k">def</span> <span class="nf">transform_canonical_to_model</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">oasis_model</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Transforms the canonical exposures/locations file for a given</span>
 <span class="sd">        ``oasis_model`` object to a format understood by Oasis keys lookup</span>
@@ -182,7 +181,7 @@
         <span class="k">pass</span></div>
 
 
-<div class="viewcode-block" id="OasisExposureTransformsManagerInterface.get_keys_file"><a class="viewcode-back" href="../../modules.html#exposure_transforms.OasisExposureTransformsManagerInterface.OasisExposureTransformsManagerInterface.get_keys_file">[docs]</a>    <span class="k">def</span> <span class="nf">get_keys_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">oasis_model</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="OasisExposuresManagerInterface.get_keys_file"><a class="viewcode-back" href="../../modules.html#exposures.OasisExposuresManagerInterface.OasisExposuresManagerInterface.get_keys_file">[docs]</a>    <span class="k">def</span> <span class="nf">get_keys_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">oasis_model</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Generates the model exposures/locations file for a given</span>
 <span class="sd">        ``oasis_model`` object to the Oasis keys CSV file format:</span>
@@ -205,7 +204,7 @@
         <span class="k">pass</span></div>
 
 
-<div class="viewcode-block" id="OasisExposureTransformsManagerInterface.load_canonical_profile"><a class="viewcode-back" href="../../modules.html#exposure_transforms.OasisExposureTransformsManagerInterface.OasisExposureTransformsManagerInterface.load_canonical_profile">[docs]</a>    <span class="k">def</span> <span class="nf">load_canonical_profile</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">oasis_model</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="OasisExposuresManagerInterface.load_canonical_profile"><a class="viewcode-back" href="../../modules.html#exposures.OasisExposuresManagerInterface.OasisExposuresManagerInterface.load_canonical_profile">[docs]</a>    <span class="k">def</span> <span class="nf">load_canonical_profile</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">oasis_model</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Loads a JSON file representing the canonical exposures profile for a</span>
 <span class="sd">        given ``oasis_model``.</span>
@@ -220,28 +219,28 @@
         <span class="k">pass</span></div>
 
 
-<div class="viewcode-block" id="OasisExposureTransformsManagerInterface.generate_items_file"><a class="viewcode-back" href="../../modules.html#exposure_transforms.OasisExposureTransformsManagerInterface.OasisExposureTransformsManagerInterface.generate_items_file">[docs]</a>    <span class="k">def</span> <span class="nf">generate_items_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">oasis_model</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="OasisExposuresManagerInterface.generate_items_file"><a class="viewcode-back" href="../../modules.html#exposures.OasisExposuresManagerInterface.OasisExposuresManagerInterface.generate_items_file">[docs]</a>    <span class="k">def</span> <span class="nf">generate_items_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">oasis_model</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Generates an items file for the given ``oasis_model``.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">pass</span></div>
 
 
-<div class="viewcode-block" id="OasisExposureTransformsManagerInterface.generate_coverages_file"><a class="viewcode-back" href="../../modules.html#exposure_transforms.OasisExposureTransformsManagerInterface.OasisExposureTransformsManagerInterface.generate_coverages_file">[docs]</a>    <span class="k">def</span> <span class="nf">generate_coverages_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">oasis_model</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="OasisExposuresManagerInterface.generate_coverages_file"><a class="viewcode-back" href="../../modules.html#exposures.OasisExposuresManagerInterface.OasisExposuresManagerInterface.generate_coverages_file">[docs]</a>    <span class="k">def</span> <span class="nf">generate_coverages_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">oasis_model</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Generates a coverages file for the given ``oasis_model``.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">pass</span></div>
 
 
-<div class="viewcode-block" id="OasisExposureTransformsManagerInterface.generate_gulsummaryxref_file"><a class="viewcode-back" href="../../modules.html#exposure_transforms.OasisExposureTransformsManagerInterface.OasisExposureTransformsManagerInterface.generate_gulsummaryxref_file">[docs]</a>    <span class="k">def</span> <span class="nf">generate_gulsummaryxref_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">oasis_model</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="OasisExposuresManagerInterface.generate_gulsummaryxref_file"><a class="viewcode-back" href="../../modules.html#exposures.OasisExposuresManagerInterface.OasisExposuresManagerInterface.generate_gulsummaryxref_file">[docs]</a>    <span class="k">def</span> <span class="nf">generate_gulsummaryxref_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">oasis_model</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Generates a gulsummaryxref file for the given ``oasis_model``.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">pass</span></div>
 
 
-<div class="viewcode-block" id="OasisExposureTransformsManagerInterface.generate_oasis_files"><a class="viewcode-back" href="../../modules.html#exposure_transforms.OasisExposureTransformsManagerInterface.OasisExposureTransformsManagerInterface.generate_oasis_files">[docs]</a>    <span class="k">def</span> <span class="nf">generate_oasis_files</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">oasis_model</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="OasisExposuresManagerInterface.generate_oasis_files"><a class="viewcode-back" href="../../modules.html#exposures.OasisExposuresManagerInterface.OasisExposuresManagerInterface.generate_oasis_files">[docs]</a>    <span class="k">def</span> <span class="nf">generate_oasis_files</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">oasis_model</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        For a given ``oasis_model`` generates the standard Oasis files, namely</span>
 

@@ -2,16 +2,15 @@
 # -*- coding: utf-8 -*-
 
 __all__ = [
-    'OasisExposureTransformsManagerInterface'
+    'OasisExposuresManagerInterface'
 ]
 
 from interface import Interface
 
 
-class OasisExposureTransformsManagerInterface(Interface):
+class OasisExposuresManagerInterface(Interface):
     """
-    An interface for defining the behaviour of an Oasis exposure transforms
-    manager.
+    An interface for defining the behaviour of an Oasis exposures manager.
     """
 
     def __init__(self, keys_lookup_service_factory=None, oasis_models=None):
@@ -22,9 +21,9 @@ class OasisExposureTransformsManagerInterface(Interface):
 
 
     @classmethod
-    def create(cls, oasis_models=None, **kwargs):
+    def create(cls, keys_lookup_service_factory=None, oasis_models=None, **kwargs):
         """
-        Class method that returns an instance of an Oasis exposure transforms
+        Class method that returns an instance of an Oasis exposures
         manager. The optional ``oasis_models`` argument should be a list of
         Oasis model objects (``omdk.OasisModel.OasisModel``), and any
         additional resources can be specified in ``kwargs``.
@@ -140,9 +139,9 @@ class OasisExposureTransformsManagerInterface(Interface):
         pass
 
 
-    def transform_model_to_keys(self, oasis_model, **kwargs):
+    def get_keys_file(self, oasis_model, **kwargs):
         """
-        Transforms the model exposures/locations file for a given
+        Generates the model exposures/locations file for a given
         ``oasis_model`` object to the Oasis keys CSV file format:
 
             ``LocID,PerilID,CoverageID,AreaPerilID,VulnerabilityID``
@@ -174,6 +173,27 @@ class OasisExposureTransformsManagerInterface(Interface):
         It is up to the specific implementation of this class of how these
         resources will be named in ``kwargs`` and how they will be used to
         effect the transformation.
+        """
+        pass
+
+
+    def generate_items_file(self, oasis_model, **kwargs):
+        """
+        Generates an items file for the given ``oasis_model``.
+        """
+        pass
+
+
+    def generate_coverages_file(self, oasis_model, **kwargs):
+        """
+        Generates a coverages file for the given ``oasis_model``.
+        """
+        pass
+
+
+    def generate_gulsummaryxref_file(self, oasis_model, **kwargs):
+        """
+        Generates a gulsummaryxref file for the given ``oasis_model``.
         """
         pass
 
