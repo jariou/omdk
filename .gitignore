@@ -110,3 +110,4 @@ ENV/
 # tests and tests/data folders
 tests/
 tests/data
+Files/

@@ -14,6 +14,7 @@ __all__ = [
 
 import io
 import json
+import logging
 import os
 import pandas as pd
 import shutil
@@ -31,6 +32,7 @@ if os.getcwd().split(os.path.sep)[-1] == 'exposures':
     sys.path.insert(0, os.path.abspath(os.pardir))
 
 from oasis_utils import (
+    get_utctimestamp,
     KeysLookupServiceFactory as klsf,
     OasisException,
     run_mono_executable,
@@ -52,12 +54,15 @@ class OasisExposuresManager(implements(OasisExposuresManagerInterface)):
             ``oasis_models`` (``list``): a list of Oasis model objects (``omdk.OasisModel.OasisModel``)
             with resources provided in the model objects' resources dictionaries.
         """
+        logging.info('Creating keys lookup service factory for manager {}'.format(self))
         self._keys_lookup_service_factory = klsf()
         
         self._models = {}
         
         if oasis_models:
+            logging.info('Adding models to manager:\n')
             for model in oasis_models:
+                logging.info('adding model {}'.format(model.key))
                 model.resources['oasis_files_pipeline'] = OasisFilesPipeline.create(model_key=model.key)
 
                 if 'output_basedirpath' in model.resources:
@@ -95,6 +100,7 @@ class OasisExposuresManager(implements(OasisExposuresManagerInterface)):
                     model = self.load_canonical_profile(model)
                 
                 self._models[model.key] = model
+                logging.info('added model {}'.format(model))
 
 
     @classmethod
@@ -110,6 +116,12 @@ class OasisExposuresManager(implements(OasisExposuresManagerInterface)):
             ``omdk.exposures.OasisExposuresManager.OasisExposuresManager``: an instance of 
             an Oasis exposures manager class
         """
+        logging.basicConfig(
+            level=logging.INFO,
+            format='%(asctime)s - %(levelname)s - %(message)s',
+            filemode='w'
+        )
+
         return cls(oasis_models=oasis_models)
 
 
@@ -166,151 +178,6 @@ class OasisExposuresManager(implements(OasisExposuresManagerInterface)):
             self._models.clear()
 
 
-    def clear_files_pipeline(self, oasis_model, **kwargs):
-        """
-        Clears the oasis files pipeline for the given Oasis model object.
-
-        Args:
-            ``oasis_model`` (``omdk.models.OasisModel.OasisModel``): The model object.
-            
-            ``**kwargs`` (arbitary keyword arguments):
-
-        Returns:
-            ``oasis_model`` (``omdk.models.OasisModel.OasisModel``): The model object with its
-            Oasis files pipeline cleared.
-        """
-        oasis_model.resources['oasis_files_pipeline'] = OasisFilesPipeline.create()
-        self.models[oasis_model.key] = oasis_model
-
-        return oasis_model
-
-
-    def start_files_pipeline(self, oasis_model, with_model_resources=True, **kwargs):
-        """
-        Starts the oasis files pipeline for the given Oasis model object,
-        which is the generation of the Oasis items, coverages and GUL summary
-        files from the source exposures file, canonical exposures profile,
-        and associated validation files and transformation files for the
-        source and intermediate files (canonical exposures, model exposures).
-
-        Args:
-            ``oasis_model`` (``omdk.models.OasisModel.OasisModel``): The model object.
-
-            ``with_model_resources``: (``bool``): Indicates whether to look for
-            resources in the model object's resources dictionary or in ``**kwargs``.
-
-            ``**kwargs`` (arbitrary keyword arguments): If ``with_model_resources``
-            is ``False`` then the filesystem paths (including filename and extension)
-            of the canonical exposures file, the model exposures
-        """
-        try:
-            if not with_model_resources:
-                output_dirpath = kwargs['output_dirpath'] if 'output_dirpath' in kwargs else None
-                if not output_dirpath:
-                    raise OasisException(
-                        "No output directory provided for {} in '**kwargs'.".format(oasis_model)
-                    )
-                elif not os.path.exists(output_dirpath):
-                    raise OasisException(
-                        "Output directory {} for {} provided in '**kwargs' "
-                        "does not exist on the filesystem.".format(output_dirpath, oasis_model)
-                    )
-
-                source_exposures_file_path = kwargs['source_exposures_file_path']
-
-                if not source_exposures_file_path:
-                    raise OasisException("No source exposures file path provided for {} in '**kwargs'.".format(oasis_model))
-                elif not os.path.exists(source_exposures_file_path):
-                    raise OasisException("Source exposures file path {} provided for {} in '**kwargs' is invalid.".format(source_exposures_file_path, oasis_model))
-
-                source_exposures_file_name = source_exposures_file_path.split(os.path.sep)[-1]
-                target_file_path = os.path.join(output_dirpath, source_exposures_file_name)
-                if not os.path.exists(target_file_path):
-                    shutil.copy(source_exposures_file_path, target_file_path)
-
-                kwargs['source_exposures_file_path'] = target_file_path
-                        
-                utcnow = oasis_utils.get_utctimestamp(fmt='%Y%m%d%H%M%S')
-
-                target_file_path = os.path.join(output_dirpath, 'canexp-{}.csv'.format(utcnow))
-                kwargs['canonical_exposures_file_path'] = target_file_path
-                canonical_exposures_file = self.transform(oasis_model, with_model_resources=False, transform_type='source_to_canonical', **kwargs)
-                
-                target_file_path = os.path.join(output_dirpath, 'modexp-{}.csv'.format(utcnow))
-                kwargs['model_exposures_file_path'] = target_file_path
-                model_exposures_file = self.transform(oasis_model, with_model_resources=False, transform_type='canonical_to_model', **kwargs)
-
-                target_file_path = os.path.join(output_dirpath, 'oasiskeys-{}.csv'.format(utcnow))
-                kwargs['keys_file_path'] = target_file_path
-                keys_file = self.get_keys(oasis_model, with_model_resources=False, **kwargs)
-                
-                canonical_exposures_profile_json_path = kwargs['canonical_exposures_profile_json_path']
-
-                if not canonical_exposures_profile_json_path:
-                    raise OasisException("No canonical exposures profile JSON file path provided for {} in '**kwargs'.".format(oasis_model))
-                elif not os.path.exists(canonical_exposures_profile_json_path):
-                    raise OasisException("Canonical exposures profile JSON file path {} provided for {} in '**kwargs' is invalid.".format(canonical_exposures_profile_json_path, oasis_model))
-                
-                canonical_exposures_profile_json_file_name = canonical_exposures_profile_json_path.split(os.path.sep)[-1]
-                target_file_path = os.path.join(output_dirpath, canonical_exposures_profile_json_file_name)
-                if not os.path.exists(target_file_path):
-                    shutil.copy(canonical_exposures_profile_json_path, target_file_path)
-
-                kwargs['canonical_exposures_profile_json_path'] = target_file_path
-                canonical_exposures_profile = self.load_canonical_profile(oasis_model, with_model_resources=False, **kwargs)
-                kwargs['canonical_exposures_profile'] = canonical_exposures_profile
-
-                items_file, coverages_file, gulsummaryxref_file = self.generate_oasis_files(
-                    oasis_model, with_model_resources=False, **kwargs
-                )
-
-                return items_file, coverages_file, gulsummaryxref_file
-            else:
-                omr = oasis_model.resources
-                tfp = omr['oasis_files_pipeline']
-
-                output_dirpath = omr['output_dirpath'] if 'output_dirpath' in omr else None
-                if not output_dirpath:
-                    raise OasisException(
-                        "No output directory provided for {} in resources dict.".format(oasis_model)
-                    )
-                elif not os.path.exists(output_dirpath):
-                    raise OasisException(
-                        "Output directory {} for {} provided in resources dict "
-                        "does not exist on the filesystem.".format(output_dirpath, oasis_model)
-                    )
-
-                source_exposures_file = tfp.source_exposures_file if tfp.source_exposures_file else None
-
-                if not source_exposures_file:
-                    raise OasisException("No source exposures file in the Oasis files pipeline for {}.".format(oasis_model))
-                elif not os.path.exists(source_exposures_file.name):
-                    raise OasisException("Source exposures file path {} provided for {} is invalid.".format(source_exposures_file.name, oasis_model))
-
-                self.transform(oasis_model, transform_type='source_to_canonical')
-                
-                self.transform(oasis_model, transform_type='canonical_to_source')
-
-                self.get_keys(oasis_model)
-                
-                if not oasis_model.resources['canonical_exposures_profile']:
-                    self.load_canonical_profile(oasis_model)
-
-                self.generate_oasis_files(oasis_model)
-        except OasisException as e:
-            raise e
-
-        return oasis_model
-
-
-    def save_files_pipeline(self, oasis_model, **kwargs):
-        """
-        Saves the files in the given ``oasis_model``'s oasis files
-        pipeline to a given data store, e.g. local filesystem, database etc.
-        """
-        pass
-
-
     def transform_source_to_canonical(self, oasis_model, with_model_resources=True, **kwargs):
         """
         Transforms the source exposures/locations file for a given
@@ -339,12 +206,14 @@ class OasisExposuresManager(implements(OasisExposuresManagerInterface)):
             validation_file_path = kwargs['source_exposures_validation_file_path']
             transformation_file_path = kwargs['source_to_canonical_exposures_transformation_file_path']
             output_file_path = kwargs['canonical_exposures_file_path']
+            do_sequence = kwargs['do_sequence']
         else:
             xtrans_path = omr['xtrans_path']
             input_file_path = tfp.source_exposures_file.name
             validation_file_path = omr['source_exposures_validation_file_path']
             transformation_file_path = omr['source_to_canonical_exposures_transformation_file_path']
             output_file_path = tfp.canonical_exposures_file.name
+            do_sequence = omr['do_sequence']
 
         (
             xtrans_path,
@@ -369,6 +238,9 @@ class OasisExposuresManager(implements(OasisExposuresManagerInterface)):
             't': transformation_file_path,
             'o': output_file_path
         }
+
+        if do_sequence:
+            xtrans_args['s'] = ''
 
         try:
             run_mono_executable(xtrans_path, xtrans_args)
@@ -457,7 +329,7 @@ class OasisExposuresManager(implements(OasisExposuresManagerInterface)):
             return oasis_model
 
 
-    def transform(oasis_model, with_model_resources=True, transform_type=None, **kwargs):
+    def transform(self, oasis_model, with_model_resources=True, transform_type=None, **kwargs):
         """
         A parent method for the individual methods which implement the
 
@@ -470,9 +342,9 @@ class OasisExposuresManager(implements(OasisExposuresManagerInterface)):
         ``transform_canonical_to_model`` method is called.
         """
         if transform_type == 'source_to_canonical':
-            return transform_source_to_canonical(oasis_model, with_model_resources, kwargs)
+            return self.transform_source_to_canonical(oasis_model, with_model_resources, **kwargs)
         elif transform_type == 'canonical_to_model':
-            return transform_canonical_to_model(oasis_model, with_model_resources, kwargs)
+            return self.transform_canonical_to_model(oasis_model, with_model_resources, **kwargs)
 
 
     def get_keys(self, oasis_model, with_model_resources=True, **kwargs):
@@ -585,12 +457,16 @@ class OasisExposuresManager(implements(OasisExposuresManagerInterface)):
             canonical_exposures_profile = kwargs['canonical_exposures_profile'] if 'canonical_exposures_profile' in kwargs else None
             canonical_exposures_profile_json = kwargs['canonical_exposures_profile_json']  if 'canonical_exposures_profile_json' in kwargs else None
             canonical_exposures_profile_json_path = kwargs['canonical_exposures_profile_json_path']  if 'canonical_exposures_profile_json_path' in kwargs else None
+            items_file_path = kwargs['items_file_path'] if 'items_file_path' in kwargs else None
+            items_timestamped_file_path = kwargs['items_timestamped_file_path'] if 'items_timestamped_file_path' in kwargs else None
         else:
             canonical_exposures_file_path = tfp.canonical_exposures_file.name
             keys_file_path = tfp.keys_file.name
             canonical_exposures_profile = omr['canonical_exposures_profile']  if 'canonical_exposures_profile' in omr else None
             canonical_exposures_profile_json = omr['canonical_exposures_profile_json']  if 'canonical_exposures_profile_json' in omr else None
             canonical_exposures_profile_json_path = omr['canonical_exposures_profile_json_path']  if 'canonical_exposures_profile_json_path' in omr else None
+            items_file_path = omr['items_file_path'] if 'items_file_path' in omr else None
+            items_timestamped_file_path = omr['items_timestamped_file_path'] if 'items_timestamped_file_path' in omr else None
 
         with io.open(canonical_exposures_file_path, 'r', encoding='utf-8') as cf:
             with io.open(keys_file_path, 'r', encoding='utf-8') as kf:
@@ -604,21 +480,10 @@ class OasisExposuresManager(implements(OasisExposuresManagerInterface)):
                 keys_df.columns = map(str.lower, keys_df.columns)
 
         if not canonical_exposures_profile:
-            if canonical_exposures_profile_json:
-                try:
-                    canonical_exposures_profile = json.loads(canonical_exposures_profile_json)
-                except ValueError:
-                    raise OasisException("Canonical exposures profile JSON is invalid for {}.".format(str(oasis_model)))
-            else:
-                try:
-                    with io.open(canonical_exposures_profile_json_path, 'r', encoding='utf-8') as jp:
-                        canonical_exposures_profile = json.load(jp)
-                except (IOError, ValueError):
-                    raise OasisException(
-                        "Canonical exposures profile JSON file path is "
-                        "invalid or does not exist or the file is not valid "
-                        "JSON, for {}.".format(oasis_model)
-                    )
+            canonical_exposures_profile = (
+                json.loads(canonical_exposures_profile_json) if canonical_exposures_profile_json
+                else json.load(canonical_exposures_profile_json_path)
+            )
 
         tiv_fields = sorted(map(
             lambda f: canonical_exposures_profile[f],
@@ -630,7 +495,6 @@ class OasisExposuresManager(implements(OasisExposuresManagerInterface)):
         items = []
         for i in range(len(keys_df)):
             ki = keys_df.iloc[i]
-            print('Processing keys item {}'.format(ki.to_json()))
 
             ci_df = canexp_df[canexp_df['row_id'] == ki['locid']]
 
@@ -648,24 +512,24 @@ class OasisExposuresManager(implements(OasisExposuresManagerInterface)):
 
             if ci[tiv_field['ProfileElementName'].lower()] > 0:
                 it = {
-                    'item_id': ci['row_id'],
-                    'coverage_id': i,
+                    'item_id': ki['locid'],
+                    'coverage_id': i + 1,
                     'areaperil_id': ki['areaperilid'],
                     'vulnerability_id': ki['vulnerabilityid'],
                     'group_id': 1
                 }
-                print('Appending item {}'.format(it))
                 items.append(it)
 
         items_df = items_df.append(items)
 
-        items_df.to_csv(path_or_buf=keys_file_path, encoding='utf-8', chunksize=1000, index=False)
+        items_df.to_csv(path_or_buf=items_file_path, encoding='utf-8', chunksize=1000, index=False)
+        items_df.to_csv(path_or_buf=items_timestamped_file_path, encoding='utf-8', chunksize=1000, index=False)
 
-        with io.open(keys_file_path, 'r', encoding='utf-8') as f:
-            if not with_model_exposures:
+        with io.open(items_file_path, 'r', encoding='utf-8') as f:
+            if not with_model_resources:
                 return f
 
-            tfp.keys_file = f
+            tfp.items_file = f
             self.models[oasis_model.key] = oasis_model
 
             return oasis_model
@@ -695,16 +559,241 @@ class OasisExposuresManager(implements(OasisExposuresManagerInterface)):
 
         """
         if not with_model_resources:
-            items_file = self.generate_items_file(oasis_model, with_model_resources, **kwargs)
-            coverages_file = self.generate_coverages_file(oasis_model, with_model_resources, **kwargs)
-            gulsummaryxref_file = self.generate_gulsummaryxref_file(oasis_model, with_model_resources, **kwargs)
+            items_file = self.generate_items_file(oasis_model, with_model_resources=False, **kwargs)
+            coverages_file = self.generate_coverages_file(oasis_model, with_model_resources=False, **kwargs)
+            gulsummaryxref_file = self.generate_gulsummaryxref_file(oasis_model, with_model_resources=False, **kwargs)
             return items_file, coverages_file, gulsummaryxref_file
         else:
-            oasis_model = self.generate_items_file(oasis_model)
-            oasis_model = self.generate_coverages_file(oasis_model)
-            oasis_model = self.generate_gulsummaryxref_file(oasis_model)
-
-            self.oasis_model[oasis_model.key] = oasis_model
+            self.generate_items_file(oasis_model)
+            self.generate_coverages_file(oasis_model)
+            self.generate_gulsummaryxref_file(oasis_model)
 
             return oasis_model
 
+
+    def clear_files_pipeline(self, oasis_model, **kwargs):
+        """
+        Clears the oasis files pipeline for the given Oasis model object.
+
+        Args:
+            ``oasis_model`` (``omdk.models.OasisModel.OasisModel``): The model object.
+            
+            ``**kwargs`` (arbitary keyword arguments):
+
+        Returns:
+            ``oasis_model`` (``omdk.models.OasisModel.OasisModel``): The model object with its
+            Oasis files pipeline cleared.
+        """
+        oasis_model.resources['oasis_files_pipeline'] = OasisFilesPipeline.create()
+        self.models[oasis_model.key] = oasis_model
+
+        return oasis_model
+
+
+    def start_files_pipeline(self, oasis_model, with_model_resources=True, **kwargs):
+        """
+        Starts the oasis files pipeline for the given Oasis model object,
+        which is the generation of the Oasis items, coverages and GUL summary
+        files from the source exposures file, canonical exposures profile,
+        and associated validation files and transformation files for the
+        source and intermediate files (canonical exposures, model exposures).
+
+        Args:
+            ``oasis_model`` (``omdk.models.OasisModel.OasisModel``): The model object.
+
+            ``with_model_resources``: (``bool``): Indicates whether to look for
+            resources in the model object's resources dictionary or in ``**kwargs``.
+
+            ``**kwargs`` (arbitrary keyword arguments): If ``with_model_resources``
+            is ``False`` then the filesystem paths (including filename and extension)
+            of the canonical exposures file, the model exposures
+        """
+        try:
+            if not with_model_resources:
+                logging.info('Checking output files directory exists for model')
+
+                output_dirpath = kwargs['output_dirpath'] if 'output_dirpath' in kwargs else None
+                
+                if not output_dirpath:
+                    raise OasisException(
+                        "No output directory provided for {} in '**kwargs'.".format(oasis_model)
+                    )
+                elif not os.path.exists(output_dirpath):
+                    raise OasisException(
+                        "Output directory {} for {} provided in '**kwargs' "
+                        "does not exist on the filesystem.".format(output_dirpath, oasis_model)
+                    )
+
+                logging.info('Output files directory {} exists'.format(output_dirpath))
+
+                logging.info('Checking for source exposures file')
+                
+                source_exposures_file_path = kwargs['source_exposures_file_path']
+
+                if not source_exposures_file_path:
+                    raise OasisException("No source exposures file path provided for {} in '**kwargs'.".format(oasis_model))
+                elif not os.path.exists(source_exposures_file_path):
+                    raise OasisException("Source exposures file path {} provided for {} in '**kwargs' is invalid.".format(source_exposures_file_path, oasis_model))
+                
+                logging.info('Source exposures file {} exists'.format(source_exposures_file_path))
+
+                logging.info('Copying source exposures file to model output files directory')
+                
+                source_exposures_file_name = source_exposures_file_path.split(os.path.sep)[-1]
+                target_file_path = os.path.join(output_dirpath, source_exposures_file_name)
+                
+                if not os.path.exists(target_file_path):
+                    shutil.copy(source_exposures_file_path, target_file_path)
+
+                kwargs['source_exposures_file_path'] = target_file_path
+
+                utcnow = get_utctimestamp(fmt='%Y%m%d%H%M%S')
+
+                target_file_path = os.path.join(output_dirpath, 'canexp-{}.csv'.format(utcnow))
+                kwargs['canonical_exposures_file_path'] = target_file_path
+                
+                if 'do_sequence' not in kwargs:
+                    kwargs['do_sequence'] = True
+
+                logging.info('Generating canonical exposures file {}'.format(target_file_path))
+
+                canonical_exposures_file = self.transform_source_to_canonical(oasis_model, with_model_resources=False, **kwargs)
+                
+                target_file_path = os.path.join(output_dirpath, 'modexp-{}.csv'.format(utcnow))
+                kwargs['model_exposures_file_path'] = target_file_path
+
+                logging.info('Generating model exposures file {}'.format(target_file_path))
+
+                model_exposures_file = self.transform_canonical_to_model(oasis_model, with_model_resources=False, **kwargs)
+
+                target_file_path = os.path.join(output_dirpath, 'oasiskeys-{}.csv'.format(utcnow))
+                kwargs['keys_file_path'] = target_file_path
+
+                logging.info('Generating keys file {}')
+
+                keys_file = self.get_keys(oasis_model, with_model_resources=False, **kwargs)
+                
+                logging.info('Checking for canonical exposures profile for model')
+
+                canonical_exposures_profile_json_path = kwargs['canonical_exposures_profile_json_path']
+
+                if not canonical_exposures_profile_json_path:
+                    raise OasisException("No canonical exposures profile JSON file path provided for {} in '**kwargs'.".format(oasis_model))
+                elif not os.path.exists(canonical_exposures_profile_json_path):
+                    raise OasisException("Canonical exposures profile JSON file path {} provided for {} in '**kwargs' is invalid.".format(canonical_exposures_profile_json_path, oasis_model))
+                
+                logging.info('Canonical exposures profile {} exists'.format(canonical_exposures_profile_json_path))
+
+                logging.info('Loading canonical exposures profile into model resources')
+
+                canonical_exposures_profile = self.load_canonical_profile(oasis_model, with_model_resources=False, **kwargs)
+                kwargs['canonical_exposures_profile'] = canonical_exposures_profile
+
+                kwargs['items_file_path'] = os.path.join(output_dirpath, 'items.csv')
+                kwargs['items_timestamped_file_path'] = os.path.join(output_dirpath, 'items-{}.csv')
+                kwargs['coverages_file_path'] = os.path.join(output_dirpath, 'coverages.csv')
+                kwargs['coverages_timestamped_file_path'] = os.path.join(output_dirpath, 'coverages-{}.csv')
+                kwargs['gulsummaryxref_file_path'] = os.path.join(output_dirpath, 'gulsummaryxref.csv')
+                kwargs['gulsummaryxref_timestamped_file_path'] = os.path.join(output_dirpath, 'gulsummaryxref-{}.csv')
+
+                logging.info('Generating Oasis files for model')
+                items_file, coverages_file, gulsummaryxref_file = self.generate_oasis_files(
+                    oasis_model, with_model_resources=False, **kwargs
+                )
+
+                return items_file, coverages_file, gulsummaryxref_file
+            else:
+                omr = oasis_model.resources
+                tfp = omr['oasis_files_pipeline']
+
+                logging.info('Checking output files directory exists for model')
+
+                output_dirpath = omr['output_dirpath'] if 'output_dirpath' in omr else None
+                if not output_dirpath:
+                    raise OasisException(
+                        "No output directory provided for {} in resources dict.".format(oasis_model)
+                    )
+                elif not os.path.exists(output_dirpath):
+                    raise OasisException(
+                        "Output directory {} for {} provided in resources dict "
+                        "does not exist on the filesystem.".format(output_dirpath, oasis_model)
+                    )
+
+                logging.info('Output files directory {} exists'.format(output_dirpath))
+
+                logging.info('Checking for source exposures file in the model files pipeline')
+
+                source_exposures_file = tfp.source_exposures_file if tfp.source_exposures_file else None
+
+                if not source_exposures_file:
+                    raise OasisException("No source exposures file in the Oasis files pipeline for {}.".format(oasis_model))
+                elif not os.path.exists(source_exposures_file.name):
+                    raise OasisException("Source exposures file path {} provided for {} is invalid.".format(source_exposures_file.name, oasis_model))
+
+                logging.info('Source exposures file {} exists'.format(source_exposures_file))
+
+                utcnow = get_utctimestamp(fmt='%Y%m%d%H%M%S')
+
+                target_file_path = os.path.join(output_dirpath, 'canexp-{}.csv'.format(utcnow))
+                with io.open(target_file_path, 'w', encoding='utf-8') as f:
+                    tfp.canonical_exposures_file = f
+
+                if 'do_sequence' not in omr:
+                    omr['do_sequence'] = True
+
+                logging.info('Generating canonical exposures file')
+
+                self.transform_source_to_canonical(oasis_model)
+
+                logging.info('Generated canonical exposures file {}'.format(target_file_path))
+                
+                target_file_path = os.path.join(output_dirpath, 'modexp-{}.csv'.format(utcnow))
+                with io.open(target_file_path, 'w', encoding='utf-8') as f:
+                    tfp.model_exposures_file = f
+
+                logging.info('Generating model exposures file')
+
+                self.transform_canonical_to_model(oasis_model)
+
+                logging.info('Generated model exposures file {}'.format(target_file_path))
+
+                target_file_path = os.path.join(output_dirpath, 'oasiskeys-{}.csv'.format(utcnow))
+                with io.open(target_file_path, 'w', encoding='utf-8') as f:
+                    tfp.keys_file = f
+
+                logging.info('Generating keys file')
+
+                self.get_keys(oasis_model)
+
+                logging.info('Generated keys file {}'.format(target_file_path))
+                
+                logging.info('Checking for canonical exposures profile for model')
+
+                if not oasis_model.resources['canonical_exposures_profile']:
+                    logging.info('Loading canonical exposures profile into model resources')
+                    self.load_canonical_profile(oasis_model)
+
+                omr['items_file_path'] = os.path.join(output_dirpath, 'items.csv')
+                omr['items_timestamped_file_path'] = os.path.join(output_dirpath, 'items-{}.csv'.format(utcnow))
+                omr['coverages_file_path'] = os.path.join(output_dirpath, 'coverages.csv')
+                omr['coverages_timestamped_file_path'] = os.path.join(output_dirpath, 'coverages-{}.csv'.format(utcnow))
+                omr['gulsummaryxref_file_path'] = os.path.join(output_dirpath, 'gulsummaryxref.csv')
+                omr['gulsummaryxref_timestamped_file_path'] = os.path.join(output_dirpath, 'gulsummaryxref-{}.csv'.format(utcnow))
+
+                logging.info('Generating Oasis files for model')
+
+                self.generate_oasis_files(oasis_model)
+
+                logging.info('Generated Oasis files {}'.format(tfp.oasis_files))
+        except OasisException as e:
+            raise e
+
+        return oasis_model
+
+
+    def save_files_pipeline(self, oasis_model, **kwargs):
+        """
+        Saves the files in the given ``oasis_model``'s oasis files
+        pipeline to a given data store, e.g. local filesystem, database etc.
+        """
+        pass
