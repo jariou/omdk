@@ -3,13 +3,39 @@ Session to perform MEEQ exposure transforms using the Oasis exposure management
 framework in the OMDK repository
 
     https://github.com/OasisLMF/OMDK
+
+Please copy this file to your directory of choice, and clone the Catrisks and
+OMDK repositories, side by side, in the parent directory.
+
+    ...
+    /your/parent/directory/
+    |__ meeq_session.py
+    |__ Catrisks/
+    |__ omdk
+
+Also ensure that you have the necessary Python package requirements for `omdk`
+and `oasis_utils`, as well as the `xtrans.exe` executable that performs the
+source loc. -> canonical loc., and canonical loc. -> model loc.
+transformations.
+
+You can execute the statements in this module either by copying them into
+a Python shell in the parent directory, or by running this as a script using
+
+    python -m meeq_session.py
+
+provided that this file is in the parent directory.
+
+Please use recursive Git cloning to clone the two repositories.
+
+    git clone --recursive git+ssh://git@github.com/OasisLMF/Catrisks
+    git clone --recursive git+ssh://git@github.com/OasisLMF/omdk
+
+Please ensure that you have the Catrisks MEEQ keys data, model version file
+on your filesystem - you can adjust the paths of these in the call to the
+`create` method of the lookup service factory class, below.
 """
 
-import io
 import os
-import sys
-
-import pandas as pd
 
 from oasis_utils import KeysLookupServiceFactory as klsf
 
