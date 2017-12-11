@@ -206,14 +206,12 @@ class OasisExposuresManager(implements(OasisExposuresManagerInterface)):
             validation_file_path = kwargs['source_exposures_validation_file_path']
             transformation_file_path = kwargs['source_to_canonical_exposures_transformation_file_path']
             output_file_path = kwargs['canonical_exposures_file_path']
-            do_sequence = kwargs['do_sequence']
         else:
             xtrans_path = omr['xtrans_path']
             input_file_path = tfp.source_exposures_file.name
             validation_file_path = omr['source_exposures_validation_file_path']
             transformation_file_path = omr['source_to_canonical_exposures_transformation_file_path']
             output_file_path = tfp.canonical_exposures_file.name
-            do_sequence = omr['do_sequence']
 
         (
             xtrans_path,
@@ -236,11 +234,9 @@ class OasisExposuresManager(implements(OasisExposuresManagerInterface)):
             'd': validation_file_path,
             'c': input_file_path,
             't': transformation_file_path,
-            'o': output_file_path
+            'o': output_file_path,
+            's': ''
         }
-
-        if do_sequence:
-            xtrans_args['s'] = ''
 
         try:
             run_mono_executable(xtrans_path, xtrans_args)
@@ -651,9 +647,6 @@ class OasisExposuresManager(implements(OasisExposuresManagerInterface)):
 
                 target_file_path = os.path.join(output_dirpath, 'canexp-{}.csv'.format(utcnow))
                 kwargs['canonical_exposures_file_path'] = target_file_path
-                
-                if 'do_sequence' not in kwargs:
-                    kwargs['do_sequence'] = True
 
                 logging.info('Generating canonical exposures file {}'.format(target_file_path))
 
@@ -737,9 +730,6 @@ class OasisExposuresManager(implements(OasisExposuresManagerInterface)):
                 target_file_path = os.path.join(output_dirpath, 'canexp-{}.csv'.format(utcnow))
                 with io.open(target_file_path, 'w', encoding='utf-8') as f:
                     tfp.canonical_exposures_file = f
-
-                if 'do_sequence' not in omr:
-                    omr['do_sequence'] = True
 
                 logging.info('Generating canonical exposures file')
 

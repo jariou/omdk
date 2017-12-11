@@ -248,14 +248,12 @@
             <span class="n">validation_file_path</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;source_exposures_validation_file_path&#39;</span><span class="p">]</span>
             <span class="n">transformation_file_path</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;source_to_canonical_exposures_transformation_file_path&#39;</span><span class="p">]</span>
             <span class="n">output_file_path</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;canonical_exposures_file_path&#39;</span><span class="p">]</span>
-            <span class="n">do_sequence</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;do_sequence&#39;</span><span class="p">]</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">xtrans_path</span> <span class="o">=</span> <span class="n">omr</span><span class="p">[</span><span class="s1">&#39;xtrans_path&#39;</span><span class="p">]</span>
             <span class="n">input_file_path</span> <span class="o">=</span> <span class="n">tfp</span><span class="o">.</span><span class="n">source_exposures_file</span><span class="o">.</span><span class="n">name</span>
             <span class="n">validation_file_path</span> <span class="o">=</span> <span class="n">omr</span><span class="p">[</span><span class="s1">&#39;source_exposures_validation_file_path&#39;</span><span class="p">]</span>
             <span class="n">transformation_file_path</span> <span class="o">=</span> <span class="n">omr</span><span class="p">[</span><span class="s1">&#39;source_to_canonical_exposures_transformation_file_path&#39;</span><span class="p">]</span>
             <span class="n">output_file_path</span> <span class="o">=</span> <span class="n">tfp</span><span class="o">.</span><span class="n">canonical_exposures_file</span><span class="o">.</span><span class="n">name</span>
-            <span class="n">do_sequence</span> <span class="o">=</span> <span class="n">omr</span><span class="p">[</span><span class="s1">&#39;do_sequence&#39;</span><span class="p">]</span>
 
         <span class="p">(</span>
             <span class="n">xtrans_path</span><span class="p">,</span>
@@ -278,11 +276,9 @@
             <span class="s1">&#39;d&#39;</span><span class="p">:</span> <span class="n">validation_file_path</span><span class="p">,</span>
             <span class="s1">&#39;c&#39;</span><span class="p">:</span> <span class="n">input_file_path</span><span class="p">,</span>
             <span class="s1">&#39;t&#39;</span><span class="p">:</span> <span class="n">transformation_file_path</span><span class="p">,</span>
-            <span class="s1">&#39;o&#39;</span><span class="p">:</span> <span class="n">output_file_path</span>
+            <span class="s1">&#39;o&#39;</span><span class="p">:</span> <span class="n">output_file_path</span><span class="p">,</span>
+            <span class="s1">&#39;s&#39;</span><span class="p">:</span> <span class="s1">&#39;&#39;</span>
         <span class="p">}</span>
-
-        <span class="k">if</span> <span class="n">do_sequence</span><span class="p">:</span>
-            <span class="n">xtrans_args</span><span class="p">[</span><span class="s1">&#39;s&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
 
         <span class="k">try</span><span class="p">:</span>
             <span class="n">run_mono_executable</span><span class="p">(</span><span class="n">xtrans_path</span><span class="p">,</span> <span class="n">xtrans_args</span><span class="p">)</span>
@@ -693,9 +689,6 @@
 
                 <span class="n">target_file_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">output_dirpath</span><span class="p">,</span> <span class="s1">&#39;canexp-</span><span class="si">{}</span><span class="s1">.csv&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">utcnow</span><span class="p">))</span>
                 <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;canonical_exposures_file_path&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">target_file_path</span>
-                
-                <span class="k">if</span> <span class="s1">&#39;do_sequence&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
-                    <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;do_sequence&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
 
                 <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Generating canonical exposures file </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">target_file_path</span><span class="p">))</span>
 
@@ -779,9 +772,6 @@
                 <span class="n">target_file_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">output_dirpath</span><span class="p">,</span> <span class="s1">&#39;canexp-</span><span class="si">{}</span><span class="s1">.csv&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">utcnow</span><span class="p">))</span>
                 <span class="k">with</span> <span class="n">io</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">target_file_path</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
                     <span class="n">tfp</span><span class="o">.</span><span class="n">canonical_exposures_file</span> <span class="o">=</span> <span class="n">f</span>
-
-                <span class="k">if</span> <span class="s1">&#39;do_sequence&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">omr</span><span class="p">:</span>
-                    <span class="n">omr</span><span class="p">[</span><span class="s1">&#39;do_sequence&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
 
                 <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Generating canonical exposures file&#39;</span><span class="p">)</span>
 

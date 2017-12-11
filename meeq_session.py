@@ -28,7 +28,6 @@ meeq_resources = {
     'source_exposures_file_path': os.path.abspath('Catrisks/keys_data/MEEQ/MEEQ_loc.csv'),
     'source_exposures_validation_file_path': os.path.abspath('Catrisks/flamingo/ValidationFiles/Catrisks_SourceLoc.xsd'),
     'source_to_canonical_exposures_transformation_file_path': os.path.abspath('Catrisks/flamingo/TransformationFiles/MappingMapToCatrisks_CanLoc_A.xslt'),
-    'do_sequence': True,
     'canonical_exposures_validation_file_path': os.path.abspath('Catrisks/flamingo/ValidationFiles/Catrisks_CanLoc_B.xsd'),
     'canonical_to_model_exposures_transformation_file_path': os.path.abspath('Catrisks/flamingo/TransformationFiles/MappingMapToCatrisks_ModelLoc.xslt'),
     'canonical_exposures_profile_json_path': os.path.abspath('omdk/canonical_exposures_profiles/catrisks_canonical_profile.json')
