@@ -489,6 +489,7 @@ class OasisExposuresManager(implements(OasisExposuresManagerInterface)):
         items_df = pd.DataFrame(columns=['item_id', 'coverage_id', 'areaperil_id', 'vulnerability_id', 'group_id'])
 
         items = []
+        ii = 0
         for i in range(len(keys_df)):
             ki = keys_df.iloc[i]
 
@@ -507,9 +508,10 @@ class OasisExposuresManager(implements(OasisExposuresManagerInterface)):
             )[0]
 
             if ci[tiv_field['ProfileElementName'].lower()] > 0:
+                ii += 1
                 it = {
-                    'item_id': ki['locid'],
-                    'coverage_id': i + 1,
+                    'item_id': ii,
+                    'coverage_id': ii,
                     'areaperil_id': ki['areaperilid'],
                     'vulnerability_id': ki['vulnerabilityid'],
                     'group_id': 1
