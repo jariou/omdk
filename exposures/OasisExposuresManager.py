@@ -492,7 +492,7 @@ class OasisExposuresManager(implements(OasisExposuresManagerInterface)):
                     'coverage_id': ii,
                     'areaperil_id': ki['areaperilid'],
                     'vulnerability_id': ki['vulnerabilityid'],
-                    'group_id': 1
+                    'group_id': ki['locid']
                 }
                 items.append(it)
 
