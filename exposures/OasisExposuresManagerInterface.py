@@ -8,7 +8,7 @@ __all__ = [
 from interface import Interface
 
 __author__ = "Sandeep Murthy"
-__copyright__ = "Oasis Loss Modelling Framework 2017"
+__copyright__ = "2017, Oasis Loss Modelling Framework"
 
 
 class OasisExposuresManagerInterface(Interface):

@@ -81,7 +81,7 @@
 <span class="p">)</span>
 
 <span class="n">__author__</span> <span class="o">=</span> <span class="s2">&quot;Sandeep Murthy&quot;</span>
-<span class="n">__copyright__</span> <span class="o">=</span> <span class="s2">&quot;Oasis Loss Modelling Framework 2017&quot;</span>
+<span class="n">__copyright__</span> <span class="o">=</span> <span class="s2">&quot;2017, Oasis Loss Modelling Framework&quot;</span>
 
 
 <div class="viewcode-block" id="OasisExposuresManager"><a class="viewcode-back" href="../../modules.html#exposures.OasisExposuresManager.OasisExposuresManager">[docs]</a><span class="k">class</span> <span class="nc">OasisExposuresManager</span><span class="p">(</span><span class="n">implements</span><span class="p">(</span><span class="n">OasisExposuresManagerInterface</span><span class="p">)):</span>
@@ -322,7 +322,7 @@
             <span class="n">transformation_file_path</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;canonical_to_model_exposures_transformation_file_path&#39;</span><span class="p">]</span>
             <span class="n">output_file_path</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;model_exposures_file_path&#39;</span><span class="p">]</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">xtrans_path</span> <span class="o">=</span> <span class="n">omr</span><span class="p">[</span><span class="s1">&#39;xtrans_path&#39;</span><span class="p">]</span> <span class="k">if</span> <span class="s1">&#39;xtrans_path&#39;</span> <span class="ow">in</span> <span class="n">omr</span> <span class="k">else</span> <span class="kc">None</span>
+            <span class="n">xtrans_path</span> <span class="o">=</span> <span class="n">omr</span><span class="p">[</span><span class="s1">&#39;xtrans_path&#39;</span><span class="p">]</span>
             <span class="n">input_file_path</span> <span class="o">=</span> <span class="n">tfp</span><span class="o">.</span><span class="n">canonical_exposures_file</span><span class="o">.</span><span class="n">name</span>
             <span class="n">validation_file_path</span> <span class="o">=</span> <span class="n">omr</span><span class="p">[</span><span class="s1">&#39;canonical_exposures_validation_file_path&#39;</span><span class="p">]</span>
             <span class="n">transformation_file_path</span> <span class="o">=</span> <span class="n">omr</span><span class="p">[</span><span class="s1">&#39;canonical_to_model_exposures_transformation_file_path&#39;</span><span class="p">]</span>
@@ -534,7 +534,7 @@
                     <span class="s1">&#39;coverage_id&#39;</span><span class="p">:</span> <span class="n">ii</span><span class="p">,</span>
                     <span class="s1">&#39;areaperil_id&#39;</span><span class="p">:</span> <span class="n">ki</span><span class="p">[</span><span class="s1">&#39;areaperilid&#39;</span><span class="p">],</span>
                     <span class="s1">&#39;vulnerability_id&#39;</span><span class="p">:</span> <span class="n">ki</span><span class="p">[</span><span class="s1">&#39;vulnerabilityid&#39;</span><span class="p">],</span>
-                    <span class="s1">&#39;group_id&#39;</span><span class="p">:</span> <span class="n">ki</span><span class="p">[</span><span class="s1">&#39;locid&#39;</span><span class="p">]</span>
+                    <span class="s1">&#39;group_id&#39;</span><span class="p">:</span> <span class="n">ii</span>
                 <span class="p">}</span>
                 <span class="n">items</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">it</span><span class="p">)</span>
 

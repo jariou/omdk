@@ -39,7 +39,7 @@ from oasis_utils import (
 )
 
 __author__ = "Sandeep Murthy"
-__copyright__ = "Oasis Loss Modelling Framework 2017"
+__copyright__ = "2017, Oasis Loss Modelling Framework"
 
 
 class OasisExposuresManager(implements(OasisExposuresManagerInterface)):
@@ -280,7 +280,7 @@ class OasisExposuresManager(implements(OasisExposuresManagerInterface)):
             transformation_file_path = kwargs['canonical_to_model_exposures_transformation_file_path']
             output_file_path = kwargs['model_exposures_file_path']
         else:
-            xtrans_path = omr['xtrans_path'] if 'xtrans_path' in omr else None
+            xtrans_path = omr['xtrans_path']
             input_file_path = tfp.canonical_exposures_file.name
             validation_file_path = omr['canonical_exposures_validation_file_path']
             transformation_file_path = omr['canonical_to_model_exposures_transformation_file_path']
@@ -492,7 +492,7 @@ class OasisExposuresManager(implements(OasisExposuresManagerInterface)):
                     'coverage_id': ii,
                     'areaperil_id': ki['areaperilid'],
                     'vulnerability_id': ki['vulnerabilityid'],
-                    'group_id': ki['locid']
+                    'group_id': ii
                 }
                 items.append(it)
 

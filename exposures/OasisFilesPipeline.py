@@ -6,7 +6,7 @@ __all__ = [
 ]
 
 __author__ = "Sandeep Murthy"
-__copyright__ = "Oasis Loss Modelling Framework 2017"
+__copyright__ = "2017, Oasis Loss Modelling Framework"
 
 
 class OasisFilesPipeline(object):
