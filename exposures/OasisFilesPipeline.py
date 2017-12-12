@@ -235,6 +235,24 @@ class OasisFilesPipeline(object):
         return self._oasis_files
 
 
+    def clear(self):
+        """
+        Clears all file attributes in the pipeline.
+        """
+        file_attribute_names = filter(
+            lambda p: p,
+            map(
+                lambda p: p.strip('_') if 'model_key' not in p and 'oasis_files' not in p else None,
+                self.__dict__.keys()
+            )
+        )
+
+        map(
+            lambda f: setattr(self, f, None),
+            file_attribute_names
+        )
+
+
     def __str__(self):
         return '{}: {}'.format(self.__repr__(), self.model_key)
 

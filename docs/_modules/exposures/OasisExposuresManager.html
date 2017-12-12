@@ -367,28 +367,10 @@
             <span class="k">return</span> <span class="n">oasis_model</span></div>
 
 
-<div class="viewcode-block" id="OasisExposuresManager.transform"><a class="viewcode-back" href="../../modules.html#exposures.OasisExposuresManager.OasisExposuresManager.transform">[docs]</a>    <span class="k">def</span> <span class="nf">transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">oasis_model</span><span class="p">,</span> <span class="n">with_model_resources</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">transform_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        A parent method for the individual methods which implement the</span>
-
-<span class="sd">            source exposures -&gt; canonical exposures</span>
-<span class="sd">            canonical exposures -&gt; model exposures</span>
-<span class="sd">        </span>
-<span class="sd">        transformations. If the transform_type is `source_to_canonical` then</span>
-<span class="sd">        the ``transform_source_to_canonical`` is called, or else if the</span>
-<span class="sd">        transform type is `canonical_to_model` then the</span>
-<span class="sd">        ``transform_canonical_to_model`` method is called.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="n">transform_type</span> <span class="o">==</span> <span class="s1">&#39;source_to_canonical&#39;</span><span class="p">:</span>
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">transform_source_to_canonical</span><span class="p">(</span><span class="n">oasis_model</span><span class="p">,</span> <span class="n">with_model_resources</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-        <span class="k">elif</span> <span class="n">transform_type</span> <span class="o">==</span> <span class="s1">&#39;canonical_to_model&#39;</span><span class="p">:</span>
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">transform_canonical_to_model</span><span class="p">(</span><span class="n">oasis_model</span><span class="p">,</span> <span class="n">with_model_resources</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
-
-
 <div class="viewcode-block" id="OasisExposuresManager.get_keys"><a class="viewcode-back" href="../../modules.html#exposures.OasisExposuresManager.OasisExposuresManager.get_keys">[docs]</a>    <span class="k">def</span> <span class="nf">get_keys</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">oasis_model</span><span class="p">,</span> <span class="n">with_model_resources</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Generates the model exposures/locations file for a given</span>
-<span class="sd">        ``oasis_model`` object to the Oasis keys CSV file format:</span>
+<span class="sd">        Generates the Oasis keys CSV file for a given model object, with</span>
+<span class="sd">        headers</span>
 
 <span class="sd">            ``LocID,PerilID,CoverageID,AreaPerilID,VulnerabilityID``</span>
 
@@ -465,13 +447,13 @@
             <span class="k">try</span><span class="p">:</span>
                 <span class="n">canonical_exposures_profile</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">canonical_exposures_profile_json</span><span class="p">)</span>
             <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="n">OasisException</span><span class="p">(</span><span class="s2">&quot;Canonical exposures profile JSON is invalid for </span><span class="si">{}</span><span class="s2">.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">oasis_model</span><span class="p">)))</span>
+                <span class="k">raise</span> <span class="n">OasisException</span><span class="p">(</span><span class="s2">&quot;Canonical exposures profile JSON is invalid for </span><span class="si">{}</span><span class="s2">.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">oasis_model</span><span class="p">))</span>
         <span class="k">elif</span> <span class="n">canonical_exposures_profile_json_path</span><span class="p">:</span>
             <span class="k">try</span><span class="p">:</span>
                 <span class="k">with</span> <span class="n">io</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">canonical_exposures_profile_json_path</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
                     <span class="n">canonical_exposures_profile</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
             <span class="k">except</span> <span class="p">(</span><span class="ne">IOError</span><span class="p">,</span> <span class="ne">ValueError</span><span class="p">):</span>
-                <span class="k">raise</span> <span class="n">OasisException</span><span class="p">(</span><span class="s2">&quot;Canonical exposures profile JSON file path invalid or file is not valid JSON for </span><span class="si">{}</span><span class="s2">.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">oasis_model</span><span class="p">)))</span>
+                <span class="k">raise</span> <span class="n">OasisException</span><span class="p">(</span><span class="s2">&quot;Canonical exposures profile JSON file path invalid or file is not valid JSON for </span><span class="si">{}</span><span class="s2">.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">oasis_model</span><span class="p">))</span>
 
         <span class="k">if</span> <span class="ow">not</span> <span class="n">with_model_resources</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">canonical_exposures_profile</span>
@@ -624,7 +606,7 @@
 <span class="sd">            ``oasis_model`` (``omdk.models.OasisModel.OasisModel``): The model object with its</span>
 <span class="sd">            Oasis files pipeline cleared.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">oasis_model</span><span class="o">.</span><span class="n">resources</span><span class="p">[</span><span class="s1">&#39;oasis_files_pipeline&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">OasisFilesPipeline</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">model_key</span><span class="o">=</span><span class="n">oasis_model</span><span class="o">.</span><span class="n">key</span><span class="p">)</span>
+        <span class="n">oasis_model</span><span class="o">.</span><span class="n">resources</span><span class="p">[</span><span class="s1">&#39;oasis_files_pipeline&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">models</span><span class="p">[</span><span class="n">oasis_model</span><span class="o">.</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">oasis_model</span>
 
         <span class="k">return</span> <span class="n">oasis_model</span></div>

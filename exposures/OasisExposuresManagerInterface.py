@@ -144,8 +144,8 @@ class OasisExposuresManagerInterface(Interface):
 
     def get_keys(self, oasis_model, **kwargs):
         """
-        Generates the model exposures/locations file for a given
-        ``oasis_model`` object to the Oasis keys CSV file format:
+        Generates the Oasis keys CSV file for a given model object, with
+        headers
 
             ``LocID,PerilID,CoverageID,AreaPerilID,VulnerabilityID``
 

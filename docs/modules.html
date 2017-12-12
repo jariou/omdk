@@ -272,8 +272,8 @@ effect the transformation.</p>
 <dl class="method">
 <dt id="exposures.OasisExposuresManagerInterface.OasisExposuresManagerInterface.get_keys">
 <code class="descname">get_keys</code><span class="sig-paren">(</span><em>oasis_model</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/exposures/OasisExposuresManagerInterface.html#OasisExposuresManagerInterface.get_keys"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#exposures.OasisExposuresManagerInterface.OasisExposuresManagerInterface.get_keys" title="Permalink to this definition">¶</a></dt>
-<dd><p>Generates the model exposures/locations file for a given
-<code class="docutils literal"><span class="pre">oasis_model</span></code> object to the Oasis keys CSV file format:</p>
+<dd><p>Generates the Oasis keys CSV file for a given model object, with
+headers</p>
 <blockquote>
 <div><code class="docutils literal"><span class="pre">LocID,PerilID,CoverageID,AreaPerilID,VulnerabilityID</span></code></div></blockquote>
 <p>All the required resources must be provided either in the model object
@@ -433,8 +433,8 @@ an Oasis exposures manager class</dd>
 <dl class="method">
 <dt id="exposures.OasisExposuresManager.OasisExposuresManager.get_keys">
 <code class="descname">get_keys</code><span class="sig-paren">(</span><em>oasis_model</em>, <em>with_model_resources=True</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/exposures/OasisExposuresManager.html#OasisExposuresManager.get_keys"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#exposures.OasisExposuresManager.OasisExposuresManager.get_keys" title="Permalink to this definition">¶</a></dt>
-<dd><p>Generates the model exposures/locations file for a given
-<code class="docutils literal"><span class="pre">oasis_model</span></code> object to the Oasis keys CSV file format:</p>
+<dd><p>Generates the Oasis keys CSV file for a given model object, with
+headers</p>
 <blockquote>
 <div><code class="docutils literal"><span class="pre">LocID,PerilID,CoverageID,AreaPerilID,VulnerabilityID</span></code></div></blockquote>
 <p>using the lookup service defined for this model.</p>
@@ -534,19 +534,6 @@ of the canonical exposures file, the model exposures</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="exposures.OasisExposuresManager.OasisExposuresManager.transform">
-<code class="descname">transform</code><span class="sig-paren">(</span><em>oasis_model</em>, <em>with_model_resources=True</em>, <em>transform_type=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/exposures/OasisExposuresManager.html#OasisExposuresManager.transform"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#exposures.OasisExposuresManager.OasisExposuresManager.transform" title="Permalink to this definition">¶</a></dt>
-<dd><p>A parent method for the individual methods which implement the</p>
-<blockquote>
-<div>source exposures -&gt; canonical exposures
-canonical exposures -&gt; model exposures</div></blockquote>
-<p>transformations. If the transform_type is <cite>source_to_canonical</cite> then
-the <code class="docutils literal"><span class="pre">transform_source_to_canonical</span></code> is called, or else if the
-transform type is <cite>canonical_to_model</cite> then the
-<code class="docutils literal"><span class="pre">transform_canonical_to_model</span></code> method is called.</p>
-</dd></dl>
-
-<dl class="method">
 <dt id="exposures.OasisExposuresManager.OasisExposuresManager.transform_canonical_to_model">
 <code class="descname">transform_canonical_to_model</code><span class="sig-paren">(</span><em>oasis_model</em>, <em>with_model_resources=True</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/exposures/OasisExposuresManager.html#OasisExposuresManager.transform_canonical_to_model"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#exposures.OasisExposuresManager.OasisExposuresManager.transform_canonical_to_model" title="Permalink to this definition">¶</a></dt>
 <dd><p>Transforms the canonical exposures/locations file for a given
@@ -610,6 +597,12 @@ case only the generated canonical exposures file is returned.</p>
 </tbody>
 </table>
 </div></blockquote>
+</dd></dl>
+
+<dl class="method">
+<dt id="exposures.OasisFilesPipeline.OasisFilesPipeline.clear">
+<code class="descname">clear</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/exposures/OasisFilesPipeline.html#OasisFilesPipeline.clear"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#exposures.OasisFilesPipeline.OasisFilesPipeline.clear" title="Permalink to this definition">¶</a></dt>
+<dd><p>Clears all file attributes in the pipeline.</p>
 </dd></dl>
 
 <dl class="attribute">
