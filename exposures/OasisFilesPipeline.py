@@ -35,6 +35,16 @@ class OasisFilesPipeline(object):
             'gulsummaryxref': self._gulsummaryxref_file
         }
 
+        self._file_attrib_names = [
+            'source_exposures_file',
+            'canonical_exposures_file',
+            'model_exposures_file',
+            'keys_file',
+            'items_file',
+            'coverages_file',
+            'gulsummaryxref_file'
+        ]
+
 
     @classmethod
     def create(
@@ -74,7 +84,6 @@ class OasisFilesPipeline(object):
 
             :getter: Gets the actual file object
             :setter: Sets the file to the specified file object
-            :deleter: Deletes the file object
         """
         return self._source_exposures_file
 
@@ -84,11 +93,6 @@ class OasisFilesPipeline(object):
         self._source_exposures_file = f
 
 
-    @source_exposures_file.deleter
-    def source_exposures_file(self):
-        del self._source_exposures_file
-
-
     @property
     def canonical_exposures_file(self):
         """
@@ -96,7 +100,6 @@ class OasisFilesPipeline(object):
 
             :getter: Gets the actual file object
             :setter: Sets the file to the specified file object
-            :deleter: Deletes the file object
         """
         return self._canonical_exposures_file
 
@@ -106,11 +109,6 @@ class OasisFilesPipeline(object):
         self._canonical_exposures_file = f
 
 
-    @canonical_exposures_file.deleter
-    def canonical_exposures_file(self):
-        del self._canonical_exposures_file
-
-
     @property
     def model_exposures_file(self):
         """
@@ -118,7 +116,6 @@ class OasisFilesPipeline(object):
 
             :getter: Gets the actual file object
             :setter: Sets the file to the specified file object
-            :deleter: Deletes the file object
         """
         return self._model_exposures_file
 
@@ -128,11 +125,6 @@ class OasisFilesPipeline(object):
         self._model_exposures_file = f
 
 
-    @model_exposures_file.deleter
-    def model_exposures_file(self):
-        del self._model_exposures_file
-
-
     @property
     def keys_file(self):
         """
@@ -140,7 +132,6 @@ class OasisFilesPipeline(object):
 
             :getter: Gets the actual file object
             :setter: Sets the file to the specified file object
-            :deleter: Deletes the file object
         """
         return self._keys_file
 
@@ -150,11 +141,6 @@ class OasisFilesPipeline(object):
         self._keys_file = f
 
 
-    @keys_file.deleter
-    def keys_file(self):
-        del self._keys_file
-
-
     @property
     def items_file(self):
         """
@@ -162,7 +148,6 @@ class OasisFilesPipeline(object):
 
             :getter: Gets the actual file object
             :setter: Sets the file to the specified file object
-            :deleter: Deletes the file object
         """
         return self._items_file
 
@@ -172,12 +157,6 @@ class OasisFilesPipeline(object):
         self._items_file = self.oasis_files['items'] = f
 
 
-    @items_file.deleter
-    def items_file(self):
-        del self._items_file
-        self.oasis_files['items'] = None
-
-
     @property
     def coverages_file(self):
         """
@@ -185,7 +164,6 @@ class OasisFilesPipeline(object):
 
             :getter: Gets the actual file object
             :setter: Sets the file to the specified file object
-            :deleter: Deletes the file object
         """
         return self._coverages_file
 
@@ -195,12 +173,6 @@ class OasisFilesPipeline(object):
         self._coverages_file = self.oasis_files['coverages'] = f
 
 
-    @coverages_file.deleter
-    def coverages_file(self):
-        del self._coverages_file
-        self.oasis_files['coverages'] = None
-
-
     @property
     def gulsummaryxref_file(self):
         """
@@ -208,7 +180,6 @@ class OasisFilesPipeline(object):
 
             :getter: Gets the actual file object
             :setter: Sets the file to the specified file object
-            :deleter: Deletes the file object
         """
         return self._gulsummaryxref_file
 
@@ -216,12 +187,6 @@ class OasisFilesPipeline(object):
     @gulsummaryxref_file.setter
     def gulsummaryxref_file(self, f):
         self._gulsummaryxref_file = self.oasis_files['gulsummaryxref'] = f
-        self.oasis_files['gulsummaryxref'] = None
-
-
-    @gulsummaryxref_file.deleter
-    def gulsummaryxref_file(self):
-        del self._gulsummaryxref_file
 
 
     @property
@@ -239,17 +204,9 @@ class OasisFilesPipeline(object):
         """
         Clears all file attributes in the pipeline.
         """
-        file_attribute_names = filter(
-            lambda p: p,
-            map(
-                lambda p: p.strip('_') if 'model_key' not in p and 'oasis_files' not in p else None,
-                self.__dict__.keys()
-            )
-        )
-
         map(
             lambda f: setattr(self, f, None),
-            file_attribute_names
+            self._file_attrib_names
         )
 
 

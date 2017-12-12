@@ -290,7 +290,6 @@
                 <span class="k">return</span> <span class="n">f</span>
 
             <span class="n">tfp</span><span class="o">.</span><span class="n">canonical_exposures_file</span> <span class="o">=</span> <span class="n">f</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">models</span><span class="p">[</span><span class="n">oasis_model</span><span class="o">.</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">oasis_model</span>
             <span class="k">return</span> <span class="n">oasis_model</span></div>
 
 
@@ -363,7 +362,6 @@
                 <span class="k">return</span> <span class="n">f</span>
 
             <span class="n">tfp</span><span class="o">.</span><span class="n">model_exposures_file</span> <span class="o">=</span> <span class="n">f</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">models</span><span class="p">[</span><span class="n">oasis_model</span><span class="o">.</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">oasis_model</span>
             <span class="k">return</span> <span class="n">oasis_model</span></div>
 
 
@@ -419,8 +417,7 @@
         <span class="k">if</span> <span class="ow">not</span> <span class="n">with_model_resources</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">oasis_keys_file</span>
 
-        <span class="n">tfp</span><span class="o">.</span><span class="n">oasis_keys_file</span> <span class="o">=</span> <span class="n">oasis_keys_file</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">models</span><span class="p">[</span><span class="n">oasis_model</span><span class="o">.</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">oasis_model</span>
+        <span class="n">tfp</span><span class="o">.</span><span class="n">keys_file</span> <span class="o">=</span> <span class="n">oasis_keys_file</span>
 
         <span class="k">return</span> <span class="n">oasis_model</span></div>
 
@@ -459,7 +456,6 @@
             <span class="k">return</span> <span class="n">canonical_exposures_profile</span>
 
         <span class="n">oasis_model</span><span class="o">.</span><span class="n">resources</span><span class="p">[</span><span class="s1">&#39;canonical_exposures_profile&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">canonical_exposures_profile</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">models</span><span class="p">[</span><span class="n">oasis_model</span><span class="o">.</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">oasis_model</span>
 
         <span class="k">return</span> <span class="n">oasis_model</span></div>
 
@@ -552,7 +548,6 @@
                 <span class="k">return</span> <span class="n">f</span>
 
             <span class="n">tfp</span><span class="o">.</span><span class="n">items_file</span> <span class="o">=</span> <span class="n">f</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">models</span><span class="p">[</span><span class="n">oasis_model</span><span class="o">.</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">oasis_model</span>
 
             <span class="k">return</span> <span class="n">oasis_model</span></div>
 
@@ -607,7 +602,6 @@
 <span class="sd">            Oasis files pipeline cleared.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">oasis_model</span><span class="o">.</span><span class="n">resources</span><span class="p">[</span><span class="s1">&#39;oasis_files_pipeline&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">models</span><span class="p">[</span><span class="n">oasis_model</span><span class="o">.</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">oasis_model</span>
 
         <span class="k">return</span> <span class="n">oasis_model</span></div>
 

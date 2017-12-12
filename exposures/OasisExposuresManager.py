@@ -248,7 +248,6 @@ class OasisExposuresManager(implements(OasisExposuresManagerInterface)):
                 return f
 
             tfp.canonical_exposures_file = f
-            self.models[oasis_model.key] = oasis_model
             return oasis_model
 
 
@@ -321,7 +320,6 @@ class OasisExposuresManager(implements(OasisExposuresManagerInterface)):
                 return f
 
             tfp.model_exposures_file = f
-            self.models[oasis_model.key] = oasis_model
             return oasis_model
 
 
@@ -377,8 +375,7 @@ class OasisExposuresManager(implements(OasisExposuresManagerInterface)):
         if not with_model_resources:
             return oasis_keys_file
 
-        tfp.oasis_keys_file = oasis_keys_file
-        self.models[oasis_model.key] = oasis_model
+        tfp.keys_file = oasis_keys_file
 
         return oasis_model
 
@@ -417,7 +414,6 @@ class OasisExposuresManager(implements(OasisExposuresManagerInterface)):
             return canonical_exposures_profile
 
         oasis_model.resources['canonical_exposures_profile'] = canonical_exposures_profile
-        self.models[oasis_model.key] = oasis_model
 
         return oasis_model
 
@@ -510,7 +506,6 @@ class OasisExposuresManager(implements(OasisExposuresManagerInterface)):
                 return f
 
             tfp.items_file = f
-            self.models[oasis_model.key] = oasis_model
 
             return oasis_model
 
@@ -565,7 +560,6 @@ class OasisExposuresManager(implements(OasisExposuresManagerInterface)):
             Oasis files pipeline cleared.
         """
         oasis_model.resources['oasis_files_pipeline'].clear()
-        self.models[oasis_model.key] = oasis_model
 
         return oasis_model
 
