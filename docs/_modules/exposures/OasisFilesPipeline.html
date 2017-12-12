@@ -77,6 +77,16 @@
             <span class="s1">&#39;gulsummaryxref&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_gulsummaryxref_file</span>
         <span class="p">}</span>
 
+        <span class="bp">self</span><span class="o">.</span><span class="n">_file_attrib_names</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="s1">&#39;source_exposures_file&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;canonical_exposures_file&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;model_exposures_file&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;keys_file&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;items_file&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;coverages_file&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;gulsummaryxref_file&#39;</span>
+        <span class="p">]</span>
+
 
 <div class="viewcode-block" id="OasisFilesPipeline.create"><a class="viewcode-back" href="../../modules.html#exposures.OasisFilesPipeline.OasisFilesPipeline.create">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">create</span><span class="p">(</span>
@@ -116,7 +126,6 @@
 
 <span class="sd">            :getter: Gets the actual file object</span>
 <span class="sd">            :setter: Sets the file to the specified file object</span>
-<span class="sd">            :deleter: Deletes the file object</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_source_exposures_file</span>
 
@@ -126,11 +135,6 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_source_exposures_file</span> <span class="o">=</span> <span class="n">f</span>
 
 
-    <span class="nd">@source_exposures_file</span><span class="o">.</span><span class="n">deleter</span>
-    <span class="k">def</span> <span class="nf">source_exposures_file</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">_source_exposures_file</span>
-
-
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">canonical_exposures_file</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -138,7 +142,6 @@
 
 <span class="sd">            :getter: Gets the actual file object</span>
 <span class="sd">            :setter: Sets the file to the specified file object</span>
-<span class="sd">            :deleter: Deletes the file object</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_canonical_exposures_file</span>
 
@@ -148,11 +151,6 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_canonical_exposures_file</span> <span class="o">=</span> <span class="n">f</span>
 
 
-    <span class="nd">@canonical_exposures_file</span><span class="o">.</span><span class="n">deleter</span>
-    <span class="k">def</span> <span class="nf">canonical_exposures_file</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">_canonical_exposures_file</span>
-
-
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">model_exposures_file</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -160,7 +158,6 @@
 
 <span class="sd">            :getter: Gets the actual file object</span>
 <span class="sd">            :setter: Sets the file to the specified file object</span>
-<span class="sd">            :deleter: Deletes the file object</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_model_exposures_file</span>
 
@@ -170,11 +167,6 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_model_exposures_file</span> <span class="o">=</span> <span class="n">f</span>
 
 
-    <span class="nd">@model_exposures_file</span><span class="o">.</span><span class="n">deleter</span>
-    <span class="k">def</span> <span class="nf">model_exposures_file</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">_model_exposures_file</span>
-
-
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">keys_file</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -182,7 +174,6 @@
 
 <span class="sd">            :getter: Gets the actual file object</span>
 <span class="sd">            :setter: Sets the file to the specified file object</span>
-<span class="sd">            :deleter: Deletes the file object</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_keys_file</span>
 
@@ -192,11 +183,6 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_keys_file</span> <span class="o">=</span> <span class="n">f</span>
 
 
-    <span class="nd">@keys_file</span><span class="o">.</span><span class="n">deleter</span>
-    <span class="k">def</span> <span class="nf">keys_file</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">_keys_file</span>
-
-
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">items_file</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -204,7 +190,6 @@
 
 <span class="sd">            :getter: Gets the actual file object</span>
 <span class="sd">            :setter: Sets the file to the specified file object</span>
-<span class="sd">            :deleter: Deletes the file object</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_items_file</span>
 
@@ -214,12 +199,6 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_items_file</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">oasis_files</span><span class="p">[</span><span class="s1">&#39;items&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">f</span>
 
 
-    <span class="nd">@items_file</span><span class="o">.</span><span class="n">deleter</span>
-    <span class="k">def</span> <span class="nf">items_file</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">_items_file</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">oasis_files</span><span class="p">[</span><span class="s1">&#39;items&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
-
-
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">coverages_file</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -227,7 +206,6 @@
 
 <span class="sd">            :getter: Gets the actual file object</span>
 <span class="sd">            :setter: Sets the file to the specified file object</span>
-<span class="sd">            :deleter: Deletes the file object</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_coverages_file</span>
 
@@ -237,12 +215,6 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_coverages_file</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">oasis_files</span><span class="p">[</span><span class="s1">&#39;coverages&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">f</span>
 
 
-    <span class="nd">@coverages_file</span><span class="o">.</span><span class="n">deleter</span>
-    <span class="k">def</span> <span class="nf">coverages_file</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">_coverages_file</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">oasis_files</span><span class="p">[</span><span class="s1">&#39;coverages&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
-
-
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">gulsummaryxref_file</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -250,7 +222,6 @@
 
 <span class="sd">            :getter: Gets the actual file object</span>
 <span class="sd">            :setter: Sets the file to the specified file object</span>
-<span class="sd">            :deleter: Deletes the file object</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_gulsummaryxref_file</span>
 
@@ -258,12 +229,6 @@
     <span class="nd">@gulsummaryxref_file</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">gulsummaryxref_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">f</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_gulsummaryxref_file</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">oasis_files</span><span class="p">[</span><span class="s1">&#39;gulsummaryxref&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">f</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">oasis_files</span><span class="p">[</span><span class="s1">&#39;gulsummaryxref&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
-
-
-    <span class="nd">@gulsummaryxref_file</span><span class="o">.</span><span class="n">deleter</span>
-    <span class="k">def</span> <span class="nf">gulsummaryxref_file</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">_gulsummaryxref_file</span>
 
 
     <span class="nd">@property</span>
@@ -275,6 +240,16 @@
 <span class="sd">                     ``items.csv``, ``coverages.csv``, `gulsummaryxref.csv`.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_oasis_files</span>
+
+
+<div class="viewcode-block" id="OasisFilesPipeline.clear"><a class="viewcode-back" href="../../modules.html#exposures.OasisFilesPipeline.OasisFilesPipeline.clear">[docs]</a>    <span class="k">def</span> <span class="nf">clear</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Clears all file attributes in the pipeline.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">map</span><span class="p">(</span>
+            <span class="k">lambda</span> <span class="n">f</span><span class="p">:</span> <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_file_attrib_names</span>
+        <span class="p">)</span></div>
 
 
     <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>

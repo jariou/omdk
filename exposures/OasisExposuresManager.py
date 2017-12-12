@@ -248,7 +248,6 @@ class OasisExposuresManager(implements(OasisExposuresManagerInterface)):
                 return f
 
             tfp.canonical_exposures_file = f
-            self.models[oasis_model.key] = oasis_model
             return oasis_model
 
 
@@ -321,32 +320,13 @@ class OasisExposuresManager(implements(OasisExposuresManagerInterface)):
                 return f
 
             tfp.model_exposures_file = f
-            self.models[oasis_model.key] = oasis_model
             return oasis_model
-
-
-    def transform(self, oasis_model, with_model_resources=True, transform_type=None, **kwargs):
-        """
-        A parent method for the individual methods which implement the
-
-            source exposures -> canonical exposures
-            canonical exposures -> model exposures
-        
-        transformations. If the transform_type is `source_to_canonical` then
-        the ``transform_source_to_canonical`` is called, or else if the
-        transform type is `canonical_to_model` then the
-        ``transform_canonical_to_model`` method is called.
-        """
-        if transform_type == 'source_to_canonical':
-            return self.transform_source_to_canonical(oasis_model, with_model_resources, **kwargs)
-        elif transform_type == 'canonical_to_model':
-            return self.transform_canonical_to_model(oasis_model, with_model_resources, **kwargs)
 
 
     def get_keys(self, oasis_model, with_model_resources=True, **kwargs):
         """
-        Generates the model exposures/locations file for a given
-        ``oasis_model`` object to the Oasis keys CSV file format:
+        Generates the Oasis keys CSV file for a given model object, with
+        headers
 
             ``LocID,PerilID,CoverageID,AreaPerilID,VulnerabilityID``
 
@@ -395,8 +375,7 @@ class OasisExposuresManager(implements(OasisExposuresManagerInterface)):
         if not with_model_resources:
             return oasis_keys_file
 
-        tfp.oasis_keys_file = oasis_keys_file
-        self.models[oasis_model.key] = oasis_model
+        tfp.keys_file = oasis_keys_file
 
         return oasis_model
 
@@ -423,19 +402,18 @@ class OasisExposuresManager(implements(OasisExposuresManagerInterface)):
             try:
                 canonical_exposures_profile = json.loads(canonical_exposures_profile_json)
             except ValueError:
-                raise OasisException("Canonical exposures profile JSON is invalid for {}.".format(str(oasis_model)))
+                raise OasisException("Canonical exposures profile JSON is invalid for {}.".format(oasis_model))
         elif canonical_exposures_profile_json_path:
             try:
                 with io.open(canonical_exposures_profile_json_path, 'r', encoding='utf-8') as f:
                     canonical_exposures_profile = json.load(f)
             except (IOError, ValueError):
-                raise OasisException("Canonical exposures profile JSON file path invalid or file is not valid JSON for {}.".format(str(oasis_model)))
+                raise OasisException("Canonical exposures profile JSON file path invalid or file is not valid JSON for {}.".format(oasis_model))
 
         if not with_model_resources:
             return canonical_exposures_profile
 
         oasis_model.resources['canonical_exposures_profile'] = canonical_exposures_profile
-        self.models[oasis_model.key] = oasis_model
 
         return oasis_model
 
@@ -528,7 +506,6 @@ class OasisExposuresManager(implements(OasisExposuresManagerInterface)):
                 return f
 
             tfp.items_file = f
-            self.models[oasis_model.key] = oasis_model
 
             return oasis_model
 
@@ -582,8 +559,7 @@ class OasisExposuresManager(implements(OasisExposuresManagerInterface)):
             ``oasis_model`` (``omdk.models.OasisModel.OasisModel``): The model object with its
             Oasis files pipeline cleared.
         """
-        oasis_model.resources['oasis_files_pipeline'] = OasisFilesPipeline.create(model_key=oasis_model.key)
-        self.models[oasis_model.key] = oasis_model
+        oasis_model.resources['oasis_files_pipeline'].clear()
 
         return oasis_model
 
