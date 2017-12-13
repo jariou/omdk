@@ -68,7 +68,7 @@ meeq = omf.create(
 
 from omdk.exposures import OasisExposuresManager as oem
 
-manager = oem.create(oasis_models=[meeq])
+manager = oem(oasis_models=[meeq])
 
 manager.start_files_pipeline(meeq)
 

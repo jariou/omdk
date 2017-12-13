@@ -199,15 +199,6 @@ type in the call to <code class="docutils literal"><span class="pre">clear_files
 file attributes of this pipelines object to null.</p>
 </dd></dl>
 
-<dl class="classmethod">
-<dt id="exposures.OasisExposuresManagerInterface.OasisExposuresManagerInterface.create">
-<em class="property">classmethod </em><code class="descname">create</code><span class="sig-paren">(</span><em>oasis_models=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/exposures/OasisExposuresManagerInterface.html#OasisExposuresManagerInterface.create"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#exposures.OasisExposuresManagerInterface.OasisExposuresManagerInterface.create" title="Permalink to this definition">¶</a></dt>
-<dd><p>Class method that returns an instance of an Oasis exposures
-manager. The optional <code class="docutils literal"><span class="pre">oasis_models</span></code> argument should be a list of
-Oasis model objects (<code class="docutils literal"><span class="pre">omdk.OasisModel.OasisModel</span></code>), and any
-additional resources can be specified in <code class="docutils literal"><span class="pre">kwargs</span></code>.</p>
-</dd></dl>
-
 <dl class="method">
 <dt id="exposures.OasisExposuresManagerInterface.OasisExposuresManagerInterface.generate_coverages_file">
 <code class="descname">generate_coverages_file</code><span class="sig-paren">(</span><em>oasis_model</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/exposures/OasisExposuresManagerInterface.html#OasisExposuresManagerInterface.generate_coverages_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#exposures.OasisExposuresManagerInterface.OasisExposuresManagerInterface.generate_coverages_file" title="Permalink to this definition">¶</a></dt>
@@ -360,20 +351,6 @@ Oasis files pipeline cleared.</dd>
 </dl>
 </dd></dl>
 
-<dl class="classmethod">
-<dt id="exposures.OasisExposuresManager.OasisExposuresManager.create">
-<em class="property">classmethod </em><code class="descname">create</code><span class="sig-paren">(</span><em>oasis_models=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/exposures/OasisExposuresManager.html#OasisExposuresManager.create"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#exposures.OasisExposuresManager.OasisExposuresManager.create" title="Permalink to this definition">¶</a></dt>
-<dd><p>Service method that returns an Oasis exposures manager.</p>
-<dl class="docutils">
-<dt>Args:</dt>
-<dd><code class="docutils literal"><span class="pre">oasis_models</span></code> (<code class="docutils literal"><span class="pre">list</span></code>): a list of Oasis model objects (<code class="docutils literal"><span class="pre">omdk.OasisModel.OasisModel</span></code>)
-with resources provided in the model objects’ resources dictionaries.</dd>
-<dt>Returns:</dt>
-<dd><code class="docutils literal"><span class="pre">omdk.exposures.OasisExposuresManager.OasisExposuresManager</span></code>: an instance of 
-an Oasis exposures manager class</dd>
-</dl>
-</dd></dl>
-
 <dl class="method">
 <dt id="exposures.OasisExposuresManager.OasisExposuresManager.generate_coverages_file">
 <code class="descname">generate_coverages_file</code><span class="sig-paren">(</span><em>oasis_model</em>, <em>with_model_resources=True</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/exposures/OasisExposuresManager.html#OasisExposuresManager.generate_coverages_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#exposures.OasisExposuresManager.OasisExposuresManager.generate_coverages_file" title="Permalink to this definition">¶</a></dt>
@@ -387,8 +364,14 @@ an Oasis exposures manager class</dd>
 </dd></dl>
 
 <dl class="method">
+<dt id="exposures.OasisExposuresManager.OasisExposuresManager.generate_items_and_coverages_files">
+<code class="descname">generate_items_and_coverages_files</code><span class="sig-paren">(</span><em>oasis_model</em>, <em>with_model_resources=True</em>, <em>with_coverages=True</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/exposures/OasisExposuresManager.html#OasisExposuresManager.generate_items_and_coverages_files"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#exposures.OasisExposuresManager.OasisExposuresManager.generate_items_and_coverages_files" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates items and coverages files for the given <code class="docutils literal"><span class="pre">oasis_model</span></code>.</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="exposures.OasisExposuresManager.OasisExposuresManager.generate_items_file">
-<code class="descname">generate_items_file</code><span class="sig-paren">(</span><em>oasis_model</em>, <em>with_model_resources=True</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/exposures/OasisExposuresManager.html#OasisExposuresManager.generate_items_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#exposures.OasisExposuresManager.OasisExposuresManager.generate_items_file" title="Permalink to this definition">¶</a></dt>
+<code class="descname">generate_items_file</code><span class="sig-paren">(</span><em>oasis_model</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/exposures/OasisExposuresManager.html#OasisExposuresManager.generate_items_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#exposures.OasisExposuresManager.OasisExposuresManager.generate_items_file" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generates an items file for the given <code class="docutils literal"><span class="pre">oasis_model</span></code>.</p>
 </dd></dl>
 

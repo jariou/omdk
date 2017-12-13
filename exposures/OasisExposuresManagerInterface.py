@@ -18,18 +18,7 @@ class OasisExposuresManagerInterface(Interface):
 
     def __init__(self, oasis_models=None):
         """
-        Class constructor - not generally to be used directly.
-        """
-        pass
-
-
-    @classmethod
-    def create(cls, oasis_models=None, **kwargs):
-        """
-        Class method that returns an instance of an Oasis exposures
-        manager. The optional ``oasis_models`` argument should be a list of
-        Oasis model objects (``omdk.OasisModel.OasisModel``), and any
-        additional resources can be specified in ``kwargs``.
+        Class constructor.
         """
         pass
 

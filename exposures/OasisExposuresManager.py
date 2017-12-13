@@ -47,13 +47,18 @@ class OasisExposuresManager(implements(OasisExposuresManagerInterface)):
 
     def __init__(self, oasis_models=None):
         """
-        Class constructor - not generally to be used directly, instead called
-        by the service method ``create``.
+        Class constructor.
 
         Args:
             ``oasis_models`` (``list``): a list of Oasis model objects (``omdk.OasisModel.OasisModel``)
             with resources provided in the model objects' resources dictionaries.
         """
+        logging.basicConfig(
+            level=logging.INFO,
+            format='%(asctime)s - %(levelname)s - %(message)s',
+            filemode='w'
+        )
+
         logging.info('Creating keys lookup service factory for manager {}'.format(self))
         self._keys_lookup_service_factory = klsf()
         
@@ -101,28 +106,6 @@ class OasisExposuresManager(implements(OasisExposuresManagerInterface)):
                 
                 self._models[model.key] = model
                 logging.info('added model {}'.format(model))
-
-
-    @classmethod
-    def create(cls, oasis_models=None):
-        """
-        Service method that returns an Oasis exposures manager.
-
-        Args:
-            ``oasis_models`` (``list``): a list of Oasis model objects (``omdk.OasisModel.OasisModel``)
-            with resources provided in the model objects' resources dictionaries.
-
-        Returns:
-            ``omdk.exposures.OasisExposuresManager.OasisExposuresManager``: an instance of 
-            an Oasis exposures manager class
-        """
-        logging.basicConfig(
-            level=logging.INFO,
-            format='%(asctime)s - %(levelname)s - %(message)s',
-            filemode='w'
-        )
-
-        return cls(oasis_models=oasis_models)
 
 
     @property
@@ -418,9 +401,16 @@ class OasisExposuresManager(implements(OasisExposuresManagerInterface)):
         return oasis_model
 
 
-    def generate_items_file(self, oasis_model, with_model_resources=True, **kwargs):
+    def generate_items_file(self, oasis_model, **kwargs):
         """
         Generates an items file for the given ``oasis_model``.
+        """
+        pass
+
+
+    def generate_items_and_coverages_files(self, oasis_model, with_model_resources=True, with_coverages=True, **kwargs):
+        """
+        Generates items and coverages files for the given ``oasis_model``.
         """
         omr = oasis_model.resources
         tfp = omr['oasis_files_pipeline']
@@ -433,6 +423,8 @@ class OasisExposuresManager(implements(OasisExposuresManagerInterface)):
             canonical_exposures_profile_json_path = kwargs['canonical_exposures_profile_json_path']  if 'canonical_exposures_profile_json_path' in kwargs else None
             items_file_path = kwargs['items_file_path'] if 'items_file_path' in kwargs else None
             items_timestamped_file_path = kwargs['items_timestamped_file_path'] if 'items_timestamped_file_path' in kwargs else None
+            coverages_file_path = kwargs['coverages_file_path'] if 'coverages_file_path' in kwargs else None
+            coverages_timestamped_file_path = kwargs['coverages_timestamped_file_path'] if 'coverages_timestamped_file_path' in kwargs else None
         else:
             canonical_exposures_file_path = tfp.canonical_exposures_file.name
             keys_file_path = tfp.keys_file.name
@@ -441,6 +433,8 @@ class OasisExposuresManager(implements(OasisExposuresManagerInterface)):
             canonical_exposures_profile_json_path = omr['canonical_exposures_profile_json_path']  if 'canonical_exposures_profile_json_path' in omr else None
             items_file_path = omr['items_file_path'] if 'items_file_path' in omr else None
             items_timestamped_file_path = omr['items_timestamped_file_path'] if 'items_timestamped_file_path' in omr else None
+            coverages_file_path = omr['coverages_file_path'] if 'coverages_file_path' in omr else None
+            coverages_timestamped_file_path = omr['coverages_timestamped_file_path'] if 'coverages_timestamped_file_path' in omr else None
 
         with io.open(canonical_exposures_file_path, 'r', encoding='utf-8') as cf:
             with io.open(keys_file_path, 'r', encoding='utf-8') as kf:
@@ -490,6 +484,7 @@ class OasisExposuresManager(implements(OasisExposuresManagerInterface)):
                 it = {
                     'item_id': ii,
                     'coverage_id': ii,
+                    'tiv': ci[tiv_field['ProfileElementName'].lower()],
                     'areaperil_id': ki['areaperilid'],
                     'vulnerability_id': ki['vulnerabilityid'],
                     'group_id': ii
@@ -498,14 +493,45 @@ class OasisExposuresManager(implements(OasisExposuresManagerInterface)):
 
         items_df = items_df.append(items)
 
-        items_df.to_csv(path_or_buf=items_file_path, encoding='utf-8', chunksize=1000, index=False)
-        items_df.to_csv(path_or_buf=items_timestamped_file_path, encoding='utf-8', chunksize=1000, index=False)
+        items_only_df = items_df.drop(['tiv'], axis=1)
+        items_only_df.to_csv(
+            columns=['item_id', 'coverage_id', 'areaperil_id', 'vulnerability_id', 'group_id'],
+            path_or_buf=items_file_path,
+            encoding='utf-8', 
+            chunksize=1000,
+            index=False
+        )
+        items_only_df.to_csv(
+            columns=['item_id', 'coverage_id', 'areaperil_id', 'vulnerability_id', 'group_id'],
+            path_or_buf=items_timestamped_file_path,
+            encoding='utf-8', 
+            chunksize=1000,
+            index=False
+        )
 
-        with io.open(items_file_path, 'r', encoding='utf-8') as f:
-            if not with_model_resources:
-                return f
+        coverages_df = items_df.drop(['item_id', 'areaperil_id', 'vulnerability_id', 'group_id'], axis=1)
+        coverages_df.to_csv(
+            columns=['coverage_id', 'tiv'],
+            path_or_buf=coverages_file_path,
+            encoding='utf-8',
+            chunksize=1000,
+            index=False
+        )
+        coverages_df.to_csv(
+            columns=['coverage_id', 'tiv'],
+            path_or_buf=coverages_timestamped_file_path,
+            encoding='utf-8',
+            chunksize=1000,
+            index=False
+        )
 
-            tfp.items_file = f
+        with io.open(items_file_path, 'r', encoding='utf-8') as itf:
+            with io.open(coverages_file_path, 'r', encoding='utf-8') as cvf:
+                if not with_model_resources:
+                    return itf, cvf
+
+            tfp.items_file = itf
+            tfp.coverages_file = cvf
 
             return oasis_model
 
@@ -534,13 +560,11 @@ class OasisExposuresManager(implements(OasisExposuresManagerInterface)):
 
         """
         if not with_model_resources:
-            items_file = self.generate_items_file(oasis_model, with_model_resources=False, **kwargs)
-            coverages_file = self.generate_coverages_file(oasis_model, with_model_resources=False, **kwargs)
+            items_file, coverages_file = self.generate_items_and_coverages_files(oasis_model, with_model_resources=False, **kwargs)
             gulsummaryxref_file = self.generate_gulsummaryxref_file(oasis_model, with_model_resources=False, **kwargs)
             return items_file, coverages_file, gulsummaryxref_file
         else:
-            self.generate_items_file(oasis_model)
-            self.generate_coverages_file(oasis_model)
+            self.generate_items_and_coverages_files(oasis_model)
             self.generate_gulsummaryxref_file(oasis_model)
 
             return oasis_model
