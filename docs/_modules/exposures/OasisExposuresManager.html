@@ -536,15 +536,16 @@
         <span class="n">items_df</span> <span class="o">=</span> <span class="n">items_df</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">items</span><span class="p">)</span>
 
         <span class="n">items_only_df</span> <span class="o">=</span> <span class="n">items_df</span><span class="o">.</span><span class="n">drop</span><span class="p">([</span><span class="s1">&#39;tiv&#39;</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">items_file_columns</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;item_id&#39;</span><span class="p">,</span> <span class="s1">&#39;coverage_id&#39;</span><span class="p">,</span> <span class="s1">&#39;areaperil_id&#39;</span><span class="p">,</span> <span class="s1">&#39;vulnerability_id&#39;</span><span class="p">,</span> <span class="s1">&#39;group_id&#39;</span><span class="p">]</span>
         <span class="n">items_only_df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span>
-            <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;item_id&#39;</span><span class="p">,</span> <span class="s1">&#39;coverage_id&#39;</span><span class="p">,</span> <span class="s1">&#39;areaperil_id&#39;</span><span class="p">,</span> <span class="s1">&#39;vulnerability_id&#39;</span><span class="p">,</span> <span class="s1">&#39;group_id&#39;</span><span class="p">],</span>
+            <span class="n">columns</span><span class="o">=</span><span class="n">items_file_columns</span><span class="p">,</span>
             <span class="n">path_or_buf</span><span class="o">=</span><span class="n">items_file_path</span><span class="p">,</span>
             <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">,</span> 
             <span class="n">chunksize</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span>
             <span class="n">index</span><span class="o">=</span><span class="kc">False</span>
         <span class="p">)</span>
         <span class="n">items_only_df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span>
-            <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;item_id&#39;</span><span class="p">,</span> <span class="s1">&#39;coverage_id&#39;</span><span class="p">,</span> <span class="s1">&#39;areaperil_id&#39;</span><span class="p">,</span> <span class="s1">&#39;vulnerability_id&#39;</span><span class="p">,</span> <span class="s1">&#39;group_id&#39;</span><span class="p">],</span>
+            <span class="n">columns</span><span class="o">=</span><span class="n">items_file_columns</span><span class="p">,</span>
             <span class="n">path_or_buf</span><span class="o">=</span><span class="n">items_timestamped_file_path</span><span class="p">,</span>
             <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">,</span> 
             <span class="n">chunksize</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span>
@@ -552,15 +553,18 @@
         <span class="p">)</span>
 
         <span class="n">coverages_df</span> <span class="o">=</span> <span class="n">items_df</span><span class="o">.</span><span class="n">drop</span><span class="p">([</span><span class="s1">&#39;item_id&#39;</span><span class="p">,</span> <span class="s1">&#39;areaperil_id&#39;</span><span class="p">,</span> <span class="s1">&#39;vulnerability_id&#39;</span><span class="p">,</span> <span class="s1">&#39;group_id&#39;</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">coverages_file_columns</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;coverage_id&#39;</span><span class="p">,</span> <span class="s1">&#39;tiv&#39;</span><span class="p">]</span>
         <span class="n">coverages_df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span>
-            <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;coverage_id&#39;</span><span class="p">,</span> <span class="s1">&#39;tiv&#39;</span><span class="p">],</span>
+            <span class="n">columns</span><span class="o">=</span><span class="n">coverages_file_columns</span><span class="p">,</span>
+            <span class="n">float_format</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">%.1f</span><span class="s1">&#39;</span><span class="p">,</span>
             <span class="n">path_or_buf</span><span class="o">=</span><span class="n">coverages_file_path</span><span class="p">,</span>
             <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">,</span>
             <span class="n">chunksize</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span>
             <span class="n">index</span><span class="o">=</span><span class="kc">False</span>
         <span class="p">)</span>
         <span class="n">coverages_df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span>
-            <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;coverage_id&#39;</span><span class="p">,</span> <span class="s1">&#39;tiv&#39;</span><span class="p">],</span>
+            <span class="n">columns</span><span class="o">=</span><span class="n">coverages_file_columns</span><span class="p">,</span>
+            <span class="n">float_format</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">%.1f</span><span class="s1">&#39;</span><span class="p">,</span>
             <span class="n">path_or_buf</span><span class="o">=</span><span class="n">coverages_timestamped_file_path</span><span class="p">,</span>
             <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">,</span>
             <span class="n">chunksize</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span>

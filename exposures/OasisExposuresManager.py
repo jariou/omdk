@@ -494,15 +494,16 @@ class OasisExposuresManager(implements(OasisExposuresManagerInterface)):
         items_df = items_df.append(items)
 
         items_only_df = items_df.drop(['tiv'], axis=1)
+        items_file_columns = ['item_id', 'coverage_id', 'areaperil_id', 'vulnerability_id', 'group_id']
         items_only_df.to_csv(
-            columns=['item_id', 'coverage_id', 'areaperil_id', 'vulnerability_id', 'group_id'],
+            columns=items_file_columns,
             path_or_buf=items_file_path,
             encoding='utf-8', 
             chunksize=1000,
             index=False
         )
         items_only_df.to_csv(
-            columns=['item_id', 'coverage_id', 'areaperil_id', 'vulnerability_id', 'group_id'],
+            columns=items_file_columns,
             path_or_buf=items_timestamped_file_path,
             encoding='utf-8', 
             chunksize=1000,
@@ -510,15 +511,18 @@ class OasisExposuresManager(implements(OasisExposuresManagerInterface)):
         )
 
         coverages_df = items_df.drop(['item_id', 'areaperil_id', 'vulnerability_id', 'group_id'], axis=1)
+        coverages_file_columns = ['coverage_id', 'tiv']
         coverages_df.to_csv(
-            columns=['coverage_id', 'tiv'],
+            columns=coverages_file_columns,
+            float_format='%.1f',
             path_or_buf=coverages_file_path,
             encoding='utf-8',
             chunksize=1000,
             index=False
         )
         coverages_df.to_csv(
-            columns=['coverage_id', 'tiv'],
+            columns=coverages_file_columns,
+            float_format='%.1f',
             path_or_buf=coverages_timestamped_file_path,
             encoding='utf-8',
             chunksize=1000,
