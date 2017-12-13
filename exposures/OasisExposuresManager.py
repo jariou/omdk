@@ -408,6 +408,13 @@ class OasisExposuresManager(implements(OasisExposuresManagerInterface)):
         pass
 
 
+    def generate_coverages_file(self, oasis_model, with_model_resources=True, **kwargs):
+        """
+        Generates a coverages file for the given ``oasis_model``.
+        """
+        pass
+
+
     def generate_items_and_coverages_files(self, oasis_model, with_model_resources=True, with_coverages=True, **kwargs):
         """
         Generates items and coverages files for the given ``oasis_model``.
@@ -493,16 +500,15 @@ class OasisExposuresManager(implements(OasisExposuresManagerInterface)):
 
         items_df = items_df.append(items)
 
-        items_only_df = items_df.drop(['tiv'], axis=1)
         items_file_columns = ['item_id', 'coverage_id', 'areaperil_id', 'vulnerability_id', 'group_id']
-        items_only_df.to_csv(
+        items_df.to_csv(
             columns=items_file_columns,
             path_or_buf=items_file_path,
             encoding='utf-8', 
             chunksize=1000,
             index=False
         )
-        items_only_df.to_csv(
+        items_df.to_csv(
             columns=items_file_columns,
             path_or_buf=items_timestamped_file_path,
             encoding='utf-8', 
@@ -510,9 +516,8 @@ class OasisExposuresManager(implements(OasisExposuresManagerInterface)):
             index=False
         )
 
-        coverages_df = items_df.drop(['item_id', 'areaperil_id', 'vulnerability_id', 'group_id'], axis=1)
         coverages_file_columns = ['coverage_id', 'tiv']
-        coverages_df.to_csv(
+        items_df.to_csv(
             columns=coverages_file_columns,
             float_format='%.1f',
             path_or_buf=coverages_file_path,
@@ -520,7 +525,7 @@ class OasisExposuresManager(implements(OasisExposuresManagerInterface)):
             chunksize=1000,
             index=False
         )
-        coverages_df.to_csv(
+        items_df.to_csv(
             columns=coverages_file_columns,
             float_format='%.1f',
             path_or_buf=coverages_timestamped_file_path,
@@ -538,13 +543,6 @@ class OasisExposuresManager(implements(OasisExposuresManagerInterface)):
             tfp.coverages_file = cvf
 
             return oasis_model
-
-
-    def generate_coverages_file(self, oasis_model, with_model_resources=True, **kwargs):
-        """
-        Generates a coverages file for the given ``oasis_model``.
-        """
-        pass
 
 
     def generate_gulsummaryxref_file(self, oasis_model, with_model_resources=True, **kwargs):

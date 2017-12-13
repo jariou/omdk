@@ -450,6 +450,13 @@
         <span class="k">pass</span></div>
 
 
+<div class="viewcode-block" id="OasisExposuresManager.generate_coverages_file"><a class="viewcode-back" href="../../modules.html#exposures.OasisExposuresManager.OasisExposuresManager.generate_coverages_file">[docs]</a>    <span class="k">def</span> <span class="nf">generate_coverages_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">oasis_model</span><span class="p">,</span> <span class="n">with_model_resources</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Generates a coverages file for the given ``oasis_model``.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span></div>
+
+
 <div class="viewcode-block" id="OasisExposuresManager.generate_items_and_coverages_files"><a class="viewcode-back" href="../../modules.html#exposures.OasisExposuresManager.OasisExposuresManager.generate_items_and_coverages_files">[docs]</a>    <span class="k">def</span> <span class="nf">generate_items_and_coverages_files</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">oasis_model</span><span class="p">,</span> <span class="n">with_model_resources</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">with_coverages</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Generates items and coverages files for the given ``oasis_model``.</span>
@@ -535,16 +542,15 @@
 
         <span class="n">items_df</span> <span class="o">=</span> <span class="n">items_df</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">items</span><span class="p">)</span>
 
-        <span class="n">items_only_df</span> <span class="o">=</span> <span class="n">items_df</span><span class="o">.</span><span class="n">drop</span><span class="p">([</span><span class="s1">&#39;tiv&#39;</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
         <span class="n">items_file_columns</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;item_id&#39;</span><span class="p">,</span> <span class="s1">&#39;coverage_id&#39;</span><span class="p">,</span> <span class="s1">&#39;areaperil_id&#39;</span><span class="p">,</span> <span class="s1">&#39;vulnerability_id&#39;</span><span class="p">,</span> <span class="s1">&#39;group_id&#39;</span><span class="p">]</span>
-        <span class="n">items_only_df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span>
+        <span class="n">items_df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span>
             <span class="n">columns</span><span class="o">=</span><span class="n">items_file_columns</span><span class="p">,</span>
             <span class="n">path_or_buf</span><span class="o">=</span><span class="n">items_file_path</span><span class="p">,</span>
             <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">,</span> 
             <span class="n">chunksize</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span>
             <span class="n">index</span><span class="o">=</span><span class="kc">False</span>
         <span class="p">)</span>
-        <span class="n">items_only_df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span>
+        <span class="n">items_df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span>
             <span class="n">columns</span><span class="o">=</span><span class="n">items_file_columns</span><span class="p">,</span>
             <span class="n">path_or_buf</span><span class="o">=</span><span class="n">items_timestamped_file_path</span><span class="p">,</span>
             <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">,</span> 
@@ -552,9 +558,8 @@
             <span class="n">index</span><span class="o">=</span><span class="kc">False</span>
         <span class="p">)</span>
 
-        <span class="n">coverages_df</span> <span class="o">=</span> <span class="n">items_df</span><span class="o">.</span><span class="n">drop</span><span class="p">([</span><span class="s1">&#39;item_id&#39;</span><span class="p">,</span> <span class="s1">&#39;areaperil_id&#39;</span><span class="p">,</span> <span class="s1">&#39;vulnerability_id&#39;</span><span class="p">,</span> <span class="s1">&#39;group_id&#39;</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
         <span class="n">coverages_file_columns</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;coverage_id&#39;</span><span class="p">,</span> <span class="s1">&#39;tiv&#39;</span><span class="p">]</span>
-        <span class="n">coverages_df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span>
+        <span class="n">items_df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span>
             <span class="n">columns</span><span class="o">=</span><span class="n">coverages_file_columns</span><span class="p">,</span>
             <span class="n">float_format</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">%.1f</span><span class="s1">&#39;</span><span class="p">,</span>
             <span class="n">path_or_buf</span><span class="o">=</span><span class="n">coverages_file_path</span><span class="p">,</span>
@@ -562,7 +567,7 @@
             <span class="n">chunksize</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span>
             <span class="n">index</span><span class="o">=</span><span class="kc">False</span>
         <span class="p">)</span>
-        <span class="n">coverages_df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span>
+        <span class="n">items_df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span>
             <span class="n">columns</span><span class="o">=</span><span class="n">coverages_file_columns</span><span class="p">,</span>
             <span class="n">float_format</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">%.1f</span><span class="s1">&#39;</span><span class="p">,</span>
             <span class="n">path_or_buf</span><span class="o">=</span><span class="n">coverages_timestamped_file_path</span><span class="p">,</span>
@@ -580,13 +585,6 @@
             <span class="n">tfp</span><span class="o">.</span><span class="n">coverages_file</span> <span class="o">=</span> <span class="n">cvf</span>
 
             <span class="k">return</span> <span class="n">oasis_model</span></div>
-
-
-<div class="viewcode-block" id="OasisExposuresManager.generate_coverages_file"><a class="viewcode-back" href="../../modules.html#exposures.OasisExposuresManager.OasisExposuresManager.generate_coverages_file">[docs]</a>    <span class="k">def</span> <span class="nf">generate_coverages_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">oasis_model</span><span class="p">,</span> <span class="n">with_model_resources</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Generates a coverages file for the given ``oasis_model``.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">pass</span></div>
 
 
 <div class="viewcode-block" id="OasisExposuresManager.generate_gulsummaryxref_file"><a class="viewcode-back" href="../../modules.html#exposures.OasisExposuresManager.OasisExposuresManager.generate_gulsummaryxref_file">[docs]</a>    <span class="k">def</span> <span class="nf">generate_gulsummaryxref_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">oasis_model</span><span class="p">,</span> <span class="n">with_model_resources</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
