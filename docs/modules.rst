@@ -2,30 +2,35 @@
 Module Documentation
 ====================
 
-``models.OasisModel``
----------------------
+``omdk.models.OasisModel``
+--------------------------
 
 .. automodule:: models.OasisModel
    :members:
    :undoc-members:
 
-``exposures.OasisExposuresManagerInterface``
---------------------------------------------
+``omdk.exposures.OasisExposuresManagerInterface``
+-------------------------------------------------
 
 .. automodule:: exposures.OasisExposuresManagerInterface
    :members:
    :undoc-members:
 
-``exposures.OasisExposuresManager``
------------------------------------
+``omdk.exposures.OasisExposuresManager``
+----------------------------------------
 
 .. automodule:: exposures.OasisExposuresManager
    :members:
    :undoc-members:
 
-``exposures.OasisFilesPipeline``
---------------------------------
+``omdk.exposures.OasisFilesPipeline``
+-------------------------------------
 
 .. automodule:: exposures.OasisFilesPipeline
    :members:
    :undoc-members:
+
+``omdk.oasis_files_generator.py``
+---------------------------------
+
+.. automodule:: oasis_files_generator

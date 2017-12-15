@@ -16,7 +16,7 @@ class OasisExposuresManagerInterface(Interface):
     An interface for defining the behaviour of an Oasis exposures manager.
     """
 
-    def __init__(self, oasis_models=None):
+    def __init__(self, oasis_models=None, do_logging=True):
         """
         Class constructor.
         """

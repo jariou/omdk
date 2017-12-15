@@ -45,7 +45,7 @@ __copyright__ = "2017, Oasis Loss Modelling Framework"
 class OasisExposuresManager(implements(OasisExposuresManagerInterface)):
 
 
-    def __init__(self, oasis_models=None):
+    def __init__(self, oasis_models=None, do_logging=True):
         """
         Class constructor.
 
@@ -53,11 +53,12 @@ class OasisExposuresManager(implements(OasisExposuresManagerInterface)):
             ``oasis_models`` (``list``): a list of Oasis model objects (``omdk.OasisModel.OasisModel``)
             with resources provided in the model objects' resources dictionaries.
         """
-        logging.basicConfig(
-            level=logging.INFO,
-            format='%(asctime)s - %(levelname)s - %(message)s',
-            filemode='w'
-        )
+        if do_logging:
+            logging.basicConfig(
+                level=logging.INFO,
+                format='%(asctime)s - %(levelname)s - %(message)s',
+                filemode='w'
+            )
 
         logging.info('Creating keys lookup service factory for manager {}'.format(self))
         self._keys_lookup_service_factory = klsf()
@@ -980,7 +981,7 @@ class OasisExposuresManager(implements(OasisExposuresManagerInterface)):
                 target_file_path = os.path.join(output_dirpath, 'oasiskeys-{}.csv'.format(utcnow))
                 kwargs['keys_file_path'] = target_file_path
 
-                logging.info('Generating keys file {}')
+                logging.info('Generating keys file {}'.format(target_file_path))
 
                 keys_file = self.get_keys(oasis_model, with_model_resources=False, **kwargs)
                 
@@ -1001,18 +1002,22 @@ class OasisExposuresManager(implements(OasisExposuresManagerInterface)):
                 kwargs['canonical_exposures_profile'] = canonical_exposures_profile
 
                 kwargs['items_file_path'] = os.path.join(output_dirpath, 'items.csv')
-                kwargs['items_timestamped_file_path'] = os.path.join(output_dirpath, 'items-{}.csv')
+                kwargs['items_timestamped_file_path'] = os.path.join(output_dirpath, 'items-{}.csv'.format(utcnow))
                 kwargs['coverages_file_path'] = os.path.join(output_dirpath, 'coverages.csv')
-                kwargs['coverages_timestamped_file_path'] = os.path.join(output_dirpath, 'coverages-{}.csv')
+                kwargs['coverages_timestamped_file_path'] = os.path.join(output_dirpath, 'coverages-{}.csv'.format(utcnow))
                 kwargs['gulsummaryxref_file_path'] = os.path.join(output_dirpath, 'gulsummaryxref.csv')
-                kwargs['gulsummaryxref_timestamped_file_path'] = os.path.join(output_dirpath, 'gulsummaryxref-{}.csv')
+                kwargs['gulsummaryxref_timestamped_file_path'] = os.path.join(output_dirpath, 'gulsummaryxref-{}.csv'.format(utcnow))
 
                 logging.info('Generating Oasis files for model')
                 items_file, coverages_file, gulsummaryxref_file = self.generate_oasis_files(
                     oasis_model, with_model_resources=False, **kwargs
                 )
 
-                return items_file, coverages_file, gulsummaryxref_file
+                return {
+                    'items': items_file,
+                    'coverages': coverages_file,
+                    'gulsummaryxref': gulsummaryxref_file
+                }
             else:
                 omr = oasis_model.resources
                 tfp = omr['oasis_files_pipeline']

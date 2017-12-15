@@ -43,7 +43,7 @@
   <div class="section" id="module-documentation">
 <h1>Module Documentation<a class="headerlink" href="#module-documentation" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="module-models.OasisModel">
-<span id="models-oasismodel"></span><h2><code class="docutils literal"><span class="pre">models.OasisModel</span></code><a class="headerlink" href="#module-models.OasisModel" title="Permalink to this headline">¶</a></h2>
+<span id="omdk-models-oasismodel"></span><h2><code class="docutils literal"><span class="pre">omdk.models.OasisModel</span></code><a class="headerlink" href="#module-models.OasisModel" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="models.OasisModel.OasisModel">
 <em class="property">class </em><code class="descclassname">models.OasisModel.</code><code class="descname">OasisModel</code><span class="sig-paren">(</span><em>model_supplier_id</em>, <em>model_id</em>, <em>model_version_id</em>, <em>resources=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/models/OasisModel.html#OasisModel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#models.OasisModel.OasisModel" title="Permalink to this definition">¶</a></dt>
@@ -169,10 +169,10 @@ resource dicts.</p>
 
 </div>
 <div class="section" id="module-exposures.OasisExposuresManagerInterface">
-<span id="exposures-oasisexposuresmanagerinterface"></span><h2><code class="docutils literal"><span class="pre">exposures.OasisExposuresManagerInterface</span></code><a class="headerlink" href="#module-exposures.OasisExposuresManagerInterface" title="Permalink to this headline">¶</a></h2>
+<span id="omdk-exposures-oasisexposuresmanagerinterface"></span><h2><code class="docutils literal"><span class="pre">omdk.exposures.OasisExposuresManagerInterface</span></code><a class="headerlink" href="#module-exposures.OasisExposuresManagerInterface" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="exposures.OasisExposuresManagerInterface.OasisExposuresManagerInterface">
-<em class="property">class </em><code class="descclassname">exposures.OasisExposuresManagerInterface.</code><code class="descname">OasisExposuresManagerInterface</code><span class="sig-paren">(</span><em>oasis_models=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/exposures/OasisExposuresManagerInterface.html#OasisExposuresManagerInterface"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#exposures.OasisExposuresManagerInterface.OasisExposuresManagerInterface" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">exposures.OasisExposuresManagerInterface.</code><code class="descname">OasisExposuresManagerInterface</code><span class="sig-paren">(</span><em>oasis_models=None</em>, <em>do_logging=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/exposures/OasisExposuresManagerInterface.html#OasisExposuresManagerInterface"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#exposures.OasisExposuresManagerInterface.OasisExposuresManagerInterface" title="Permalink to this definition">¶</a></dt>
 <dd><p>An interface for defining the behaviour of an Oasis exposures manager.</p>
 <dl class="method">
 <dt id="exposures.OasisExposuresManagerInterface.OasisExposuresManagerInterface.clear_files_pipeline">
@@ -328,14 +328,14 @@ required.</p>
 
 </div>
 <div class="section" id="module-exposures.OasisExposuresManager">
-<span id="exposures-oasisexposuresmanager"></span><h2><code class="docutils literal"><span class="pre">exposures.OasisExposuresManager</span></code><a class="headerlink" href="#module-exposures.OasisExposuresManager" title="Permalink to this headline">¶</a></h2>
+<span id="omdk-exposures-oasisexposuresmanager"></span><h2><code class="docutils literal"><span class="pre">omdk.exposures.OasisExposuresManager</span></code><a class="headerlink" href="#module-exposures.OasisExposuresManager" title="Permalink to this headline">¶</a></h2>
 <p>Oasis exposures manager - manages the exposure management workflow for multiple
 models, from loading the source exposures and canonical exposures profiles to
 generating the intermediate files (canonical exposures files, model exposures
 files, keys files) and finally generating the Oasis files from these.</p>
 <dl class="class">
 <dt id="exposures.OasisExposuresManager.OasisExposuresManager">
-<em class="property">class </em><code class="descclassname">exposures.OasisExposuresManager.</code><code class="descname">OasisExposuresManager</code><span class="sig-paren">(</span><em>oasis_models=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/exposures/OasisExposuresManager.html#OasisExposuresManager"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#exposures.OasisExposuresManager.OasisExposuresManager" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">exposures.OasisExposuresManager.</code><code class="descname">OasisExposuresManager</code><span class="sig-paren">(</span><em>oasis_models=None</em>, <em>do_logging=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/exposures/OasisExposuresManager.html#OasisExposuresManager"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#exposures.OasisExposuresManager.OasisExposuresManager" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="method">
 <dt id="exposures.OasisExposuresManager.OasisExposuresManager.clear_files_pipeline">
 <code class="descname">clear_files_pipeline</code><span class="sig-paren">(</span><em>oasis_model</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/exposures/OasisExposuresManager.html#OasisExposuresManager.clear_files_pipeline"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#exposures.OasisExposuresManager.OasisExposuresManager.clear_files_pipeline" title="Permalink to this definition">¶</a></dt>
@@ -524,7 +524,7 @@ case only the generated canonical exposures file is returned.</p>
 
 </div>
 <div class="section" id="module-exposures.OasisFilesPipeline">
-<span id="exposures-oasisfilespipeline"></span><h2><code class="docutils literal"><span class="pre">exposures.OasisFilesPipeline</span></code><a class="headerlink" href="#module-exposures.OasisFilesPipeline" title="Permalink to this headline">¶</a></h2>
+<span id="omdk-exposures-oasisfilespipeline"></span><h2><code class="docutils literal"><span class="pre">omdk.exposures.OasisFilesPipeline</span></code><a class="headerlink" href="#module-exposures.OasisFilesPipeline" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="exposures.OasisFilesPipeline.OasisFilesPipeline">
 <em class="property">class </em><code class="descclassname">exposures.OasisFilesPipeline.</code><code class="descname">OasisFilesPipeline</code><span class="sig-paren">(</span><em>model_key=None</em>, <em>source_exposures_file=None</em>, <em>canonical_exposures_file=None</em>, <em>model_exposures_file=None</em>, <em>keys_file=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/exposures/OasisFilesPipeline.html#OasisFilesPipeline"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#exposures.OasisFilesPipeline.OasisFilesPipeline" title="Permalink to this definition">¶</a></dt>
@@ -703,6 +703,31 @@ as used in exposures management.</p>
 </dd></dl>
 
 </div>
+<div class="section" id="module-oasis_files_generator">
+<span id="omdk-oasis-files-generator-py"></span><h2><code class="docutils literal"><span class="pre">omdk.oasis_files_generator.py</span></code><a class="headerlink" href="#module-oasis_files_generator" title="Permalink to this headline">¶</a></h2>
+<p>Executable script for generating Oasis files for a given model. Requires
+that the necessary model meta information, such as the model version file,
+and resources required to create its keys lookup service, such as the
+path to the keys data folder and the lookup service source package, exist
+on the local filesystem, as well as the canonical exposures profile JSON
+file for the supplier/model, the xtrans.exe CSV conversion/ transformation
+tool for exposures files, the necessary validation and transformation files,
+and the source exposures file.</p>
+<p>Calling syntax (from base of <code class="docutils literal"><span class="pre">omdk</span></code> repository):</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">./</span><span class="n">oasis_files_generator</span><span class="o">.</span><span class="n">py</span> <span class="o">-</span><span class="n">k</span> <span class="s1">&#39;/path/to/keys/data/folder&#39;</span>
+                           <span class="o">-</span><span class="n">v</span> <span class="s1">&#39;/path/to/model/version/file&#39;</span>
+                           <span class="o">-</span><span class="n">l</span> <span class="s1">&#39;/path/to/model/keys/lookup/service/package&#39;</span>
+                           <span class="o">-</span><span class="n">p</span> <span class="s1">&#39;/path/to/canonical/exposures/profile/JSON/file&#39;</span>
+                           <span class="o">-</span><span class="n">e</span> <span class="s1">&#39;/path/to/source/exposures/file&#39;</span>
+                           <span class="o">-</span><span class="n">a</span> <span class="s1">&#39;/path/to/source/exposures/validation/file&#39;</span>
+                           <span class="o">-</span><span class="n">b</span> <span class="s1">&#39;/path/to/source/to/canonical/exposures/transformation/file&#39;</span>
+                           <span class="o">-</span><span class="n">c</span> <span class="s1">&#39;/path/to/canonical/exposures/validation/file&#39;</span>
+                           <span class="o">-</span><span class="n">d</span> <span class="s1">&#39;/path/to/canonical/to/model/exposures/transformation/file&#39;</span>
+                           <span class="o">-</span><span class="n">x</span> <span class="s1">&#39;/path/to/xtrans/executable&#39;</span>
+                           <span class="o">-</span><span class="n">o</span> <span class="s1">&#39;/path/to/output/files/parent/directory&#39;</span>
+</pre></div>
+</div>
+</div>
 </div>
 
 
@@ -727,10 +752,11 @@ as used in exposures management.</p>
 <li class="toctree-l1"><a class="reference internal" href="sphinx.html">Sphinx Docs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="first-steps.html">First Steps</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Module Documentation</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#module-models.OasisModel"><code class="docutils literal"><span class="pre">models.OasisModel</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="#module-exposures.OasisExposuresManagerInterface"><code class="docutils literal"><span class="pre">exposures.OasisExposuresManagerInterface</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="#module-exposures.OasisExposuresManager"><code class="docutils literal"><span class="pre">exposures.OasisExposuresManager</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="#module-exposures.OasisFilesPipeline"><code class="docutils literal"><span class="pre">exposures.OasisFilesPipeline</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-models.OasisModel"><code class="docutils literal"><span class="pre">omdk.models.OasisModel</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-exposures.OasisExposuresManagerInterface"><code class="docutils literal"><span class="pre">omdk.exposures.OasisExposuresManagerInterface</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-exposures.OasisExposuresManager"><code class="docutils literal"><span class="pre">omdk.exposures.OasisExposuresManager</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-exposures.OasisFilesPipeline"><code class="docutils literal"><span class="pre">omdk.exposures.OasisFilesPipeline</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-oasis_files_generator"><code class="docutils literal"><span class="pre">omdk.oasis_files_generator.py</span></code></a></li>
 </ul>
 </li>
 </ul>

@@ -87,7 +87,7 @@
 <div class="viewcode-block" id="OasisExposuresManager"><a class="viewcode-back" href="../../modules.html#exposures.OasisExposuresManager.OasisExposuresManager">[docs]</a><span class="k">class</span> <span class="nc">OasisExposuresManager</span><span class="p">(</span><span class="n">implements</span><span class="p">(</span><span class="n">OasisExposuresManagerInterface</span><span class="p">)):</span>
 
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">oasis_models</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">oasis_models</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">do_logging</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Class constructor.</span>
 
@@ -95,11 +95,12 @@
 <span class="sd">            ``oasis_models`` (``list``): a list of Oasis model objects (``omdk.OasisModel.OasisModel``)</span>
 <span class="sd">            with resources provided in the model objects&#39; resources dictionaries.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span>
-            <span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">,</span>
-            <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">%(asctime)s</span><span class="s1"> - </span><span class="si">%(levelname)s</span><span class="s1"> - </span><span class="si">%(message)s</span><span class="s1">&#39;</span><span class="p">,</span>
-            <span class="n">filemode</span><span class="o">=</span><span class="s1">&#39;w&#39;</span>
-        <span class="p">)</span>
+        <span class="k">if</span> <span class="n">do_logging</span><span class="p">:</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span>
+                <span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">,</span>
+                <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">%(asctime)s</span><span class="s1"> - </span><span class="si">%(levelname)s</span><span class="s1"> - </span><span class="si">%(message)s</span><span class="s1">&#39;</span><span class="p">,</span>
+                <span class="n">filemode</span><span class="o">=</span><span class="s1">&#39;w&#39;</span>
+            <span class="p">)</span>
 
         <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Creating keys lookup service factory for manager </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="p">))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_keys_lookup_service_factory</span> <span class="o">=</span> <span class="n">klsf</span><span class="p">()</span>
@@ -1022,7 +1023,7 @@
                 <span class="n">target_file_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">output_dirpath</span><span class="p">,</span> <span class="s1">&#39;oasiskeys-</span><span class="si">{}</span><span class="s1">.csv&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">utcnow</span><span class="p">))</span>
                 <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;keys_file_path&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">target_file_path</span>
 
-                <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Generating keys file </span><span class="si">{}</span><span class="s1">&#39;</span><span class="p">)</span>
+                <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Generating keys file </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">target_file_path</span><span class="p">))</span>
 
                 <span class="n">keys_file</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_keys</span><span class="p">(</span><span class="n">oasis_model</span><span class="p">,</span> <span class="n">with_model_resources</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
                 
@@ -1043,18 +1044,22 @@
                 <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;canonical_exposures_profile&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">canonical_exposures_profile</span>
 
                 <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;items_file_path&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">output_dirpath</span><span class="p">,</span> <span class="s1">&#39;items.csv&#39;</span><span class="p">)</span>
-                <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;items_timestamped_file_path&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">output_dirpath</span><span class="p">,</span> <span class="s1">&#39;items-</span><span class="si">{}</span><span class="s1">.csv&#39;</span><span class="p">)</span>
+                <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;items_timestamped_file_path&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">output_dirpath</span><span class="p">,</span> <span class="s1">&#39;items-</span><span class="si">{}</span><span class="s1">.csv&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">utcnow</span><span class="p">))</span>
                 <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;coverages_file_path&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">output_dirpath</span><span class="p">,</span> <span class="s1">&#39;coverages.csv&#39;</span><span class="p">)</span>
-                <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;coverages_timestamped_file_path&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">output_dirpath</span><span class="p">,</span> <span class="s1">&#39;coverages-</span><span class="si">{}</span><span class="s1">.csv&#39;</span><span class="p">)</span>
+                <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;coverages_timestamped_file_path&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">output_dirpath</span><span class="p">,</span> <span class="s1">&#39;coverages-</span><span class="si">{}</span><span class="s1">.csv&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">utcnow</span><span class="p">))</span>
                 <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;gulsummaryxref_file_path&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">output_dirpath</span><span class="p">,</span> <span class="s1">&#39;gulsummaryxref.csv&#39;</span><span class="p">)</span>
-                <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;gulsummaryxref_timestamped_file_path&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">output_dirpath</span><span class="p">,</span> <span class="s1">&#39;gulsummaryxref-</span><span class="si">{}</span><span class="s1">.csv&#39;</span><span class="p">)</span>
+                <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;gulsummaryxref_timestamped_file_path&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">output_dirpath</span><span class="p">,</span> <span class="s1">&#39;gulsummaryxref-</span><span class="si">{}</span><span class="s1">.csv&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">utcnow</span><span class="p">))</span>
 
                 <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Generating Oasis files for model&#39;</span><span class="p">)</span>
                 <span class="n">items_file</span><span class="p">,</span> <span class="n">coverages_file</span><span class="p">,</span> <span class="n">gulsummaryxref_file</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">generate_oasis_files</span><span class="p">(</span>
                     <span class="n">oasis_model</span><span class="p">,</span> <span class="n">with_model_resources</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
                 <span class="p">)</span>
 
-                <span class="k">return</span> <span class="n">items_file</span><span class="p">,</span> <span class="n">coverages_file</span><span class="p">,</span> <span class="n">gulsummaryxref_file</span>
+                <span class="k">return</span> <span class="p">{</span>
+                    <span class="s1">&#39;items&#39;</span><span class="p">:</span> <span class="n">items_file</span><span class="p">,</span>
+                    <span class="s1">&#39;coverages&#39;</span><span class="p">:</span> <span class="n">coverages_file</span><span class="p">,</span>
+                    <span class="s1">&#39;gulsummaryxref&#39;</span><span class="p">:</span> <span class="n">gulsummaryxref_file</span>
+                <span class="p">}</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">omr</span> <span class="o">=</span> <span class="n">oasis_model</span><span class="o">.</span><span class="n">resources</span>
                 <span class="n">tfp</span> <span class="o">=</span> <span class="n">omr</span><span class="p">[</span><span class="s1">&#39;oasis_files_pipeline&#39;</span><span class="p">]</span>
