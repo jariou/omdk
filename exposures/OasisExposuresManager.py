@@ -776,7 +776,7 @@ class OasisExposuresManager(implements(OasisExposuresManagerInterface)):
             filter(lambda k: canonical_exposures_profile[k]['FieldName'] == 'TIV', canonical_exposures_profile)
         ))
 
-        master_columns = [
+        columns = [
             'item_id',
             'coverage_id',
             'tiv',
@@ -786,7 +786,7 @@ class OasisExposuresManager(implements(OasisExposuresManagerInterface)):
             'summary_id',
             'summaryset_id'
         ]
-        master_df = pd.DataFrame(columns=master_columns)
+        master_df = pd.DataFrame(columns=columns)
 
         records = []
         ii = 0
@@ -823,25 +823,25 @@ class OasisExposuresManager(implements(OasisExposuresManagerInterface)):
 
         master_df = master_df.append(records)
 
-        items_file_columns = filter(lambda col: col not in ['tiv', 'summary_id', 'summaryset_id'], master_columns)
+        columns = ['item_id', 'coverage_id', 'areaperil_id', 'vulnerability_id', 'group_id']
         master_df.to_csv(
-            columns=items_file_columns,
+            columns=columns,
             path_or_buf=items_file_path,
             encoding='utf-8', 
             chunksize=1000,
             index=False
         )
         master_df.to_csv(
-            columns=items_file_columns,
+            columns=columns,
             path_or_buf=items_timestamped_file_path,
             encoding='utf-8', 
             chunksize=1000,
             index=False
         )
 
-        coverages_file_columns = ['coverage_id', 'tiv']
+        columns = ['coverage_id', 'tiv']
         master_df.to_csv(
-            columns=coverages_file_columns,
+            columns=columns,
             float_format='%.5f',
             path_or_buf=coverages_file_path,
             encoding='utf-8',
@@ -849,7 +849,7 @@ class OasisExposuresManager(implements(OasisExposuresManagerInterface)):
             index=False
         )
         master_df.to_csv(
-            columns=coverages_file_columns,
+            columns=columns,
             float_format='%.5f',
             path_or_buf=coverages_timestamped_file_path,
             encoding='utf-8',
@@ -858,16 +858,16 @@ class OasisExposuresManager(implements(OasisExposuresManagerInterface)):
         )
 
 
-        gulsummaryxref_file_columns = ['coverage_id', 'summary_id', 'summaryset_id']
+        columns = ['coverage_id', 'summary_id', 'summaryset_id']
         master_df.to_csv(
-            columns=gulsummaryxref_file_columns,
+            columns=columns,
             path_or_buf=gulsummaryxref_file_path,
             encoding='utf-8',
             chunksize=1000,
             index=False
         )
         master_df.to_csv(
-            columns=gulsummaryxref_file_columns,
+            columns=columns,
             path_or_buf=gulsummaryxref_timestamped_file_path,
             encoding='utf-8',
             chunksize=1000,
