@@ -401,23 +401,9 @@ class OasisExposuresManager(implements(OasisExposuresManagerInterface)):
         return oasis_model
 
 
-    def generate_items_file(self, oasis_model, **kwargs):
+    def generate_items_file(self, oasis_model, with_model_resources=True, **kwargs):
         """
         Generates an items file for the given ``oasis_model``.
-        """
-        pass
-
-
-    def generate_coverages_file(self, oasis_model, with_model_resources=True, **kwargs):
-        """
-        Generates a coverages file for the given ``oasis_model``.
-        """
-        pass
-
-
-    def generate_items_and_coverages_files(self, oasis_model, with_model_resources=True, with_coverages=True, **kwargs):
-        """
-        Generates items and coverages files for the given ``oasis_model``.
         """
         omr = oasis_model.resources
         tfp = omr['oasis_files_pipeline']
@@ -430,8 +416,6 @@ class OasisExposuresManager(implements(OasisExposuresManagerInterface)):
             canonical_exposures_profile_json_path = kwargs['canonical_exposures_profile_json_path']  if 'canonical_exposures_profile_json_path' in kwargs else None
             items_file_path = kwargs['items_file_path'] if 'items_file_path' in kwargs else None
             items_timestamped_file_path = kwargs['items_timestamped_file_path'] if 'items_timestamped_file_path' in kwargs else None
-            coverages_file_path = kwargs['coverages_file_path'] if 'coverages_file_path' in kwargs else None
-            coverages_timestamped_file_path = kwargs['coverages_timestamped_file_path'] if 'coverages_timestamped_file_path' in kwargs else None
         else:
             canonical_exposures_file_path = tfp.canonical_exposures_file.name
             keys_file_path = tfp.keys_file.name
@@ -440,6 +424,109 @@ class OasisExposuresManager(implements(OasisExposuresManagerInterface)):
             canonical_exposures_profile_json_path = omr['canonical_exposures_profile_json_path']  if 'canonical_exposures_profile_json_path' in omr else None
             items_file_path = omr['items_file_path'] if 'items_file_path' in omr else None
             items_timestamped_file_path = omr['items_timestamped_file_path'] if 'items_timestamped_file_path' in omr else None
+
+        with io.open(canonical_exposures_file_path, 'r', encoding='utf-8') as cf:
+            with io.open(keys_file_path, 'r', encoding='utf-8') as kf:
+                canexp_df = pd.read_csv(io.StringIO(cf.read()))
+                canexp_df = canexp_df.where(canexp_df.notnull(), None)
+                canexp_df.columns = map(str.lower, canexp_df.columns)
+
+                keys_df = pd.read_csv(io.StringIO(kf.read()))
+                keys_df = keys_df.rename(columns={'CoverageID': 'CoverageType'})
+                keys_df = keys_df.where(keys_df.notnull(), None)
+                keys_df.columns = map(str.lower, keys_df.columns)
+
+        if not canonical_exposures_profile:
+            canonical_exposures_profile = (
+                json.loads(canonical_exposures_profile_json) if canonical_exposures_profile_json
+                else json.load(canonical_exposures_profile_json_path)
+            )
+
+        tiv_fields = sorted(map(
+            lambda f: canonical_exposures_profile[f],
+            filter(lambda k: canonical_exposures_profile[k]['FieldName'] == 'TIV', canonical_exposures_profile)
+        ))
+
+        columns = ['item_id', 'coverage_id', 'areaperil_id', 'vulnerability_id', 'group_id']
+        items_df = pd.DataFrame(columns=columns)
+
+        records = []
+        ii = 0
+        for i in range(len(keys_df)):
+            ki = keys_df.iloc[i]
+
+            ci_df = canexp_df[canexp_df['row_id'] == ki['locid']]
+
+            if ci_df.empty:
+                raise OasisException("No matching canonical exposure item found in canonical exposures data frame for keys item {}.".format(ki))
+            elif len(ci_df) > 1:
+                raise OasisException("Duplicate canonical exposure items found in canonical exposures data frame for keys item {}.".format(ki))
+
+            ci = ci_df.iloc[0]
+
+            tiv_field = filter(
+                    lambda f: f['CoverageTypeId'] == ki['coveragetype'],
+                    tiv_fields
+            )[0]
+
+            if ci[tiv_field['ProfileElementName'].lower()] > 0:
+                ii += 1
+                rec = {
+                    'item_id': ii,
+                    'coverage_id': ii,
+                    'areaperil_id': ki['areaperilid'],
+                    'vulnerability_id': ki['vulnerabilityid'],
+                    'group_id': ii
+                }
+                records.append(rec)
+
+        items_df = items_df.append(records)
+
+        items_df.to_csv(
+            columns=columns,
+            path_or_buf=items_file_path,
+            encoding='utf-8', 
+            chunksize=1000,
+            index=False
+        )
+        items_df.to_csv(
+            columns=columns,
+            path_or_buf=items_timestamped_file_path,
+            encoding='utf-8', 
+            chunksize=1000,
+            index=False
+        )
+
+        with io.open(items_file_path, 'r', encoding='utf-8') as f:
+            if not with_model_resources:
+                return f
+
+            tfp.items_file = f
+
+            return oasis_model
+
+
+    def generate_coverages_file(self, oasis_model, with_model_resources=True, **kwargs):
+        """
+        Generates a coverages file for the given ``oasis_model``.
+        """
+        omr = oasis_model.resources
+        tfp = omr['oasis_files_pipeline']
+
+        if not with_model_resources:
+            canonical_exposures_file_path = kwargs['canonical_exposures_file_path']
+            keys_file_path = kwargs['keys_file_path']
+            canonical_exposures_profile = kwargs['canonical_exposures_profile'] if 'canonical_exposures_profile' in kwargs else None
+            canonical_exposures_profile_json = kwargs['canonical_exposures_profile_json']  if 'canonical_exposures_profile_json' in kwargs else None
+            canonical_exposures_profile_json_path = kwargs['canonical_exposures_profile_json_path']  if 'canonical_exposures_profile_json_path' in kwargs else None
+            coverages_file_path = kwargs['coverages_file_path'] if 'coverages_file_path' in kwargs else None
+            coverages_timestamped_file_path = kwargs['coverages_timestamped_file_path'] if 'coverages_timestamped_file_path' in kwargs else None
+        else:
+            canonical_exposures_file_path = tfp.canonical_exposures_file.name
+            keys_file_path = tfp.keys_file.name
+            canonical_exposures_profile = omr['canonical_exposures_profile']  if 'canonical_exposures_profile' in omr else None
+            canonical_exposures_profile_json = omr['canonical_exposures_profile_json']  if 'canonical_exposures_profile_json' in omr else None
+            canonical_exposures_profile_json_path = omr['canonical_exposures_profile_json_path']  if 'canonical_exposures_profile_json_path' in omr else None
             coverages_file_path = omr['coverages_file_path'] if 'coverages_file_path' in omr else None
             coverages_timestamped_file_path = omr['coverages_timestamped_file_path'] if 'coverages_timestamped_file_path' in omr else None
 
@@ -465,9 +552,10 @@ class OasisExposuresManager(implements(OasisExposuresManagerInterface)):
             filter(lambda k: canonical_exposures_profile[k]['FieldName'] == 'TIV', canonical_exposures_profile)
         ))
 
-        items_df = pd.DataFrame(columns=['item_id', 'coverage_id', 'areaperil_id', 'vulnerability_id', 'group_id'])
+        columns = ['coverage_id', 'tiv']
+        coverages_df = pd.DataFrame(columns=columns)
 
-        items = []
+        records = []
         ii = 0
         for i in range(len(keys_df)):
             ki = keys_df.iloc[i]
@@ -488,59 +576,34 @@ class OasisExposuresManager(implements(OasisExposuresManagerInterface)):
 
             if ci[tiv_field['ProfileElementName'].lower()] > 0:
                 ii += 1
-                it = {
-                    'item_id': ii,
+                rec = {
                     'coverage_id': ii,
-                    'tiv': ci[tiv_field['ProfileElementName'].lower()],
-                    'areaperil_id': ki['areaperilid'],
-                    'vulnerability_id': ki['vulnerabilityid'],
-                    'group_id': ii
+                    'tiv': ci[tiv_field['ProfileElementName'].lower()]
                 }
-                items.append(it)
+                records.append(rec)
 
-        items_df = items_df.append(items)
+        coverages_df = coverages_df.append(records)
 
-        items_file_columns = ['item_id', 'coverage_id', 'areaperil_id', 'vulnerability_id', 'group_id']
-        items_df.to_csv(
-            columns=items_file_columns,
-            path_or_buf=items_file_path,
-            encoding='utf-8', 
-            chunksize=1000,
-            index=False
-        )
-        items_df.to_csv(
-            columns=items_file_columns,
-            path_or_buf=items_timestamped_file_path,
-            encoding='utf-8', 
-            chunksize=1000,
-            index=False
-        )
-
-        coverages_file_columns = ['coverage_id', 'tiv']
-        items_df.to_csv(
-            columns=coverages_file_columns,
-            float_format='%.1f',
+        coverages_df.to_csv(
+            columns=columns,
             path_or_buf=coverages_file_path,
-            encoding='utf-8',
+            encoding='utf-8', 
             chunksize=1000,
             index=False
         )
-        items_df.to_csv(
-            columns=coverages_file_columns,
-            float_format='%.1f',
+        coverages_df.to_csv(
+            columns=columns,
             path_or_buf=coverages_timestamped_file_path,
-            encoding='utf-8',
+            encoding='utf-8', 
             chunksize=1000,
             index=False
         )
 
-        with io.open(items_file_path, 'r', encoding='utf-8') as itf:
-            with io.open(coverages_file_path, 'r', encoding='utf-8') as cvf:
-                if not with_model_resources:
-                    return itf, cvf
+        with io.open(coverages_file_path, 'r', encoding='utf-8') as f:
+            if not with_model_resources:
+                return f
 
-            tfp.items_file = itf
-            tfp.coverages_file = cvf
+            tfp.coverages_file = f
 
             return oasis_model
 
@@ -549,10 +612,111 @@ class OasisExposuresManager(implements(OasisExposuresManagerInterface)):
         """
         Generates a gulsummaryxref file for the given ``oasis_model``.
         """
-        pass
+        omr = oasis_model.resources
+        tfp = omr['oasis_files_pipeline']
+
+        if not with_model_resources:
+            canonical_exposures_file_path = kwargs['canonical_exposures_file_path']
+            keys_file_path = kwargs['keys_file_path']
+            canonical_exposures_profile = kwargs['canonical_exposures_profile'] if 'canonical_exposures_profile' in kwargs else None
+            canonical_exposures_profile_json = kwargs['canonical_exposures_profile_json']  if 'canonical_exposures_profile_json' in kwargs else None
+            canonical_exposures_profile_json_path = kwargs['canonical_exposures_profile_json_path']  if 'canonical_exposures_profile_json_path' in kwargs else None
+            gulsummaryxref_file_path = kwargs['gulsummaryxref_file_path'] if 'gulsummaryxref_file_path' in kwargs else None
+            gulsummaryxref_timestamped_file_path = kwargs['gulsummaryxref_timestamped_file_path'] if 'gulsummaryxref_timestamped_file_path' in kwargs else None
+        else:
+            canonical_exposures_file_path = tfp.canonical_exposures_file.name
+            keys_file_path = tfp.keys_file.name
+            canonical_exposures_profile = omr['canonical_exposures_profile']  if 'canonical_exposures_profile' in omr else None
+            canonical_exposures_profile_json = omr['canonical_exposures_profile_json']  if 'canonical_exposures_profile_json' in omr else None
+            canonical_exposures_profile_json_path = omr['canonical_exposures_profile_json_path']  if 'canonical_exposures_profile_json_path' in omr else None
+            gulsummaryxref_file_path = omr['gulsummaryxref_file_path'] if 'gulsummaryxref_file_path' in omr else None
+            gulsummaryxref_timestamped_file_path = omr['gulsummaryxref_timestamped_file_path'] if 'gulsummaryxref_timestamped_file_path' in omr else None
+
+        with io.open(canonical_exposures_file_path, 'r', encoding='utf-8') as cf:
+            with io.open(keys_file_path, 'r', encoding='utf-8') as kf:
+                canexp_df = pd.read_csv(io.StringIO(cf.read()))
+                canexp_df = canexp_df.where(canexp_df.notnull(), None)
+                canexp_df.columns = map(str.lower, canexp_df.columns)
+
+                keys_df = pd.read_csv(io.StringIO(kf.read()))
+                keys_df = keys_df.rename(columns={'CoverageID': 'CoverageType'})
+                keys_df = keys_df.where(keys_df.notnull(), None)
+                keys_df.columns = map(str.lower, keys_df.columns)
+
+        if not canonical_exposures_profile:
+            canonical_exposures_profile = (
+                json.loads(canonical_exposures_profile_json) if canonical_exposures_profile_json
+                else json.load(canonical_exposures_profile_json_path)
+            )
+
+        tiv_fields = sorted(map(
+            lambda f: canonical_exposures_profile[f],
+            filter(lambda k: canonical_exposures_profile[k]['FieldName'] == 'TIV', canonical_exposures_profile)
+        ))
+
+        columns = ['coverage_id', 'summary_id', 'summaryset_id']
+        gulsummaryxref_df = pd.DataFrame(columns=columns)
+
+        records = []
+        ii = 0
+        for i in range(len(keys_df)):
+            ki = keys_df.iloc[i]
+
+            ci_df = canexp_df[canexp_df['row_id'] == ki['locid']]
+
+            if ci_df.empty:
+                raise OasisException("No matching canonical exposure item found in canonical exposures data frame for keys item {}.".format(ki))
+            elif len(ci_df) > 1:
+                raise OasisException("Duplicate canonical exposure items found in canonical exposures data frame for keys item {}.".format(ki))
+
+            ci = ci_df.iloc[0]
+
+            tiv_field = filter(
+                    lambda f: f['CoverageTypeId'] == ki['coveragetype'],
+                    tiv_fields
+            )[0]
+
+            if ci[tiv_field['ProfileElementName'].lower()] > 0:
+                ii += 1
+                rec = {
+                    'coverage_id': ii,
+                    'summary_id': 1,
+                    'summaryset_id': 1
+                }
+                records.append(rec)
+
+        gulsummaryxref_df = gulsummaryxref_df.append(records)
+
+        gulsummaryxref_df.to_csv(
+            columns=columns,
+            path_or_buf=gulsummaryxref_file_path,
+            encoding='utf-8', 
+            chunksize=1000,
+            index=False
+        )
+        gulsummaryxref_df.to_csv(
+            columns=columns,
+            path_or_buf=gulsummaryxref_timestamped_file_path,
+            encoding='utf-8', 
+            chunksize=1000,
+            index=False
+        )
+
+        with io.open(gulsummaryxref_file_path, 'r', encoding='utf-8') as f:
+            if not with_model_resources:
+                return f
+
+            tfp.gulsummaryxref_file = f
+
+            return oasis_model
 
 
-    def generate_oasis_files(self, oasis_model, with_model_resources=True, **kwargs):
+    def generate_oasis_files(
+        self,
+        oasis_model,
+        with_model_resources=True,
+        **kwargs
+    ):
         """
         For a given ``oasis_model`` generates the standard Oasis files, namely
 
@@ -561,13 +725,163 @@ class OasisExposuresManager(implements(OasisExposuresManagerInterface)):
             ``gulsummaryxref.csv``
 
         """
+        omr = oasis_model.resources
+        tfp = omr['oasis_files_pipeline']
+
         if not with_model_resources:
-            items_file, coverages_file = self.generate_items_and_coverages_files(oasis_model, with_model_resources=False, **kwargs)
-            gulsummaryxref_file = self.generate_gulsummaryxref_file(oasis_model, with_model_resources=False, **kwargs)
-            return items_file, coverages_file, gulsummaryxref_file
+            canonical_exposures_file_path = kwargs['canonical_exposures_file_path']
+            keys_file_path = kwargs['keys_file_path']
+            canonical_exposures_profile = kwargs['canonical_exposures_profile'] if 'canonical_exposures_profile' in kwargs else None
+            canonical_exposures_profile_json = kwargs['canonical_exposures_profile_json']  if 'canonical_exposures_profile_json' in kwargs else None
+            canonical_exposures_profile_json_path = kwargs['canonical_exposures_profile_json_path']  if 'canonical_exposures_profile_json_path' in kwargs else None
+            items_file_path = kwargs['items_file_path'] if 'items_file_path' in kwargs else None
+            items_timestamped_file_path = kwargs['items_timestamped_file_path'] if 'items_timestamped_file_path' in kwargs else None
+            coverages_file_path = kwargs['coverages_file_path'] if 'coverages_file_path' in kwargs else None
+            coverages_timestamped_file_path = kwargs['coverages_timestamped_file_path'] if 'coverages_timestamped_file_path' in kwargs else None
+            gulsummaryxref_file_path = kwargs['gulsummaryxref_file_path'] if 'gulsummaryxref_file_path' in kwargs else None
+            gulsummaryxref_timestamped_file_path = kwargs['gulsummaryxref_timestamped_file_path'] if 'gulsummaryxref_timestamped_file_path' in kwargs else None
         else:
-            self.generate_items_and_coverages_files(oasis_model)
-            self.generate_gulsummaryxref_file(oasis_model)
+            canonical_exposures_file_path = tfp.canonical_exposures_file.name
+            keys_file_path = tfp.keys_file.name
+            canonical_exposures_profile = omr['canonical_exposures_profile']  if 'canonical_exposures_profile' in omr else None
+            canonical_exposures_profile_json = omr['canonical_exposures_profile_json']  if 'canonical_exposures_profile_json' in omr else None
+            canonical_exposures_profile_json_path = omr['canonical_exposures_profile_json_path']  if 'canonical_exposures_profile_json_path' in omr else None
+            items_file_path = omr['items_file_path'] if 'items_file_path' in omr else None
+            items_timestamped_file_path = omr['items_timestamped_file_path'] if 'items_timestamped_file_path' in omr else None
+            coverages_file_path = omr['coverages_file_path'] if 'coverages_file_path' in omr else None
+            coverages_timestamped_file_path = omr['coverages_timestamped_file_path'] if 'coverages_timestamped_file_path' in omr else None
+            gulsummaryxref_file_path = omr['gulsummaryxref_file_path'] if 'gulsummaryxref_file_path' in omr else None
+            gulsummaryxref_timestamped_file_path = omr['gulsummaryxref_timestamped_file_path'] if 'gulsummaryxref_timestamped_file_path' in omr else None
+
+        with io.open(canonical_exposures_file_path, 'r', encoding='utf-8') as cf:
+            with io.open(keys_file_path, 'r', encoding='utf-8') as kf:
+                canexp_df = pd.read_csv(io.StringIO(cf.read()))
+                canexp_df = canexp_df.where(canexp_df.notnull(), None)
+                canexp_df.columns = map(str.lower, canexp_df.columns)
+
+                keys_df = pd.read_csv(io.StringIO(kf.read()))
+                keys_df = keys_df.rename(columns={'CoverageID': 'CoverageType'})
+                keys_df = keys_df.where(keys_df.notnull(), None)
+                keys_df.columns = map(str.lower, keys_df.columns)
+
+        if not canonical_exposures_profile:
+            canonical_exposures_profile = (
+                json.loads(canonical_exposures_profile_json) if canonical_exposures_profile_json
+                else json.load(canonical_exposures_profile_json_path)
+            )
+
+        tiv_fields = sorted(map(
+            lambda f: canonical_exposures_profile[f],
+            filter(lambda k: canonical_exposures_profile[k]['FieldName'] == 'TIV', canonical_exposures_profile)
+        ))
+
+        master_columns = [
+            'item_id',
+            'coverage_id',
+            'tiv',
+            'areaperil_id',
+            'vulnerability_id',
+            'group_id',
+            'summary_id',
+            'summaryset_id'
+        ]
+        master_df = pd.DataFrame(columns=master_columns)
+
+        records = []
+        ii = 0
+        for i in range(len(keys_df)):
+            ki = keys_df.iloc[i]
+
+            ci_df = canexp_df[canexp_df['row_id'] == ki['locid']]
+
+            if ci_df.empty:
+                raise OasisException("No matching canonical exposure item found in canonical exposures data frame for keys item {}.".format(ki))
+            elif len(ci_df) > 1:
+                raise OasisException("Duplicate canonical exposure items found in canonical exposures data frame for keys item {}.".format(ki))
+
+            ci = ci_df.iloc[0]
+
+            tiv_field = filter(
+                    lambda f: f['CoverageTypeId'] == ki['coveragetype'],
+                    tiv_fields
+            )[0]
+
+            if ci[tiv_field['ProfileElementName'].lower()] > 0:
+                ii += 1
+                rec = {
+                    'item_id': ii,
+                    'coverage_id': ii,
+                    'tiv': ci[tiv_field['ProfileElementName'].lower()],
+                    'areaperil_id': ki['areaperilid'],
+                    'vulnerability_id': ki['vulnerabilityid'],
+                    'group_id': ii,
+                    'summary_id': 1,
+                    'summaryset_id': 1
+                }
+                records.append(rec)
+
+        master_df = master_df.append(records)
+
+        items_file_columns = filter(lambda col: col not in ['tiv', 'summary_id', 'summaryset_id'], master_columns)
+        master_df.to_csv(
+            columns=items_file_columns,
+            path_or_buf=items_file_path,
+            encoding='utf-8', 
+            chunksize=1000,
+            index=False
+        )
+        master_df.to_csv(
+            columns=items_file_columns,
+            path_or_buf=items_timestamped_file_path,
+            encoding='utf-8', 
+            chunksize=1000,
+            index=False
+        )
+
+        coverages_file_columns = ['coverage_id', 'tiv']
+        master_df.to_csv(
+            columns=coverages_file_columns,
+            float_format='%.5f',
+            path_or_buf=coverages_file_path,
+            encoding='utf-8',
+            chunksize=1000,
+            index=False
+        )
+        master_df.to_csv(
+            columns=coverages_file_columns,
+            float_format='%.5f',
+            path_or_buf=coverages_timestamped_file_path,
+            encoding='utf-8',
+            chunksize=1000,
+            index=False
+        )
+
+
+        gulsummaryxref_file_columns = ['coverage_id', 'summary_id', 'summaryset_id']
+        master_df.to_csv(
+            columns=gulsummaryxref_file_columns,
+            path_or_buf=gulsummaryxref_file_path,
+            encoding='utf-8',
+            chunksize=1000,
+            index=False
+        )
+        master_df.to_csv(
+            columns=gulsummaryxref_file_columns,
+            path_or_buf=gulsummaryxref_timestamped_file_path,
+            encoding='utf-8',
+            chunksize=1000,
+            index=False
+        )
+
+        with io.open(items_file_path, 'r', encoding='utf-8') as itf:
+            with io.open(coverages_file_path, 'r', encoding='utf-8') as cvf:
+                with io.open(coverages_file_path, 'r', encoding='utf-8') as gsf:
+                    if not with_model_resources:
+                        return itf, cvf, gsf
+
+            tfp.items_file = itf
+            tfp.coverages_file = cvf
+            tfp.gulsummaryxref_file = gsf
 
             return oasis_model
 

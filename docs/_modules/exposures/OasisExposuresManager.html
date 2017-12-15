@@ -443,23 +443,9 @@
         <span class="k">return</span> <span class="n">oasis_model</span></div>
 
 
-<div class="viewcode-block" id="OasisExposuresManager.generate_items_file"><a class="viewcode-back" href="../../modules.html#exposures.OasisExposuresManager.OasisExposuresManager.generate_items_file">[docs]</a>    <span class="k">def</span> <span class="nf">generate_items_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">oasis_model</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="OasisExposuresManager.generate_items_file"><a class="viewcode-back" href="../../modules.html#exposures.OasisExposuresManager.OasisExposuresManager.generate_items_file">[docs]</a>    <span class="k">def</span> <span class="nf">generate_items_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">oasis_model</span><span class="p">,</span> <span class="n">with_model_resources</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Generates an items file for the given ``oasis_model``.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">pass</span></div>
-
-
-<div class="viewcode-block" id="OasisExposuresManager.generate_coverages_file"><a class="viewcode-back" href="../../modules.html#exposures.OasisExposuresManager.OasisExposuresManager.generate_coverages_file">[docs]</a>    <span class="k">def</span> <span class="nf">generate_coverages_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">oasis_model</span><span class="p">,</span> <span class="n">with_model_resources</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Generates a coverages file for the given ``oasis_model``.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">pass</span></div>
-
-
-<div class="viewcode-block" id="OasisExposuresManager.generate_items_and_coverages_files"><a class="viewcode-back" href="../../modules.html#exposures.OasisExposuresManager.OasisExposuresManager.generate_items_and_coverages_files">[docs]</a>    <span class="k">def</span> <span class="nf">generate_items_and_coverages_files</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">oasis_model</span><span class="p">,</span> <span class="n">with_model_resources</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">with_coverages</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Generates items and coverages files for the given ``oasis_model``.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">omr</span> <span class="o">=</span> <span class="n">oasis_model</span><span class="o">.</span><span class="n">resources</span>
         <span class="n">tfp</span> <span class="o">=</span> <span class="n">omr</span><span class="p">[</span><span class="s1">&#39;oasis_files_pipeline&#39;</span><span class="p">]</span>
@@ -472,8 +458,6 @@
             <span class="n">canonical_exposures_profile_json_path</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;canonical_exposures_profile_json_path&#39;</span><span class="p">]</span>  <span class="k">if</span> <span class="s1">&#39;canonical_exposures_profile_json_path&#39;</span> <span class="ow">in</span> <span class="n">kwargs</span> <span class="k">else</span> <span class="kc">None</span>
             <span class="n">items_file_path</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;items_file_path&#39;</span><span class="p">]</span> <span class="k">if</span> <span class="s1">&#39;items_file_path&#39;</span> <span class="ow">in</span> <span class="n">kwargs</span> <span class="k">else</span> <span class="kc">None</span>
             <span class="n">items_timestamped_file_path</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;items_timestamped_file_path&#39;</span><span class="p">]</span> <span class="k">if</span> <span class="s1">&#39;items_timestamped_file_path&#39;</span> <span class="ow">in</span> <span class="n">kwargs</span> <span class="k">else</span> <span class="kc">None</span>
-            <span class="n">coverages_file_path</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;coverages_file_path&#39;</span><span class="p">]</span> <span class="k">if</span> <span class="s1">&#39;coverages_file_path&#39;</span> <span class="ow">in</span> <span class="n">kwargs</span> <span class="k">else</span> <span class="kc">None</span>
-            <span class="n">coverages_timestamped_file_path</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;coverages_timestamped_file_path&#39;</span><span class="p">]</span> <span class="k">if</span> <span class="s1">&#39;coverages_timestamped_file_path&#39;</span> <span class="ow">in</span> <span class="n">kwargs</span> <span class="k">else</span> <span class="kc">None</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">canonical_exposures_file_path</span> <span class="o">=</span> <span class="n">tfp</span><span class="o">.</span><span class="n">canonical_exposures_file</span><span class="o">.</span><span class="n">name</span>
             <span class="n">keys_file_path</span> <span class="o">=</span> <span class="n">tfp</span><span class="o">.</span><span class="n">keys_file</span><span class="o">.</span><span class="n">name</span>
@@ -482,6 +466,109 @@
             <span class="n">canonical_exposures_profile_json_path</span> <span class="o">=</span> <span class="n">omr</span><span class="p">[</span><span class="s1">&#39;canonical_exposures_profile_json_path&#39;</span><span class="p">]</span>  <span class="k">if</span> <span class="s1">&#39;canonical_exposures_profile_json_path&#39;</span> <span class="ow">in</span> <span class="n">omr</span> <span class="k">else</span> <span class="kc">None</span>
             <span class="n">items_file_path</span> <span class="o">=</span> <span class="n">omr</span><span class="p">[</span><span class="s1">&#39;items_file_path&#39;</span><span class="p">]</span> <span class="k">if</span> <span class="s1">&#39;items_file_path&#39;</span> <span class="ow">in</span> <span class="n">omr</span> <span class="k">else</span> <span class="kc">None</span>
             <span class="n">items_timestamped_file_path</span> <span class="o">=</span> <span class="n">omr</span><span class="p">[</span><span class="s1">&#39;items_timestamped_file_path&#39;</span><span class="p">]</span> <span class="k">if</span> <span class="s1">&#39;items_timestamped_file_path&#39;</span> <span class="ow">in</span> <span class="n">omr</span> <span class="k">else</span> <span class="kc">None</span>
+
+        <span class="k">with</span> <span class="n">io</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">canonical_exposures_file_path</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">cf</span><span class="p">:</span>
+            <span class="k">with</span> <span class="n">io</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">keys_file_path</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">kf</span><span class="p">:</span>
+                <span class="n">canexp_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">io</span><span class="o">.</span><span class="n">StringIO</span><span class="p">(</span><span class="n">cf</span><span class="o">.</span><span class="n">read</span><span class="p">()))</span>
+                <span class="n">canexp_df</span> <span class="o">=</span> <span class="n">canexp_df</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">canexp_df</span><span class="o">.</span><span class="n">notnull</span><span class="p">(),</span> <span class="kc">None</span><span class="p">)</span>
+                <span class="n">canexp_df</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="o">.</span><span class="n">lower</span><span class="p">,</span> <span class="n">canexp_df</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span>
+
+                <span class="n">keys_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">io</span><span class="o">.</span><span class="n">StringIO</span><span class="p">(</span><span class="n">kf</span><span class="o">.</span><span class="n">read</span><span class="p">()))</span>
+                <span class="n">keys_df</span> <span class="o">=</span> <span class="n">keys_df</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;CoverageID&#39;</span><span class="p">:</span> <span class="s1">&#39;CoverageType&#39;</span><span class="p">})</span>
+                <span class="n">keys_df</span> <span class="o">=</span> <span class="n">keys_df</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">keys_df</span><span class="o">.</span><span class="n">notnull</span><span class="p">(),</span> <span class="kc">None</span><span class="p">)</span>
+                <span class="n">keys_df</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="o">.</span><span class="n">lower</span><span class="p">,</span> <span class="n">keys_df</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">canonical_exposures_profile</span><span class="p">:</span>
+            <span class="n">canonical_exposures_profile</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">canonical_exposures_profile_json</span><span class="p">)</span> <span class="k">if</span> <span class="n">canonical_exposures_profile_json</span>
+                <span class="k">else</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">canonical_exposures_profile_json_path</span><span class="p">)</span>
+            <span class="p">)</span>
+
+        <span class="n">tiv_fields</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span>
+            <span class="k">lambda</span> <span class="n">f</span><span class="p">:</span> <span class="n">canonical_exposures_profile</span><span class="p">[</span><span class="n">f</span><span class="p">],</span>
+            <span class="nb">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">k</span><span class="p">:</span> <span class="n">canonical_exposures_profile</span><span class="p">[</span><span class="n">k</span><span class="p">][</span><span class="s1">&#39;FieldName&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;TIV&#39;</span><span class="p">,</span> <span class="n">canonical_exposures_profile</span><span class="p">)</span>
+        <span class="p">))</span>
+
+        <span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;item_id&#39;</span><span class="p">,</span> <span class="s1">&#39;coverage_id&#39;</span><span class="p">,</span> <span class="s1">&#39;areaperil_id&#39;</span><span class="p">,</span> <span class="s1">&#39;vulnerability_id&#39;</span><span class="p">,</span> <span class="s1">&#39;group_id&#39;</span><span class="p">]</span>
+        <span class="n">items_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="n">columns</span><span class="p">)</span>
+
+        <span class="n">records</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">ii</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">keys_df</span><span class="p">)):</span>
+            <span class="n">ki</span> <span class="o">=</span> <span class="n">keys_df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+
+            <span class="n">ci_df</span> <span class="o">=</span> <span class="n">canexp_df</span><span class="p">[</span><span class="n">canexp_df</span><span class="p">[</span><span class="s1">&#39;row_id&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">ki</span><span class="p">[</span><span class="s1">&#39;locid&#39;</span><span class="p">]]</span>
+
+            <span class="k">if</span> <span class="n">ci_df</span><span class="o">.</span><span class="n">empty</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">OasisException</span><span class="p">(</span><span class="s2">&quot;No matching canonical exposure item found in canonical exposures data frame for keys item </span><span class="si">{}</span><span class="s2">.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">ki</span><span class="p">))</span>
+            <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">ci_df</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">OasisException</span><span class="p">(</span><span class="s2">&quot;Duplicate canonical exposure items found in canonical exposures data frame for keys item </span><span class="si">{}</span><span class="s2">.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">ki</span><span class="p">))</span>
+
+            <span class="n">ci</span> <span class="o">=</span> <span class="n">ci_df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+            <span class="n">tiv_field</span> <span class="o">=</span> <span class="nb">filter</span><span class="p">(</span>
+                    <span class="k">lambda</span> <span class="n">f</span><span class="p">:</span> <span class="n">f</span><span class="p">[</span><span class="s1">&#39;CoverageTypeId&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">ki</span><span class="p">[</span><span class="s1">&#39;coveragetype&#39;</span><span class="p">],</span>
+                    <span class="n">tiv_fields</span>
+            <span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+
+            <span class="k">if</span> <span class="n">ci</span><span class="p">[</span><span class="n">tiv_field</span><span class="p">[</span><span class="s1">&#39;ProfileElementName&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">lower</span><span class="p">()]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">ii</span> <span class="o">+=</span> <span class="mi">1</span>
+                <span class="n">rec</span> <span class="o">=</span> <span class="p">{</span>
+                    <span class="s1">&#39;item_id&#39;</span><span class="p">:</span> <span class="n">ii</span><span class="p">,</span>
+                    <span class="s1">&#39;coverage_id&#39;</span><span class="p">:</span> <span class="n">ii</span><span class="p">,</span>
+                    <span class="s1">&#39;areaperil_id&#39;</span><span class="p">:</span> <span class="n">ki</span><span class="p">[</span><span class="s1">&#39;areaperilid&#39;</span><span class="p">],</span>
+                    <span class="s1">&#39;vulnerability_id&#39;</span><span class="p">:</span> <span class="n">ki</span><span class="p">[</span><span class="s1">&#39;vulnerabilityid&#39;</span><span class="p">],</span>
+                    <span class="s1">&#39;group_id&#39;</span><span class="p">:</span> <span class="n">ii</span>
+                <span class="p">}</span>
+                <span class="n">records</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">rec</span><span class="p">)</span>
+
+        <span class="n">items_df</span> <span class="o">=</span> <span class="n">items_df</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">records</span><span class="p">)</span>
+
+        <span class="n">items_df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span>
+            <span class="n">columns</span><span class="o">=</span><span class="n">columns</span><span class="p">,</span>
+            <span class="n">path_or_buf</span><span class="o">=</span><span class="n">items_file_path</span><span class="p">,</span>
+            <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">,</span> 
+            <span class="n">chunksize</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span>
+            <span class="n">index</span><span class="o">=</span><span class="kc">False</span>
+        <span class="p">)</span>
+        <span class="n">items_df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span>
+            <span class="n">columns</span><span class="o">=</span><span class="n">columns</span><span class="p">,</span>
+            <span class="n">path_or_buf</span><span class="o">=</span><span class="n">items_timestamped_file_path</span><span class="p">,</span>
+            <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">,</span> 
+            <span class="n">chunksize</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span>
+            <span class="n">index</span><span class="o">=</span><span class="kc">False</span>
+        <span class="p">)</span>
+
+        <span class="k">with</span> <span class="n">io</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">items_file_path</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">with_model_resources</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">f</span>
+
+            <span class="n">tfp</span><span class="o">.</span><span class="n">items_file</span> <span class="o">=</span> <span class="n">f</span>
+
+            <span class="k">return</span> <span class="n">oasis_model</span></div>
+
+
+<div class="viewcode-block" id="OasisExposuresManager.generate_coverages_file"><a class="viewcode-back" href="../../modules.html#exposures.OasisExposuresManager.OasisExposuresManager.generate_coverages_file">[docs]</a>    <span class="k">def</span> <span class="nf">generate_coverages_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">oasis_model</span><span class="p">,</span> <span class="n">with_model_resources</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Generates a coverages file for the given ``oasis_model``.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">omr</span> <span class="o">=</span> <span class="n">oasis_model</span><span class="o">.</span><span class="n">resources</span>
+        <span class="n">tfp</span> <span class="o">=</span> <span class="n">omr</span><span class="p">[</span><span class="s1">&#39;oasis_files_pipeline&#39;</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">with_model_resources</span><span class="p">:</span>
+            <span class="n">canonical_exposures_file_path</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;canonical_exposures_file_path&#39;</span><span class="p">]</span>
+            <span class="n">keys_file_path</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;keys_file_path&#39;</span><span class="p">]</span>
+            <span class="n">canonical_exposures_profile</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;canonical_exposures_profile&#39;</span><span class="p">]</span> <span class="k">if</span> <span class="s1">&#39;canonical_exposures_profile&#39;</span> <span class="ow">in</span> <span class="n">kwargs</span> <span class="k">else</span> <span class="kc">None</span>
+            <span class="n">canonical_exposures_profile_json</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;canonical_exposures_profile_json&#39;</span><span class="p">]</span>  <span class="k">if</span> <span class="s1">&#39;canonical_exposures_profile_json&#39;</span> <span class="ow">in</span> <span class="n">kwargs</span> <span class="k">else</span> <span class="kc">None</span>
+            <span class="n">canonical_exposures_profile_json_path</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;canonical_exposures_profile_json_path&#39;</span><span class="p">]</span>  <span class="k">if</span> <span class="s1">&#39;canonical_exposures_profile_json_path&#39;</span> <span class="ow">in</span> <span class="n">kwargs</span> <span class="k">else</span> <span class="kc">None</span>
+            <span class="n">coverages_file_path</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;coverages_file_path&#39;</span><span class="p">]</span> <span class="k">if</span> <span class="s1">&#39;coverages_file_path&#39;</span> <span class="ow">in</span> <span class="n">kwargs</span> <span class="k">else</span> <span class="kc">None</span>
+            <span class="n">coverages_timestamped_file_path</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;coverages_timestamped_file_path&#39;</span><span class="p">]</span> <span class="k">if</span> <span class="s1">&#39;coverages_timestamped_file_path&#39;</span> <span class="ow">in</span> <span class="n">kwargs</span> <span class="k">else</span> <span class="kc">None</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">canonical_exposures_file_path</span> <span class="o">=</span> <span class="n">tfp</span><span class="o">.</span><span class="n">canonical_exposures_file</span><span class="o">.</span><span class="n">name</span>
+            <span class="n">keys_file_path</span> <span class="o">=</span> <span class="n">tfp</span><span class="o">.</span><span class="n">keys_file</span><span class="o">.</span><span class="n">name</span>
+            <span class="n">canonical_exposures_profile</span> <span class="o">=</span> <span class="n">omr</span><span class="p">[</span><span class="s1">&#39;canonical_exposures_profile&#39;</span><span class="p">]</span>  <span class="k">if</span> <span class="s1">&#39;canonical_exposures_profile&#39;</span> <span class="ow">in</span> <span class="n">omr</span> <span class="k">else</span> <span class="kc">None</span>
+            <span class="n">canonical_exposures_profile_json</span> <span class="o">=</span> <span class="n">omr</span><span class="p">[</span><span class="s1">&#39;canonical_exposures_profile_json&#39;</span><span class="p">]</span>  <span class="k">if</span> <span class="s1">&#39;canonical_exposures_profile_json&#39;</span> <span class="ow">in</span> <span class="n">omr</span> <span class="k">else</span> <span class="kc">None</span>
+            <span class="n">canonical_exposures_profile_json_path</span> <span class="o">=</span> <span class="n">omr</span><span class="p">[</span><span class="s1">&#39;canonical_exposures_profile_json_path&#39;</span><span class="p">]</span>  <span class="k">if</span> <span class="s1">&#39;canonical_exposures_profile_json_path&#39;</span> <span class="ow">in</span> <span class="n">omr</span> <span class="k">else</span> <span class="kc">None</span>
             <span class="n">coverages_file_path</span> <span class="o">=</span> <span class="n">omr</span><span class="p">[</span><span class="s1">&#39;coverages_file_path&#39;</span><span class="p">]</span> <span class="k">if</span> <span class="s1">&#39;coverages_file_path&#39;</span> <span class="ow">in</span> <span class="n">omr</span> <span class="k">else</span> <span class="kc">None</span>
             <span class="n">coverages_timestamped_file_path</span> <span class="o">=</span> <span class="n">omr</span><span class="p">[</span><span class="s1">&#39;coverages_timestamped_file_path&#39;</span><span class="p">]</span> <span class="k">if</span> <span class="s1">&#39;coverages_timestamped_file_path&#39;</span> <span class="ow">in</span> <span class="n">omr</span> <span class="k">else</span> <span class="kc">None</span>
 
@@ -507,9 +594,10 @@
             <span class="nb">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">k</span><span class="p">:</span> <span class="n">canonical_exposures_profile</span><span class="p">[</span><span class="n">k</span><span class="p">][</span><span class="s1">&#39;FieldName&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;TIV&#39;</span><span class="p">,</span> <span class="n">canonical_exposures_profile</span><span class="p">)</span>
         <span class="p">))</span>
 
-        <span class="n">items_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;item_id&#39;</span><span class="p">,</span> <span class="s1">&#39;coverage_id&#39;</span><span class="p">,</span> <span class="s1">&#39;areaperil_id&#39;</span><span class="p">,</span> <span class="s1">&#39;vulnerability_id&#39;</span><span class="p">,</span> <span class="s1">&#39;group_id&#39;</span><span class="p">])</span>
+        <span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;coverage_id&#39;</span><span class="p">,</span> <span class="s1">&#39;tiv&#39;</span><span class="p">]</span>
+        <span class="n">coverages_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="n">columns</span><span class="p">)</span>
 
-        <span class="n">items</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">records</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">ii</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">keys_df</span><span class="p">)):</span>
             <span class="n">ki</span> <span class="o">=</span> <span class="n">keys_df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
@@ -530,59 +618,34 @@
 
             <span class="k">if</span> <span class="n">ci</span><span class="p">[</span><span class="n">tiv_field</span><span class="p">[</span><span class="s1">&#39;ProfileElementName&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">lower</span><span class="p">()]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
                 <span class="n">ii</span> <span class="o">+=</span> <span class="mi">1</span>
-                <span class="n">it</span> <span class="o">=</span> <span class="p">{</span>
-                    <span class="s1">&#39;item_id&#39;</span><span class="p">:</span> <span class="n">ii</span><span class="p">,</span>
+                <span class="n">rec</span> <span class="o">=</span> <span class="p">{</span>
                     <span class="s1">&#39;coverage_id&#39;</span><span class="p">:</span> <span class="n">ii</span><span class="p">,</span>
-                    <span class="s1">&#39;tiv&#39;</span><span class="p">:</span> <span class="n">ci</span><span class="p">[</span><span class="n">tiv_field</span><span class="p">[</span><span class="s1">&#39;ProfileElementName&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">lower</span><span class="p">()],</span>
-                    <span class="s1">&#39;areaperil_id&#39;</span><span class="p">:</span> <span class="n">ki</span><span class="p">[</span><span class="s1">&#39;areaperilid&#39;</span><span class="p">],</span>
-                    <span class="s1">&#39;vulnerability_id&#39;</span><span class="p">:</span> <span class="n">ki</span><span class="p">[</span><span class="s1">&#39;vulnerabilityid&#39;</span><span class="p">],</span>
-                    <span class="s1">&#39;group_id&#39;</span><span class="p">:</span> <span class="n">ii</span>
+                    <span class="s1">&#39;tiv&#39;</span><span class="p">:</span> <span class="n">ci</span><span class="p">[</span><span class="n">tiv_field</span><span class="p">[</span><span class="s1">&#39;ProfileElementName&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">lower</span><span class="p">()]</span>
                 <span class="p">}</span>
-                <span class="n">items</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">it</span><span class="p">)</span>
+                <span class="n">records</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">rec</span><span class="p">)</span>
 
-        <span class="n">items_df</span> <span class="o">=</span> <span class="n">items_df</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">items</span><span class="p">)</span>
+        <span class="n">coverages_df</span> <span class="o">=</span> <span class="n">coverages_df</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">records</span><span class="p">)</span>
 
-        <span class="n">items_file_columns</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;item_id&#39;</span><span class="p">,</span> <span class="s1">&#39;coverage_id&#39;</span><span class="p">,</span> <span class="s1">&#39;areaperil_id&#39;</span><span class="p">,</span> <span class="s1">&#39;vulnerability_id&#39;</span><span class="p">,</span> <span class="s1">&#39;group_id&#39;</span><span class="p">]</span>
-        <span class="n">items_df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span>
-            <span class="n">columns</span><span class="o">=</span><span class="n">items_file_columns</span><span class="p">,</span>
-            <span class="n">path_or_buf</span><span class="o">=</span><span class="n">items_file_path</span><span class="p">,</span>
-            <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">,</span> 
-            <span class="n">chunksize</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span>
-            <span class="n">index</span><span class="o">=</span><span class="kc">False</span>
-        <span class="p">)</span>
-        <span class="n">items_df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span>
-            <span class="n">columns</span><span class="o">=</span><span class="n">items_file_columns</span><span class="p">,</span>
-            <span class="n">path_or_buf</span><span class="o">=</span><span class="n">items_timestamped_file_path</span><span class="p">,</span>
-            <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">,</span> 
-            <span class="n">chunksize</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span>
-            <span class="n">index</span><span class="o">=</span><span class="kc">False</span>
-        <span class="p">)</span>
-
-        <span class="n">coverages_file_columns</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;coverage_id&#39;</span><span class="p">,</span> <span class="s1">&#39;tiv&#39;</span><span class="p">]</span>
-        <span class="n">items_df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span>
-            <span class="n">columns</span><span class="o">=</span><span class="n">coverages_file_columns</span><span class="p">,</span>
-            <span class="n">float_format</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">%.1f</span><span class="s1">&#39;</span><span class="p">,</span>
+        <span class="n">coverages_df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span>
+            <span class="n">columns</span><span class="o">=</span><span class="n">columns</span><span class="p">,</span>
             <span class="n">path_or_buf</span><span class="o">=</span><span class="n">coverages_file_path</span><span class="p">,</span>
-            <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">,</span>
+            <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">,</span> 
             <span class="n">chunksize</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span>
             <span class="n">index</span><span class="o">=</span><span class="kc">False</span>
         <span class="p">)</span>
-        <span class="n">items_df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span>
-            <span class="n">columns</span><span class="o">=</span><span class="n">coverages_file_columns</span><span class="p">,</span>
-            <span class="n">float_format</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">%.1f</span><span class="s1">&#39;</span><span class="p">,</span>
+        <span class="n">coverages_df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span>
+            <span class="n">columns</span><span class="o">=</span><span class="n">columns</span><span class="p">,</span>
             <span class="n">path_or_buf</span><span class="o">=</span><span class="n">coverages_timestamped_file_path</span><span class="p">,</span>
-            <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">,</span>
+            <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">,</span> 
             <span class="n">chunksize</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span>
             <span class="n">index</span><span class="o">=</span><span class="kc">False</span>
         <span class="p">)</span>
 
-        <span class="k">with</span> <span class="n">io</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">items_file_path</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">itf</span><span class="p">:</span>
-            <span class="k">with</span> <span class="n">io</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">coverages_file_path</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">cvf</span><span class="p">:</span>
-                <span class="k">if</span> <span class="ow">not</span> <span class="n">with_model_resources</span><span class="p">:</span>
-                    <span class="k">return</span> <span class="n">itf</span><span class="p">,</span> <span class="n">cvf</span>
+        <span class="k">with</span> <span class="n">io</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">coverages_file_path</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">with_model_resources</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">f</span>
 
-            <span class="n">tfp</span><span class="o">.</span><span class="n">items_file</span> <span class="o">=</span> <span class="n">itf</span>
-            <span class="n">tfp</span><span class="o">.</span><span class="n">coverages_file</span> <span class="o">=</span> <span class="n">cvf</span>
+            <span class="n">tfp</span><span class="o">.</span><span class="n">coverages_file</span> <span class="o">=</span> <span class="n">f</span>
 
             <span class="k">return</span> <span class="n">oasis_model</span></div>
 
@@ -591,10 +654,111 @@
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Generates a gulsummaryxref file for the given ``oasis_model``.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">pass</span></div>
+        <span class="n">omr</span> <span class="o">=</span> <span class="n">oasis_model</span><span class="o">.</span><span class="n">resources</span>
+        <span class="n">tfp</span> <span class="o">=</span> <span class="n">omr</span><span class="p">[</span><span class="s1">&#39;oasis_files_pipeline&#39;</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">with_model_resources</span><span class="p">:</span>
+            <span class="n">canonical_exposures_file_path</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;canonical_exposures_file_path&#39;</span><span class="p">]</span>
+            <span class="n">keys_file_path</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;keys_file_path&#39;</span><span class="p">]</span>
+            <span class="n">canonical_exposures_profile</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;canonical_exposures_profile&#39;</span><span class="p">]</span> <span class="k">if</span> <span class="s1">&#39;canonical_exposures_profile&#39;</span> <span class="ow">in</span> <span class="n">kwargs</span> <span class="k">else</span> <span class="kc">None</span>
+            <span class="n">canonical_exposures_profile_json</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;canonical_exposures_profile_json&#39;</span><span class="p">]</span>  <span class="k">if</span> <span class="s1">&#39;canonical_exposures_profile_json&#39;</span> <span class="ow">in</span> <span class="n">kwargs</span> <span class="k">else</span> <span class="kc">None</span>
+            <span class="n">canonical_exposures_profile_json_path</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;canonical_exposures_profile_json_path&#39;</span><span class="p">]</span>  <span class="k">if</span> <span class="s1">&#39;canonical_exposures_profile_json_path&#39;</span> <span class="ow">in</span> <span class="n">kwargs</span> <span class="k">else</span> <span class="kc">None</span>
+            <span class="n">gulsummaryxref_file_path</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;gulsummaryxref_file_path&#39;</span><span class="p">]</span> <span class="k">if</span> <span class="s1">&#39;gulsummaryxref_file_path&#39;</span> <span class="ow">in</span> <span class="n">kwargs</span> <span class="k">else</span> <span class="kc">None</span>
+            <span class="n">gulsummaryxref_timestamped_file_path</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;gulsummaryxref_timestamped_file_path&#39;</span><span class="p">]</span> <span class="k">if</span> <span class="s1">&#39;gulsummaryxref_timestamped_file_path&#39;</span> <span class="ow">in</span> <span class="n">kwargs</span> <span class="k">else</span> <span class="kc">None</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">canonical_exposures_file_path</span> <span class="o">=</span> <span class="n">tfp</span><span class="o">.</span><span class="n">canonical_exposures_file</span><span class="o">.</span><span class="n">name</span>
+            <span class="n">keys_file_path</span> <span class="o">=</span> <span class="n">tfp</span><span class="o">.</span><span class="n">keys_file</span><span class="o">.</span><span class="n">name</span>
+            <span class="n">canonical_exposures_profile</span> <span class="o">=</span> <span class="n">omr</span><span class="p">[</span><span class="s1">&#39;canonical_exposures_profile&#39;</span><span class="p">]</span>  <span class="k">if</span> <span class="s1">&#39;canonical_exposures_profile&#39;</span> <span class="ow">in</span> <span class="n">omr</span> <span class="k">else</span> <span class="kc">None</span>
+            <span class="n">canonical_exposures_profile_json</span> <span class="o">=</span> <span class="n">omr</span><span class="p">[</span><span class="s1">&#39;canonical_exposures_profile_json&#39;</span><span class="p">]</span>  <span class="k">if</span> <span class="s1">&#39;canonical_exposures_profile_json&#39;</span> <span class="ow">in</span> <span class="n">omr</span> <span class="k">else</span> <span class="kc">None</span>
+            <span class="n">canonical_exposures_profile_json_path</span> <span class="o">=</span> <span class="n">omr</span><span class="p">[</span><span class="s1">&#39;canonical_exposures_profile_json_path&#39;</span><span class="p">]</span>  <span class="k">if</span> <span class="s1">&#39;canonical_exposures_profile_json_path&#39;</span> <span class="ow">in</span> <span class="n">omr</span> <span class="k">else</span> <span class="kc">None</span>
+            <span class="n">gulsummaryxref_file_path</span> <span class="o">=</span> <span class="n">omr</span><span class="p">[</span><span class="s1">&#39;gulsummaryxref_file_path&#39;</span><span class="p">]</span> <span class="k">if</span> <span class="s1">&#39;gulsummaryxref_file_path&#39;</span> <span class="ow">in</span> <span class="n">omr</span> <span class="k">else</span> <span class="kc">None</span>
+            <span class="n">gulsummaryxref_timestamped_file_path</span> <span class="o">=</span> <span class="n">omr</span><span class="p">[</span><span class="s1">&#39;gulsummaryxref_timestamped_file_path&#39;</span><span class="p">]</span> <span class="k">if</span> <span class="s1">&#39;gulsummaryxref_timestamped_file_path&#39;</span> <span class="ow">in</span> <span class="n">omr</span> <span class="k">else</span> <span class="kc">None</span>
+
+        <span class="k">with</span> <span class="n">io</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">canonical_exposures_file_path</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">cf</span><span class="p">:</span>
+            <span class="k">with</span> <span class="n">io</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">keys_file_path</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">kf</span><span class="p">:</span>
+                <span class="n">canexp_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">io</span><span class="o">.</span><span class="n">StringIO</span><span class="p">(</span><span class="n">cf</span><span class="o">.</span><span class="n">read</span><span class="p">()))</span>
+                <span class="n">canexp_df</span> <span class="o">=</span> <span class="n">canexp_df</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">canexp_df</span><span class="o">.</span><span class="n">notnull</span><span class="p">(),</span> <span class="kc">None</span><span class="p">)</span>
+                <span class="n">canexp_df</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="o">.</span><span class="n">lower</span><span class="p">,</span> <span class="n">canexp_df</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span>
+
+                <span class="n">keys_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">io</span><span class="o">.</span><span class="n">StringIO</span><span class="p">(</span><span class="n">kf</span><span class="o">.</span><span class="n">read</span><span class="p">()))</span>
+                <span class="n">keys_df</span> <span class="o">=</span> <span class="n">keys_df</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;CoverageID&#39;</span><span class="p">:</span> <span class="s1">&#39;CoverageType&#39;</span><span class="p">})</span>
+                <span class="n">keys_df</span> <span class="o">=</span> <span class="n">keys_df</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">keys_df</span><span class="o">.</span><span class="n">notnull</span><span class="p">(),</span> <span class="kc">None</span><span class="p">)</span>
+                <span class="n">keys_df</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="o">.</span><span class="n">lower</span><span class="p">,</span> <span class="n">keys_df</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">canonical_exposures_profile</span><span class="p">:</span>
+            <span class="n">canonical_exposures_profile</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">canonical_exposures_profile_json</span><span class="p">)</span> <span class="k">if</span> <span class="n">canonical_exposures_profile_json</span>
+                <span class="k">else</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">canonical_exposures_profile_json_path</span><span class="p">)</span>
+            <span class="p">)</span>
+
+        <span class="n">tiv_fields</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span>
+            <span class="k">lambda</span> <span class="n">f</span><span class="p">:</span> <span class="n">canonical_exposures_profile</span><span class="p">[</span><span class="n">f</span><span class="p">],</span>
+            <span class="nb">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">k</span><span class="p">:</span> <span class="n">canonical_exposures_profile</span><span class="p">[</span><span class="n">k</span><span class="p">][</span><span class="s1">&#39;FieldName&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;TIV&#39;</span><span class="p">,</span> <span class="n">canonical_exposures_profile</span><span class="p">)</span>
+        <span class="p">))</span>
+
+        <span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;coverage_id&#39;</span><span class="p">,</span> <span class="s1">&#39;summary_id&#39;</span><span class="p">,</span> <span class="s1">&#39;summaryset_id&#39;</span><span class="p">]</span>
+        <span class="n">gulsummaryxref_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="n">columns</span><span class="p">)</span>
+
+        <span class="n">records</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">ii</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">keys_df</span><span class="p">)):</span>
+            <span class="n">ki</span> <span class="o">=</span> <span class="n">keys_df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+
+            <span class="n">ci_df</span> <span class="o">=</span> <span class="n">canexp_df</span><span class="p">[</span><span class="n">canexp_df</span><span class="p">[</span><span class="s1">&#39;row_id&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">ki</span><span class="p">[</span><span class="s1">&#39;locid&#39;</span><span class="p">]]</span>
+
+            <span class="k">if</span> <span class="n">ci_df</span><span class="o">.</span><span class="n">empty</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">OasisException</span><span class="p">(</span><span class="s2">&quot;No matching canonical exposure item found in canonical exposures data frame for keys item </span><span class="si">{}</span><span class="s2">.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">ki</span><span class="p">))</span>
+            <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">ci_df</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">OasisException</span><span class="p">(</span><span class="s2">&quot;Duplicate canonical exposure items found in canonical exposures data frame for keys item </span><span class="si">{}</span><span class="s2">.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">ki</span><span class="p">))</span>
+
+            <span class="n">ci</span> <span class="o">=</span> <span class="n">ci_df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+            <span class="n">tiv_field</span> <span class="o">=</span> <span class="nb">filter</span><span class="p">(</span>
+                    <span class="k">lambda</span> <span class="n">f</span><span class="p">:</span> <span class="n">f</span><span class="p">[</span><span class="s1">&#39;CoverageTypeId&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">ki</span><span class="p">[</span><span class="s1">&#39;coveragetype&#39;</span><span class="p">],</span>
+                    <span class="n">tiv_fields</span>
+            <span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+
+            <span class="k">if</span> <span class="n">ci</span><span class="p">[</span><span class="n">tiv_field</span><span class="p">[</span><span class="s1">&#39;ProfileElementName&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">lower</span><span class="p">()]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">ii</span> <span class="o">+=</span> <span class="mi">1</span>
+                <span class="n">rec</span> <span class="o">=</span> <span class="p">{</span>
+                    <span class="s1">&#39;coverage_id&#39;</span><span class="p">:</span> <span class="n">ii</span><span class="p">,</span>
+                    <span class="s1">&#39;summary_id&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+                    <span class="s1">&#39;summaryset_id&#39;</span><span class="p">:</span> <span class="mi">1</span>
+                <span class="p">}</span>
+                <span class="n">records</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">rec</span><span class="p">)</span>
+
+        <span class="n">gulsummaryxref_df</span> <span class="o">=</span> <span class="n">gulsummaryxref_df</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">records</span><span class="p">)</span>
+
+        <span class="n">gulsummaryxref_df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span>
+            <span class="n">columns</span><span class="o">=</span><span class="n">columns</span><span class="p">,</span>
+            <span class="n">path_or_buf</span><span class="o">=</span><span class="n">gulsummaryxref_file_path</span><span class="p">,</span>
+            <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">,</span> 
+            <span class="n">chunksize</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span>
+            <span class="n">index</span><span class="o">=</span><span class="kc">False</span>
+        <span class="p">)</span>
+        <span class="n">gulsummaryxref_df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span>
+            <span class="n">columns</span><span class="o">=</span><span class="n">columns</span><span class="p">,</span>
+            <span class="n">path_or_buf</span><span class="o">=</span><span class="n">gulsummaryxref_timestamped_file_path</span><span class="p">,</span>
+            <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">,</span> 
+            <span class="n">chunksize</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span>
+            <span class="n">index</span><span class="o">=</span><span class="kc">False</span>
+        <span class="p">)</span>
+
+        <span class="k">with</span> <span class="n">io</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">gulsummaryxref_file_path</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">with_model_resources</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">f</span>
+
+            <span class="n">tfp</span><span class="o">.</span><span class="n">gulsummaryxref_file</span> <span class="o">=</span> <span class="n">f</span>
+
+            <span class="k">return</span> <span class="n">oasis_model</span></div>
 
 
-<div class="viewcode-block" id="OasisExposuresManager.generate_oasis_files"><a class="viewcode-back" href="../../modules.html#exposures.OasisExposuresManager.OasisExposuresManager.generate_oasis_files">[docs]</a>    <span class="k">def</span> <span class="nf">generate_oasis_files</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">oasis_model</span><span class="p">,</span> <span class="n">with_model_resources</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="OasisExposuresManager.generate_oasis_files"><a class="viewcode-back" href="../../modules.html#exposures.OasisExposuresManager.OasisExposuresManager.generate_oasis_files">[docs]</a>    <span class="k">def</span> <span class="nf">generate_oasis_files</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">oasis_model</span><span class="p">,</span>
+        <span class="n">with_model_resources</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">kwargs</span>
+    <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        For a given ``oasis_model`` generates the standard Oasis files, namely</span>
 
@@ -603,13 +767,163 @@
 <span class="sd">            ``gulsummaryxref.csv``</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">omr</span> <span class="o">=</span> <span class="n">oasis_model</span><span class="o">.</span><span class="n">resources</span>
+        <span class="n">tfp</span> <span class="o">=</span> <span class="n">omr</span><span class="p">[</span><span class="s1">&#39;oasis_files_pipeline&#39;</span><span class="p">]</span>
+
         <span class="k">if</span> <span class="ow">not</span> <span class="n">with_model_resources</span><span class="p">:</span>
-            <span class="n">items_file</span><span class="p">,</span> <span class="n">coverages_file</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">generate_items_and_coverages_files</span><span class="p">(</span><span class="n">oasis_model</span><span class="p">,</span> <span class="n">with_model_resources</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-            <span class="n">gulsummaryxref_file</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">generate_gulsummaryxref_file</span><span class="p">(</span><span class="n">oasis_model</span><span class="p">,</span> <span class="n">with_model_resources</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-            <span class="k">return</span> <span class="n">items_file</span><span class="p">,</span> <span class="n">coverages_file</span><span class="p">,</span> <span class="n">gulsummaryxref_file</span>
+            <span class="n">canonical_exposures_file_path</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;canonical_exposures_file_path&#39;</span><span class="p">]</span>
+            <span class="n">keys_file_path</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;keys_file_path&#39;</span><span class="p">]</span>
+            <span class="n">canonical_exposures_profile</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;canonical_exposures_profile&#39;</span><span class="p">]</span> <span class="k">if</span> <span class="s1">&#39;canonical_exposures_profile&#39;</span> <span class="ow">in</span> <span class="n">kwargs</span> <span class="k">else</span> <span class="kc">None</span>
+            <span class="n">canonical_exposures_profile_json</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;canonical_exposures_profile_json&#39;</span><span class="p">]</span>  <span class="k">if</span> <span class="s1">&#39;canonical_exposures_profile_json&#39;</span> <span class="ow">in</span> <span class="n">kwargs</span> <span class="k">else</span> <span class="kc">None</span>
+            <span class="n">canonical_exposures_profile_json_path</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;canonical_exposures_profile_json_path&#39;</span><span class="p">]</span>  <span class="k">if</span> <span class="s1">&#39;canonical_exposures_profile_json_path&#39;</span> <span class="ow">in</span> <span class="n">kwargs</span> <span class="k">else</span> <span class="kc">None</span>
+            <span class="n">items_file_path</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;items_file_path&#39;</span><span class="p">]</span> <span class="k">if</span> <span class="s1">&#39;items_file_path&#39;</span> <span class="ow">in</span> <span class="n">kwargs</span> <span class="k">else</span> <span class="kc">None</span>
+            <span class="n">items_timestamped_file_path</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;items_timestamped_file_path&#39;</span><span class="p">]</span> <span class="k">if</span> <span class="s1">&#39;items_timestamped_file_path&#39;</span> <span class="ow">in</span> <span class="n">kwargs</span> <span class="k">else</span> <span class="kc">None</span>
+            <span class="n">coverages_file_path</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;coverages_file_path&#39;</span><span class="p">]</span> <span class="k">if</span> <span class="s1">&#39;coverages_file_path&#39;</span> <span class="ow">in</span> <span class="n">kwargs</span> <span class="k">else</span> <span class="kc">None</span>
+            <span class="n">coverages_timestamped_file_path</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;coverages_timestamped_file_path&#39;</span><span class="p">]</span> <span class="k">if</span> <span class="s1">&#39;coverages_timestamped_file_path&#39;</span> <span class="ow">in</span> <span class="n">kwargs</span> <span class="k">else</span> <span class="kc">None</span>
+            <span class="n">gulsummaryxref_file_path</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;gulsummaryxref_file_path&#39;</span><span class="p">]</span> <span class="k">if</span> <span class="s1">&#39;gulsummaryxref_file_path&#39;</span> <span class="ow">in</span> <span class="n">kwargs</span> <span class="k">else</span> <span class="kc">None</span>
+            <span class="n">gulsummaryxref_timestamped_file_path</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;gulsummaryxref_timestamped_file_path&#39;</span><span class="p">]</span> <span class="k">if</span> <span class="s1">&#39;gulsummaryxref_timestamped_file_path&#39;</span> <span class="ow">in</span> <span class="n">kwargs</span> <span class="k">else</span> <span class="kc">None</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">generate_items_and_coverages_files</span><span class="p">(</span><span class="n">oasis_model</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">generate_gulsummaryxref_file</span><span class="p">(</span><span class="n">oasis_model</span><span class="p">)</span>
+            <span class="n">canonical_exposures_file_path</span> <span class="o">=</span> <span class="n">tfp</span><span class="o">.</span><span class="n">canonical_exposures_file</span><span class="o">.</span><span class="n">name</span>
+            <span class="n">keys_file_path</span> <span class="o">=</span> <span class="n">tfp</span><span class="o">.</span><span class="n">keys_file</span><span class="o">.</span><span class="n">name</span>
+            <span class="n">canonical_exposures_profile</span> <span class="o">=</span> <span class="n">omr</span><span class="p">[</span><span class="s1">&#39;canonical_exposures_profile&#39;</span><span class="p">]</span>  <span class="k">if</span> <span class="s1">&#39;canonical_exposures_profile&#39;</span> <span class="ow">in</span> <span class="n">omr</span> <span class="k">else</span> <span class="kc">None</span>
+            <span class="n">canonical_exposures_profile_json</span> <span class="o">=</span> <span class="n">omr</span><span class="p">[</span><span class="s1">&#39;canonical_exposures_profile_json&#39;</span><span class="p">]</span>  <span class="k">if</span> <span class="s1">&#39;canonical_exposures_profile_json&#39;</span> <span class="ow">in</span> <span class="n">omr</span> <span class="k">else</span> <span class="kc">None</span>
+            <span class="n">canonical_exposures_profile_json_path</span> <span class="o">=</span> <span class="n">omr</span><span class="p">[</span><span class="s1">&#39;canonical_exposures_profile_json_path&#39;</span><span class="p">]</span>  <span class="k">if</span> <span class="s1">&#39;canonical_exposures_profile_json_path&#39;</span> <span class="ow">in</span> <span class="n">omr</span> <span class="k">else</span> <span class="kc">None</span>
+            <span class="n">items_file_path</span> <span class="o">=</span> <span class="n">omr</span><span class="p">[</span><span class="s1">&#39;items_file_path&#39;</span><span class="p">]</span> <span class="k">if</span> <span class="s1">&#39;items_file_path&#39;</span> <span class="ow">in</span> <span class="n">omr</span> <span class="k">else</span> <span class="kc">None</span>
+            <span class="n">items_timestamped_file_path</span> <span class="o">=</span> <span class="n">omr</span><span class="p">[</span><span class="s1">&#39;items_timestamped_file_path&#39;</span><span class="p">]</span> <span class="k">if</span> <span class="s1">&#39;items_timestamped_file_path&#39;</span> <span class="ow">in</span> <span class="n">omr</span> <span class="k">else</span> <span class="kc">None</span>
+            <span class="n">coverages_file_path</span> <span class="o">=</span> <span class="n">omr</span><span class="p">[</span><span class="s1">&#39;coverages_file_path&#39;</span><span class="p">]</span> <span class="k">if</span> <span class="s1">&#39;coverages_file_path&#39;</span> <span class="ow">in</span> <span class="n">omr</span> <span class="k">else</span> <span class="kc">None</span>
+            <span class="n">coverages_timestamped_file_path</span> <span class="o">=</span> <span class="n">omr</span><span class="p">[</span><span class="s1">&#39;coverages_timestamped_file_path&#39;</span><span class="p">]</span> <span class="k">if</span> <span class="s1">&#39;coverages_timestamped_file_path&#39;</span> <span class="ow">in</span> <span class="n">omr</span> <span class="k">else</span> <span class="kc">None</span>
+            <span class="n">gulsummaryxref_file_path</span> <span class="o">=</span> <span class="n">omr</span><span class="p">[</span><span class="s1">&#39;gulsummaryxref_file_path&#39;</span><span class="p">]</span> <span class="k">if</span> <span class="s1">&#39;gulsummaryxref_file_path&#39;</span> <span class="ow">in</span> <span class="n">omr</span> <span class="k">else</span> <span class="kc">None</span>
+            <span class="n">gulsummaryxref_timestamped_file_path</span> <span class="o">=</span> <span class="n">omr</span><span class="p">[</span><span class="s1">&#39;gulsummaryxref_timestamped_file_path&#39;</span><span class="p">]</span> <span class="k">if</span> <span class="s1">&#39;gulsummaryxref_timestamped_file_path&#39;</span> <span class="ow">in</span> <span class="n">omr</span> <span class="k">else</span> <span class="kc">None</span>
+
+        <span class="k">with</span> <span class="n">io</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">canonical_exposures_file_path</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">cf</span><span class="p">:</span>
+            <span class="k">with</span> <span class="n">io</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">keys_file_path</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">kf</span><span class="p">:</span>
+                <span class="n">canexp_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">io</span><span class="o">.</span><span class="n">StringIO</span><span class="p">(</span><span class="n">cf</span><span class="o">.</span><span class="n">read</span><span class="p">()))</span>
+                <span class="n">canexp_df</span> <span class="o">=</span> <span class="n">canexp_df</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">canexp_df</span><span class="o">.</span><span class="n">notnull</span><span class="p">(),</span> <span class="kc">None</span><span class="p">)</span>
+                <span class="n">canexp_df</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="o">.</span><span class="n">lower</span><span class="p">,</span> <span class="n">canexp_df</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span>
+
+                <span class="n">keys_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">io</span><span class="o">.</span><span class="n">StringIO</span><span class="p">(</span><span class="n">kf</span><span class="o">.</span><span class="n">read</span><span class="p">()))</span>
+                <span class="n">keys_df</span> <span class="o">=</span> <span class="n">keys_df</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;CoverageID&#39;</span><span class="p">:</span> <span class="s1">&#39;CoverageType&#39;</span><span class="p">})</span>
+                <span class="n">keys_df</span> <span class="o">=</span> <span class="n">keys_df</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">keys_df</span><span class="o">.</span><span class="n">notnull</span><span class="p">(),</span> <span class="kc">None</span><span class="p">)</span>
+                <span class="n">keys_df</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="o">.</span><span class="n">lower</span><span class="p">,</span> <span class="n">keys_df</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">canonical_exposures_profile</span><span class="p">:</span>
+            <span class="n">canonical_exposures_profile</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">canonical_exposures_profile_json</span><span class="p">)</span> <span class="k">if</span> <span class="n">canonical_exposures_profile_json</span>
+                <span class="k">else</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">canonical_exposures_profile_json_path</span><span class="p">)</span>
+            <span class="p">)</span>
+
+        <span class="n">tiv_fields</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span>
+            <span class="k">lambda</span> <span class="n">f</span><span class="p">:</span> <span class="n">canonical_exposures_profile</span><span class="p">[</span><span class="n">f</span><span class="p">],</span>
+            <span class="nb">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">k</span><span class="p">:</span> <span class="n">canonical_exposures_profile</span><span class="p">[</span><span class="n">k</span><span class="p">][</span><span class="s1">&#39;FieldName&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;TIV&#39;</span><span class="p">,</span> <span class="n">canonical_exposures_profile</span><span class="p">)</span>
+        <span class="p">))</span>
+
+        <span class="n">master_columns</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="s1">&#39;item_id&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;coverage_id&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;tiv&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;areaperil_id&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;vulnerability_id&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;group_id&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;summary_id&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;summaryset_id&#39;</span>
+        <span class="p">]</span>
+        <span class="n">master_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="n">master_columns</span><span class="p">)</span>
+
+        <span class="n">records</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">ii</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">keys_df</span><span class="p">)):</span>
+            <span class="n">ki</span> <span class="o">=</span> <span class="n">keys_df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+
+            <span class="n">ci_df</span> <span class="o">=</span> <span class="n">canexp_df</span><span class="p">[</span><span class="n">canexp_df</span><span class="p">[</span><span class="s1">&#39;row_id&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">ki</span><span class="p">[</span><span class="s1">&#39;locid&#39;</span><span class="p">]]</span>
+
+            <span class="k">if</span> <span class="n">ci_df</span><span class="o">.</span><span class="n">empty</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">OasisException</span><span class="p">(</span><span class="s2">&quot;No matching canonical exposure item found in canonical exposures data frame for keys item </span><span class="si">{}</span><span class="s2">.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">ki</span><span class="p">))</span>
+            <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">ci_df</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">OasisException</span><span class="p">(</span><span class="s2">&quot;Duplicate canonical exposure items found in canonical exposures data frame for keys item </span><span class="si">{}</span><span class="s2">.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">ki</span><span class="p">))</span>
+
+            <span class="n">ci</span> <span class="o">=</span> <span class="n">ci_df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+            <span class="n">tiv_field</span> <span class="o">=</span> <span class="nb">filter</span><span class="p">(</span>
+                    <span class="k">lambda</span> <span class="n">f</span><span class="p">:</span> <span class="n">f</span><span class="p">[</span><span class="s1">&#39;CoverageTypeId&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">ki</span><span class="p">[</span><span class="s1">&#39;coveragetype&#39;</span><span class="p">],</span>
+                    <span class="n">tiv_fields</span>
+            <span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+
+            <span class="k">if</span> <span class="n">ci</span><span class="p">[</span><span class="n">tiv_field</span><span class="p">[</span><span class="s1">&#39;ProfileElementName&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">lower</span><span class="p">()]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">ii</span> <span class="o">+=</span> <span class="mi">1</span>
+                <span class="n">rec</span> <span class="o">=</span> <span class="p">{</span>
+                    <span class="s1">&#39;item_id&#39;</span><span class="p">:</span> <span class="n">ii</span><span class="p">,</span>
+                    <span class="s1">&#39;coverage_id&#39;</span><span class="p">:</span> <span class="n">ii</span><span class="p">,</span>
+                    <span class="s1">&#39;tiv&#39;</span><span class="p">:</span> <span class="n">ci</span><span class="p">[</span><span class="n">tiv_field</span><span class="p">[</span><span class="s1">&#39;ProfileElementName&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">lower</span><span class="p">()],</span>
+                    <span class="s1">&#39;areaperil_id&#39;</span><span class="p">:</span> <span class="n">ki</span><span class="p">[</span><span class="s1">&#39;areaperilid&#39;</span><span class="p">],</span>
+                    <span class="s1">&#39;vulnerability_id&#39;</span><span class="p">:</span> <span class="n">ki</span><span class="p">[</span><span class="s1">&#39;vulnerabilityid&#39;</span><span class="p">],</span>
+                    <span class="s1">&#39;group_id&#39;</span><span class="p">:</span> <span class="n">ii</span><span class="p">,</span>
+                    <span class="s1">&#39;summary_id&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+                    <span class="s1">&#39;summaryset_id&#39;</span><span class="p">:</span> <span class="mi">1</span>
+                <span class="p">}</span>
+                <span class="n">records</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">rec</span><span class="p">)</span>
+
+        <span class="n">master_df</span> <span class="o">=</span> <span class="n">master_df</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">records</span><span class="p">)</span>
+
+        <span class="n">items_file_columns</span> <span class="o">=</span> <span class="nb">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">col</span><span class="p">:</span> <span class="n">col</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;tiv&#39;</span><span class="p">,</span> <span class="s1">&#39;summary_id&#39;</span><span class="p">,</span> <span class="s1">&#39;summaryset_id&#39;</span><span class="p">],</span> <span class="n">master_columns</span><span class="p">)</span>
+        <span class="n">master_df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span>
+            <span class="n">columns</span><span class="o">=</span><span class="n">items_file_columns</span><span class="p">,</span>
+            <span class="n">path_or_buf</span><span class="o">=</span><span class="n">items_file_path</span><span class="p">,</span>
+            <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">,</span> 
+            <span class="n">chunksize</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span>
+            <span class="n">index</span><span class="o">=</span><span class="kc">False</span>
+        <span class="p">)</span>
+        <span class="n">master_df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span>
+            <span class="n">columns</span><span class="o">=</span><span class="n">items_file_columns</span><span class="p">,</span>
+            <span class="n">path_or_buf</span><span class="o">=</span><span class="n">items_timestamped_file_path</span><span class="p">,</span>
+            <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">,</span> 
+            <span class="n">chunksize</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span>
+            <span class="n">index</span><span class="o">=</span><span class="kc">False</span>
+        <span class="p">)</span>
+
+        <span class="n">coverages_file_columns</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;coverage_id&#39;</span><span class="p">,</span> <span class="s1">&#39;tiv&#39;</span><span class="p">]</span>
+        <span class="n">master_df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span>
+            <span class="n">columns</span><span class="o">=</span><span class="n">coverages_file_columns</span><span class="p">,</span>
+            <span class="n">float_format</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">%.5f</span><span class="s1">&#39;</span><span class="p">,</span>
+            <span class="n">path_or_buf</span><span class="o">=</span><span class="n">coverages_file_path</span><span class="p">,</span>
+            <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">,</span>
+            <span class="n">chunksize</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span>
+            <span class="n">index</span><span class="o">=</span><span class="kc">False</span>
+        <span class="p">)</span>
+        <span class="n">master_df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span>
+            <span class="n">columns</span><span class="o">=</span><span class="n">coverages_file_columns</span><span class="p">,</span>
+            <span class="n">float_format</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">%.5f</span><span class="s1">&#39;</span><span class="p">,</span>
+            <span class="n">path_or_buf</span><span class="o">=</span><span class="n">coverages_timestamped_file_path</span><span class="p">,</span>
+            <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">,</span>
+            <span class="n">chunksize</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span>
+            <span class="n">index</span><span class="o">=</span><span class="kc">False</span>
+        <span class="p">)</span>
+
+
+        <span class="n">gulsummaryxref_file_columns</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;coverage_id&#39;</span><span class="p">,</span> <span class="s1">&#39;summary_id&#39;</span><span class="p">,</span> <span class="s1">&#39;summaryset_id&#39;</span><span class="p">]</span>
+        <span class="n">master_df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span>
+            <span class="n">columns</span><span class="o">=</span><span class="n">gulsummaryxref_file_columns</span><span class="p">,</span>
+            <span class="n">path_or_buf</span><span class="o">=</span><span class="n">gulsummaryxref_file_path</span><span class="p">,</span>
+            <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">,</span>
+            <span class="n">chunksize</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span>
+            <span class="n">index</span><span class="o">=</span><span class="kc">False</span>
+        <span class="p">)</span>
+        <span class="n">master_df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span>
+            <span class="n">columns</span><span class="o">=</span><span class="n">gulsummaryxref_file_columns</span><span class="p">,</span>
+            <span class="n">path_or_buf</span><span class="o">=</span><span class="n">gulsummaryxref_timestamped_file_path</span><span class="p">,</span>
+            <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">,</span>
+            <span class="n">chunksize</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span>
+            <span class="n">index</span><span class="o">=</span><span class="kc">False</span>
+        <span class="p">)</span>
+
+        <span class="k">with</span> <span class="n">io</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">items_file_path</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">itf</span><span class="p">:</span>
+            <span class="k">with</span> <span class="n">io</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">coverages_file_path</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">cvf</span><span class="p">:</span>
+                <span class="k">with</span> <span class="n">io</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">coverages_file_path</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">gsf</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="ow">not</span> <span class="n">with_model_resources</span><span class="p">:</span>
+                        <span class="k">return</span> <span class="n">itf</span><span class="p">,</span> <span class="n">cvf</span><span class="p">,</span> <span class="n">gsf</span>
+
+            <span class="n">tfp</span><span class="o">.</span><span class="n">items_file</span> <span class="o">=</span> <span class="n">itf</span>
+            <span class="n">tfp</span><span class="o">.</span><span class="n">coverages_file</span> <span class="o">=</span> <span class="n">cvf</span>
+            <span class="n">tfp</span><span class="o">.</span><span class="n">gulsummaryxref_file</span> <span class="o">=</span> <span class="n">gsf</span>
 
             <span class="k">return</span> <span class="n">oasis_model</span></div>
 
