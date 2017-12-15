@@ -415,16 +415,16 @@ class OasisExposuresManager(implements(OasisExposuresManagerInterface)):
             canonical_exposures_profile = kwargs['canonical_exposures_profile'] if 'canonical_exposures_profile' in kwargs else None
             canonical_exposures_profile_json = kwargs['canonical_exposures_profile_json']  if 'canonical_exposures_profile_json' in kwargs else None
             canonical_exposures_profile_json_path = kwargs['canonical_exposures_profile_json_path']  if 'canonical_exposures_profile_json_path' in kwargs else None
-            items_file_path = kwargs['items_file_path'] if 'items_file_path' in kwargs else None
-            items_timestamped_file_path = kwargs['items_timestamped_file_path'] if 'items_timestamped_file_path' in kwargs else None
+            items_file_path = kwargs['items_file_path']
+            items_timestamped_file_path = kwargs['items_timestamped_file_path']
         else:
             canonical_exposures_file_path = tfp.canonical_exposures_file.name
             keys_file_path = tfp.keys_file.name
             canonical_exposures_profile = omr['canonical_exposures_profile']  if 'canonical_exposures_profile' in omr else None
             canonical_exposures_profile_json = omr['canonical_exposures_profile_json']  if 'canonical_exposures_profile_json' in omr else None
             canonical_exposures_profile_json_path = omr['canonical_exposures_profile_json_path']  if 'canonical_exposures_profile_json_path' in omr else None
-            items_file_path = omr['items_file_path'] if 'items_file_path' in omr else None
-            items_timestamped_file_path = omr['items_timestamped_file_path'] if 'items_timestamped_file_path' in omr else None
+            items_file_path = omr['items_file_path']
+            items_timestamped_file_path = omr['items_timestamped_file_path']
 
         with io.open(canonical_exposures_file_path, 'r', encoding='utf-8') as cf:
             with io.open(keys_file_path, 'r', encoding='utf-8') as kf:
@@ -520,16 +520,16 @@ class OasisExposuresManager(implements(OasisExposuresManagerInterface)):
             canonical_exposures_profile = kwargs['canonical_exposures_profile'] if 'canonical_exposures_profile' in kwargs else None
             canonical_exposures_profile_json = kwargs['canonical_exposures_profile_json']  if 'canonical_exposures_profile_json' in kwargs else None
             canonical_exposures_profile_json_path = kwargs['canonical_exposures_profile_json_path']  if 'canonical_exposures_profile_json_path' in kwargs else None
-            coverages_file_path = kwargs['coverages_file_path'] if 'coverages_file_path' in kwargs else None
-            coverages_timestamped_file_path = kwargs['coverages_timestamped_file_path'] if 'coverages_timestamped_file_path' in kwargs else None
+            coverages_file_path = kwargs['coverages_file_path']
+            coverages_timestamped_file_path = kwargs['coverages_timestamped_file_path']
         else:
             canonical_exposures_file_path = tfp.canonical_exposures_file.name
             keys_file_path = tfp.keys_file.name
             canonical_exposures_profile = omr['canonical_exposures_profile']  if 'canonical_exposures_profile' in omr else None
             canonical_exposures_profile_json = omr['canonical_exposures_profile_json']  if 'canonical_exposures_profile_json' in omr else None
             canonical_exposures_profile_json_path = omr['canonical_exposures_profile_json_path']  if 'canonical_exposures_profile_json_path' in omr else None
-            coverages_file_path = omr['coverages_file_path'] if 'coverages_file_path' in omr else None
-            coverages_timestamped_file_path = omr['coverages_timestamped_file_path'] if 'coverages_timestamped_file_path' in omr else None
+            coverages_file_path = omr['coverages_file_path']
+            coverages_timestamped_file_path = omr['coverages_timestamped_file_path']
 
         with io.open(canonical_exposures_file_path, 'r', encoding='utf-8') as cf:
             with io.open(keys_file_path, 'r', encoding='utf-8') as kf:
@@ -622,16 +622,16 @@ class OasisExposuresManager(implements(OasisExposuresManagerInterface)):
             canonical_exposures_profile = kwargs['canonical_exposures_profile'] if 'canonical_exposures_profile' in kwargs else None
             canonical_exposures_profile_json = kwargs['canonical_exposures_profile_json']  if 'canonical_exposures_profile_json' in kwargs else None
             canonical_exposures_profile_json_path = kwargs['canonical_exposures_profile_json_path']  if 'canonical_exposures_profile_json_path' in kwargs else None
-            gulsummaryxref_file_path = kwargs['gulsummaryxref_file_path'] if 'gulsummaryxref_file_path' in kwargs else None
-            gulsummaryxref_timestamped_file_path = kwargs['gulsummaryxref_timestamped_file_path'] if 'gulsummaryxref_timestamped_file_path' in kwargs else None
+            gulsummaryxref_file_path = kwargs['gulsummaryxref_file_path']
+            gulsummaryxref_timestamped_file_path = kwargs['gulsummaryxref_timestamped_file_path']
         else:
             canonical_exposures_file_path = tfp.canonical_exposures_file.name
             keys_file_path = tfp.keys_file.name
             canonical_exposures_profile = omr['canonical_exposures_profile']  if 'canonical_exposures_profile' in omr else None
             canonical_exposures_profile_json = omr['canonical_exposures_profile_json']  if 'canonical_exposures_profile_json' in omr else None
             canonical_exposures_profile_json_path = omr['canonical_exposures_profile_json_path']  if 'canonical_exposures_profile_json_path' in omr else None
-            gulsummaryxref_file_path = omr['gulsummaryxref_file_path'] if 'gulsummaryxref_file_path' in omr else None
-            gulsummaryxref_timestamped_file_path = omr['gulsummaryxref_timestamped_file_path'] if 'gulsummaryxref_timestamped_file_path' in omr else None
+            gulsummaryxref_file_path = omr['gulsummaryxref_file_path']
+            gulsummaryxref_timestamped_file_path = omr['gulsummaryxref_timestamped_file_path']
 
         with io.open(canonical_exposures_file_path, 'r', encoding='utf-8') as cf:
             with io.open(keys_file_path, 'r', encoding='utf-8') as kf:
@@ -735,24 +735,24 @@ class OasisExposuresManager(implements(OasisExposuresManagerInterface)):
             canonical_exposures_profile = kwargs['canonical_exposures_profile'] if 'canonical_exposures_profile' in kwargs else None
             canonical_exposures_profile_json = kwargs['canonical_exposures_profile_json']  if 'canonical_exposures_profile_json' in kwargs else None
             canonical_exposures_profile_json_path = kwargs['canonical_exposures_profile_json_path']  if 'canonical_exposures_profile_json_path' in kwargs else None
-            items_file_path = kwargs['items_file_path'] if 'items_file_path' in kwargs else None
-            items_timestamped_file_path = kwargs['items_timestamped_file_path'] if 'items_timestamped_file_path' in kwargs else None
-            coverages_file_path = kwargs['coverages_file_path'] if 'coverages_file_path' in kwargs else None
-            coverages_timestamped_file_path = kwargs['coverages_timestamped_file_path'] if 'coverages_timestamped_file_path' in kwargs else None
-            gulsummaryxref_file_path = kwargs['gulsummaryxref_file_path'] if 'gulsummaryxref_file_path' in kwargs else None
-            gulsummaryxref_timestamped_file_path = kwargs['gulsummaryxref_timestamped_file_path'] if 'gulsummaryxref_timestamped_file_path' in kwargs else None
+            items_file_path = kwargs['items_file_path']
+            items_timestamped_file_path = kwargs['items_timestamped_file_path']
+            coverages_file_path = kwargs['coverages_file_path']
+            coverages_timestamped_file_path = kwargs['coverages_timestamped_file_path']
+            gulsummaryxref_file_path = kwargs['gulsummaryxref_file_path']
+            gulsummaryxref_timestamped_file_path = kwargs['gulsummaryxref_timestamped_file_path']
         else:
             canonical_exposures_file_path = tfp.canonical_exposures_file.name
             keys_file_path = tfp.keys_file.name
             canonical_exposures_profile = omr['canonical_exposures_profile']  if 'canonical_exposures_profile' in omr else None
             canonical_exposures_profile_json = omr['canonical_exposures_profile_json']  if 'canonical_exposures_profile_json' in omr else None
             canonical_exposures_profile_json_path = omr['canonical_exposures_profile_json_path']  if 'canonical_exposures_profile_json_path' in omr else None
-            items_file_path = omr['items_file_path'] if 'items_file_path' in omr else None
-            items_timestamped_file_path = omr['items_timestamped_file_path'] if 'items_timestamped_file_path' in omr else None
+            items_file_path = omr['items_file_path']
+            items_timestamped_file_path = omr['items_timestamped_file_path']
             coverages_file_path = omr['coverages_file_path'] if 'coverages_file_path' in omr else None
-            coverages_timestamped_file_path = omr['coverages_timestamped_file_path'] if 'coverages_timestamped_file_path' in omr else None
-            gulsummaryxref_file_path = omr['gulsummaryxref_file_path'] if 'gulsummaryxref_file_path' in omr else None
-            gulsummaryxref_timestamped_file_path = omr['gulsummaryxref_timestamped_file_path'] if 'gulsummaryxref_timestamped_file_path' in omr else None
+            coverages_timestamped_file_path = omr['coverages_timestamped_file_path']
+            gulsummaryxref_file_path = omr['gulsummaryxref_file_path']
+            gulsummaryxref_timestamped_file_path = omr['gulsummaryxref_timestamped_file_path']
 
         with io.open(canonical_exposures_file_path, 'r', encoding='utf-8') as cf:
             with io.open(keys_file_path, 'r', encoding='utf-8') as kf:
@@ -856,7 +856,6 @@ class OasisExposuresManager(implements(OasisExposuresManagerInterface)):
             chunksize=1000,
             index=False
         )
-
 
         columns = ['coverage_id', 'summary_id', 'summaryset_id']
         master_df.to_csv(
