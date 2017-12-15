@@ -876,15 +876,15 @@ class OasisExposuresManager(implements(OasisExposuresManagerInterface)):
 
         with io.open(items_file_path, 'r', encoding='utf-8') as itf:
             with io.open(coverages_file_path, 'r', encoding='utf-8') as cvf:
-                with io.open(coverages_file_path, 'r', encoding='utf-8') as gsf:
+                with io.open(gulsummaryxref_file_path, 'r', encoding='utf-8') as gsf:
                     if not with_model_resources:
                         return itf, cvf, gsf
 
-            tfp.items_file = itf
-            tfp.coverages_file = cvf
-            tfp.gulsummaryxref_file = gsf
+                    tfp.items_file = itf
+                    tfp.coverages_file = cvf
+                    tfp.gulsummaryxref_file = gsf
 
-            return oasis_model
+        return oasis_model
 
 
     def clear_files_pipeline(self, oasis_model, **kwargs):
