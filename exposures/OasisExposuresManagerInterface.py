@@ -83,20 +83,6 @@ class OasisExposuresManagerInterface(Interface):
         pass
 
 
-    def save_files_pipeline(self, oasis_model, **kwargs):
-        """
-        Saves the files in the given ``oasis_model``'s transforms files
-        pipeline to some data store, e.g. local filesystem, database etc.
-
-        All the required resources must be provided either in the model object
-        resources dict or the ``kwargs`` dict.
-
-        It is up to the specific implementation of the manager as to what type
-        of store to use for saving pipelines.
-        """
-        pass
-
-
     def transform_source_to_canonical(self, oasis_model, **kwargs):
         """
         Transforms the source exposures/locations file for a given

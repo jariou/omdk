@@ -1102,11 +1102,3 @@ class OasisExposuresManager(implements(OasisExposuresManagerInterface)):
             raise e
 
         return oasis_model
-
-
-    def save_files_pipeline(self, oasis_model, **kwargs):
-        """
-        Saves the files in the given ``oasis_model``'s oasis files
-        pipeline to a given data store, e.g. local filesystem, database etc.
-        """
-        pass
