@@ -151,9 +151,6 @@ def parse_args():
 
 
 if __name__ == '__main__':
-    """
-    Main block.
-    """
     
     set_logging()
     logging.info('Console logging set')
