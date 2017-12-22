@@ -1,0 +1,30 @@
+#!/bin/bash
+
+SOURCE="${BASH_SOURCE[0]}"
+while [ -h "$SOURCE" ]; do # resolve $SOURCE until the file is no longer a symlink
+  DIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
+  SOURCE="$(readlink "$SOURCE")"
+  [[ $SOURCE != /* ]] && SOURCE="$DIR/$SOURCE" # if $SOURCE was a relative symlink, we need to resolve it relative to the path where the symlink file was located
+done
+DIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
+
+cd $DIR
+
+sleep 0.2 
+
+rm test/xtrans.exe
+
+if [ "$OS" == "Windows_NT" ]; then
+# compile under cygwin windows	
+/cygdrive/c/Windows/Microsoft.NET/Framework64/v4.0.30319/csc -r:NDesk.Options.0.2.1/lib/NDesk.Options.dll /out:test/xtrans.exe  /target:exe  xtrans.cs 
+else
+# compile under linux
+dmcs   -r:NDesk.Options.0.2.1/lib/NDesk.Options.dll -r:System.Xml.Linq.dll  /out:test/xtrans.exe  /target:exe  xtrans.cs
+fi
+
+
+cd test
+#rm output.csv
+# ./xtrans.exe -d  CanLocARA.xsd -c "SourceLoc.csv" -d "CanLocARA.xsd" -o "output.csv" -t "MappingMapToCanLocARA.xslt" -s
+
+./xtrans.exe -d Files/ValidationFiles/ModelLocARA.xsd -c Files/Exposures/CanLocProg1_20170201135911.csv -t Files/TransformationFiles/MappingMapToModelLocARA.xslt -o fred.csv

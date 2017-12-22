@@ -17,10 +17,10 @@ using NDesk.Options;
 
 //using mono.Options;
 
-
 // Hello1.cs
 public class xmltransformer
 {
+	//public bool EnableDocumentFunction { get; set; } = true;
 	static bool seqence_no = false;	
 	static int row_id = 0;
 	struct Upx
@@ -329,8 +329,12 @@ public class xmltransformer
 		using (System.Xml.XmlWriter writer = newDoc.CreateWriter())
 		{
 			System.Xml.Xsl.XslCompiledTransform xslt = new System.Xml.Xsl.XslCompiledTransform();
-			xslt.Load(System.Xml.XmlReader.Create(new StringReader(xsltstr)));
+			System.Xml.Xsl.XsltSettings settings = new System.Xml.Xsl.XsltSettings() { EnableDocumentFunction = true };
+			xslt.Load(System.Xml.XmlReader.Create(new StringReader(xsltstr)), settings, new System.Xml.XmlUrlResolver());
 			xslt.Transform(doc.CreateReader(), writer);
+			//System.Xml.Xsl.XslCompiledTransform xslt = new System.Xml.Xsl.XslCompiledTransform();
+			//xslt.Load(System.Xml.XmlReader.Create(new StringReader(xsltstr)));
+			//xslt.Transform(doc.CreateReader(), writer);
 		}
 
 		string ext = Path.GetExtension(outputcsvfile);

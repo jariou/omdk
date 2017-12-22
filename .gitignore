@@ -111,3 +111,4 @@ ENV/
 tests/
 tests/data
 Files/
+script_config/
