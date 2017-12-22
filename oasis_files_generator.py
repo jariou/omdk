@@ -44,7 +44,10 @@
         "xtrans_path"
         "output_basedirpath"
 
-    The file and folder paths can be relative to the path of the script.
+    The file and folder paths can be relative to the path of the script. If you've cloned
+    the OMDK repository then script configs for models can be placed in the `script_config`
+    subfolder, and the canonical exposures profiles can be placed in the
+    `canonical_exposures_profiles` subfolder.
 """
 
 import argparse
