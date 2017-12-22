@@ -57,7 +57,6 @@ import logging
 import os
 import sys
 import time
-import yaml
 
 from oasis_utils import (
     KeysLookupServiceFactory as klsf,
