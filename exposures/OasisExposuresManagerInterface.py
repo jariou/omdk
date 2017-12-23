@@ -16,9 +16,59 @@ class OasisExposuresManagerInterface(Interface):
     An interface for defining the behaviour of an Oasis exposures manager.
     """
 
-    def __init__(self, oasis_models=None, do_logging=True):
+
+    def __init__(self, oasis_models=None):
         """
         Class constructor.
+        """
+        pass
+
+
+    def add_model(self, oasis_model):
+        """
+        Adds Oasis model object to the manager and sets up its resources.
+        """
+        pass
+
+
+    def update_model(self, oasis_model):
+        """
+        Updates an existing Oasis model object in the manager.
+        """
+        pass
+
+    def delete_model(self, oasis_model):
+        """
+        Deletes an existing Oasis model object in the manager.
+        """
+        pass
+
+
+    def start_files_pipeline(self, oasis_model, **kwargs):
+        """
+        Starts the exposure transforms pipeline for the given ``oasis_model``,
+        i.e. the generation of the canonical exposures files, keys file
+        and finally the Oasis files.
+
+        All the required resources must be provided either in the model object
+        resources dict or the ``kwargs`` dict.
+
+        It is up to the specific implementation of a manager of whether to
+        use the model object resources dict or additional optional arguments
+        in ``kwargs`` for this process.
+
+        In a standard implementation of the manager the call to
+        `start_files_pipeline` should trigger calls to the individual methods for
+        performing file transformations in a normal sequence, e.g.
+
+            `transform_source_to_canonical`
+            `transform_canonical_to_model`
+            `transform_model_to_keys`
+            `load_canonical_profile`
+            `generate_oasis_files`
+
+        and the generated files should be stored as attributes in the given
+        model object's transforms files pipeline.
         """
         pass
 
@@ -50,35 +100,6 @@ class OasisExposuresManagerInterface(Interface):
         A standard implementation could either assign a new object of this
         type in the call to ``clear_files_pipeline``, or set some subset of the
         file attributes of this pipelines object to null.
-        """
-        pass
-
-
-    def start_files_pipeline(self, oasis_model, **kwargs):
-        """
-        Starts the exposure transforms pipeline for the given ``oasis_model``,
-        i.e. the generation of the canonical exposures files, keys file
-        and finally the Oasis files.
-
-        All the required resources must be provided either in the model object
-        resources dict or the ``kwargs`` dict.
-
-        It is up to the specific implementation of a manager of whether to
-        use the model object resources dict or additional optional arguments
-        in ``kwargs`` for this process.
-
-        In a standard implementation of the manager the call to
-        `start_files_pipeline` should trigger calls to the individual methods for
-        performing file transformations in a normal sequence, e.g.
-
-            `transform_source_to_canonical`
-            `transform_canonical_to_model`
-            `transform_model_to_keys`
-            `load_canonical_profile`
-            `generate_oasis_files`
-
-        and the generated files should be stored as attributes in the given
-        model object's transforms files pipeline.
         """
         pass
 

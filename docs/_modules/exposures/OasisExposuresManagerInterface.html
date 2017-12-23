@@ -58,40 +58,30 @@
 <span class="sd">    An interface for defining the behaviour of an Oasis exposures manager.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">oasis_models</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">do_logging</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">oasis_models</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Class constructor.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">pass</span>
 
 
-<div class="viewcode-block" id="OasisExposuresManagerInterface.clear_files_pipeline"><a class="viewcode-back" href="../../modules.html#exposures.OasisExposuresManagerInterface.OasisExposuresManagerInterface.clear_files_pipeline">[docs]</a>    <span class="k">def</span> <span class="nf">clear_files_pipeline</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">oasis_model</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="OasisExposuresManagerInterface.add_model"><a class="viewcode-back" href="../../modules.html#exposures.OasisExposuresManagerInterface.OasisExposuresManagerInterface.add_model">[docs]</a>    <span class="k">def</span> <span class="nf">add_model</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">oasis_model</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Clears the exposure transforms files pipeline for the given</span>
-<span class="sd">        ``oasis_model`` optionally using additional arguments in the ``kwargs``</span>
-<span class="sd">        dict.</span>
+<span class="sd">        Adds Oasis model object to the manager and sets up its resources.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span></div>
 
-<span class="sd">        All the required resources must be provided either in the model object</span>
-<span class="sd">        resources dict or the ``kwargs`` dict.</span>
 
-<span class="sd">        In the design of the exposure transform framework a model&#39;s files</span>
-<span class="sd">        pipeline is an object value in its resources dict with the key</span>
-<span class="sd">        ``transforms_files_pipeline`` and is thereby accessible with</span>
+<div class="viewcode-block" id="OasisExposuresManagerInterface.update_model"><a class="viewcode-back" href="../../modules.html#exposures.OasisExposuresManagerInterface.OasisExposuresManagerInterface.update_model">[docs]</a>    <span class="k">def</span> <span class="nf">update_model</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">oasis_model</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Updates an existing Oasis model object in the manager.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span></div>
 
-<span class="sd">            `oasis_model.resources[&#39;transforms_files_pipeline&#39;]`</span>
-
-<span class="sd">        This returns an object of type</span>
-
-<span class="sd">            `exposure_transforms.OasisExposureTransformsFilesPipeline`</span>
-
-<span class="sd">        which stores the different files in the transformation stages for the</span>
-<span class="sd">        model as property attributes, e.g.</span>
-
-<span class="sd">            `oasis_model.resources[&#39;transforms_files_pipeline&#39;].source_exposures_file`</span>
-
-<span class="sd">        A standard implementation could either assign a new object of this</span>
-<span class="sd">        type in the call to ``clear_files_pipeline``, or set some subset of the</span>
-<span class="sd">        file attributes of this pipelines object to null.</span>
+<div class="viewcode-block" id="OasisExposuresManagerInterface.delete_model"><a class="viewcode-back" href="../../modules.html#exposures.OasisExposuresManagerInterface.OasisExposuresManagerInterface.delete_model">[docs]</a>    <span class="k">def</span> <span class="nf">delete_model</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">oasis_model</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Deletes an existing Oasis model object in the manager.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">pass</span></div>
 
@@ -121,6 +111,37 @@
 
 <span class="sd">        and the generated files should be stored as attributes in the given</span>
 <span class="sd">        model object&#39;s transforms files pipeline.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span></div>
+
+
+<div class="viewcode-block" id="OasisExposuresManagerInterface.clear_files_pipeline"><a class="viewcode-back" href="../../modules.html#exposures.OasisExposuresManagerInterface.OasisExposuresManagerInterface.clear_files_pipeline">[docs]</a>    <span class="k">def</span> <span class="nf">clear_files_pipeline</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">oasis_model</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Clears the exposure transforms files pipeline for the given</span>
+<span class="sd">        ``oasis_model`` optionally using additional arguments in the ``kwargs``</span>
+<span class="sd">        dict.</span>
+
+<span class="sd">        All the required resources must be provided either in the model object</span>
+<span class="sd">        resources dict or the ``kwargs`` dict.</span>
+
+<span class="sd">        In the design of the exposure transform framework a model&#39;s files</span>
+<span class="sd">        pipeline is an object value in its resources dict with the key</span>
+<span class="sd">        ``transforms_files_pipeline`` and is thereby accessible with</span>
+
+<span class="sd">            `oasis_model.resources[&#39;transforms_files_pipeline&#39;]`</span>
+
+<span class="sd">        This returns an object of type</span>
+
+<span class="sd">            `exposure_transforms.OasisExposureTransformsFilesPipeline`</span>
+
+<span class="sd">        which stores the different files in the transformation stages for the</span>
+<span class="sd">        model as property attributes, e.g.</span>
+
+<span class="sd">            `oasis_model.resources[&#39;transforms_files_pipeline&#39;].source_exposures_file`</span>
+
+<span class="sd">        A standard implementation could either assign a new object of this</span>
+<span class="sd">        type in the call to ``clear_files_pipeline``, or set some subset of the</span>
+<span class="sd">        file attributes of this pipelines object to null.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">pass</span></div>
 

@@ -172,8 +172,14 @@ resource dicts.</p>
 <span id="omdk-exposures-oasisexposuresmanagerinterface"></span><h2><code class="docutils literal"><span class="pre">omdk.exposures.OasisExposuresManagerInterface</span></code><a class="headerlink" href="#module-exposures.OasisExposuresManagerInterface" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="exposures.OasisExposuresManagerInterface.OasisExposuresManagerInterface">
-<em class="property">class </em><code class="descclassname">exposures.OasisExposuresManagerInterface.</code><code class="descname">OasisExposuresManagerInterface</code><span class="sig-paren">(</span><em>oasis_models=None</em>, <em>do_logging=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/exposures/OasisExposuresManagerInterface.html#OasisExposuresManagerInterface"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#exposures.OasisExposuresManagerInterface.OasisExposuresManagerInterface" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">exposures.OasisExposuresManagerInterface.</code><code class="descname">OasisExposuresManagerInterface</code><span class="sig-paren">(</span><em>oasis_models=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/exposures/OasisExposuresManagerInterface.html#OasisExposuresManagerInterface"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#exposures.OasisExposuresManagerInterface.OasisExposuresManagerInterface" title="Permalink to this definition">¶</a></dt>
 <dd><p>An interface for defining the behaviour of an Oasis exposures manager.</p>
+<dl class="method">
+<dt id="exposures.OasisExposuresManagerInterface.OasisExposuresManagerInterface.add_model">
+<code class="descname">add_model</code><span class="sig-paren">(</span><em>oasis_model</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/exposures/OasisExposuresManagerInterface.html#OasisExposuresManagerInterface.add_model"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#exposures.OasisExposuresManagerInterface.OasisExposuresManagerInterface.add_model" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds Oasis model object to the manager and sets up its resources.</p>
+</dd></dl>
+
 <dl class="method">
 <dt id="exposures.OasisExposuresManagerInterface.OasisExposuresManagerInterface.clear_files_pipeline">
 <code class="descname">clear_files_pipeline</code><span class="sig-paren">(</span><em>oasis_model</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/exposures/OasisExposuresManagerInterface.html#OasisExposuresManagerInterface.clear_files_pipeline"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#exposures.OasisExposuresManagerInterface.OasisExposuresManagerInterface.clear_files_pipeline" title="Permalink to this definition">¶</a></dt>
@@ -197,6 +203,12 @@ model as property attributes, e.g.</p>
 <p>A standard implementation could either assign a new object of this
 type in the call to <code class="docutils literal"><span class="pre">clear_files_pipeline</span></code>, or set some subset of the
 file attributes of this pipelines object to null.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="exposures.OasisExposuresManagerInterface.OasisExposuresManagerInterface.delete_model">
+<code class="descname">delete_model</code><span class="sig-paren">(</span><em>oasis_model</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/exposures/OasisExposuresManagerInterface.html#OasisExposuresManagerInterface.delete_model"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#exposures.OasisExposuresManagerInterface.OasisExposuresManagerInterface.delete_model" title="Permalink to this definition">¶</a></dt>
+<dd><p>Deletes an existing Oasis model object in the manager.</p>
 </dd></dl>
 
 <dl class="method">
@@ -313,6 +325,12 @@ effect the transformation.</p>
 required.</p>
 </dd></dl>
 
+<dl class="method">
+<dt id="exposures.OasisExposuresManagerInterface.OasisExposuresManagerInterface.update_model">
+<code class="descname">update_model</code><span class="sig-paren">(</span><em>oasis_model</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/exposures/OasisExposuresManagerInterface.html#OasisExposuresManagerInterface.update_model"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#exposures.OasisExposuresManagerInterface.OasisExposuresManagerInterface.update_model" title="Permalink to this definition">¶</a></dt>
+<dd><p>Updates an existing Oasis model object in the manager.</p>
+</dd></dl>
+
 </dd></dl>
 
 </div>
@@ -324,8 +342,20 @@ generating the intermediate files (canonical exposures files, model exposures
 files, keys files) and finally generating the Oasis files from these.</p>
 <dl class="class">
 <dt id="exposures.OasisExposuresManager.OasisExposuresManager">
-<em class="property">class </em><code class="descclassname">exposures.OasisExposuresManager.</code><code class="descname">OasisExposuresManager</code><span class="sig-paren">(</span><em>oasis_models=None</em>, <em>do_logging=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/exposures/OasisExposuresManager.html#OasisExposuresManager"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#exposures.OasisExposuresManager.OasisExposuresManager" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">exposures.OasisExposuresManager.</code><code class="descname">OasisExposuresManager</code><span class="sig-paren">(</span><em>oasis_models=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/exposures/OasisExposuresManager.html#OasisExposuresManager"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#exposures.OasisExposuresManager.OasisExposuresManager" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="method">
+<dt id="exposures.OasisExposuresManager.OasisExposuresManager.add_model">
+<code class="descname">add_model</code><span class="sig-paren">(</span><em>oasis_model</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/exposures/OasisExposuresManager.html#OasisExposuresManager.add_model"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#exposures.OasisExposuresManager.OasisExposuresManager.add_model" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds model to the manager and sets up its resources.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="exposures.OasisExposuresManager.OasisExposuresManager.add_models">
+<code class="descname">add_models</code><span class="sig-paren">(</span><em>oasis_models</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/exposures/OasisExposuresManager.html#OasisExposuresManager.add_models"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#exposures.OasisExposuresManager.OasisExposuresManager.add_models" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds a list of Oasis model objects to the manager.</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="exposures.OasisExposuresManager.OasisExposuresManager.clear_files_pipeline">
 <code class="descname">clear_files_pipeline</code><span class="sig-paren">(</span><em>oasis_model</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/exposures/OasisExposuresManager.html#OasisExposuresManager.clear_files_pipeline"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#exposures.OasisExposuresManager.OasisExposuresManager.clear_files_pipeline" title="Permalink to this definition">¶</a></dt>
 <dd><p>Clears the oasis files pipeline for the given Oasis model object.</p>
@@ -338,6 +368,18 @@ files, keys files) and finally generating the Oasis files from these.</p>
 <dd><code class="docutils literal"><span class="pre">oasis_model</span></code> (<code class="docutils literal"><span class="pre">omdk.models.OasisModel.OasisModel</span></code>): The model object with its
 Oasis files pipeline cleared.</dd>
 </dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="exposures.OasisExposuresManager.OasisExposuresManager.delete_model">
+<code class="descname">delete_model</code><span class="sig-paren">(</span><em>oasis_model</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/exposures/OasisExposuresManager.html#OasisExposuresManager.delete_model"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#exposures.OasisExposuresManager.OasisExposuresManager.delete_model" title="Permalink to this definition">¶</a></dt>
+<dd><p>Deletes an existing Oasis model object in the manager.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="exposures.OasisExposuresManager.OasisExposuresManager.delete_models">
+<code class="descname">delete_models</code><span class="sig-paren">(</span><em>oasis_models</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/exposures/OasisExposuresManager.html#OasisExposuresManager.delete_models"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#exposures.OasisExposuresManager.OasisExposuresManager.delete_models" title="Permalink to this definition">¶</a></dt>
+<dd><p>Deletes a list of existing Oasis model objects in the manager.</p>
 </dd></dl>
 
 <dl class="method">
@@ -500,6 +542,18 @@ and the model object returned.</p>
 which case all the resources required for the transformation should be
 present in the optional <code class="docutils literal"><span class="pre">kwargs</span></code> dict as named arguments. In this
 case only the generated canonical exposures file is returned.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="exposures.OasisExposuresManager.OasisExposuresManager.update_model">
+<code class="descname">update_model</code><span class="sig-paren">(</span><em>oasis_model</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/exposures/OasisExposuresManager.html#OasisExposuresManager.update_model"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#exposures.OasisExposuresManager.OasisExposuresManager.update_model" title="Permalink to this definition">¶</a></dt>
+<dd><p>Updates an existing Oasis model object in the manager.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="exposures.OasisExposuresManager.OasisExposuresManager.update_models">
+<code class="descname">update_models</code><span class="sig-paren">(</span><em>oasis_models</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/exposures/OasisExposuresManager.html#OasisExposuresManager.update_models"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#exposures.OasisExposuresManager.OasisExposuresManager.update_models" title="Permalink to this definition">¶</a></dt>
+<dd><p>Updates a list of existing Oasis model objects in the manager.</p>
 </dd></dl>
 
 </dd></dl>
