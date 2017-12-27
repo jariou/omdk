@@ -65,6 +65,9 @@ from oasis_utils import (
 from models import OasisModelFactory as omf
 from exposures import OasisExposuresManager as oem
 
+__author__ = "Sandeep Murthy"
+__copyright__ = "2017, Oasis Loss Modelling Framework"
+
 
 SCRIPT_RESOURCES = {
     'config_file_path': {
@@ -86,70 +89,70 @@ SCRIPT_RESOURCES = {
         'flag': 'v',
         'type': str,
         'help_text': 'Model version file path',
-        'directly_required': False        
+        'directly_required': False
     },
     'lookup_service_package_path': {
         'arg_name': 'lookup_service_package_path',
         'flag': 'l',
         'type': str,
         'help_text': 'Package path for model keys lookup service - usually in the `src/keys_server` folder of the relevant supplier repository',
-        'directly_required': False        
+        'directly_required': False
     },
     'canonical_exposures_profile_json_path': {
         'arg_name': 'canonical_exposures_profile_json_path',
         'flag': 'p',
         'type': str,
         'help_text': 'Path of the supplier canonical exposures profile JSON file',
-        'directly_required': False        
+        'directly_required': False
     },
     'source_exposures_file_path': {
         'arg_name': 'source_exposures_file_path',
         'flag': 'e',
         'type': str,
         'help_text': 'Source exposures file path',
-        'directly_required': False        
+        'directly_required': False
     },
     'source_exposures_validation_file_path': {
         'arg_name': 'source_exposures_validation_file_path',
         'flag': 'a',
         'type': str,
         'help_text': 'Source exposures validation file (XSD) path',
-        'directly_required': False        
+        'directly_required': False
     },
     'source_to_canonical_exposures_transformation_file_path': {
         'arg_name': 'source_to_canonical_exposures_transformation_file_path',
         'flag': 'b',
         'type': str,
         'help_text': 'Source -> canonical exposures transformation file (XSLT) path',
-        'directly_required': False        
+        'directly_required': False
     },
     'canonical_exposures_validation_file_path': {
         'arg_name': 'canonical_exposures_validation_file_path',
         'flag': 'c',
         'type': str,
         'help_text': 'Canonical exposures validation file (XSD) path',
-        'directly_required': False        
+        'directly_required': False
     },
     'canonical_to_model_exposures_transformation_file_path': {
         'arg_name': 'canonical_to_model_exposures_transformation_file_path',
         'flag': 'd',
         'type': str,
         'help_text': 'Canonical -> model exposures transformation file (XSLT) path',
-        'directly_required': False        
+        'directly_required': False
     },
     'xtrans_path': {
         'arg_name': 'xtrans_path',
         'flag': 'x',
         'type': str,
         'help_text': 'Path of the xtrans executable which performs the source -> canonical and canonical -> model exposures transformations',
-        'directly_required': False        
+        'directly_required': False
     },
     'output_basedirpath': {
         'arg_name': 'output_basedirpath',
         'flag': 'o',
         'type': str,
         'help_text': 'Parent directory to place generated Oasis files for the model',
-        'directly_required': False        
+        'directly_required': False
     }
 }
 
@@ -207,60 +210,60 @@ def load_args_from_config_file(config_file_path):
 
 
 if __name__ == '__main__':
-    
-    
+
     set_logging()
-    logging.info('Console logging set')
+    logger = logging.getLogger()
+    logger.info('Console logging set')
     
     try:
-        logging.info('Processing script resources arguments')
+        logger.info('Processing script resources arguments')
         args = parse_args()
 
         if args['config_file_path']:
-            logging.info('Loading script resources from config file {}'.format(args['config_file_path']))
+            logger.info('Loading script resources from config file {}'.format(args['config_file_path']))
             args = load_args_from_config_file(args['config_file_path'])
-            logging.info('Script resources: {}'.format(args))            
+            logger.info('Script resources: {}'.format(args))
         else:
             args.pop('config_file_path')
-            logging.info('Script resources arguments: {}'.format(args))
+            logger.info('Script resources arguments: {}'.format(args))
         
         missing = filter(lambda res: not args[res] if res in args and res != 'config_file_path' else None, SCRIPT_RESOURCES)
 
         if missing:
             raise OasisException('Not all script resources arguments provided - missing {}'.format(missing))
 
-        logging.info('Getting model info and creating lookup service instance')
+        logger.info('Getting model info and creating lookup service instance')
         model_info, model_kls = klsf.create(
             model_keys_data_path=args['keys_data_path'],
             model_version_file_path=args['model_version_file_path'],
             lookup_service_package_path=args['lookup_service_package_path']
         )
         time.sleep(3)
-        logging.info('\t{}, {}'.format(model_info, model_kls))
+        logger.info('\t{}, {}'.format(model_info, model_kls))
 
         args['lookup_service'] = model_kls
 
-        logging.info('Creating model object')
+        logger.info('Creating model object')
         model = omf.create(
             model_supplier_id=model_info['supplier_id'],
             model_id=model_info['model_id'],
             model_version_id=model_info['model_version_id']
         )
-        logging.info('\t{}'.format(model))
+        logger.info('\t{}'.format(model))
 
-        logging.info('Creating an Oasis exposures manager for the model')
+        logger.info('Creating an Oasis exposures manager for the model')
         manager = oem(oasis_models=[model])
-        logging.info('\t{}'.format(manager))
+        logger.info('\t{}'.format(manager))
 
-        logging.info('Adding output files directory path to `**args`')
+        logger.info('Adding output files directory path to `**args`')
         args['output_dirpath'] = model.resources['output_dirpath']
 
-        logging.info('Generating Oasis files for the model')
+        logger.info('Generating Oasis files for the model')
         oasis_files = manager.start_files_pipeline(model, with_model_resources=False, **args)
 
-        logging.info('\t{}'.format(oasis_files))
+        logger.info('\t{}'.format(oasis_files))
     except OasisException as e:
-        logging.error(str(e))
+        logger.error(str(e))
         sys.exit(-1)
     else:
         sys.exit(0)

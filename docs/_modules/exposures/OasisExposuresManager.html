@@ -314,14 +314,14 @@
             <span class="n">transformation_file_path</span><span class="p">,</span>
             <span class="n">output_file_path</span>
         <span class="p">)</span> <span class="o">=</span> <span class="nb">map</span><span class="p">(</span>
-                <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">,</span>
-                <span class="p">[</span>
-                    <span class="n">xtrans_path</span><span class="p">,</span>
-                    <span class="n">input_file_path</span><span class="p">,</span>
-                    <span class="n">validation_file_path</span><span class="p">,</span>
-                    <span class="n">transformation_file_path</span><span class="p">,</span>
-                    <span class="n">output_file_path</span>
-                <span class="p">]</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">,</span>
+            <span class="p">[</span>
+                <span class="n">xtrans_path</span><span class="p">,</span>
+                <span class="n">input_file_path</span><span class="p">,</span>
+                <span class="n">validation_file_path</span><span class="p">,</span>
+                <span class="n">transformation_file_path</span><span class="p">,</span>
+                <span class="n">output_file_path</span>
+            <span class="p">]</span>
         <span class="p">)</span>        
 
         <span class="n">xtrans_args</span> <span class="o">=</span> <span class="p">{</span>
@@ -443,12 +443,10 @@
         <span class="n">tfp</span> <span class="o">=</span> <span class="n">omr</span><span class="p">[</span><span class="s1">&#39;oasis_files_pipeline&#39;</span><span class="p">]</span>        
 
         <span class="k">if</span> <span class="ow">not</span> <span class="n">with_model_resources</span><span class="p">:</span>
-            <span class="n">model_exposures</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;model_exposures&#39;</span><span class="p">]</span> <span class="k">if</span> <span class="s1">&#39;model_exposures&#39;</span> <span class="ow">in</span> <span class="n">kwargs</span> <span class="k">else</span> <span class="kc">None</span>
             <span class="n">model_exposures_file_path</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;model_exposures_file_path&#39;</span><span class="p">]</span> <span class="k">if</span> <span class="s1">&#39;model_exposures_file_path&#39;</span> <span class="ow">in</span> <span class="n">kwargs</span> <span class="k">else</span> <span class="kc">None</span>
             <span class="n">lookup_service</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;lookup_service&#39;</span><span class="p">]</span>
             <span class="n">keys_file_path</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;keys_file_path&#39;</span><span class="p">]</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">model_exposures</span> <span class="o">=</span> <span class="n">omr</span><span class="p">[</span><span class="s1">&#39;model_exposures&#39;</span><span class="p">]</span>  <span class="k">if</span> <span class="s1">&#39;model_exposures&#39;</span> <span class="ow">in</span> <span class="n">kwargs</span> <span class="k">else</span> <span class="kc">None</span>
             <span class="n">model_exposures_file_path</span> <span class="o">=</span> <span class="n">tfp</span><span class="o">.</span><span class="n">model_exposures_file</span><span class="o">.</span><span class="n">name</span> <span class="k">if</span> <span class="n">tfp</span><span class="o">.</span><span class="n">model_exposures_file</span> <span class="k">else</span> <span class="kc">None</span>
             <span class="n">lookup_service</span> <span class="o">=</span> <span class="n">omr</span><span class="p">[</span><span class="s1">&#39;lookup_service&#39;</span><span class="p">]</span>
             <span class="n">keys_file_path</span> <span class="o">=</span> <span class="n">tfp</span><span class="o">.</span><span class="n">keys_file</span><span class="o">.</span><span class="n">name</span>
@@ -460,7 +458,6 @@
 
         <span class="n">oasis_keys_file</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">keys_lookup_service_factory</span><span class="o">.</span><span class="n">save_keys</span><span class="p">(</span>
             <span class="n">lookup_service</span><span class="o">=</span><span class="n">lookup_service</span><span class="p">,</span>
-            <span class="n">model_exposures</span><span class="o">=</span><span class="n">model_exposures</span><span class="p">,</span>
             <span class="n">model_exposures_file_path</span><span class="o">=</span><span class="n">model_exposures_file_path</span><span class="p">,</span>
             <span class="n">output_file_path</span><span class="o">=</span><span class="n">keys_file_path</span><span class="p">,</span>
             <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;oasis_keys&#39;</span>

@@ -272,14 +272,14 @@ class OasisExposuresManager(implements(OasisExposuresManagerInterface)):
             transformation_file_path,
             output_file_path
         ) = map(
-                os.path.abspath,
-                [
-                    xtrans_path,
-                    input_file_path,
-                    validation_file_path,
-                    transformation_file_path,
-                    output_file_path
-                ]
+            os.path.abspath,
+            [
+                xtrans_path,
+                input_file_path,
+                validation_file_path,
+                transformation_file_path,
+                output_file_path
+            ]
         )        
 
         xtrans_args = {
@@ -401,12 +401,10 @@ class OasisExposuresManager(implements(OasisExposuresManagerInterface)):
         tfp = omr['oasis_files_pipeline']        
 
         if not with_model_resources:
-            model_exposures = kwargs['model_exposures'] if 'model_exposures' in kwargs else None
             model_exposures_file_path = kwargs['model_exposures_file_path'] if 'model_exposures_file_path' in kwargs else None
             lookup_service = kwargs['lookup_service']
             keys_file_path = kwargs['keys_file_path']
         else:
-            model_exposures = omr['model_exposures']  if 'model_exposures' in kwargs else None
             model_exposures_file_path = tfp.model_exposures_file.name if tfp.model_exposures_file else None
             lookup_service = omr['lookup_service']
             keys_file_path = tfp.keys_file.name
@@ -418,7 +416,6 @@ class OasisExposuresManager(implements(OasisExposuresManagerInterface)):
 
         oasis_keys_file, _ = self.keys_lookup_service_factory.save_keys(
             lookup_service=lookup_service,
-            model_exposures=model_exposures,
             model_exposures_file_path=model_exposures_file_path,
             output_file_path=keys_file_path,
             format='oasis_keys'
