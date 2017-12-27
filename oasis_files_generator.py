@@ -6,7 +6,7 @@
     and resources required to create its keys lookup service, such as the
     path to the keys data folder and the lookup service source package, exist
     on the local filesystem, as well as the canonical exposures profile JSON
-    file for the supplier/model, the xtrans.exe CSV conversion/ transformation
+    file for the supplier/model, the ``xtrans.exe`` CSV conversion/ transformation
     tool for exposures files, the necessary validation and transformation files,
     and the source exposures file.
 
@@ -45,9 +45,9 @@
         "output_basedirpath"
 
     The file and folder paths can be relative to the path of the script. If you've cloned
-    the OMDK repository then script configs for models can be placed in the `script_config`
+    the OMDK repository then script configs for models can be placed in the ``script_config``
     subfolder, and the canonical exposures profiles can be placed in the
-    `canonical_exposures_profiles` subfolder.
+    ``canonical_exposures_profiles`` subfolder.
 """
 
 import argparse

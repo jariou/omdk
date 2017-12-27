@@ -17,6 +17,7 @@ The package documentation can be found at https://oasislmf.github.io/omdk/.
    repository-management
    sphinx
    first-steps
+   generating-oasis-files
    modules
 
 Indices and tables
