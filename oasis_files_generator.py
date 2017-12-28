@@ -157,7 +157,7 @@ SCRIPT_RESOURCES = {
 }
 
 
-def set_logging():
+def __set_logging__():
     logging.basicConfig(
         level=logging.INFO,
         format='%(asctime)s - %(levelname)s - %(message)s',
@@ -165,7 +165,7 @@ def set_logging():
     )
 
 
-def parse_args():
+def __parse_args__():
     """
     Parses script arguments and constructs an args dictionary.
     """
@@ -196,7 +196,7 @@ def parse_args():
     return args_dict
 
 
-def load_args_from_config_file(config_file_path):
+def __load_args_from_config_file__(config_file_path):
     if config_file_path.endswith('json'):
         try:
             with io.open(config_file_path, 'r', encoding='utf-8') as f:
@@ -211,17 +211,17 @@ def load_args_from_config_file(config_file_path):
 
 if __name__ == '__main__':
 
-    set_logging()
+    __set_logging__()
     logger = logging.getLogger()
     logger.info('Console logging set')
     
     try:
         logger.info('Processing script resources arguments')
-        args = parse_args()
+        args = __parse_args__()
 
         if args['config_file_path']:
             logger.info('Loading script resources from config file {}'.format(args['config_file_path']))
-            args = load_args_from_config_file(args['config_file_path'])
+            args = __load_args_from_config_file__(args['config_file_path'])
             logger.info('Script resources: {}'.format(args))
         else:
             args.pop('config_file_path')

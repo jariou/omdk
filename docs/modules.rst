@@ -30,7 +30,7 @@ Module Documentation
    :members:
    :undoc-members:
 
-``omdk.oasis_files_generator.py``
----------------------------------
+``omdk.oasis_files_generator``
+------------------------------
 
 .. automodule:: oasis_files_generator
