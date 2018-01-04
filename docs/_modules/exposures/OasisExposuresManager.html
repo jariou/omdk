@@ -544,14 +544,16 @@
                 <span class="n">keys_df</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="o">.</span><span class="n">lower</span><span class="p">,</span> <span class="n">keys_df</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="ow">not</span> <span class="n">canonical_exposures_profile</span><span class="p">:</span>
-            <span class="n">canonical_exposures_profile</span> <span class="o">=</span> <span class="p">(</span>
-                <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">canonical_exposures_profile_json</span><span class="p">)</span> <span class="k">if</span> <span class="n">canonical_exposures_profile_json</span>
-                <span class="k">else</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">canonical_exposures_profile_json_path</span><span class="p">)</span>
-            <span class="p">)</span>
+            <span class="k">if</span> <span class="n">canonical_exposures_profile_json</span><span class="p">:</span>
+                <span class="n">omr</span><span class="p">[</span><span class="s1">&#39;canonical_exposures_profile_json&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">canonical_exposures_profile_json</span>
+            <span class="k">elif</span> <span class="n">canonical_exposures_profile_json_path</span><span class="p">:</span>
+                <span class="n">omr</span><span class="p">[</span><span class="s1">&#39;canonical_exposures_profile_json_path&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">canonical_exposures_profile_json_path</span>
+
+            <span class="n">canonical_exposures_profile</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">load_canonical_profile</span><span class="p">(</span><span class="n">oasis_model</span><span class="p">,</span> <span class="n">with_model_resources</span><span class="o">=</span><span class="n">with_model_resources</span><span class="p">)</span>
 
         <span class="n">tiv_fields</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span>
             <span class="k">lambda</span> <span class="n">f</span><span class="p">:</span> <span class="n">canonical_exposures_profile</span><span class="p">[</span><span class="n">f</span><span class="p">],</span>
-            <span class="nb">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">k</span><span class="p">:</span> <span class="n">canonical_exposures_profile</span><span class="p">[</span><span class="n">k</span><span class="p">][</span><span class="s1">&#39;FieldName&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;TIV&#39;</span><span class="p">,</span> <span class="n">canonical_exposures_profile</span><span class="p">)</span>
+            <span class="nb">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">k</span><span class="p">:</span> <span class="n">canonical_exposures_profile</span><span class="p">[</span><span class="n">k</span><span class="p">][</span><span class="s1">&#39;FieldName&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;TIV&#39;</span> <span class="k">if</span> <span class="s1">&#39;FieldName&#39;</span> <span class="ow">in</span> <span class="n">canonical_exposures_profile</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span> <span class="n">canonical_exposures_profile</span><span class="p">)</span>
         <span class="p">))</span>
 
         <span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;item_id&#39;</span><span class="p">,</span> <span class="s1">&#39;coverage_id&#39;</span><span class="p">,</span> <span class="s1">&#39;areaperil_id&#39;</span><span class="p">,</span> <span class="s1">&#39;vulnerability_id&#39;</span><span class="p">,</span> <span class="s1">&#39;group_id&#39;</span><span class="p">]</span>
@@ -572,7 +574,7 @@
             <span class="n">ci</span> <span class="o">=</span> <span class="n">ci_df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 
             <span class="n">tiv_field</span> <span class="o">=</span> <span class="nb">filter</span><span class="p">(</span>
-                    <span class="k">lambda</span> <span class="n">f</span><span class="p">:</span> <span class="n">f</span><span class="p">[</span><span class="s1">&#39;CoverageTypeId&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">ki</span><span class="p">[</span><span class="s1">&#39;coveragetype&#39;</span><span class="p">],</span>
+                    <span class="k">lambda</span> <span class="n">f</span><span class="p">:</span> <span class="n">f</span><span class="p">[</span><span class="s1">&#39;CoverageTypeID&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">ki</span><span class="p">[</span><span class="s1">&#39;coveragetype&#39;</span><span class="p">],</span>
                     <span class="n">tiv_fields</span>
             <span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
 
@@ -649,14 +651,16 @@
                 <span class="n">keys_df</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="o">.</span><span class="n">lower</span><span class="p">,</span> <span class="n">keys_df</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="ow">not</span> <span class="n">canonical_exposures_profile</span><span class="p">:</span>
-            <span class="n">canonical_exposures_profile</span> <span class="o">=</span> <span class="p">(</span>
-                <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">canonical_exposures_profile_json</span><span class="p">)</span> <span class="k">if</span> <span class="n">canonical_exposures_profile_json</span>
-                <span class="k">else</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">canonical_exposures_profile_json_path</span><span class="p">)</span>
-            <span class="p">)</span>
+            <span class="k">if</span> <span class="n">canonical_exposures_profile_json</span><span class="p">:</span>
+                <span class="n">omr</span><span class="p">[</span><span class="s1">&#39;canonical_exposures_profile_json&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">canonical_exposures_profile_json</span>
+            <span class="k">elif</span> <span class="n">canonical_exposures_profile_json_path</span><span class="p">:</span>
+                <span class="n">omr</span><span class="p">[</span><span class="s1">&#39;canonical_exposures_profile_json_path&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">canonical_exposures_profile_json_path</span>
+
+            <span class="n">canonical_exposures_profile</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">load_canonical_profile</span><span class="p">(</span><span class="n">oasis_model</span><span class="p">,</span> <span class="n">with_model_resources</span><span class="o">=</span><span class="n">with_model_resources</span><span class="p">)</span>
 
         <span class="n">tiv_fields</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span>
             <span class="k">lambda</span> <span class="n">f</span><span class="p">:</span> <span class="n">canonical_exposures_profile</span><span class="p">[</span><span class="n">f</span><span class="p">],</span>
-            <span class="nb">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">k</span><span class="p">:</span> <span class="n">canonical_exposures_profile</span><span class="p">[</span><span class="n">k</span><span class="p">][</span><span class="s1">&#39;FieldName&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;TIV&#39;</span><span class="p">,</span> <span class="n">canonical_exposures_profile</span><span class="p">)</span>
+            <span class="nb">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">k</span><span class="p">:</span> <span class="n">canonical_exposures_profile</span><span class="p">[</span><span class="n">k</span><span class="p">][</span><span class="s1">&#39;FieldName&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;TIV&#39;</span> <span class="k">if</span> <span class="s1">&#39;FieldName&#39;</span> <span class="ow">in</span> <span class="n">canonical_exposures_profile</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span> <span class="n">canonical_exposures_profile</span><span class="p">)</span>
         <span class="p">))</span>
 
         <span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;coverage_id&#39;</span><span class="p">,</span> <span class="s1">&#39;tiv&#39;</span><span class="p">]</span>
@@ -677,7 +681,7 @@
             <span class="n">ci</span> <span class="o">=</span> <span class="n">ci_df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 
             <span class="n">tiv_field</span> <span class="o">=</span> <span class="nb">filter</span><span class="p">(</span>
-                    <span class="k">lambda</span> <span class="n">f</span><span class="p">:</span> <span class="n">f</span><span class="p">[</span><span class="s1">&#39;CoverageTypeId&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">ki</span><span class="p">[</span><span class="s1">&#39;coveragetype&#39;</span><span class="p">],</span>
+                    <span class="k">lambda</span> <span class="n">f</span><span class="p">:</span> <span class="n">f</span><span class="p">[</span><span class="s1">&#39;CoverageTypeID&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">ki</span><span class="p">[</span><span class="s1">&#39;coveragetype&#39;</span><span class="p">],</span>
                     <span class="n">tiv_fields</span>
             <span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
 
@@ -751,14 +755,16 @@
                 <span class="n">keys_df</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="o">.</span><span class="n">lower</span><span class="p">,</span> <span class="n">keys_df</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="ow">not</span> <span class="n">canonical_exposures_profile</span><span class="p">:</span>
-            <span class="n">canonical_exposures_profile</span> <span class="o">=</span> <span class="p">(</span>
-                <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">canonical_exposures_profile_json</span><span class="p">)</span> <span class="k">if</span> <span class="n">canonical_exposures_profile_json</span>
-                <span class="k">else</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">canonical_exposures_profile_json_path</span><span class="p">)</span>
-            <span class="p">)</span>
+            <span class="k">if</span> <span class="n">canonical_exposures_profile_json</span><span class="p">:</span>
+                <span class="n">omr</span><span class="p">[</span><span class="s1">&#39;canonical_exposures_profile_json&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">canonical_exposures_profile_json</span>
+            <span class="k">elif</span> <span class="n">canonical_exposures_profile_json_path</span><span class="p">:</span>
+                <span class="n">omr</span><span class="p">[</span><span class="s1">&#39;canonical_exposures_profile_json_path&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">canonical_exposures_profile_json_path</span>
+
+            <span class="n">canonical_exposures_profile</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">load_canonical_profile</span><span class="p">(</span><span class="n">oasis_model</span><span class="p">,</span> <span class="n">with_model_resources</span><span class="o">=</span><span class="n">with_model_resources</span><span class="p">)</span>
 
         <span class="n">tiv_fields</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span>
             <span class="k">lambda</span> <span class="n">f</span><span class="p">:</span> <span class="n">canonical_exposures_profile</span><span class="p">[</span><span class="n">f</span><span class="p">],</span>
-            <span class="nb">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">k</span><span class="p">:</span> <span class="n">canonical_exposures_profile</span><span class="p">[</span><span class="n">k</span><span class="p">][</span><span class="s1">&#39;FieldName&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;TIV&#39;</span><span class="p">,</span> <span class="n">canonical_exposures_profile</span><span class="p">)</span>
+            <span class="nb">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">k</span><span class="p">:</span> <span class="n">canonical_exposures_profile</span><span class="p">[</span><span class="n">k</span><span class="p">][</span><span class="s1">&#39;FieldName&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;TIV&#39;</span> <span class="k">if</span> <span class="s1">&#39;FieldName&#39;</span> <span class="ow">in</span> <span class="n">canonical_exposures_profile</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span> <span class="n">canonical_exposures_profile</span><span class="p">)</span>
         <span class="p">))</span>
 
         <span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;coverage_id&#39;</span><span class="p">,</span> <span class="s1">&#39;summary_id&#39;</span><span class="p">,</span> <span class="s1">&#39;summaryset_id&#39;</span><span class="p">]</span>
@@ -779,7 +785,7 @@
             <span class="n">ci</span> <span class="o">=</span> <span class="n">ci_df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 
             <span class="n">tiv_field</span> <span class="o">=</span> <span class="nb">filter</span><span class="p">(</span>
-                    <span class="k">lambda</span> <span class="n">f</span><span class="p">:</span> <span class="n">f</span><span class="p">[</span><span class="s1">&#39;CoverageTypeId&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">ki</span><span class="p">[</span><span class="s1">&#39;coveragetype&#39;</span><span class="p">],</span>
+                    <span class="k">lambda</span> <span class="n">f</span><span class="p">:</span> <span class="n">f</span><span class="p">[</span><span class="s1">&#39;CoverageTypeID&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">ki</span><span class="p">[</span><span class="s1">&#39;coveragetype&#39;</span><span class="p">],</span>
                     <span class="n">tiv_fields</span>
             <span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
 
@@ -872,14 +878,16 @@
                 <span class="n">keys_df</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="o">.</span><span class="n">lower</span><span class="p">,</span> <span class="n">keys_df</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="ow">not</span> <span class="n">canonical_exposures_profile</span><span class="p">:</span>
-            <span class="n">canonical_exposures_profile</span> <span class="o">=</span> <span class="p">(</span>
-                <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">canonical_exposures_profile_json</span><span class="p">)</span> <span class="k">if</span> <span class="n">canonical_exposures_profile_json</span>
-                <span class="k">else</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">canonical_exposures_profile_json_path</span><span class="p">)</span>
-            <span class="p">)</span>
+            <span class="k">if</span> <span class="n">canonical_exposures_profile_json</span><span class="p">:</span>
+                <span class="n">omr</span><span class="p">[</span><span class="s1">&#39;canonical_exposures_profile_json&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">canonical_exposures_profile_json</span>
+            <span class="k">elif</span> <span class="n">canonical_exposures_profile_json_path</span><span class="p">:</span>
+                <span class="n">omr</span><span class="p">[</span><span class="s1">&#39;canonical_exposures_profile_json_path&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">canonical_exposures_profile_json_path</span>
+
+            <span class="n">canonical_exposures_profile</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">load_canonical_profile</span><span class="p">(</span><span class="n">oasis_model</span><span class="p">,</span> <span class="n">with_model_resources</span><span class="o">=</span><span class="n">with_model_resources</span><span class="p">)</span>
 
         <span class="n">tiv_fields</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span>
             <span class="k">lambda</span> <span class="n">f</span><span class="p">:</span> <span class="n">canonical_exposures_profile</span><span class="p">[</span><span class="n">f</span><span class="p">],</span>
-            <span class="nb">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">k</span><span class="p">:</span> <span class="n">canonical_exposures_profile</span><span class="p">[</span><span class="n">k</span><span class="p">][</span><span class="s1">&#39;FieldName&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;TIV&#39;</span><span class="p">,</span> <span class="n">canonical_exposures_profile</span><span class="p">)</span>
+            <span class="nb">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">k</span><span class="p">:</span> <span class="n">canonical_exposures_profile</span><span class="p">[</span><span class="n">k</span><span class="p">][</span><span class="s1">&#39;FieldName&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;TIV&#39;</span> <span class="k">if</span> <span class="s1">&#39;FieldName&#39;</span> <span class="ow">in</span> <span class="n">canonical_exposures_profile</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span> <span class="n">canonical_exposures_profile</span><span class="p">)</span>
         <span class="p">))</span>
 
         <span class="n">columns</span> <span class="o">=</span> <span class="p">[</span>
@@ -909,7 +917,7 @@
             <span class="n">ci</span> <span class="o">=</span> <span class="n">ci_df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 
             <span class="n">tiv_field</span> <span class="o">=</span> <span class="nb">filter</span><span class="p">(</span>
-                    <span class="k">lambda</span> <span class="n">f</span><span class="p">:</span> <span class="n">f</span><span class="p">[</span><span class="s1">&#39;CoverageTypeId&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">ki</span><span class="p">[</span><span class="s1">&#39;coveragetype&#39;</span><span class="p">],</span>
+                    <span class="k">lambda</span> <span class="n">f</span><span class="p">:</span> <span class="n">f</span><span class="p">[</span><span class="s1">&#39;CoverageTypeID&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">ki</span><span class="p">[</span><span class="s1">&#39;coveragetype&#39;</span><span class="p">],</span>
                     <span class="n">tiv_fields</span>
             <span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
 

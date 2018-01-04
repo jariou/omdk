@@ -502,14 +502,16 @@ class OasisExposuresManager(implements(OasisExposuresManagerInterface)):
                 keys_df.columns = map(str.lower, keys_df.columns)
 
         if not canonical_exposures_profile:
-            canonical_exposures_profile = (
-                json.loads(canonical_exposures_profile_json) if canonical_exposures_profile_json
-                else json.load(canonical_exposures_profile_json_path)
-            )
+            if canonical_exposures_profile_json:
+                omr['canonical_exposures_profile_json'] = canonical_exposures_profile_json
+            elif canonical_exposures_profile_json_path:
+                omr['canonical_exposures_profile_json_path'] = canonical_exposures_profile_json_path
+
+            canonical_exposures_profile = self.load_canonical_profile(oasis_model, with_model_resources=with_model_resources)
 
         tiv_fields = sorted(map(
             lambda f: canonical_exposures_profile[f],
-            filter(lambda k: canonical_exposures_profile[k]['FieldName'] == 'TIV', canonical_exposures_profile)
+            filter(lambda k: canonical_exposures_profile[k]['FieldName'] == 'TIV' if 'FieldName' in canonical_exposures_profile[k] else None, canonical_exposures_profile)
         ))
 
         columns = ['item_id', 'coverage_id', 'areaperil_id', 'vulnerability_id', 'group_id']
@@ -530,7 +532,7 @@ class OasisExposuresManager(implements(OasisExposuresManagerInterface)):
             ci = ci_df.iloc[0]
 
             tiv_field = filter(
-                    lambda f: f['CoverageTypeId'] == ki['coveragetype'],
+                    lambda f: f['CoverageTypeID'] == ki['coveragetype'],
                     tiv_fields
             )[0]
 
@@ -607,14 +609,16 @@ class OasisExposuresManager(implements(OasisExposuresManagerInterface)):
                 keys_df.columns = map(str.lower, keys_df.columns)
 
         if not canonical_exposures_profile:
-            canonical_exposures_profile = (
-                json.loads(canonical_exposures_profile_json) if canonical_exposures_profile_json
-                else json.load(canonical_exposures_profile_json_path)
-            )
+            if canonical_exposures_profile_json:
+                omr['canonical_exposures_profile_json'] = canonical_exposures_profile_json
+            elif canonical_exposures_profile_json_path:
+                omr['canonical_exposures_profile_json_path'] = canonical_exposures_profile_json_path
+
+            canonical_exposures_profile = self.load_canonical_profile(oasis_model, with_model_resources=with_model_resources)
 
         tiv_fields = sorted(map(
             lambda f: canonical_exposures_profile[f],
-            filter(lambda k: canonical_exposures_profile[k]['FieldName'] == 'TIV', canonical_exposures_profile)
+            filter(lambda k: canonical_exposures_profile[k]['FieldName'] == 'TIV' if 'FieldName' in canonical_exposures_profile[k] else None, canonical_exposures_profile)
         ))
 
         columns = ['coverage_id', 'tiv']
@@ -635,7 +639,7 @@ class OasisExposuresManager(implements(OasisExposuresManagerInterface)):
             ci = ci_df.iloc[0]
 
             tiv_field = filter(
-                    lambda f: f['CoverageTypeId'] == ki['coveragetype'],
+                    lambda f: f['CoverageTypeID'] == ki['coveragetype'],
                     tiv_fields
             )[0]
 
@@ -709,14 +713,16 @@ class OasisExposuresManager(implements(OasisExposuresManagerInterface)):
                 keys_df.columns = map(str.lower, keys_df.columns)
 
         if not canonical_exposures_profile:
-            canonical_exposures_profile = (
-                json.loads(canonical_exposures_profile_json) if canonical_exposures_profile_json
-                else json.load(canonical_exposures_profile_json_path)
-            )
+            if canonical_exposures_profile_json:
+                omr['canonical_exposures_profile_json'] = canonical_exposures_profile_json
+            elif canonical_exposures_profile_json_path:
+                omr['canonical_exposures_profile_json_path'] = canonical_exposures_profile_json_path
+
+            canonical_exposures_profile = self.load_canonical_profile(oasis_model, with_model_resources=with_model_resources)
 
         tiv_fields = sorted(map(
             lambda f: canonical_exposures_profile[f],
-            filter(lambda k: canonical_exposures_profile[k]['FieldName'] == 'TIV', canonical_exposures_profile)
+            filter(lambda k: canonical_exposures_profile[k]['FieldName'] == 'TIV' if 'FieldName' in canonical_exposures_profile[k] else None, canonical_exposures_profile)
         ))
 
         columns = ['coverage_id', 'summary_id', 'summaryset_id']
@@ -737,7 +743,7 @@ class OasisExposuresManager(implements(OasisExposuresManagerInterface)):
             ci = ci_df.iloc[0]
 
             tiv_field = filter(
-                    lambda f: f['CoverageTypeId'] == ki['coveragetype'],
+                    lambda f: f['CoverageTypeID'] == ki['coveragetype'],
                     tiv_fields
             )[0]
 
@@ -830,14 +836,16 @@ class OasisExposuresManager(implements(OasisExposuresManagerInterface)):
                 keys_df.columns = map(str.lower, keys_df.columns)
 
         if not canonical_exposures_profile:
-            canonical_exposures_profile = (
-                json.loads(canonical_exposures_profile_json) if canonical_exposures_profile_json
-                else json.load(canonical_exposures_profile_json_path)
-            )
+            if canonical_exposures_profile_json:
+                omr['canonical_exposures_profile_json'] = canonical_exposures_profile_json
+            elif canonical_exposures_profile_json_path:
+                omr['canonical_exposures_profile_json_path'] = canonical_exposures_profile_json_path
+
+            canonical_exposures_profile = self.load_canonical_profile(oasis_model, with_model_resources=with_model_resources)
 
         tiv_fields = sorted(map(
             lambda f: canonical_exposures_profile[f],
-            filter(lambda k: canonical_exposures_profile[k]['FieldName'] == 'TIV', canonical_exposures_profile)
+            filter(lambda k: canonical_exposures_profile[k]['FieldName'] == 'TIV' if 'FieldName' in canonical_exposures_profile[k] else None, canonical_exposures_profile)
         ))
 
         columns = [
@@ -867,7 +875,7 @@ class OasisExposuresManager(implements(OasisExposuresManagerInterface)):
             ci = ci_df.iloc[0]
 
             tiv_field = filter(
-                    lambda f: f['CoverageTypeId'] == ki['coveragetype'],
+                    lambda f: f['CoverageTypeID'] == ki['coveragetype'],
                     tiv_fields
             )[0]
 
