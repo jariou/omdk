@@ -265,5 +265,6 @@ if __name__ == '__main__':
     except OasisException as e:
         logger.error(str(e))
         sys.exit(-1)
-    else:
-        sys.exit(0)
+
+    logger.info('Generated Oasis files for the model')
+    sys.exit(0)
