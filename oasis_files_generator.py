@@ -69,7 +69,7 @@ __author__ = "Sandeep Murthy"
 __copyright__ = "2017, Oasis Loss Modelling Framework"
 
 
-SCRIPT_RESOURCES = {
+SCRIPT_ARGS = {
     'config_file_path': {
         'arg_name': 'config_file_path',
         'flag': 'f',
@@ -171,7 +171,7 @@ def __parse_args__():
     """
     parser = argparse.ArgumentParser(description='Generate Oasis files for a given model')
 
-    di = SCRIPT_RESOURCES
+    di = SCRIPT_ARGS
 
     map(
         lambda res: parser.add_argument(
@@ -227,7 +227,7 @@ if __name__ == '__main__':
             args.pop('config_file_path')
             logger.info('Script resources arguments: {}'.format(args))
         
-        missing = filter(lambda res: not args[res] if res in args and res != 'config_file_path' else None, SCRIPT_RESOURCES)
+        missing = filter(lambda res: not args[res] if res in args and res != 'config_file_path' else None, SCRIPT_ARGS)
 
         if missing:
             raise OasisException('Not all script resources arguments provided - missing {}'.format(missing))
