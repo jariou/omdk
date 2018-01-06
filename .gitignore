@@ -112,3 +112,5 @@ tests/
 tests/data
 Files/
 script_config/catrisks-meeq-0.0.0.6.json
+script_config/catrisks-ireq-0.0.0.3.json
+script_config/oasislmf-piwind-0.0.0.1.json
