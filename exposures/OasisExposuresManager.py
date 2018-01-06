@@ -300,7 +300,8 @@ class OasisExposuresManager(implements(OasisExposuresManagerInterface)):
                 return f
 
             tfp.canonical_exposures_file = f
-            return oasis_model
+        
+        return oasis_model
 
 
     def transform_canonical_to_model(self, oasis_model, with_model_resources=True, **kwargs):
@@ -372,7 +373,8 @@ class OasisExposuresManager(implements(OasisExposuresManagerInterface)):
                 return f
 
             tfp.model_exposures_file = f
-            return oasis_model
+        
+        return oasis_model
 
 
     def get_keys(self, oasis_model, with_model_resources=True, **kwargs):
@@ -570,7 +572,7 @@ class OasisExposuresManager(implements(OasisExposuresManagerInterface)):
 
             tfp.items_file = f
 
-            return oasis_model
+        return oasis_model
 
 
     def generate_coverages_file(self, oasis_model, with_model_resources=True, **kwargs):
@@ -674,7 +676,7 @@ class OasisExposuresManager(implements(OasisExposuresManagerInterface)):
 
             tfp.coverages_file = f
 
-            return oasis_model
+        return oasis_model
 
 
     def generate_gulsummaryxref_file(self, oasis_model, with_model_resources=True, **kwargs):
@@ -779,7 +781,7 @@ class OasisExposuresManager(implements(OasisExposuresManagerInterface)):
 
             tfp.gulsummaryxref_file = f
 
-            return oasis_model
+        return oasis_model
 
 
     def generate_oasis_files(
