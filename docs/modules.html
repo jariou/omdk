@@ -48,11 +48,13 @@
 <dt id="models.OasisModel.OasisModel">
 <em class="property">class </em><code class="descclassname">models.OasisModel.</code><code class="descname">OasisModel</code><span class="sig-paren">(</span><em>model_supplier_id</em>, <em>model_id</em>, <em>model_version_id</em>, <em>resources=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/models/OasisModel.html#OasisModel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#models.OasisModel.OasisModel" title="Permalink to this definition">¶</a></dt>
 <dd><p>A simple object representation of Oasis models and their resources - an
-Oasis model is viewed as a combination of a specific supplier, model ID
-and model version, and the constructor requires these three arguments
+Oasis model is identified by a triple: a specific supplier ID, model ID
+and model version. The constructor requires these three arguments
 for creating a new Oasis model object. Each model object also has a
 resources dictionary that can be used to “attach” any resources by clients,
-e.g. a lookup service instance, a transforms files pipeline etc.</p>
+e.g. a lookup service instance, a transforms files pipeline, validation
+and transformation files for the source -&gt; canonical and canonical
+-&gt; model exposure transforms, etc.</p>
 <dl class="attribute">
 <dt id="models.OasisModel.OasisModel.key">
 <code class="descname">key</code><a class="headerlink" href="#models.OasisModel.OasisModel.key" title="Permalink to this definition">¶</a></dt>

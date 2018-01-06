@@ -69,7 +69,7 @@ resources required for the script are as follows:
     8. canonical exposures validation file (XSD) path
     9. canonical to model exposures file (XSLT) path
     10. `xtrans.exe` CSV transformation executable path
-    11. output files parent directory
+    11. Oasis files directory path
 
 The script can be executed in two ways: (1) directly by providing all the
 resources in the script call using the following syntax:
@@ -84,14 +84,15 @@ resources in the script call using the following syntax:
                                -c '/path/to/canonical/exposures/validation/file'
                                -d '/path/to/canonical/to/model/exposures/transformation/file'
                                -x '/path/to/xtrans/executable'
-                               -o '/path/to/output/files/parent/directory'
+                               -o '/path/to/oasis/files/directory'
 
 or by providing the path to a JSON script config file which defines all
 the script resources - the syntax for the latter option is:
 
     ./oasis_files_generator.py -f '/path/to/model/resources/JSON/config/file'
 
-and the keys of the JSON config file should be named as follows:
+and the keys of the JSON config file, which correspond to the resources list,
+above, should be named as follows:
 
     "keys_data_path"
     "model_version_file_path"
@@ -103,7 +104,7 @@ and the keys of the JSON config file should be named as follows:
     "canonical_exposures_validation_file_path"
     "canonical_to_model_exposures_transformation_file_path"
     "xtrans_path"
-    "output_basedirpath"
+    "output_dirpath"
 
 The file and folder paths can be relative to the path of the script. If you've
 cloned the OMDK repository then script configs for models can be placed in the

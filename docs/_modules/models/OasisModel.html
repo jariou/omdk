@@ -65,11 +65,13 @@
 <div class="viewcode-block" id="OasisModel"><a class="viewcode-back" href="../../modules.html#models.OasisModel.OasisModel">[docs]</a><span class="k">class</span> <span class="nc">OasisModel</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A simple object representation of Oasis models and their resources - an</span>
-<span class="sd">    Oasis model is viewed as a combination of a specific supplier, model ID</span>
-<span class="sd">    and model version, and the constructor requires these three arguments</span>
+<span class="sd">    Oasis model is identified by a triple: a specific supplier ID, model ID</span>
+<span class="sd">    and model version. The constructor requires these three arguments</span>
 <span class="sd">    for creating a new Oasis model object. Each model object also has a</span>
 <span class="sd">    resources dictionary that can be used to &quot;attach&quot; any resources by clients,</span>
-<span class="sd">    e.g. a lookup service instance, a transforms files pipeline etc.</span>
+<span class="sd">    e.g. a lookup service instance, a transforms files pipeline, validation</span>
+<span class="sd">    and transformation files for the source -&gt; canonical and canonical</span>
+<span class="sd">    -&gt; model exposure transforms, etc.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span>
