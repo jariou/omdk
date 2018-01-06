@@ -62,19 +62,26 @@ class OasisExposuresManager(implements(OasisExposuresManagerInterface)):
 
         self.logger = logging.getLogger()
 
-        self.logger.info('Creating keys lookup service factory for manager {}'.format(self))
+        self.logger.info('Exposures manager {} initialising'.format(self))
+
+        self.logger.info('Creating keys lookup service factory for exposures manager {}'.format(self))
         self._keys_lookup_service_factory = klsf()
+        self.logger.info('Created keys lookup service factory {} for exposures manager {}'.format(klsf, self))
         
+        self.logger.info('Adding models')
         self._models = {}
         
         if oasis_models:
-            self.logger.info('Adding models to manager')
             for model in oasis_models:
-                self.logger.info('Adding model {}'.format(model.key))
+                self.logger.info('Adding model {} to exposures manager {}'.format(model.key, self))
 
                 self.add_model(model)
 
-                self.logger.info('Added model {}'.format(model))
+                self.logger.info('Added model {} to exposures manager {}'.format(model, self))
+        else:
+            self.logger.info('No models to add to exposures manager {}'.format(self))
+
+        self.logger.info('Exposures manager {} finished initialising'.format(self))
 
 
     def add_model(self, oasis_model):
@@ -89,26 +96,15 @@ class OasisExposuresManager(implements(OasisExposuresManagerInterface)):
         else:
             omr['oasis_files_pipeline'] = OasisFilesPipeline.create(model_key=oasis_model.key)
 
-        if 'output_basedirpath' in omr:
-            output_basedirpath = os.path.abspath(omr['output_basedirpath'])
-            if not os.path.exists(output_basedirpath):
-                raise OasisException(
-                    'Output base directory {} for model {} specified in resources dict but '
-                    'path does not exist on the filesystem!'.format(output_basedirpath, oasis_model)
-                )
+        if 'output_dirpath' in omr and omr['output_dirpath']:
+            output_dirpath = os.path.abspath(omr['output_dirpath'])
+            if not os.path.exists(output_dirpath):
+                os.mkdir(output_dirpath)
         else:
-            output_basedirpath = os.path.join(os.getcwd(), 'Files')
-            if not os.path.exists(output_basedirpath):
-                os.mkdir(output_basedirpath)
-
-        output_dirpath = os.path.join(
-            output_basedirpath,
-            oasis_model.key.replace('/', '-')
-        )
-        if not os.path.exists(output_dirpath):
-            os.mkdir(output_dirpath)
+            output_dirpath = os.path.join(os.getcwd(), 'Files', oasis_model.key.replace('/', '-'))
+            if not os.path.exists(output_dirpath):
+                os.mkdir(output_dirpath)
         
-        omr['output_basedirpath'] = output_basedirpath
         omr['output_dirpath'] = output_dirpath
 
         if 'source_exposures_file_path' in omr:

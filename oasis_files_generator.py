@@ -147,11 +147,11 @@ SCRIPT_ARGS = {
         'help_text': 'Path of the xtrans executable which performs the source -> canonical and canonical -> model exposures transformations',
         'directly_required': False
     },
-    'output_basedirpath': {
-        'arg_name': 'output_basedirpath',
+    'output_dirpath': {
+        'arg_name': 'output_dirpath',
         'flag': 'o',
         'type': str,
-        'help_text': 'Parent directory to place generated Oasis files for the model',
+        'help_text': 'Directory to place generated Oasis files for the model',
         'directly_required': False
     }
 }
@@ -226,8 +226,8 @@ if __name__ == '__main__':
         else:
             args.pop('config_file_path')
             logger.info('Script resources arguments: {}'.format(args))
-        
-        missing = filter(lambda res: not args[res] if res in args and res != 'config_file_path' else None, SCRIPT_ARGS)
+
+        missing = filter(lambda res: not args[res] if res in args and res not in ['config_file_path', 'output_dirpath'] else None, SCRIPT_ARGS)
 
         if missing:
             raise OasisException('Not all script resources arguments provided - missing {}'.format(missing))
@@ -251,12 +251,22 @@ if __name__ == '__main__':
         )
         logger.info('\t{}'.format(model))
 
+        logger.info('Setting up Oasis files directory for model {}'.format(model.key))
+        if 'output_dirpath' in args and args['output_dirpath']:
+            if not os.path.exists(args['output_dirpath']):
+                os.mkdir(args['output_dirpath'])
+        else:
+            base_dir = os.path.join(os.getcwd(), 'Files')
+            logger.info('No Oasis files directory provided - creating one in {}'.format(base_dir))
+            args['output_dirpath'] = os.path.join(os.getcwd(), 'Files', model.key.replace('/', '-'))
+            if not os.path.exists(args['output_dirpath']):
+                os.mkdir(args['output_dirpath'])
+        model.resources['output_dirpath'] = args['output_dirpath']
+        logger.info('Oasis files directory {} set up for model {}'.format(model.resources['output_dirpath'], model.key))
+
         logger.info('Creating an Oasis exposures manager for the model')
         manager = oem(oasis_models=[model])
         logger.info('\t{}'.format(manager))
-
-        logger.info('Adding output files directory path to `**args`')
-        args['output_dirpath'] = model.resources['output_dirpath']
 
         logger.info('Generating Oasis files for the model')
         oasis_files = manager.start_files_pipeline(model, with_model_resources=False, **args)
