@@ -23,7 +23,7 @@
                                    -c '/path/to/canonical/exposures/validation/file'
                                    -d '/path/to/canonical/to/model/exposures/transformation/file'
                                    -x '/path/to/xtrans/executable'
-                                   -o '/path/to/output/files/parent/directory'
+                                   -o '/path/to/oasis/files/directory'
 
     or by providing the path to a JSON script config file which defines all
     the script resources - the syntax for the latter option is::
@@ -34,7 +34,7 @@
 
         "keys_data_path"
         "model_version_file_path"
-        "lookup_service_package_path"
+        "lookup_package_path"
         "canonical_exposures_profile_json_path"
         "source_exposures_file_path"
         "source_exposures_validation_file_path"
@@ -42,7 +42,7 @@
         "canonical_exposures_validation_file_path"
         "canonical_to_model_exposures_transformation_file_path"
         "xtrans_path"
-        "output_basedirpath"
+        "output_dirpath"
 
     The file and folder paths can be relative to the path of the script. If you've cloned
     the OMDK repository then script configs for models can be placed in the ``script_config``
@@ -59,11 +59,11 @@ import sys
 import time
 
 from oasis_utils import (
-    KeysLookupServiceFactory as klsf,
     OasisException,
 )
 from models import OasisModelFactory as omf
 from exposures import OasisExposuresManager as oem
+from keys import OasisKeysLookupFactory as oklf
 
 __author__ = "Sandeep Murthy"
 __copyright__ = "2017, Oasis Loss Modelling Framework"
@@ -91,8 +91,8 @@ SCRIPT_ARGS = {
         'help_text': 'Model version file path',
         'directly_required': False
     },
-    'lookup_service_package_path': {
-        'arg_name': 'lookup_service_package_path',
+    'lookup_package_path': {
+        'arg_name': 'lookup_package_path',
         'flag': 'l',
         'type': str,
         'help_text': 'Package path for model keys lookup service - usually in the `src/keys_server` folder of the relevant supplier repository',
@@ -233,15 +233,15 @@ if __name__ == '__main__':
             raise OasisException('Not all script resources arguments provided - missing {}'.format(missing))
 
         logger.info('Getting model info and creating lookup service instance')
-        model_info, model_kls = klsf.create(
+        model_info, model_klc = oklf.create(
             model_keys_data_path=args['keys_data_path'],
             model_version_file_path=args['model_version_file_path'],
-            lookup_service_package_path=args['lookup_service_package_path']
+            lookup_package_path=args['lookup_package_path']
         )
         time.sleep(3)
-        logger.info('\t{}, {}'.format(model_info, model_kls))
+        logger.info('\t{}, {}'.format(model_info, model_klc))
 
-        args['lookup_service'] = model_kls
+        args['lookup'] = model_klc
 
         logger.info('Creating model object')
         model = omf.create(

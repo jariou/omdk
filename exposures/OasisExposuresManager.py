@@ -28,12 +28,13 @@ from interface import implements
 from OasisExposuresManagerInterface import OasisExposuresManagerInterface
 from OasisFilesPipeline import OasisFilesPipeline
 
+from keys import OasisKeysLookupFactory as oklf
+
 if os.getcwd().split(os.path.sep)[-1] == 'exposures':
     sys.path.insert(0, os.path.abspath(os.pardir))
 
 from oasis_utils import (
     get_utctimestamp,
-    KeysLookupServiceFactory as klsf,
     OasisException,
     run_mono_executable,
 )
@@ -65,8 +66,8 @@ class OasisExposuresManager(implements(OasisExposuresManagerInterface)):
         self.logger.info('Exposures manager {} initialising'.format(self))
 
         self.logger.info('Creating keys lookup service factory for exposures manager {}'.format(self))
-        self._keys_lookup_service_factory = klsf()
-        self.logger.info('Created keys lookup service factory {} for exposures manager {}'.format(klsf, self))
+        self._keys_lookup_service_factory = oklf()
+        self.logger.info('Created keys lookup service factory {} for exposures manager {}'.format(self._keys_lookup_service_factory, self))
         
         self.logger.info('Adding models')
         self._models = {}
@@ -400,11 +401,11 @@ class OasisExposuresManager(implements(OasisExposuresManagerInterface)):
 
         if not with_model_resources:
             model_exposures_file_path = kwargs['model_exposures_file_path'] if 'model_exposures_file_path' in kwargs else None
-            lookup_service = kwargs['lookup_service']
+            lookup = kwargs['lookup']
             keys_file_path = kwargs['keys_file_path']
         else:
             model_exposures_file_path = tfp.model_exposures_file.name if tfp.model_exposures_file else None
-            lookup_service = omr['lookup_service']
+            lookup = omr['lookup']
             keys_file_path = tfp.keys_file.name
 
         (
@@ -413,7 +414,7 @@ class OasisExposuresManager(implements(OasisExposuresManagerInterface)):
         ) = map(os.path.abspath, [model_exposures_file_path, keys_file_path])
 
         oasis_keys_file, _ = self.keys_lookup_service_factory.save_keys(
-            lookup_service=lookup_service,
+            lookup=lookup,
             model_exposures_file_path=model_exposures_file_path,
             output_file_path=keys_file_path,
             format='oasis_keys'

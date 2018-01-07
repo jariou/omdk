@@ -96,7 +96,7 @@ above, should be named as follows:
 
     "keys_data_path"
     "model_version_file_path"
-    "lookup_service_package_path"
+    "lookup_package_path"
     "canonical_exposures_profile_json_path"
     "source_exposures_file_path"
     "source_exposures_validation_file_path"

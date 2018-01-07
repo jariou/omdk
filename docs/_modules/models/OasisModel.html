@@ -53,10 +53,8 @@
 <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">sep</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;models&#39;</span><span class="p">:</span>
     <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">pardir</span><span class="p">))</span>
 
-<span class="kn">from</span> <span class="nn">oasis_utils</span> <span class="k">import</span> <span class="p">(</span>
-    <span class="n">KeysLookupServiceFactory</span> <span class="k">as</span> <span class="n">klsf</span><span class="p">,</span>
-    <span class="n">OasisException</span><span class="p">,</span>
-<span class="p">)</span>
+<span class="kn">from</span> <span class="nn">oasis_utils</span> <span class="k">import</span> <span class="n">OasisException</span>
+
 
 <span class="n">__author__</span> <span class="o">=</span> <span class="s2">&quot;Sandeep Murthy&quot;</span>
 <span class="n">__copyright__</span> <span class="o">=</span> <span class="s2">&quot;2017, Oasis Loss Modelling Framework&quot;</span>

@@ -11,10 +11,8 @@ import os
 if os.getcwd().split(os.path.sep)[-1] == 'models':
     sys.path.insert(0, os.path.abspath(os.pardir))
 
-from oasis_utils import (
-    KeysLookupServiceFactory as klsf,
-    OasisException,
-)
+from oasis_utils import OasisException
+
 
 __author__ = "Sandeep Murthy"
 __copyright__ = "2017, Oasis Loss Modelling Framework"

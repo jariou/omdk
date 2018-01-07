@@ -30,6 +30,13 @@ Module Documentation
    :members:
    :undoc-members:
 
+``omdk.keys.OasisKeysLookupFactory``
+------------------------------------
+
+.. automodule:: keys.OasisKeysLookupFactory
+   :members:
+   :undoc-members:
+
 ``omdk.oasis_files_generator``
 ------------------------------
 
