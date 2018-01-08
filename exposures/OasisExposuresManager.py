@@ -66,7 +66,7 @@ class OasisExposuresManager(implements(OasisExposuresManagerInterface)):
         self.logger.info('Exposures manager {} initialising'.format(self))
 
         self.logger.info('Creating keys lookup service factory for exposures manager {}'.format(self))
-        self._keys_lookup_service_factory = oklf()
+        self._keys_lookup_factory = oklf()
         self.logger.info('Created keys lookup service factory {} for exposures manager {}'.format(self._keys_lookup_service_factory, self))
         
         self.logger.info('Adding models')
@@ -175,13 +175,13 @@ class OasisExposuresManager(implements(OasisExposuresManagerInterface)):
 
 
     @property
-    def keys_lookup_service_factory(self):
+    def keys_lookup_factory(self):
         """
         Keys lookup service factory property - getter only.
 
             :getter: Gets the current keys lookup service factory instance
         """
-        return self._keys_lookup_service_factory
+        return self._keys_lookup_factory
 
 
     @property
@@ -413,7 +413,7 @@ class OasisExposuresManager(implements(OasisExposuresManagerInterface)):
             keys_file_path
         ) = map(os.path.abspath, [model_exposures_file_path, keys_file_path])
 
-        oasis_keys_file, _ = self.keys_lookup_service_factory.save_keys(
+        oasis_keys_file, _ = self.keys_lookup_factory.save_keys(
             lookup=lookup,
             model_exposures_file_path=model_exposures_file_path,
             output_file_path=keys_file_path,
