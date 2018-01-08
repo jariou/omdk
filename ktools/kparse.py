@@ -4,15 +4,13 @@
     Code to generate bash script for execution from json
 """
 import argparse
-import importlib
 import io
 import json
 import logging
 import os
 import sys
 
-if os.getcwd().split(os.path.sep)[-1] == 'ktools':
-    sys.path.insert(0, os.path.abspath(os.pardir))
+sys.path.insert(0, os.path.abspath(os.pardir))
 
 from oasis_utils import (
     OasisException,
