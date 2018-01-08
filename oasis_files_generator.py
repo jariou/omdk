@@ -264,11 +264,11 @@ if __name__ == '__main__':
         model.resources['output_dirpath'] = args['output_dirpath']
         logger.info('Oasis files directory {} set up for model {}'.format(model.resources['output_dirpath'], model.key))
 
-        logger.info('Creating an Oasis exposures manager for the model')
+        logger.info('Creating an Oasis exposures manager for model')
         manager = oem(oasis_models=[model])
         logger.info('\t{}'.format(manager))
 
-        logger.info('Generating Oasis files for the model')
+        logger.info('Generating Oasis files for model')
         oasis_files = manager.start_files_pipeline(model, with_model_resources=False, **args)
 
         logger.info('\t{}'.format(oasis_files))
@@ -276,5 +276,4 @@ if __name__ == '__main__':
         logger.error(str(e))
         sys.exit(-1)
 
-    logger.info('Generated Oasis files for the model')
     sys.exit(0)

@@ -41,3 +41,10 @@ Module Documentation
 ------------------------------
 
 .. automodule:: oasis_files_generator
+
+``omdk.ktools.kparse``
+----------------------
+
+.. automodule:: ktools.kparse
+   :members:
+   :undoc-members:

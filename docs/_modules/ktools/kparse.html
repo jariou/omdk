@@ -1,0 +1,750 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>ktools.kparse &#8212; omdk 0.1 documentation</title>
+    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for ktools.kparse</h1><div class="highlight"><pre>
+<span></span><span class="ch">#!/usr/bin/env python</span>
+<span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Code to generate bash script for execution from json</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">argparse</span>
+<span class="kn">import</span> <span class="nn">importlib</span>
+<span class="kn">import</span> <span class="nn">io</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+
+<span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">sep</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;ktools&#39;</span><span class="p">:</span>
+    <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">pardir</span><span class="p">))</span>
+
+<span class="kn">from</span> <span class="nn">oasis_utils</span> <span class="k">import</span> <span class="p">(</span>
+    <span class="n">OasisException</span><span class="p">,</span>
+    <span class="n">oasis_log_utils</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="c1">#pylint: disable=I0011,C0111,C0103,C0301,W0603</span>
+
+<span class="n">pid_monitor_count</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">apid_monitor_count</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">lpid_monitor_count</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">kpid_monitor_count</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">command_file</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+
+
+<div class="viewcode-block" id="print_command"><a class="viewcode-back" href="../../modules.html#ktools.kparse.print_command">[docs]</a><span class="k">def</span> <span class="nf">print_command</span><span class="p">(</span><span class="n">cmd</span><span class="p">):</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">command_file</span><span class="p">,</span> <span class="s2">&quot;a&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">myfile</span><span class="p">:</span>
+        <span class="n">myfile</span><span class="o">.</span><span class="n">writelines</span><span class="p">(</span><span class="n">cmd</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="leccalc_enabled"><a class="viewcode-back" href="../../modules.html#ktools.kparse.leccalc_enabled">[docs]</a><span class="k">def</span> <span class="nf">leccalc_enabled</span><span class="p">(</span><span class="n">lec_options</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">option</span> <span class="ow">in</span> <span class="n">lec_options</span><span class="p">[</span><span class="s2">&quot;outputs&quot;</span><span class="p">]:</span>
+        <span class="k">if</span> <span class="n">lec_options</span><span class="p">[</span><span class="s2">&quot;outputs&quot;</span><span class="p">][</span><span class="n">option</span><span class="p">]:</span>
+            <span class="k">return</span> <span class="kc">True</span>
+    <span class="k">return</span> <span class="kc">False</span></div>
+
+
+<div class="viewcode-block" id="do_post_wait_processing"><a class="viewcode-back" href="../../modules.html#ktools.kparse.do_post_wait_processing">[docs]</a><span class="k">def</span> <span class="nf">do_post_wait_processing</span><span class="p">(</span><span class="n">runtype</span><span class="p">,</span> <span class="n">analysis_settings</span><span class="p">):</span>
+    <span class="k">global</span> <span class="n">apid_monitor_count</span>
+    <span class="k">global</span> <span class="n">lpid_monitor_count</span>
+    <span class="n">summary_set</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">if</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">_summaries&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">runtype</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">analysis_settings</span><span class="p">:</span>
+        <span class="k">return</span>
+
+    <span class="k">for</span> <span class="n">summary</span> <span class="ow">in</span> <span class="n">analysis_settings</span><span class="p">[</span><span class="s2">&quot;</span><span class="si">{}</span><span class="s2">_summaries&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">runtype</span><span class="p">)]:</span>
+        <span class="k">if</span> <span class="s2">&quot;id&quot;</span> <span class="ow">in</span> <span class="n">summary</span><span class="p">:</span>
+            <span class="n">summary_set</span> <span class="o">=</span> <span class="n">summary</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">summary</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;aalcalc&quot;</span><span class="p">):</span>
+                <span class="n">apid_monitor_count</span> <span class="o">=</span> <span class="n">apid_monitor_count</span> <span class="o">+</span> <span class="mi">1</span>
+                <span class="n">print_command</span><span class="p">(</span>
+                    <span class="s2">&quot;aalsummary -K</span><span class="si">{0}</span><span class="s2">_S</span><span class="si">{1}</span><span class="s2">_aalcalc &gt; output/</span><span class="si">{0}</span><span class="s2">_S</span><span class="si">{1}</span><span class="s2">_aalcalc.csv &amp; apid</span><span class="si">{2}</span><span class="s2">=$!&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                        <span class="n">runtype</span><span class="p">,</span> <span class="n">summary_set</span><span class="p">,</span> <span class="n">apid_monitor_count</span><span class="p">))</span>
+            <span class="k">if</span> <span class="n">summary</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;lec_output&quot;</span><span class="p">):</span>
+                <span class="k">if</span> <span class="s2">&quot;leccalc&quot;</span> <span class="ow">in</span> <span class="n">summary</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">leccalc_enabled</span><span class="p">(</span><span class="n">summary</span><span class="p">[</span><span class="s2">&quot;leccalc&quot;</span><span class="p">]):</span>
+                        <span class="n">return_period_option</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+                        <span class="k">if</span> <span class="n">summary</span><span class="p">[</span><span class="s2">&quot;leccalc&quot;</span><span class="p">][</span><span class="s2">&quot;return_period_file&quot;</span><span class="p">]:</span>
+                            <span class="n">return_period_option</span> <span class="o">=</span> <span class="s2">&quot;-r&quot;</span>
+                        <span class="n">cmd</span> <span class="o">=</span> <span class="s2">&quot;leccalc </span><span class="si">{}</span><span class="s2"> -K</span><span class="si">{}</span><span class="s2">_S</span><span class="si">{}</span><span class="s2">_summaryleccalc&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">return_period_option</span><span class="p">,</span> <span class="n">runtype</span><span class="p">,</span> <span class="n">summary_set</span><span class="p">)</span>
+                        <span class="n">lpid_monitor_count</span> <span class="o">=</span> <span class="n">lpid_monitor_count</span> <span class="o">+</span> <span class="mi">1</span>
+                        <span class="k">for</span> <span class="n">option</span> <span class="ow">in</span> <span class="n">summary</span><span class="p">[</span><span class="s2">&quot;leccalc&quot;</span><span class="p">][</span><span class="s2">&quot;outputs&quot;</span><span class="p">]:</span>
+                            <span class="n">switch</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+                            <span class="k">if</span> <span class="n">summary</span><span class="p">[</span><span class="s2">&quot;leccalc&quot;</span><span class="p">][</span><span class="s2">&quot;outputs&quot;</span><span class="p">][</span><span class="n">option</span><span class="p">]:</span>
+                                <span class="k">if</span> <span class="n">option</span> <span class="o">==</span> <span class="s2">&quot;full_uncertainty_aep&quot;</span><span class="p">:</span>
+                                    <span class="n">switch</span> <span class="o">=</span> <span class="s2">&quot;-F&quot;</span>
+                                <span class="k">if</span> <span class="n">option</span> <span class="o">==</span> <span class="s2">&quot;wheatsheaf_aep&quot;</span><span class="p">:</span>
+                                    <span class="n">switch</span> <span class="o">=</span> <span class="s2">&quot;-W&quot;</span>
+                                <span class="k">if</span> <span class="n">option</span> <span class="o">==</span> <span class="s2">&quot;sample_mean_aep&quot;</span><span class="p">:</span>
+                                    <span class="n">switch</span> <span class="o">=</span> <span class="s2">&quot;-S&quot;</span>
+                                <span class="k">if</span> <span class="n">option</span> <span class="o">==</span> <span class="s2">&quot;full_uncertainty_oep&quot;</span><span class="p">:</span>
+                                    <span class="n">switch</span> <span class="o">=</span> <span class="s2">&quot;-f&quot;</span>
+                                <span class="k">if</span> <span class="n">option</span> <span class="o">==</span> <span class="s2">&quot;wheatsheaf_oep&quot;</span><span class="p">:</span>
+                                    <span class="n">switch</span> <span class="o">=</span> <span class="s2">&quot;-w&quot;</span>
+                                <span class="k">if</span> <span class="n">option</span> <span class="o">==</span> <span class="s2">&quot;sample_mean_oep&quot;</span><span class="p">:</span>
+                                    <span class="n">switch</span> <span class="o">=</span> <span class="s2">&quot;-s&quot;</span>
+                                <span class="k">if</span> <span class="n">option</span> <span class="o">==</span> <span class="s2">&quot;wheatsheaf_mean_aep&quot;</span><span class="p">:</span>
+                                    <span class="n">switch</span> <span class="o">=</span> <span class="s2">&quot;-M&quot;</span>
+                                <span class="k">if</span> <span class="n">option</span> <span class="o">==</span> <span class="s2">&quot;wheatsheaf_mean_oep&quot;</span><span class="p">:</span>
+                                    <span class="n">switch</span> <span class="o">=</span> <span class="s2">&quot;-m&quot;</span>
+                                <span class="n">cmd</span> <span class="o">=</span> <span class="n">cmd</span> <span class="o">+</span> <span class="s2">&quot; </span><span class="si">{}</span><span class="s2"> output/</span><span class="si">{}</span><span class="s2">_S</span><span class="si">{}</span><span class="s2">_leccalc_</span><span class="si">{}</span><span class="s2">.csv&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">switch</span><span class="p">,</span> <span class="n">runtype</span><span class="p">,</span> <span class="n">summary_set</span><span class="p">,</span> <span class="n">option</span><span class="p">)</span>
+                        <span class="n">cmd</span> <span class="o">=</span> <span class="n">cmd</span> <span class="o">+</span> <span class="s2">&quot;  &amp;  lpid</span><span class="si">{}</span><span class="s2">=$!&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">lpid_monitor_count</span><span class="p">)</span>
+                        <span class="n">print_command</span><span class="p">(</span><span class="n">cmd</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="do_fifos"><a class="viewcode-back" href="../../modules.html#ktools.kparse.do_fifos">[docs]</a><span class="k">def</span> <span class="nf">do_fifos</span><span class="p">(</span><span class="n">action</span><span class="p">,</span> <span class="n">runtype</span><span class="p">,</span> <span class="n">analysis_settings</span><span class="p">,</span> <span class="n">process_id</span><span class="p">):</span>
+
+    <span class="n">summary_set</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">if</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">_summaries&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">runtype</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">analysis_settings</span><span class="p">:</span>
+        <span class="k">return</span>
+
+    <span class="n">print_command</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{}</span><span class="s2"> fifo/</span><span class="si">{}</span><span class="s2">_P</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">action</span><span class="p">,</span> <span class="n">runtype</span><span class="p">,</span> <span class="n">process_id</span><span class="p">))</span>
+    <span class="n">print_command</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">summary</span> <span class="ow">in</span> <span class="n">analysis_settings</span><span class="p">[</span><span class="s2">&quot;</span><span class="si">{}</span><span class="s2">_summaries&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">runtype</span><span class="p">)]:</span>
+        <span class="k">if</span> <span class="s2">&quot;id&quot;</span> <span class="ow">in</span> <span class="n">summary</span><span class="p">:</span>
+            <span class="n">summary_set</span> <span class="o">=</span> <span class="n">summary</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">]</span>
+            <span class="n">print_command</span><span class="p">(</span>
+                <span class="s2">&quot;</span><span class="si">{}</span><span class="s2"> fifo/</span><span class="si">{}</span><span class="s2">_S</span><span class="si">{}</span><span class="s2">_summary_P</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                    <span class="n">action</span><span class="p">,</span> <span class="n">runtype</span><span class="p">,</span> <span class="n">summary_set</span><span class="p">,</span> <span class="n">process_id</span><span class="p">))</span>
+            <span class="k">if</span> <span class="n">summary</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;eltcalc&quot;</span><span class="p">):</span>
+                <span class="n">print_command</span><span class="p">(</span>
+                    <span class="s2">&quot;</span><span class="si">{}</span><span class="s2"> fifo/</span><span class="si">{}</span><span class="s2">_S</span><span class="si">{}</span><span class="s2">_summaryeltcalc_P</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                        <span class="n">action</span><span class="p">,</span> <span class="n">runtype</span><span class="p">,</span> <span class="n">summary_set</span><span class="p">,</span> <span class="n">process_id</span><span class="p">))</span>
+                <span class="n">print_command</span><span class="p">(</span>
+                    <span class="s2">&quot;</span><span class="si">{}</span><span class="s2"> fifo/</span><span class="si">{}</span><span class="s2">_S</span><span class="si">{}</span><span class="s2">_eltcalc_P</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                        <span class="n">action</span><span class="p">,</span> <span class="n">runtype</span><span class="p">,</span> <span class="n">summary_set</span><span class="p">,</span> <span class="n">process_id</span><span class="p">))</span>
+            <span class="k">if</span> <span class="n">summary</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;summarycalc&quot;</span><span class="p">):</span>
+                <span class="n">print_command</span><span class="p">(</span>
+                    <span class="s2">&quot;</span><span class="si">{}</span><span class="s2"> fifo/</span><span class="si">{}</span><span class="s2">_S</span><span class="si">{}</span><span class="s2">_summarysummarycalc_P</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                        <span class="n">action</span><span class="p">,</span> <span class="n">runtype</span><span class="p">,</span> <span class="n">summary_set</span><span class="p">,</span> <span class="n">process_id</span><span class="p">))</span>
+                <span class="n">print_command</span><span class="p">(</span>
+                    <span class="s2">&quot;</span><span class="si">{}</span><span class="s2"> fifo/</span><span class="si">{}</span><span class="s2">_S</span><span class="si">{}</span><span class="s2">_summarycalc_P</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                        <span class="n">action</span><span class="p">,</span> <span class="n">runtype</span><span class="p">,</span> <span class="n">summary_set</span><span class="p">,</span> <span class="n">process_id</span><span class="p">))</span>
+            <span class="k">if</span> <span class="n">summary</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;pltcalc&quot;</span><span class="p">):</span>
+                <span class="n">print_command</span><span class="p">(</span>
+                    <span class="s2">&quot;</span><span class="si">{}</span><span class="s2"> fifo/</span><span class="si">{}</span><span class="s2">_S</span><span class="si">{}</span><span class="s2">_summarypltcalc_P</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                        <span class="n">action</span><span class="p">,</span> <span class="n">runtype</span><span class="p">,</span> <span class="n">summary_set</span><span class="p">,</span> <span class="n">process_id</span><span class="p">))</span>
+                <span class="n">print_command</span><span class="p">(</span>
+                    <span class="s2">&quot;</span><span class="si">{}</span><span class="s2"> fifo/</span><span class="si">{}</span><span class="s2">_S</span><span class="si">{}</span><span class="s2">_pltcalc_P</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                        <span class="n">action</span><span class="p">,</span> <span class="n">runtype</span><span class="p">,</span> <span class="n">summary_set</span><span class="p">,</span> <span class="n">process_id</span><span class="p">))</span>
+            <span class="k">if</span> <span class="n">summary</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;aalcalc&quot;</span><span class="p">):</span>
+                <span class="n">print_command</span><span class="p">(</span>
+                    <span class="s2">&quot;</span><span class="si">{}</span><span class="s2"> fifo/</span><span class="si">{}</span><span class="s2">_S</span><span class="si">{}</span><span class="s2">_summaryaalcalc_P</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                        <span class="n">action</span><span class="p">,</span> <span class="n">runtype</span><span class="p">,</span> <span class="n">summary_set</span><span class="p">,</span> <span class="n">process_id</span><span class="p">))</span>
+
+    <span class="n">print_command</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="create_workfolders"><a class="viewcode-back" href="../../modules.html#ktools.kparse.create_workfolders">[docs]</a><span class="k">def</span> <span class="nf">create_workfolders</span><span class="p">(</span><span class="n">runtype</span><span class="p">,</span> <span class="n">analysis_settings</span><span class="p">):</span>
+
+    <span class="k">if</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">_summaries&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">runtype</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">analysis_settings</span><span class="p">:</span>
+        <span class="k">return</span>
+    <span class="k">for</span> <span class="n">summary</span> <span class="ow">in</span> <span class="n">analysis_settings</span><span class="p">[</span><span class="s2">&quot;</span><span class="si">{}</span><span class="s2">_summaries&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">runtype</span><span class="p">)]:</span>
+        <span class="k">if</span> <span class="s2">&quot;id&quot;</span> <span class="ow">in</span> <span class="n">summary</span><span class="p">:</span>
+            <span class="n">summary_set</span> <span class="o">=</span> <span class="n">summary</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">summary</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;lec_output&quot;</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">leccalc_enabled</span><span class="p">(</span><span class="n">summary</span><span class="p">[</span><span class="s2">&quot;leccalc&quot;</span><span class="p">]):</span>
+                    <span class="n">print_command</span><span class="p">(</span>
+                        <span class="s2">&quot;mkdir work/</span><span class="si">{}</span><span class="s2">_S</span><span class="si">{}</span><span class="s2">_summaryleccalc&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                            <span class="n">runtype</span><span class="p">,</span> <span class="n">summary_set</span><span class="p">))</span>
+            <span class="k">if</span> <span class="n">summary</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;aalcalc&quot;</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+                <span class="n">print_command</span><span class="p">(</span><span class="s2">&quot;mkdir work/</span><span class="si">{}</span><span class="s2">_S</span><span class="si">{}</span><span class="s2">_aalcalc&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">runtype</span><span class="p">,</span> <span class="n">summary_set</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="remove_workfolders"><a class="viewcode-back" href="../../modules.html#ktools.kparse.remove_workfolders">[docs]</a><span class="k">def</span> <span class="nf">remove_workfolders</span><span class="p">(</span><span class="n">runtype</span><span class="p">,</span> <span class="n">analysis_settings</span><span class="p">):</span>
+    <span class="n">print_command</span><span class="p">(</span><span class="s2">&quot;rm -rf work/kat&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">_summaries&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">runtype</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">analysis_settings</span><span class="p">:</span>
+        <span class="k">return</span>
+    <span class="k">for</span> <span class="n">summary</span> <span class="ow">in</span> <span class="n">analysis_settings</span><span class="p">[</span><span class="s2">&quot;</span><span class="si">{}</span><span class="s2">_summaries&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">runtype</span><span class="p">)]:</span>
+        <span class="k">if</span> <span class="s2">&quot;id&quot;</span> <span class="ow">in</span> <span class="n">summary</span><span class="p">:</span>
+            <span class="n">summary_set</span> <span class="o">=</span> <span class="n">summary</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">summary</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;lec_output&quot;</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">leccalc_enabled</span><span class="p">(</span><span class="n">summary</span><span class="p">[</span><span class="s2">&quot;leccalc&quot;</span><span class="p">]):</span>
+                    <span class="n">print_command</span><span class="p">(</span>
+                        <span class="s2">&quot;rm work/</span><span class="si">{}</span><span class="s2">_S</span><span class="si">{}</span><span class="s2">_summaryleccalc/*&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                            <span class="n">runtype</span><span class="p">,</span> <span class="n">summary_set</span><span class="p">))</span>
+                    <span class="n">print_command</span><span class="p">(</span>
+                        <span class="s2">&quot;rmdir work/</span><span class="si">{}</span><span class="s2">_S</span><span class="si">{}</span><span class="s2">_summaryleccalc&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                            <span class="n">runtype</span><span class="p">,</span> <span class="n">summary_set</span><span class="p">))</span>
+            <span class="k">if</span> <span class="n">summary</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;aalcalc&quot;</span><span class="p">):</span>
+                <span class="n">print_command</span><span class="p">(</span>
+                    <span class="s2">&quot;rm work/</span><span class="si">{}</span><span class="s2">_S</span><span class="si">{}</span><span class="s2">_aalcalc/*&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                        <span class="n">runtype</span><span class="p">,</span> <span class="n">summary_set</span><span class="p">))</span>
+                <span class="n">print_command</span><span class="p">(</span><span class="s2">&quot;rmdir work/</span><span class="si">{}</span><span class="s2">_S</span><span class="si">{}</span><span class="s2">_aalcalc&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                    <span class="n">runtype</span><span class="p">,</span> <span class="n">summary_set</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="do_make_fifos"><a class="viewcode-back" href="../../modules.html#ktools.kparse.do_make_fifos">[docs]</a><span class="k">def</span> <span class="nf">do_make_fifos</span><span class="p">(</span><span class="n">runtype</span><span class="p">,</span> <span class="n">analysis_settings</span><span class="p">,</span> <span class="n">process_id</span><span class="p">):</span>
+    <span class="n">do_fifos</span><span class="p">(</span><span class="s2">&quot;mkfifo&quot;</span><span class="p">,</span> <span class="n">runtype</span><span class="p">,</span> <span class="n">analysis_settings</span><span class="p">,</span> <span class="n">process_id</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="do_remove_fifos"><a class="viewcode-back" href="../../modules.html#ktools.kparse.do_remove_fifos">[docs]</a><span class="k">def</span> <span class="nf">do_remove_fifos</span><span class="p">(</span><span class="n">runtype</span><span class="p">,</span> <span class="n">analysis_settings</span><span class="p">,</span> <span class="n">process_id</span><span class="p">):</span>
+    <span class="n">do_fifos</span><span class="p">(</span><span class="s2">&quot;rm&quot;</span><span class="p">,</span> <span class="n">runtype</span><span class="p">,</span> <span class="n">analysis_settings</span><span class="p">,</span> <span class="n">process_id</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="do_kats"><a class="viewcode-back" href="../../modules.html#ktools.kparse.do_kats">[docs]</a><span class="k">def</span> <span class="nf">do_kats</span><span class="p">(</span><span class="n">runtype</span><span class="p">,</span> <span class="n">analysis_settings</span><span class="p">,</span> <span class="n">max_process_id</span><span class="p">):</span>
+    <span class="k">global</span> <span class="n">kpid_monitor_count</span>
+    <span class="n">anykats</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="k">if</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">_summaries&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">runtype</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">analysis_settings</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">anykats</span>
+
+    <span class="k">for</span> <span class="n">summary</span> <span class="ow">in</span> <span class="n">analysis_settings</span><span class="p">[</span><span class="s2">&quot;</span><span class="si">{}</span><span class="s2">_summaries&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">runtype</span><span class="p">)]:</span>
+        <span class="k">if</span> <span class="s2">&quot;id&quot;</span> <span class="ow">in</span> <span class="n">summary</span><span class="p">:</span>
+            <span class="n">summary_set</span> <span class="o">=</span> <span class="n">summary</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">summary</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;eltcalc&quot;</span><span class="p">):</span>
+                <span class="n">anykats</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="n">cmd</span> <span class="o">=</span> <span class="s2">&quot;kat &quot;</span>
+                <span class="k">for</span> <span class="n">process_id</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">max_process_id</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+                    <span class="n">cmd</span> <span class="o">=</span> <span class="n">cmd</span> <span class="o">+</span> <span class="s2">&quot;work/kat/</span><span class="si">{}</span><span class="s2">_S</span><span class="si">{}</span><span class="s2">_eltcalc_P</span><span class="si">{}</span><span class="s2"> &quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                        <span class="n">runtype</span><span class="p">,</span> <span class="n">summary_set</span><span class="p">,</span> <span class="n">process_id</span><span class="p">)</span>
+                <span class="n">kpid_monitor_count</span> <span class="o">=</span> <span class="n">kpid_monitor_count</span> <span class="o">+</span> <span class="mi">1</span>
+                <span class="n">cmd</span> <span class="o">=</span> <span class="n">cmd</span> <span class="o">+</span> <span class="s2">&quot;&gt; output/</span><span class="si">{}</span><span class="s2">_S</span><span class="si">{}</span><span class="s2">_eltcalc.csv &amp; kpid</span><span class="si">{}</span><span class="s2">=$!&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                    <span class="n">runtype</span><span class="p">,</span> <span class="n">summary_set</span><span class="p">,</span> <span class="n">kpid_monitor_count</span><span class="p">)</span>
+                <span class="n">print_command</span><span class="p">(</span><span class="n">cmd</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">summary</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;pltcalc&quot;</span><span class="p">):</span>
+                <span class="n">anykats</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="n">cmd</span> <span class="o">=</span> <span class="s2">&quot;kat &quot;</span>
+                <span class="k">for</span> <span class="n">process_id</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">max_process_id</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+                    <span class="n">cmd</span> <span class="o">=</span> <span class="n">cmd</span> <span class="o">+</span> <span class="s2">&quot;work/kat/</span><span class="si">{}</span><span class="s2">_S</span><span class="si">{}</span><span class="s2">_pltcalc_P</span><span class="si">{}</span><span class="s2"> &quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                        <span class="n">runtype</span><span class="p">,</span> <span class="n">summary_set</span><span class="p">,</span> <span class="n">process_id</span><span class="p">)</span>
+                <span class="n">kpid_monitor_count</span> <span class="o">=</span> <span class="n">kpid_monitor_count</span> <span class="o">+</span> <span class="mi">1</span>
+                <span class="n">cmd</span> <span class="o">=</span> <span class="n">cmd</span> <span class="o">+</span> <span class="s2">&quot;&gt; output/</span><span class="si">{}</span><span class="s2">_S</span><span class="si">{}</span><span class="s2">_pltcalc.csv &amp; kpid</span><span class="si">{}</span><span class="s2">=$!&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                    <span class="n">runtype</span><span class="p">,</span> <span class="n">summary_set</span><span class="p">,</span> <span class="n">kpid_monitor_count</span><span class="p">)</span>
+                <span class="n">print_command</span><span class="p">(</span><span class="n">cmd</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">summary</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;summarycalc&quot;</span><span class="p">):</span>
+                <span class="n">anykats</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="n">cmd</span> <span class="o">=</span> <span class="s2">&quot;kat &quot;</span>
+                <span class="k">for</span> <span class="n">process_id</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">max_process_id</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+                    <span class="n">cmd</span> <span class="o">=</span> <span class="n">cmd</span> <span class="o">+</span> <span class="s2">&quot;work/kat/</span><span class="si">{}</span><span class="s2">_S</span><span class="si">{}</span><span class="s2">_summarycalc_P</span><span class="si">{}</span><span class="s2"> &quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                        <span class="n">runtype</span><span class="p">,</span> <span class="n">summary_set</span><span class="p">,</span> <span class="n">process_id</span><span class="p">)</span>
+                <span class="n">kpid_monitor_count</span> <span class="o">=</span> <span class="n">kpid_monitor_count</span> <span class="o">+</span> <span class="mi">1</span>
+                <span class="n">cmd</span> <span class="o">=</span> <span class="n">cmd</span> <span class="o">+</span> <span class="s2">&quot;&gt; output/</span><span class="si">{}</span><span class="s2">_S</span><span class="si">{}</span><span class="s2">_summarycalc.csv &amp; kpid</span><span class="si">{}</span><span class="s2">=$!&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                    <span class="n">runtype</span><span class="p">,</span> <span class="n">summary_set</span><span class="p">,</span> <span class="n">kpid_monitor_count</span><span class="p">)</span>
+                <span class="n">print_command</span><span class="p">(</span><span class="n">cmd</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">anykats</span></div>
+
+
+<div class="viewcode-block" id="do_summarycalcs"><a class="viewcode-back" href="../../modules.html#ktools.kparse.do_summarycalcs">[docs]</a><span class="k">def</span> <span class="nf">do_summarycalcs</span><span class="p">(</span><span class="n">runtype</span><span class="p">,</span> <span class="n">analysis_settings</span><span class="p">,</span> <span class="n">process_id</span><span class="p">):</span>
+    <span class="n">summarycalc_switch</span> <span class="o">=</span> <span class="s2">&quot;-g&quot;</span>
+    <span class="k">if</span> <span class="n">runtype</span> <span class="o">==</span> <span class="s2">&quot;il&quot;</span><span class="p">:</span>
+        <span class="n">summarycalc_switch</span> <span class="o">=</span> <span class="s2">&quot;-f&quot;</span>
+    <span class="k">if</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">_summaries&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">runtype</span><span class="p">)</span> <span class="ow">in</span> <span class="n">analysis_settings</span><span class="p">:</span>
+        <span class="n">cmd</span> <span class="o">=</span> <span class="s2">&quot;summarycalc </span><span class="si">{}</span><span class="s2"> &quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">summarycalc_switch</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">summary</span> <span class="ow">in</span> <span class="n">analysis_settings</span><span class="p">[</span><span class="s2">&quot;</span><span class="si">{}</span><span class="s2">_summaries&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">runtype</span><span class="p">)]:</span>
+            <span class="k">if</span> <span class="s2">&quot;id&quot;</span> <span class="ow">in</span> <span class="n">summary</span><span class="p">:</span>
+                <span class="n">summary_set</span> <span class="o">=</span> <span class="n">summary</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">]</span>
+                <span class="n">cmd</span> <span class="o">=</span> <span class="n">cmd</span> <span class="o">+</span> <span class="s2">&quot;-</span><span class="si">{}</span><span class="s2"> fifo/</span><span class="si">{}</span><span class="s2">_S</span><span class="si">{}</span><span class="s2">_summary_P</span><span class="si">{}</span><span class="s2"> &quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                    <span class="n">summary_set</span><span class="p">,</span> <span class="n">runtype</span><span class="p">,</span> <span class="n">process_id</span><span class="p">)</span>
+        <span class="n">cmd</span> <span class="o">=</span> <span class="n">cmd</span> <span class="o">+</span> <span class="s2">&quot; &lt; fifo/</span><span class="si">{}</span><span class="s2">_P</span><span class="si">{}</span><span class="s2"> &amp;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">runtype</span><span class="p">,</span> <span class="n">process_id</span><span class="p">)</span>
+        <span class="n">print_command</span><span class="p">(</span><span class="n">cmd</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="do_tees"><a class="viewcode-back" href="../../modules.html#ktools.kparse.do_tees">[docs]</a><span class="k">def</span> <span class="nf">do_tees</span><span class="p">(</span><span class="n">runtype</span><span class="p">,</span> <span class="n">analysis_settings</span><span class="p">,</span> <span class="n">process_id</span><span class="p">):</span>
+    <span class="k">global</span> <span class="n">pid_monitor_count</span>
+    <span class="n">summary_set</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">if</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">_summaries&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">runtype</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">analysis_settings</span><span class="p">:</span>
+        <span class="k">return</span>
+
+    <span class="k">for</span> <span class="n">summary</span> <span class="ow">in</span> <span class="n">analysis_settings</span><span class="p">[</span><span class="s2">&quot;</span><span class="si">{}</span><span class="s2">_summaries&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">runtype</span><span class="p">)]:</span>
+        <span class="k">if</span> <span class="s2">&quot;id&quot;</span> <span class="ow">in</span> <span class="n">summary</span><span class="p">:</span>
+            <span class="n">pid_monitor_count</span> <span class="o">=</span> <span class="n">pid_monitor_count</span> <span class="o">+</span> <span class="mi">1</span>
+            <span class="n">summary_set</span> <span class="o">=</span> <span class="n">summary</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">]</span>
+            <span class="n">cmd</span> <span class="o">=</span> <span class="s2">&quot;tee &lt; fifo/</span><span class="si">{}</span><span class="s2">_S</span><span class="si">{}</span><span class="s2">_summary_P</span><span class="si">{}</span><span class="s2"> &quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="n">runtype</span><span class="p">,</span> <span class="n">summary_set</span><span class="p">,</span> <span class="n">process_id</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">summary</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;eltcalc&quot;</span><span class="p">):</span>
+                <span class="n">cmd</span> <span class="o">=</span> <span class="n">cmd</span> <span class="o">+</span> <span class="s2">&quot;fifo/</span><span class="si">{}</span><span class="s2">_S</span><span class="si">{}</span><span class="s2">_summaryeltcalc_P</span><span class="si">{}</span><span class="s2"> &quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                    <span class="n">runtype</span><span class="p">,</span> <span class="n">summary_set</span><span class="p">,</span> <span class="n">process_id</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">summary</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;pltcalc&quot;</span><span class="p">):</span>
+                <span class="n">cmd</span> <span class="o">=</span> <span class="n">cmd</span> <span class="o">+</span> <span class="s2">&quot;fifo/</span><span class="si">{}</span><span class="s2">_S</span><span class="si">{}</span><span class="s2">_summarypltcalc_P</span><span class="si">{}</span><span class="s2"> &quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                    <span class="n">runtype</span><span class="p">,</span> <span class="n">summary_set</span><span class="p">,</span> <span class="n">process_id</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">summary</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;summarycalc&quot;</span><span class="p">):</span>
+                <span class="n">cmd</span> <span class="o">=</span> <span class="n">cmd</span> <span class="o">+</span> <span class="s2">&quot;fifo/</span><span class="si">{}</span><span class="s2">_S</span><span class="si">{}</span><span class="s2">_summarysummarycalc_P</span><span class="si">{}</span><span class="s2"> &quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                    <span class="n">runtype</span><span class="p">,</span> <span class="n">summary_set</span><span class="p">,</span> <span class="n">process_id</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">summary</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;aalcalc&quot;</span><span class="p">):</span>
+                <span class="n">cmd</span> <span class="o">=</span> <span class="n">cmd</span> <span class="o">+</span> <span class="s2">&quot;fifo/</span><span class="si">{}</span><span class="s2">_S</span><span class="si">{}</span><span class="s2">_summaryaalcalc_P</span><span class="si">{}</span><span class="s2"> &quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                    <span class="n">runtype</span><span class="p">,</span> <span class="n">summary_set</span><span class="p">,</span> <span class="n">process_id</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">summary</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;lec_output&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">leccalc_enabled</span><span class="p">(</span><span class="n">summary</span><span class="p">[</span><span class="s2">&quot;leccalc&quot;</span><span class="p">]):</span>
+                <span class="n">cmd</span> <span class="o">=</span> <span class="n">cmd</span> <span class="o">+</span> <span class="s2">&quot;work/</span><span class="si">{}</span><span class="s2">_S</span><span class="si">{}</span><span class="s2">_summaryleccalc/P</span><span class="si">{}</span><span class="s2">.bin &quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                    <span class="n">runtype</span><span class="p">,</span> <span class="n">summary_set</span><span class="p">,</span> <span class="n">process_id</span><span class="p">)</span>
+            <span class="n">cmd</span> <span class="o">=</span> <span class="n">cmd</span> <span class="o">+</span> <span class="s2">&quot; &gt; /dev/null &amp; pid</span><span class="si">{}</span><span class="s2">=$!&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="n">pid_monitor_count</span><span class="p">)</span>
+            <span class="n">print_command</span><span class="p">(</span><span class="n">cmd</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="do_any"><a class="viewcode-back" href="../../modules.html#ktools.kparse.do_any">[docs]</a><span class="k">def</span> <span class="nf">do_any</span><span class="p">(</span><span class="n">runtype</span><span class="p">,</span> <span class="n">analysis_settings</span><span class="p">,</span> <span class="n">process_id</span><span class="p">):</span>
+    <span class="k">global</span> <span class="n">pid_monitor_count</span>
+
+    <span class="n">summary_set</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">if</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">_summaries&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">runtype</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">analysis_settings</span><span class="p">:</span>
+        <span class="k">return</span>
+
+    <span class="k">for</span> <span class="n">summary</span> <span class="ow">in</span> <span class="n">analysis_settings</span><span class="p">[</span><span class="s2">&quot;</span><span class="si">{}</span><span class="s2">_summaries&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">runtype</span><span class="p">)]:</span>
+        <span class="k">if</span> <span class="s2">&quot;id&quot;</span> <span class="ow">in</span> <span class="n">summary</span><span class="p">:</span>
+            <span class="n">summary_set</span> <span class="o">=</span> <span class="n">summary</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">summary</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;eltcalc&quot;</span><span class="p">):</span>
+                <span class="n">cmd</span> <span class="o">=</span> <span class="s2">&quot;eltcalc -s&quot;</span>
+                <span class="k">if</span> <span class="n">process_id</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                    <span class="n">cmd</span> <span class="o">=</span> <span class="s2">&quot;eltcalc&quot;</span>
+                <span class="n">pid_monitor_count</span> <span class="o">=</span> <span class="n">pid_monitor_count</span> <span class="o">+</span> <span class="mi">1</span>
+                <span class="n">print_command</span><span class="p">(</span>
+                    <span class="s2">&quot;</span><span class="si">{3}</span><span class="s2"> &lt; fifo/</span><span class="si">{0}</span><span class="s2">_S</span><span class="si">{1}</span><span class="s2">_summaryeltcalc_P</span><span class="si">{2}</span><span class="s2"> &gt; work/kat/</span><span class="si">{0}</span><span class="s2">_S</span><span class="si">{1}</span><span class="s2">_eltcalc_P</span><span class="si">{2}</span><span class="s2"> &amp; pid</span><span class="si">{4}</span><span class="s2">=$!&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                        <span class="n">runtype</span><span class="p">,</span> <span class="n">summary_set</span><span class="p">,</span> <span class="n">process_id</span><span class="p">,</span> <span class="n">cmd</span><span class="p">,</span><span class="n">pid_monitor_count</span><span class="p">))</span>
+            <span class="k">if</span> <span class="n">summary</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;summarycalc&quot;</span><span class="p">):</span>
+                <span class="n">cmd</span> <span class="o">=</span> <span class="s2">&quot;summarycalctocsv -s&quot;</span>
+                <span class="k">if</span> <span class="n">process_id</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                    <span class="n">cmd</span> <span class="o">=</span> <span class="s2">&quot;summarycalctocsv&quot;</span>
+                <span class="n">pid_monitor_count</span> <span class="o">=</span> <span class="n">pid_monitor_count</span> <span class="o">+</span> <span class="mi">1</span>
+                <span class="n">print_command</span><span class="p">(</span>
+                    <span class="s2">&quot;</span><span class="si">{3}</span><span class="s2"> &lt; fifo/</span><span class="si">{0}</span><span class="s2">_S</span><span class="si">{1}</span><span class="s2">_summarysummarycalc_P</span><span class="si">{2}</span><span class="s2"> &gt; work/kat/</span><span class="si">{0}</span><span class="s2">_S</span><span class="si">{1}</span><span class="s2">_summarycalc_P</span><span class="si">{2}</span><span class="s2"> &amp; pid</span><span class="si">{4}</span><span class="s2">=$!&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                        <span class="n">runtype</span><span class="p">,</span> <span class="n">summary_set</span><span class="p">,</span> <span class="n">process_id</span><span class="p">,</span> <span class="n">cmd</span><span class="p">,</span><span class="n">pid_monitor_count</span><span class="p">))</span>
+            <span class="k">if</span> <span class="n">summary</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;pltcalc&quot;</span><span class="p">):</span>
+                <span class="n">cmd</span> <span class="o">=</span> <span class="s2">&quot;pltcalc -s&quot;</span>
+                <span class="k">if</span> <span class="n">process_id</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                    <span class="n">cmd</span> <span class="o">=</span> <span class="s2">&quot;pltcalc&quot;</span>
+                <span class="n">pid_monitor_count</span> <span class="o">=</span> <span class="n">pid_monitor_count</span> <span class="o">+</span> <span class="mi">1</span>
+                <span class="n">print_command</span><span class="p">(</span>
+                    <span class="s2">&quot;</span><span class="si">{3}</span><span class="s2"> &lt; fifo/</span><span class="si">{0}</span><span class="s2">_S</span><span class="si">{1}</span><span class="s2">_summarypltcalc_P</span><span class="si">{2}</span><span class="s2"> &gt; work/kat/</span><span class="si">{0}</span><span class="s2">_S</span><span class="si">{1}</span><span class="s2">_pltcalc_P</span><span class="si">{2}</span><span class="s2"> &amp; pid</span><span class="si">{4}</span><span class="s2">=$!&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                        <span class="n">runtype</span><span class="p">,</span> <span class="n">summary_set</span><span class="p">,</span> <span class="n">process_id</span><span class="p">,</span> <span class="n">cmd</span><span class="p">,</span><span class="n">pid_monitor_count</span><span class="p">))</span>
+            <span class="k">if</span> <span class="n">summary</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;aalcalc&quot;</span><span class="p">):</span>
+                <span class="n">pid_monitor_count</span> <span class="o">=</span> <span class="n">pid_monitor_count</span> <span class="o">+</span> <span class="mi">1</span>
+                <span class="n">print_command</span><span class="p">(</span>
+                    <span class="s2">&quot;aalcalc &lt; fifo/</span><span class="si">{0}</span><span class="s2">_S</span><span class="si">{1}</span><span class="s2">_summaryaalcalc_P</span><span class="si">{2}</span><span class="s2"> &gt; work/</span><span class="si">{0}</span><span class="s2">_S</span><span class="si">{1}</span><span class="s2">_aalcalc/P</span><span class="si">{2}</span><span class="s2">.bin &amp; pid</span><span class="si">{3}</span><span class="s2">=$!&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                        <span class="n">runtype</span><span class="p">,</span> <span class="n">summary_set</span><span class="p">,</span> <span class="n">process_id</span><span class="p">,</span> <span class="n">pid_monitor_count</span><span class="p">))</span>
+
+        <span class="n">print_command</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="do_il"><a class="viewcode-back" href="../../modules.html#ktools.kparse.do_il">[docs]</a><span class="k">def</span> <span class="nf">do_il</span><span class="p">(</span><span class="n">analysis_settings</span><span class="p">,</span> <span class="n">max_process_id</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">process_id</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">max_process_id</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="n">do_any</span><span class="p">(</span><span class="s2">&quot;il&quot;</span><span class="p">,</span> <span class="n">analysis_settings</span><span class="p">,</span> <span class="n">process_id</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">process_id</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">max_process_id</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="n">do_tees</span><span class="p">(</span><span class="s2">&quot;il&quot;</span><span class="p">,</span> <span class="n">analysis_settings</span><span class="p">,</span> <span class="n">process_id</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">process_id</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">max_process_id</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="n">do_summarycalcs</span><span class="p">(</span><span class="s2">&quot;il&quot;</span><span class="p">,</span> <span class="n">analysis_settings</span><span class="p">,</span> <span class="n">process_id</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="do_gul"><a class="viewcode-back" href="../../modules.html#ktools.kparse.do_gul">[docs]</a><span class="k">def</span> <span class="nf">do_gul</span><span class="p">(</span><span class="n">analysis_settings</span><span class="p">,</span> <span class="n">max_process_id</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">process_id</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">max_process_id</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="n">do_any</span><span class="p">(</span><span class="s2">&quot;gul&quot;</span><span class="p">,</span> <span class="n">analysis_settings</span><span class="p">,</span> <span class="n">process_id</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">process_id</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">max_process_id</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="n">do_tees</span><span class="p">(</span><span class="s2">&quot;gul&quot;</span><span class="p">,</span> <span class="n">analysis_settings</span><span class="p">,</span> <span class="n">process_id</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">process_id</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">max_process_id</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="n">do_summarycalcs</span><span class="p">(</span><span class="s2">&quot;gul&quot;</span><span class="p">,</span> <span class="n">analysis_settings</span><span class="p">,</span> <span class="n">process_id</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="do_il_make_fifo"><a class="viewcode-back" href="../../modules.html#ktools.kparse.do_il_make_fifo">[docs]</a><span class="k">def</span> <span class="nf">do_il_make_fifo</span><span class="p">(</span><span class="n">analysis_settings</span><span class="p">,</span> <span class="n">max_process_id</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">process_id</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">max_process_id</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="n">do_make_fifos</span><span class="p">(</span><span class="s2">&quot;il&quot;</span><span class="p">,</span> <span class="n">analysis_settings</span><span class="p">,</span> <span class="n">process_id</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="do_gul_make_fifo"><a class="viewcode-back" href="../../modules.html#ktools.kparse.do_gul_make_fifo">[docs]</a><span class="k">def</span> <span class="nf">do_gul_make_fifo</span><span class="p">(</span><span class="n">analysis_settings</span><span class="p">,</span> <span class="n">max_process_id</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">process_id</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">max_process_id</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="n">do_make_fifos</span><span class="p">(</span><span class="s2">&quot;gul&quot;</span><span class="p">,</span> <span class="n">analysis_settings</span><span class="p">,</span> <span class="n">process_id</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="do_il_remove_fifo"><a class="viewcode-back" href="../../modules.html#ktools.kparse.do_il_remove_fifo">[docs]</a><span class="k">def</span> <span class="nf">do_il_remove_fifo</span><span class="p">(</span><span class="n">analysis_settings</span><span class="p">,</span> <span class="n">max_process_id</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">process_id</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">max_process_id</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="n">do_remove_fifos</span><span class="p">(</span><span class="s2">&quot;il&quot;</span><span class="p">,</span> <span class="n">analysis_settings</span><span class="p">,</span> <span class="n">process_id</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="do_gul_remove_fifo"><a class="viewcode-back" href="../../modules.html#ktools.kparse.do_gul_remove_fifo">[docs]</a><span class="k">def</span> <span class="nf">do_gul_remove_fifo</span><span class="p">(</span><span class="n">analysis_settings</span><span class="p">,</span> <span class="n">max_process_id</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">process_id</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">max_process_id</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="n">do_remove_fifos</span><span class="p">(</span><span class="s2">&quot;gul&quot;</span><span class="p">,</span> <span class="n">analysis_settings</span><span class="p">,</span> <span class="n">process_id</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="do_waits"><a class="viewcode-back" href="../../modules.html#ktools.kparse.do_waits">[docs]</a><span class="k">def</span> <span class="nf">do_waits</span><span class="p">(</span><span class="n">wait_variable</span><span class="p">,</span> <span class="n">wait_count</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">wait_count</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">cmd</span> <span class="o">=</span> <span class="s2">&quot;wait &quot;</span>
+        <span class="k">for</span> <span class="n">pid</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">wait_count</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+            <span class="n">cmd</span> <span class="o">=</span> <span class="n">cmd</span> <span class="o">+</span> <span class="s2">&quot;$</span><span class="si">{}{}</span><span class="s2"> &quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">wait_variable</span><span class="p">,</span> <span class="n">pid</span><span class="p">)</span>
+        <span class="n">print_command</span><span class="p">(</span><span class="n">cmd</span><span class="p">)</span>
+        <span class="n">print_command</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="do_pwaits"><a class="viewcode-back" href="../../modules.html#ktools.kparse.do_pwaits">[docs]</a><span class="k">def</span> <span class="nf">do_pwaits</span><span class="p">():</span>
+    <span class="n">do_waits</span><span class="p">(</span><span class="s2">&quot;pid&quot;</span><span class="p">,</span> <span class="n">pid_monitor_count</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="do_awaits"><a class="viewcode-back" href="../../modules.html#ktools.kparse.do_awaits">[docs]</a><span class="k">def</span> <span class="nf">do_awaits</span><span class="p">():</span>
+    <span class="n">do_waits</span><span class="p">(</span><span class="s2">&quot;apid&quot;</span><span class="p">,</span> <span class="n">apid_monitor_count</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="do_lwaits"><a class="viewcode-back" href="../../modules.html#ktools.kparse.do_lwaits">[docs]</a><span class="k">def</span> <span class="nf">do_lwaits</span><span class="p">():</span>
+    <span class="n">do_waits</span><span class="p">(</span><span class="s2">&quot;lpid&quot;</span><span class="p">,</span> <span class="n">lpid_monitor_count</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="do_kwaits"><a class="viewcode-back" href="../../modules.html#ktools.kparse.do_kwaits">[docs]</a><span class="k">def</span> <span class="nf">do_kwaits</span><span class="p">():</span>
+    <span class="n">do_waits</span><span class="p">(</span><span class="s2">&quot;kpid&quot;</span><span class="p">,</span> <span class="n">kpid_monitor_count</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="get_getmodel_cmd"><a class="viewcode-back" href="../../modules.html#ktools.kparse.get_getmodel_cmd">[docs]</a><span class="k">def</span> <span class="nf">get_getmodel_cmd</span><span class="p">(</span>
+        <span class="n">process_id_</span><span class="p">,</span> <span class="n">max_process_id</span><span class="p">,</span>
+        <span class="n">number_of_samples</span><span class="p">,</span> <span class="n">gul_threshold</span><span class="p">,</span>
+        <span class="n">use_random_number_file</span><span class="p">,</span>
+        <span class="n">coverage_output</span><span class="p">,</span> <span class="n">item_output</span><span class="p">):</span>
+    <span class="c1">#pylint: disable=I0011, W0613</span>
+    <span class="n">cmd</span> <span class="o">=</span> <span class="s2">&quot;getmodel | gulcalc -S</span><span class="si">{}</span><span class="s2"> -L</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">number_of_samples</span><span class="p">,</span> <span class="n">gul_threshold</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">use_random_number_file</span><span class="p">:</span>
+        <span class="n">cmd</span> <span class="o">=</span> <span class="n">cmd</span> <span class="o">+</span> <span class="s2">&quot; -r&quot;</span>
+    <span class="k">if</span> <span class="n">coverage_output</span> <span class="o">!=</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
+        <span class="n">cmd</span> <span class="o">=</span> <span class="n">cmd</span> <span class="o">+</span> <span class="s2">&quot; -c </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">coverage_output</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">item_output</span> <span class="o">!=</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
+        <span class="n">cmd</span> <span class="o">=</span> <span class="n">cmd</span> <span class="o">+</span> <span class="s2">&quot; -i </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">item_output</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">cmd</span></div>
+
+
+<div class="viewcode-block" id="genbash"><a class="viewcode-back" href="../../modules.html#ktools.kparse.genbash">[docs]</a><span class="nd">@oasis_log_utils</span><span class="o">.</span><span class="n">oasis_log</span><span class="p">()</span>
+<span class="k">def</span> <span class="nf">genbash</span><span class="p">(</span>
+        <span class="n">max_process_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">analysis_settings</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">output_filename</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">get_getmodel_cmd</span><span class="o">=</span><span class="n">get_getmodel_cmd</span>
+    <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Generates a bash script containing ktools calculation instructions for an</span>
+<span class="sd">    Oasis model, provided its analysis settings JSON file, the number of processes</span>
+<span class="sd">    to use, and the path and name of the output script.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1">#pylint: disable=I0011, W0621</span>
+    <span class="k">global</span> <span class="n">pid_monitor_count</span>
+    <span class="n">pid_monitor_count</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">global</span> <span class="n">apid_monitor_count</span>
+    <span class="n">apid_monitor_count</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">global</span> <span class="n">lpid_monitor_count</span>
+    <span class="n">lpid_monitor_count</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">global</span> <span class="n">kpid_monitor_count</span>
+    <span class="n">kpid_monitor_count</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="k">global</span> <span class="n">command_file</span>
+    <span class="n">command_file</span> <span class="o">=</span> <span class="n">output_filename</span>
+
+    <span class="n">gul_threshold</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">number_of_samples</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">use_random_number_file</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">gul_output</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">il_output</span> <span class="o">=</span> <span class="kc">False</span>
+
+    <span class="k">if</span> <span class="s2">&quot;gul_threshold&quot;</span> <span class="ow">in</span> <span class="n">analysis_settings</span><span class="p">:</span>
+        <span class="n">gul_threshold</span> <span class="o">=</span> <span class="n">analysis_settings</span><span class="p">[</span><span class="s2">&quot;gul_threshold&quot;</span><span class="p">]</span>
+
+    <span class="k">if</span> <span class="s2">&quot;number_of_samples&quot;</span> <span class="ow">in</span> <span class="n">analysis_settings</span><span class="p">:</span>
+        <span class="n">number_of_samples</span> <span class="o">=</span> <span class="n">analysis_settings</span><span class="p">[</span><span class="s2">&quot;number_of_samples&quot;</span><span class="p">]</span>
+
+    <span class="k">if</span> <span class="s2">&quot;model_settings&quot;</span> <span class="ow">in</span> <span class="n">analysis_settings</span><span class="p">:</span>
+        <span class="k">if</span> <span class="s2">&quot;use_random_number_file&quot;</span> <span class="ow">in</span> <span class="n">analysis_settings</span><span class="p">[</span><span class="s2">&quot;model_settings&quot;</span><span class="p">]:</span>
+            <span class="k">if</span> <span class="n">analysis_settings</span><span class="p">[</span><span class="s2">&quot;model_settings&quot;</span><span class="p">][</span><span class="s2">&quot;use_random_number_file&quot;</span><span class="p">]:</span>
+                <span class="n">use_random_number_file</span> <span class="o">=</span> <span class="kc">True</span>
+
+    <span class="k">if</span> <span class="s2">&quot;gul_output&quot;</span> <span class="ow">in</span> <span class="n">analysis_settings</span><span class="p">:</span>
+        <span class="n">gul_output</span> <span class="o">=</span> <span class="n">analysis_settings</span><span class="p">[</span><span class="s2">&quot;gul_output&quot;</span><span class="p">]</span>
+
+    <span class="k">if</span> <span class="s2">&quot;il_output&quot;</span> <span class="ow">in</span> <span class="n">analysis_settings</span><span class="p">:</span>
+        <span class="n">il_output</span> <span class="o">=</span> <span class="n">analysis_settings</span><span class="p">[</span><span class="s2">&quot;il_output&quot;</span><span class="p">]</span>
+
+    <span class="n">print_command</span><span class="p">(</span><span class="s2">&quot;#!/bin/bash&quot;</span><span class="p">)</span>
+
+    <span class="n">print_command</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+
+    <span class="n">print_command</span><span class="p">(</span><span class="s2">&quot;rm -R -f output/*&quot;</span><span class="p">)</span>
+    <span class="n">print_command</span><span class="p">(</span><span class="s2">&quot;rm -R -f fifo/*&quot;</span><span class="p">)</span>
+    <span class="n">print_command</span><span class="p">(</span><span class="s2">&quot;rm -R -f work/*&quot;</span><span class="p">)</span>
+    <span class="n">print_command</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+
+    <span class="n">print_command</span><span class="p">(</span><span class="s2">&quot;mkdir work/kat&quot;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">gul_output</span><span class="p">:</span>
+        <span class="n">do_gul_make_fifo</span><span class="p">(</span><span class="n">analysis_settings</span><span class="p">,</span> <span class="n">max_process_id</span><span class="p">)</span>
+        <span class="n">create_workfolders</span><span class="p">(</span><span class="s2">&quot;gul&quot;</span><span class="p">,</span> <span class="n">analysis_settings</span><span class="p">)</span>
+
+    <span class="n">print_command</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">il_output</span><span class="p">:</span>
+        <span class="n">do_il_make_fifo</span><span class="p">(</span><span class="n">analysis_settings</span><span class="p">,</span> <span class="n">max_process_id</span><span class="p">)</span>
+        <span class="n">create_workfolders</span><span class="p">(</span><span class="s2">&quot;il&quot;</span><span class="p">,</span> <span class="n">analysis_settings</span><span class="p">)</span>
+
+    <span class="n">print_command</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+    <span class="n">print_command</span><span class="p">(</span><span class="s2">&quot;# --- Do insured loss computes ---&quot;</span><span class="p">)</span>
+    <span class="n">print_command</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">il_output</span><span class="p">:</span>
+        <span class="n">do_il</span><span class="p">(</span><span class="n">analysis_settings</span><span class="p">,</span> <span class="n">max_process_id</span><span class="p">)</span>
+
+    <span class="n">print_command</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+    <span class="n">print_command</span><span class="p">(</span><span class="s2">&quot;# --- Do ground up loss  computes ---&quot;</span><span class="p">)</span>
+    <span class="n">print_command</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">gul_output</span><span class="p">:</span>
+        <span class="n">do_gul</span><span class="p">(</span><span class="n">analysis_settings</span><span class="p">,</span> <span class="n">max_process_id</span><span class="p">)</span>
+
+    <span class="n">print_command</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">process_id</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">max_process_id</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">gul_output</span> <span class="ow">and</span> <span class="n">il_output</span><span class="p">:</span>
+            <span class="n">getmodel_cmd</span> <span class="o">=</span> <span class="n">get_getmodel_cmd</span><span class="p">(</span>
+                <span class="n">process_id</span><span class="p">,</span> <span class="n">max_process_id</span><span class="p">,</span>
+                <span class="n">number_of_samples</span><span class="p">,</span> <span class="n">gul_threshold</span><span class="p">,</span> <span class="n">use_random_number_file</span><span class="p">,</span>
+                <span class="s2">&quot;fifo/gul_P</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">process_id</span><span class="p">),</span>
+                <span class="s2">&quot;-&quot;</span><span class="p">)</span>
+            <span class="n">print_command</span><span class="p">(</span>
+                <span class="s2">&quot;eve </span><span class="si">{0}</span><span class="s2"> </span><span class="si">{1}</span><span class="s2"> | </span><span class="si">{2}</span><span class="s2"> | fmcalc &gt; fifo/il_P</span><span class="si">{0}</span><span class="s2">  &amp;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                    <span class="n">process_id</span><span class="p">,</span> <span class="n">max_process_id</span><span class="p">,</span> <span class="n">getmodel_cmd</span><span class="p">))</span>
+
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1">#  Now the mainprocessing</span>
+            <span class="k">if</span> <span class="n">gul_output</span><span class="p">:</span>
+                <span class="k">if</span> <span class="s2">&quot;gul_summaries&quot;</span> <span class="ow">in</span> <span class="n">analysis_settings</span><span class="p">:</span>
+                    <span class="n">getmodel_cmd</span> <span class="o">=</span> <span class="n">get_getmodel_cmd</span><span class="p">(</span>
+                        <span class="n">process_id</span><span class="p">,</span> <span class="n">max_process_id</span><span class="p">,</span>
+                        <span class="n">number_of_samples</span><span class="p">,</span> <span class="n">gul_threshold</span><span class="p">,</span>
+                        <span class="n">use_random_number_file</span><span class="p">,</span>
+                        <span class="s2">&quot;-&quot;</span><span class="p">,</span>
+                        <span class="s2">&quot;&quot;</span><span class="p">)</span>
+                    <span class="n">print_command</span><span class="p">(</span>
+                        <span class="s2">&quot;eve </span><span class="si">{0}</span><span class="s2"> </span><span class="si">{1}</span><span class="s2"> | </span><span class="si">{2}</span><span class="s2"> &gt; fifo/gul_P</span><span class="si">{0}</span><span class="s2">  &amp;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                            <span class="n">process_id</span><span class="p">,</span> <span class="n">max_process_id</span><span class="p">,</span> <span class="n">getmodel_cmd</span><span class="p">))</span>
+
+            <span class="k">if</span> <span class="n">il_output</span><span class="p">:</span>
+                <span class="k">if</span> <span class="s2">&quot;il_summaries&quot;</span> <span class="ow">in</span> <span class="n">analysis_settings</span><span class="p">:</span>
+                    <span class="n">getmodel_cmd</span> <span class="o">=</span> <span class="n">get_getmodel_cmd</span><span class="p">(</span>
+                        <span class="n">process_id</span><span class="p">,</span> <span class="n">max_process_id</span><span class="p">,</span>
+                        <span class="n">number_of_samples</span><span class="p">,</span> <span class="n">gul_threshold</span><span class="p">,</span>
+                        <span class="n">use_random_number_file</span><span class="p">,</span>
+                        <span class="s2">&quot;&quot;</span><span class="p">,</span>
+                        <span class="s2">&quot;-&quot;</span><span class="p">)</span>
+                    <span class="n">print_command</span><span class="p">(</span>
+                        <span class="s2">&quot;eve </span><span class="si">{0}</span><span class="s2"> </span><span class="si">{1}</span><span class="s2"> | </span><span class="si">{2}</span><span class="s2"> | fmcalc &gt; fifo/il_P</span><span class="si">{0}</span><span class="s2">  &amp;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                            <span class="n">process_id</span><span class="p">,</span> <span class="n">max_process_id</span><span class="p">,</span> <span class="n">getmodel_cmd</span><span class="p">))</span>
+
+    <span class="n">print_command</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+
+    <span class="n">do_pwaits</span><span class="p">()</span>
+
+    <span class="n">print_command</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+    <span class="n">print_command</span><span class="p">(</span><span class="s2">&quot;# --- Do insured loss kats ---&quot;</span><span class="p">)</span>
+    <span class="n">print_command</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">il_output</span><span class="p">:</span>
+        <span class="n">do_kats</span><span class="p">(</span><span class="s2">&quot;il&quot;</span><span class="p">,</span> <span class="n">analysis_settings</span><span class="p">,</span> <span class="n">max_process_id</span><span class="p">)</span>
+
+
+    <span class="n">print_command</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+    <span class="n">print_command</span><span class="p">(</span><span class="s2">&quot;# --- Do ground up loss kats ---&quot;</span><span class="p">)</span>
+    <span class="n">print_command</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">gul_output</span><span class="p">:</span>
+        <span class="n">do_kats</span><span class="p">(</span><span class="s2">&quot;gul&quot;</span><span class="p">,</span> <span class="n">analysis_settings</span><span class="p">,</span> <span class="n">max_process_id</span><span class="p">)</span>
+
+    <span class="n">do_kwaits</span><span class="p">()</span>
+
+    <span class="n">print_command</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+    <span class="n">do_post_wait_processing</span><span class="p">(</span><span class="s2">&quot;il&quot;</span><span class="p">,</span> <span class="n">analysis_settings</span><span class="p">)</span>
+    <span class="n">do_post_wait_processing</span><span class="p">(</span><span class="s2">&quot;gul&quot;</span><span class="p">,</span> <span class="n">analysis_settings</span><span class="p">)</span>
+
+    <span class="n">do_awaits</span><span class="p">()</span>    <span class="c1"># waits for aalcalc</span>
+    <span class="n">do_lwaits</span><span class="p">()</span>    <span class="c1"># waits for leccalc</span>
+
+    <span class="k">if</span> <span class="n">gul_output</span><span class="p">:</span>
+        <span class="n">do_gul_remove_fifo</span><span class="p">(</span><span class="n">analysis_settings</span><span class="p">,</span> <span class="n">max_process_id</span><span class="p">)</span>
+        <span class="n">remove_workfolders</span><span class="p">(</span><span class="s2">&quot;gul&quot;</span><span class="p">,</span> <span class="n">analysis_settings</span><span class="p">)</span>
+
+    <span class="n">print_command</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">il_output</span><span class="p">:</span>
+        <span class="n">do_il_remove_fifo</span><span class="p">(</span><span class="n">analysis_settings</span><span class="p">,</span> <span class="n">max_process_id</span><span class="p">)</span>
+        <span class="n">remove_workfolders</span><span class="p">(</span><span class="s2">&quot;il&quot;</span><span class="p">,</span> <span class="n">analysis_settings</span><span class="p">)</span></div>
+
+
+<span class="n">SCRIPT_ARGS</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;num_processes&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">&#39;arg_name&#39;</span><span class="p">:</span> <span class="s1">&#39;num_processes&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;flag&#39;</span><span class="p">:</span> <span class="s1">&#39;p&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+        <span class="s1">&#39;help_text&#39;</span><span class="p">:</span> <span class="s1">&#39;Number of processes to use&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;required&#39;</span><span class="p">:</span> <span class="kc">True</span>
+    <span class="p">},</span>
+    <span class="s1">&#39;analysis_settings_json_file_path&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">&#39;arg_name&#39;</span><span class="p">:</span> <span class="s1">&#39;analysis_settings_json_file_path&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;flag&#39;</span><span class="p">:</span> <span class="s1">&#39;a&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="s1">&#39;help_text&#39;</span><span class="p">:</span> <span class="s1">&#39;Relative or absolute path of the model analysis settings JSON file&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;required&#39;</span><span class="p">:</span> <span class="kc">True</span>
+    <span class="p">},</span>
+    <span class="s1">&#39;output_file_path&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">&#39;arg_name&#39;</span><span class="p">:</span> <span class="s1">&#39;output_file_path&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;flag&#39;</span><span class="p">:</span> <span class="s1">&#39;o&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="s1">&#39;help_text&#39;</span><span class="p">:</span> <span class="s1">&#39;Relative or absolute path of the output file&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;required&#39;</span><span class="p">:</span> <span class="kc">True</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+
+<span class="k">def</span> <span class="nf">__set_logging__</span><span class="p">():</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span>
+        <span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">,</span>
+        <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">%(asctime)s</span><span class="s1"> - </span><span class="si">%(levelname)s</span><span class="s1"> - </span><span class="si">%(message)s</span><span class="s1">&#39;</span><span class="p">,</span>
+        <span class="n">filemode</span><span class="o">=</span><span class="s1">&#39;w&#39;</span>
+    <span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">__parse_args__</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Parses script arguments and constructs and returns an arguments dict.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Run kparse&#39;</span><span class="p">)</span>
+
+    <span class="n">di</span> <span class="o">=</span> <span class="n">SCRIPT_ARGS</span>
+
+    <span class="nb">map</span><span class="p">(</span>
+        <span class="k">lambda</span> <span class="n">res</span><span class="p">:</span> <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+            <span class="s1">&#39;-</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">di</span><span class="p">[</span><span class="n">res</span><span class="p">][</span><span class="s1">&#39;flag&#39;</span><span class="p">]),</span>
+            <span class="s1">&#39;--</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">di</span><span class="p">[</span><span class="n">res</span><span class="p">][</span><span class="s1">&#39;arg_name&#39;</span><span class="p">]),</span>
+            <span class="nb">type</span><span class="o">=</span><span class="n">di</span><span class="p">[</span><span class="n">res</span><span class="p">][</span><span class="s1">&#39;type&#39;</span><span class="p">],</span>
+            <span class="n">required</span><span class="o">=</span><span class="n">di</span><span class="p">[</span><span class="n">res</span><span class="p">][</span><span class="s1">&#39;required&#39;</span><span class="p">],</span>
+            <span class="n">help</span><span class="o">=</span><span class="n">di</span><span class="p">[</span><span class="n">res</span><span class="p">][</span><span class="s1">&#39;help_text&#39;</span><span class="p">]</span>
+        <span class="p">),</span>
+        <span class="n">di</span>
+    <span class="p">)</span>
+
+    <span class="n">args</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span>
+
+    <span class="n">args_dict</span> <span class="o">=</span> <span class="nb">vars</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
+
+    <span class="nb">map</span><span class="p">(</span>
+        <span class="k">lambda</span> <span class="n">arg</span><span class="p">:</span> <span class="n">args_dict</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="n">arg</span><span class="p">:</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">args_dict</span><span class="p">[</span><span class="n">arg</span><span class="p">])})</span> <span class="k">if</span> <span class="n">arg</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;path&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">args_dict</span><span class="p">[</span><span class="n">arg</span><span class="p">]</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">args_dict</span>
+    <span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">args_dict</span>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+
+    <span class="n">__set_logging__</span><span class="p">()</span>
+
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Parsing script arguments&#39;</span><span class="p">)</span>
+    <span class="n">args</span> <span class="o">=</span> <span class="n">__parse_args__</span><span class="p">()</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">with</span> <span class="n">io</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;analysis_settings_json_file_path&#39;</span><span class="p">],</span> <span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="n">analysis_settings</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)[</span><span class="s1">&#39;analysis_settings&#39;</span><span class="p">]</span>
+    <span class="k">except</span> <span class="p">(</span><span class="ne">IOError</span><span class="p">,</span> <span class="ne">ValueError</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="n">OasisException</span><span class="p">(</span><span class="s2">&quot;Invalid analysis settings JSON file or file path: </span><span class="si">{}</span><span class="s2">.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;analysis_settings_json_file_path&#39;</span><span class="p">]))</span>    
+
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Analysis settings: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">analysis_settings</span><span class="p">))</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">genbash</span><span class="p">(</span>
+            <span class="n">max_process_id</span><span class="o">=</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;num_processes&#39;</span><span class="p">],</span>
+            <span class="n">analysis_settings</span><span class="o">=</span><span class="n">analysis_settings</span><span class="p">,</span>
+            <span class="n">output_filename</span><span class="o">=</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;output_file_path&#39;</span><span class="p">]</span>
+        <span class="p">)</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Generated script </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;output_file_path&#39;</span><span class="p">]))</span>
+    <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../index.html">omdk</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../repository-management.html">Repository Management</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sphinx.html">Sphinx Docs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../first-steps.html">First Steps</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../generating-oasis-files.html">Generating Oasis Files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">Module Documentation</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, Oasis Loss Modelling Framework (v. 1.0, 30 November, 2017).
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

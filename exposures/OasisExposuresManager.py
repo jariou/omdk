@@ -1055,7 +1055,7 @@ class OasisExposuresManager(implements(OasisExposuresManagerInterface)):
 
                 keys_file = self.get_keys(oasis_model, with_model_resources=False, **kwargs)
                 
-                self.logger.info('Checking for canonical exposures profile for model')
+                self.logger.info('Checking for canonical exposures profile source for model')
 
                 canonical_exposures_profile_json_path = kwargs['canonical_exposures_profile_json_path']
 
@@ -1064,12 +1064,12 @@ class OasisExposuresManager(implements(OasisExposuresManagerInterface)):
                 elif not os.path.exists(canonical_exposures_profile_json_path):
                     raise OasisException("Canonical exposures profile JSON file path {} provided for {} in '**kwargs' is invalid.".format(canonical_exposures_profile_json_path, oasis_model))
                 
-                self.logger.info('Canonical exposures profile {} exists'.format(canonical_exposures_profile_json_path))
+                self.logger.info('Canonical exposures profile source {} exists'.format(canonical_exposures_profile_json_path))
 
                 self.logger.info('Loading canonical exposures profile into model resources')
-
                 canonical_exposures_profile = self.load_canonical_profile(oasis_model, with_model_resources=False, **kwargs)
                 kwargs['canonical_exposures_profile'] = canonical_exposures_profile
+                self.logger.info('Loaded canonical exposures profile {} into model resources'.format(canonical_exposures_profile))
 
                 kwargs['items_file_path'] = os.path.join(output_dirpath, 'items.csv')
                 kwargs['items_timestamped_file_path'] = os.path.join(output_dirpath, 'items-{}.csv'.format(utcnow))
@@ -1153,8 +1153,11 @@ class OasisExposuresManager(implements(OasisExposuresManagerInterface)):
                 self.logger.info('Checking for canonical exposures profile for model')
 
                 if not oasis_model.resources['canonical_exposures_profile']:
-                    self.logger.info('Loading canonical exposures profile into model resources')
+                    self.logger.info('Canonical exposures profile not found in model resources - attempting to load from source')
                     self.load_canonical_profile(oasis_model)
+                    self.logger.info('Loaded canonical exposures profile {} into model resources'.format(oasis_model.resources['canonical_exposures_profile']))
+                else:
+                    self.logger.info('Canonical exposures profile exists for model')
 
                 omr['items_file_path'] = os.path.join(output_dirpath, 'items.csv')
                 omr['items_timestamped_file_path'] = os.path.join(output_dirpath, 'items-{}.csv'.format(utcnow))

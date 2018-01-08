@@ -741,6 +741,97 @@ as used in exposures management.</p>
 </dd></dl>
 
 </div>
+<div class="section" id="module-keys.OasisKeysLookupFactory">
+<span id="omdk-keys-oasiskeyslookupfactory"></span><h2><code class="docutils literal"><span class="pre">omdk.keys.OasisKeysLookupFactory</span></code><a class="headerlink" href="#module-keys.OasisKeysLookupFactory" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="keys.OasisKeysLookupFactory.OasisKeysLookupFactory">
+<em class="property">class </em><code class="descclassname">keys.OasisKeysLookupFactory.</code><code class="descname">OasisKeysLookupFactory</code><a class="reference internal" href="_modules/keys/OasisKeysLookupFactory.html#OasisKeysLookupFactory"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#keys.OasisKeysLookupFactory.OasisKeysLookupFactory" title="Permalink to this definition">¶</a></dt>
+<dd><p>A factory class to load and run keys lookup services for different
+models/suppliers.</p>
+<dl class="classmethod">
+<dt id="keys.OasisKeysLookupFactory.OasisKeysLookupFactory.create">
+<em class="property">classmethod </em><code class="descname">create</code><span class="sig-paren">(</span><em>model_keys_data_path=None</em>, <em>model_version_file_path=None</em>, <em>lookup_package_path=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/keys/OasisKeysLookupFactory.html#OasisKeysLookupFactory.create"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#keys.OasisKeysLookupFactory.OasisKeysLookupFactory.create" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a keys lookup class instance for the given model and supplier -
+local file paths are required for the model keys data folder, the model
+version file and the Git repository for the model keys server. Returns a
+pair <code class="docutils literal"><span class="pre">(model_info,</span> <span class="pre">klc)</span></code>, where <code class="docutils literal"><span class="pre">model_info</span></code> is a dictionary holding
+model information from the model version file and <cite>klc</cite> is the lookup
+service class instance for the model.</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="keys.OasisKeysLookupFactory.OasisKeysLookupFactory.get_keys">
+<em class="property">classmethod </em><code class="descname">get_keys</code><span class="sig-paren">(</span><em>lookup=None</em>, <em>model_exposures=None</em>, <em>model_exposures_file_path=None</em>, <em>success_only=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/keys/OasisKeysLookupFactory.html#OasisKeysLookupFactory.get_keys"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#keys.OasisKeysLookupFactory.OasisKeysLookupFactory.get_keys" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates keys lookup records (JSON) for the given model and supplier -
+requires an instance of the lookup service (which can be created using
+the <cite>create</cite> method in this factory class), and either the model
+location file path or the string contents of such a file.</p>
+<p>The optional keyword argument <code class="docutils literal"><span class="pre">success_only</span></code> indicates whether only
+records with successful lookups should be returned (default), or all
+records.</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="keys.OasisKeysLookupFactory.OasisKeysLookupFactory.get_lookup_class_instance">
+<em class="property">classmethod </em><code class="descname">get_lookup_class_instance</code><span class="sig-paren">(</span><em>lookup_package</em>, <em>keys_data_path</em>, <em>model_info</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/keys/OasisKeysLookupFactory.html#OasisKeysLookupFactory.get_lookup_class_instance"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#keys.OasisKeysLookupFactory.OasisKeysLookupFactory.get_lookup_class_instance" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the keys lookup class instance.</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="keys.OasisKeysLookupFactory.OasisKeysLookupFactory.get_lookup_package">
+<em class="property">classmethod </em><code class="descname">get_lookup_package</code><span class="sig-paren">(</span><em>lookup_package_path</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/keys/OasisKeysLookupFactory.html#OasisKeysLookupFactory.get_lookup_package"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#keys.OasisKeysLookupFactory.OasisKeysLookupFactory.get_lookup_package" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the lookup service parent package (called <cite>keys_server</cite> and
+located in <cite>src</cite> in the model keys server Git repository or in
+<cite>var/www/oasis</cite> in the keys server Docker container) from the given
+path.</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="keys.OasisKeysLookupFactory.OasisKeysLookupFactory.get_model_exposures">
+<em class="property">classmethod </em><code class="descname">get_model_exposures</code><span class="sig-paren">(</span><em>model_exposures=None</em>, <em>model_exposures_file_path=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/keys/OasisKeysLookupFactory.html#OasisKeysLookupFactory.get_model_exposures"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#keys.OasisKeysLookupFactory.OasisKeysLookupFactory.get_model_exposures" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the model exposures/location file data as a pandas dataframe given
+either the path of the model exposures file or the string contents of
+such a file.</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="keys.OasisKeysLookupFactory.OasisKeysLookupFactory.get_model_info">
+<em class="property">classmethod </em><code class="descname">get_model_info</code><span class="sig-paren">(</span><em>model_version_file_path</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/keys/OasisKeysLookupFactory.html#OasisKeysLookupFactory.get_model_info"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#keys.OasisKeysLookupFactory.OasisKeysLookupFactory.get_model_info" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get model information from the model version file.</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="keys.OasisKeysLookupFactory.OasisKeysLookupFactory.save_keys">
+<em class="property">classmethod </em><code class="descname">save_keys</code><span class="sig-paren">(</span><em>lookup=None</em>, <em>model_exposures=None</em>, <em>model_exposures_file_path=None</em>, <em>success_only=True</em>, <em>output_file_path=None</em>, <em>format='oasis_keys'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/keys/OasisKeysLookupFactory.html#OasisKeysLookupFactory.save_keys"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#keys.OasisKeysLookupFactory.OasisKeysLookupFactory.save_keys" title="Permalink to this definition">¶</a></dt>
+<dd><p>Writes the keys lookup records generated by the lookup service for the
+given model and supplier to a local file - requires a lookup service
+instance (which can be created using the <cite>create</cite> method in this
+factory class), the path of the model location file, the path of
+output file, and the format of the output file which can be an
+Oasis keys file (<code class="docutils literal"><span class="pre">oasis_keys</span></code>) or a simple listing of the records
+to file (<code class="docutils literal"><span class="pre">list_keys</span></code>).</p>
+<p>The optional keyword argument <code class="docutils literal"><span class="pre">success_only</span></code> indicates whether only
+records with successful lookups should be returned (default), or all
+records.</p>
+<p>Returns a pair <code class="docutils literal"><span class="pre">(f,</span> <span class="pre">n)</span></code> where <code class="docutils literal"><span class="pre">f</span></code> is the output file object
+and <code class="docutils literal"><span class="pre">n</span></code> is the number of records written to the file.</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="keys.OasisKeysLookupFactory.OasisKeysLookupFactory.write_list_keys_file">
+<em class="property">classmethod </em><code class="descname">write_list_keys_file</code><span class="sig-paren">(</span><em>records</em>, <em>output_file_path</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/keys/OasisKeysLookupFactory.html#OasisKeysLookupFactory.write_list_keys_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#keys.OasisKeysLookupFactory.OasisKeysLookupFactory.write_list_keys_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Writes the lookup records as a simple list to file.</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="keys.OasisKeysLookupFactory.OasisKeysLookupFactory.write_oasis_keys_file">
+<em class="property">classmethod </em><code class="descname">write_oasis_keys_file</code><span class="sig-paren">(</span><em>records</em>, <em>output_file_path</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/keys/OasisKeysLookupFactory.html#OasisKeysLookupFactory.write_oasis_keys_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#keys.OasisKeysLookupFactory.OasisKeysLookupFactory.write_oasis_keys_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Writes an Oasis keys file from an iterable of lookup records.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
 <div class="section" id="module-oasis_files_generator">
 <span id="omdk-oasis-files-generator"></span><h2><code class="docutils literal"><span class="pre">omdk.oasis_files_generator</span></code><a class="headerlink" href="#module-oasis_files_generator" title="Permalink to this headline">¶</a></h2>
 <p>Executable script for generating Oasis files for a given model. Requires
@@ -790,6 +881,138 @@ the OMDK repository then script configs for models can be placed in the <code cl
 subfolder, and the canonical exposures profiles can be placed in the
 <code class="docutils literal"><span class="pre">canonical_exposures_profiles</span></code> subfolder.</p>
 </div>
+<div class="section" id="module-ktools.kparse">
+<span id="omdk-ktools-kparse"></span><h2><code class="docutils literal"><span class="pre">omdk.ktools.kparse</span></code><a class="headerlink" href="#module-ktools.kparse" title="Permalink to this headline">¶</a></h2>
+<p>Code to generate bash script for execution from json</p>
+<dl class="function">
+<dt id="ktools.kparse.create_workfolders">
+<code class="descclassname">ktools.kparse.</code><code class="descname">create_workfolders</code><span class="sig-paren">(</span><em>runtype</em>, <em>analysis_settings</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ktools/kparse.html#create_workfolders"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ktools.kparse.create_workfolders" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="ktools.kparse.do_any">
+<code class="descclassname">ktools.kparse.</code><code class="descname">do_any</code><span class="sig-paren">(</span><em>runtype</em>, <em>analysis_settings</em>, <em>process_id</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ktools/kparse.html#do_any"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ktools.kparse.do_any" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="ktools.kparse.do_awaits">
+<code class="descclassname">ktools.kparse.</code><code class="descname">do_awaits</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/ktools/kparse.html#do_awaits"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ktools.kparse.do_awaits" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="ktools.kparse.do_fifos">
+<code class="descclassname">ktools.kparse.</code><code class="descname">do_fifos</code><span class="sig-paren">(</span><em>action</em>, <em>runtype</em>, <em>analysis_settings</em>, <em>process_id</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ktools/kparse.html#do_fifos"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ktools.kparse.do_fifos" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="ktools.kparse.do_gul">
+<code class="descclassname">ktools.kparse.</code><code class="descname">do_gul</code><span class="sig-paren">(</span><em>analysis_settings</em>, <em>max_process_id</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ktools/kparse.html#do_gul"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ktools.kparse.do_gul" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="ktools.kparse.do_gul_make_fifo">
+<code class="descclassname">ktools.kparse.</code><code class="descname">do_gul_make_fifo</code><span class="sig-paren">(</span><em>analysis_settings</em>, <em>max_process_id</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ktools/kparse.html#do_gul_make_fifo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ktools.kparse.do_gul_make_fifo" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="ktools.kparse.do_gul_remove_fifo">
+<code class="descclassname">ktools.kparse.</code><code class="descname">do_gul_remove_fifo</code><span class="sig-paren">(</span><em>analysis_settings</em>, <em>max_process_id</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ktools/kparse.html#do_gul_remove_fifo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ktools.kparse.do_gul_remove_fifo" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="ktools.kparse.do_il">
+<code class="descclassname">ktools.kparse.</code><code class="descname">do_il</code><span class="sig-paren">(</span><em>analysis_settings</em>, <em>max_process_id</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ktools/kparse.html#do_il"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ktools.kparse.do_il" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="ktools.kparse.do_il_make_fifo">
+<code class="descclassname">ktools.kparse.</code><code class="descname">do_il_make_fifo</code><span class="sig-paren">(</span><em>analysis_settings</em>, <em>max_process_id</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ktools/kparse.html#do_il_make_fifo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ktools.kparse.do_il_make_fifo" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="ktools.kparse.do_il_remove_fifo">
+<code class="descclassname">ktools.kparse.</code><code class="descname">do_il_remove_fifo</code><span class="sig-paren">(</span><em>analysis_settings</em>, <em>max_process_id</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ktools/kparse.html#do_il_remove_fifo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ktools.kparse.do_il_remove_fifo" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="ktools.kparse.do_kats">
+<code class="descclassname">ktools.kparse.</code><code class="descname">do_kats</code><span class="sig-paren">(</span><em>runtype</em>, <em>analysis_settings</em>, <em>max_process_id</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ktools/kparse.html#do_kats"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ktools.kparse.do_kats" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="ktools.kparse.do_kwaits">
+<code class="descclassname">ktools.kparse.</code><code class="descname">do_kwaits</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/ktools/kparse.html#do_kwaits"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ktools.kparse.do_kwaits" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="ktools.kparse.do_lwaits">
+<code class="descclassname">ktools.kparse.</code><code class="descname">do_lwaits</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/ktools/kparse.html#do_lwaits"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ktools.kparse.do_lwaits" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="ktools.kparse.do_make_fifos">
+<code class="descclassname">ktools.kparse.</code><code class="descname">do_make_fifos</code><span class="sig-paren">(</span><em>runtype</em>, <em>analysis_settings</em>, <em>process_id</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ktools/kparse.html#do_make_fifos"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ktools.kparse.do_make_fifos" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="ktools.kparse.do_post_wait_processing">
+<code class="descclassname">ktools.kparse.</code><code class="descname">do_post_wait_processing</code><span class="sig-paren">(</span><em>runtype</em>, <em>analysis_settings</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ktools/kparse.html#do_post_wait_processing"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ktools.kparse.do_post_wait_processing" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="ktools.kparse.do_pwaits">
+<code class="descclassname">ktools.kparse.</code><code class="descname">do_pwaits</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/ktools/kparse.html#do_pwaits"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ktools.kparse.do_pwaits" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="ktools.kparse.do_remove_fifos">
+<code class="descclassname">ktools.kparse.</code><code class="descname">do_remove_fifos</code><span class="sig-paren">(</span><em>runtype</em>, <em>analysis_settings</em>, <em>process_id</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ktools/kparse.html#do_remove_fifos"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ktools.kparse.do_remove_fifos" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="ktools.kparse.do_summarycalcs">
+<code class="descclassname">ktools.kparse.</code><code class="descname">do_summarycalcs</code><span class="sig-paren">(</span><em>runtype</em>, <em>analysis_settings</em>, <em>process_id</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ktools/kparse.html#do_summarycalcs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ktools.kparse.do_summarycalcs" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="ktools.kparse.do_tees">
+<code class="descclassname">ktools.kparse.</code><code class="descname">do_tees</code><span class="sig-paren">(</span><em>runtype</em>, <em>analysis_settings</em>, <em>process_id</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ktools/kparse.html#do_tees"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ktools.kparse.do_tees" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="ktools.kparse.do_waits">
+<code class="descclassname">ktools.kparse.</code><code class="descname">do_waits</code><span class="sig-paren">(</span><em>wait_variable</em>, <em>wait_count</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ktools/kparse.html#do_waits"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ktools.kparse.do_waits" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="ktools.kparse.genbash">
+<code class="descclassname">ktools.kparse.</code><code class="descname">genbash</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ktools/kparse.html#genbash"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ktools.kparse.genbash" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates a bash script containing ktools calculation instructions for an
+Oasis model, provided its analysis settings JSON file, the number of processes
+to use, and the path and name of the output script.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="ktools.kparse.get_getmodel_cmd">
+<code class="descclassname">ktools.kparse.</code><code class="descname">get_getmodel_cmd</code><span class="sig-paren">(</span><em>process_id_</em>, <em>max_process_id</em>, <em>number_of_samples</em>, <em>gul_threshold</em>, <em>use_random_number_file</em>, <em>coverage_output</em>, <em>item_output</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ktools/kparse.html#get_getmodel_cmd"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ktools.kparse.get_getmodel_cmd" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="ktools.kparse.leccalc_enabled">
+<code class="descclassname">ktools.kparse.</code><code class="descname">leccalc_enabled</code><span class="sig-paren">(</span><em>lec_options</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ktools/kparse.html#leccalc_enabled"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ktools.kparse.leccalc_enabled" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="ktools.kparse.print_command">
+<code class="descclassname">ktools.kparse.</code><code class="descname">print_command</code><span class="sig-paren">(</span><em>cmd</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ktools/kparse.html#print_command"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ktools.kparse.print_command" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="ktools.kparse.remove_workfolders">
+<code class="descclassname">ktools.kparse.</code><code class="descname">remove_workfolders</code><span class="sig-paren">(</span><em>runtype</em>, <em>analysis_settings</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ktools/kparse.html#remove_workfolders"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ktools.kparse.remove_workfolders" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
 </div>
 
 
@@ -819,7 +1042,9 @@ subfolder, and the canonical exposures profiles can be placed in the
 <li class="toctree-l2"><a class="reference internal" href="#module-exposures.OasisExposuresManagerInterface"><code class="docutils literal"><span class="pre">omdk.exposures.OasisExposuresManagerInterface</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#module-exposures.OasisExposuresManager"><code class="docutils literal"><span class="pre">omdk.exposures.OasisExposuresManager</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#module-exposures.OasisFilesPipeline"><code class="docutils literal"><span class="pre">omdk.exposures.OasisFilesPipeline</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-keys.OasisKeysLookupFactory"><code class="docutils literal"><span class="pre">omdk.keys.OasisKeysLookupFactory</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#module-oasis_files_generator"><code class="docutils literal"><span class="pre">omdk.oasis_files_generator</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-ktools.kparse"><code class="docutils literal"><span class="pre">omdk.ktools.kparse</span></code></a></li>
 </ul>
 </li>
 </ul>

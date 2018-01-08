@@ -1,0 +1,348 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>keys.OasisKeysLookupFactory &#8212; omdk 0.1 documentation</title>
+    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for keys.OasisKeysLookupFactory</h1><div class="highlight"><pre>
+<span></span><span class="ch">#!/usr/bin/env python</span>
+<span class="c1"># -*- coding: utf-8 -*-</span>
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s1">&#39;OasisKeysLookupFactory&#39;</span>
+<span class="p">]</span>
+
+<span class="kn">import</span> <span class="nn">csv</span>
+<span class="kn">import</span> <span class="nn">io</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">importlib</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+
+<span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">sep</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;keys&#39;</span><span class="p">:</span>
+    <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">pardir</span><span class="p">))</span>
+
+<span class="kn">from</span> <span class="nn">oasis_utils</span> <span class="k">import</span> <span class="n">OasisException</span>
+
+
+<span class="n">__author__</span> <span class="o">=</span> <span class="s2">&quot;Sandeep Murthy&quot;</span>
+<span class="n">__copyright__</span> <span class="o">=</span> <span class="s2">&quot;2017, Oasis Loss Modelling Framework&quot;</span>
+
+
+<div class="viewcode-block" id="OasisKeysLookupFactory"><a class="viewcode-back" href="../../modules.html#keys.OasisKeysLookupFactory.OasisKeysLookupFactory">[docs]</a><span class="k">class</span> <span class="nc">OasisKeysLookupFactory</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A factory class to load and run keys lookup services for different</span>
+<span class="sd">    models/suppliers.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="OasisKeysLookupFactory.get_model_info"><a class="viewcode-back" href="../../modules.html#keys.OasisKeysLookupFactory.OasisKeysLookupFactory.get_model_info">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">get_model_info</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">model_version_file_path</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get model information from the model version file.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">with</span> <span class="n">io</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">model_version_file_path</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">csv</span><span class="o">.</span><span class="n">DictReader</span><span class="p">(</span>
+                <span class="n">f</span><span class="p">,</span> <span class="n">fieldnames</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;supplier_id&#39;</span><span class="p">,</span> <span class="s1">&#39;model_id&#39;</span><span class="p">,</span> <span class="s1">&#39;model_version_id&#39;</span><span class="p">]</span>
+            <span class="p">)</span><span class="o">.</span><span class="n">next</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="OasisKeysLookupFactory.get_lookup_package"><a class="viewcode-back" href="../../modules.html#keys.OasisKeysLookupFactory.OasisKeysLookupFactory.get_lookup_package">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">get_lookup_package</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">lookup_package_path</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the lookup service parent package (called `keys_server` and</span>
+<span class="sd">        located in `src` in the model keys server Git repository or in</span>
+<span class="sd">        `var/www/oasis` in the keys server Docker container) from the given</span>
+<span class="sd">        path.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">parent_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">lookup_package_path</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">pardir</span><span class="p">))</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">parent_dir</span><span class="p">)</span>
+        <span class="n">package_name</span> <span class="o">=</span> <span class="n">lookup_package_path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">sep</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">lookup_package</span> <span class="o">=</span> <span class="n">importlib</span><span class="o">.</span><span class="n">import_module</span><span class="p">(</span><span class="n">package_name</span><span class="p">)</span>
+        <span class="n">reload</span><span class="p">(</span><span class="n">lookup_package</span><span class="p">)</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">lookup_package</span></div>
+
+
+<div class="viewcode-block" id="OasisKeysLookupFactory.get_lookup_class_instance"><a class="viewcode-back" href="../../modules.html#keys.OasisKeysLookupFactory.OasisKeysLookupFactory.get_lookup_class_instance">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">get_lookup_class_instance</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">lookup_package</span><span class="p">,</span> <span class="n">keys_data_path</span><span class="p">,</span> <span class="n">model_info</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get the keys lookup class instance.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">klc</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">lookup_package</span><span class="p">,</span> <span class="s1">&#39;</span><span class="si">{}</span><span class="s1">KeysLookup&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">model_info</span><span class="p">[</span><span class="s1">&#39;model_id&#39;</span><span class="p">]))</span>
+
+        <span class="k">return</span> <span class="n">klc</span><span class="p">(</span>
+            <span class="n">keys_data_directory</span><span class="o">=</span><span class="n">keys_data_path</span><span class="p">,</span>
+            <span class="n">supplier</span><span class="o">=</span><span class="n">model_info</span><span class="p">[</span><span class="s1">&#39;supplier_id&#39;</span><span class="p">],</span>
+            <span class="n">model_name</span><span class="o">=</span><span class="n">model_info</span><span class="p">[</span><span class="s1">&#39;model_id&#39;</span><span class="p">],</span>
+            <span class="n">model_version</span><span class="o">=</span><span class="n">model_info</span><span class="p">[</span><span class="s1">&#39;model_version_id&#39;</span><span class="p">]</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="OasisKeysLookupFactory.get_model_exposures"><a class="viewcode-back" href="../../modules.html#keys.OasisKeysLookupFactory.OasisKeysLookupFactory.get_model_exposures">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">get_model_exposures</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">model_exposures</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">model_exposures_file_path</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get the model exposures/location file data as a pandas dataframe given</span>
+<span class="sd">        either the path of the model exposures file or the string contents of</span>
+<span class="sd">        such a file.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">loc_df</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="k">if</span> <span class="n">model_exposures_file_path</span><span class="p">:</span>
+            <span class="k">with</span> <span class="n">io</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">model_exposures_file_path</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+                <span class="n">loc_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">io</span><span class="o">.</span><span class="n">StringIO</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">()))</span>
+        <span class="k">elif</span> <span class="n">model_exposures</span><span class="p">:</span>
+            <span class="n">loc_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">io</span><span class="o">.</span><span class="n">StringIO</span><span class="p">(</span><span class="n">model_exposures</span><span class="p">))</span>
+
+        <span class="n">loc_df</span> <span class="o">=</span> <span class="n">loc_df</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">loc_df</span><span class="o">.</span><span class="n">notnull</span><span class="p">(),</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="n">loc_df</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="o">.</span><span class="n">lower</span><span class="p">,</span> <span class="n">loc_df</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">loc_df</span></div>
+
+
+<div class="viewcode-block" id="OasisKeysLookupFactory.write_oasis_keys_file"><a class="viewcode-back" href="../../modules.html#keys.OasisKeysLookupFactory.OasisKeysLookupFactory.write_oasis_keys_file">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">write_oasis_keys_file</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">records</span><span class="p">,</span> <span class="n">output_file_path</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Writes an Oasis keys file from an iterable of lookup records.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">with</span> <span class="n">io</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">output_file_path</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;LocID,PerilID,CoverageID,AreaPerilID,VulnerabilityID</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">decode</span><span class="p">())</span>            
+            <span class="n">n</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">records</span><span class="p">:</span>
+                <span class="n">n</span> <span class="o">+=</span> <span class="mi">1</span>
+                <span class="n">line</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">{}</span><span class="s1">,</span><span class="si">{}</span><span class="s1">,</span><span class="si">{}</span><span class="s1">,</span><span class="si">{}</span><span class="s1">,</span><span class="si">{}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">r</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">],</span> <span class="n">r</span><span class="p">[</span><span class="s1">&#39;peril_id&#39;</span><span class="p">],</span> <span class="n">r</span><span class="p">[</span><span class="s1">&#39;coverage&#39;</span><span class="p">],</span> <span class="n">r</span><span class="p">[</span><span class="s1">&#39;area_peril_id&#39;</span><span class="p">],</span> <span class="n">r</span><span class="p">[</span><span class="s1">&#39;vulnerability_id&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">decode</span><span class="p">()</span>
+                <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">f</span><span class="p">,</span> <span class="n">n</span></div>
+
+
+<div class="viewcode-block" id="OasisKeysLookupFactory.write_list_keys_file"><a class="viewcode-back" href="../../modules.html#keys.OasisKeysLookupFactory.OasisKeysLookupFactory.write_list_keys_file">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">write_list_keys_file</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">records</span><span class="p">,</span> <span class="n">output_file_path</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Writes the lookup records as a simple list to file.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">n</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">with</span> <span class="n">io</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">output_file_path</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">records</span><span class="p">:</span>
+               <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{}</span><span class="s1">,</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">sort_keys</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">separators</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">,</span> <span class="s1">&#39;: &#39;</span><span class="p">)))</span><span class="o">.</span><span class="n">decode</span><span class="p">())</span>
+               <span class="n">n</span> <span class="o">+=</span> <span class="mi">1</span>
+
+        <span class="k">return</span> <span class="n">f</span><span class="p">,</span> <span class="n">n</span></div>
+
+
+<div class="viewcode-block" id="OasisKeysLookupFactory.create"><a class="viewcode-back" href="../../modules.html#keys.OasisKeysLookupFactory.OasisKeysLookupFactory.create">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">create</span><span class="p">(</span>
+        <span class="bp">cls</span><span class="p">,</span>
+        <span class="n">model_keys_data_path</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">model_version_file_path</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">lookup_package_path</span><span class="o">=</span><span class="kc">None</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Creates a keys lookup class instance for the given model and supplier -</span>
+<span class="sd">        local file paths are required for the model keys data folder, the model</span>
+<span class="sd">        version file and the Git repository for the model keys server. Returns a</span>
+<span class="sd">        pair ``(model_info, klc)``, where ``model_info`` is a dictionary holding</span>
+<span class="sd">        model information from the model version file and `klc` is the lookup</span>
+<span class="sd">        service class instance for the model.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="p">(</span>
+            <span class="n">model_keys_data_path</span><span class="p">,</span>
+            <span class="n">model_version_file_path</span><span class="p">,</span>
+            <span class="n">lookup_package_path</span>
+        <span class="p">)</span> <span class="o">=</span> <span class="nb">map</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">,</span> <span class="p">[</span><span class="n">model_keys_data_path</span><span class="p">,</span> <span class="n">model_version_file_path</span><span class="p">,</span> <span class="n">lookup_package_path</span><span class="p">])</span>
+        <span class="n">model_info</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">get_model_info</span><span class="p">(</span><span class="n">model_version_file_path</span><span class="p">)</span>
+        <span class="n">lookup_package</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">get_lookup_package</span><span class="p">(</span><span class="n">lookup_package_path</span><span class="p">)</span>
+        <span class="n">klc</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">get_lookup_class_instance</span><span class="p">(</span><span class="n">lookup_package</span><span class="p">,</span> <span class="n">model_keys_data_path</span><span class="p">,</span> <span class="n">model_info</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">model_info</span><span class="p">,</span> <span class="n">klc</span></div>
+
+
+<div class="viewcode-block" id="OasisKeysLookupFactory.get_keys"><a class="viewcode-back" href="../../modules.html#keys.OasisKeysLookupFactory.OasisKeysLookupFactory.get_keys">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">get_keys</span><span class="p">(</span>
+        <span class="bp">cls</span><span class="p">,</span>
+        <span class="n">lookup</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">model_exposures</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">model_exposures_file_path</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">success_only</span><span class="o">=</span><span class="kc">True</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Generates keys lookup records (JSON) for the given model and supplier -</span>
+<span class="sd">        requires an instance of the lookup service (which can be created using</span>
+<span class="sd">        the `create` method in this factory class), and either the model</span>
+<span class="sd">        location file path or the string contents of such a file.</span>
+
+<span class="sd">        The optional keyword argument ``success_only`` indicates whether only</span>
+<span class="sd">        records with successful lookups should be returned (default), or all</span>
+<span class="sd">        records.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">any</span><span class="p">([</span><span class="n">model_exposures</span><span class="p">,</span> <span class="n">model_exposures_file_path</span><span class="p">]):</span>
+            <span class="k">raise</span> <span class="n">OasisException</span><span class="p">(</span><span class="s1">&#39;No model exposures provided&#39;</span><span class="p">)</span>
+
+        <span class="n">model_loc_df</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="bp">cls</span><span class="o">.</span><span class="n">get_model_exposures</span><span class="p">(</span>
+                <span class="n">model_exposures_file_path</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">model_exposures_file_path</span><span class="p">)</span>
+            <span class="p">)</span> <span class="k">if</span> <span class="n">model_exposures_file_path</span>
+            <span class="k">else</span> <span class="bp">cls</span><span class="o">.</span><span class="n">get_model_exposures</span><span class="p">(</span><span class="n">model_exposures</span><span class="o">=</span><span class="n">model_exposures</span><span class="p">)</span>
+        <span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">record_container</span> <span class="ow">in</span> <span class="n">lookup</span><span class="o">.</span><span class="n">process_locations</span><span class="p">(</span><span class="n">model_loc_df</span><span class="p">):</span>
+            <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">record_container</span><span class="p">)</span> <span class="ow">in</span> <span class="p">[</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">,</span> <span class="nb">set</span><span class="p">]:</span>
+                <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">record_container</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">success_only</span><span class="p">:</span>
+                        <span class="k">if</span> <span class="n">r</span><span class="p">[</span><span class="s1">&#39;status&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;success&#39;</span><span class="p">:</span>
+                            <span class="k">yield</span> <span class="n">r</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="k">yield</span> <span class="n">r</span>
+            <span class="k">elif</span> <span class="nb">type</span><span class="p">(</span><span class="n">record_container</span><span class="p">)</span> <span class="o">==</span> <span class="nb">dict</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">success_only</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">record_container</span><span class="p">[</span><span class="s1">&#39;status&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;success&#39;</span><span class="p">:</span>
+                        <span class="k">yield</span> <span class="n">record_container</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">yield</span> <span class="n">record_container</span></div>
+
+
+<div class="viewcode-block" id="OasisKeysLookupFactory.save_keys"><a class="viewcode-back" href="../../modules.html#keys.OasisKeysLookupFactory.OasisKeysLookupFactory.save_keys">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">save_keys</span><span class="p">(</span>
+        <span class="bp">cls</span><span class="p">,</span>
+        <span class="n">lookup</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">model_exposures</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">model_exposures_file_path</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">success_only</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">output_file_path</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;oasis_keys&#39;</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Writes the keys lookup records generated by the lookup service for the</span>
+<span class="sd">        given model and supplier to a local file - requires a lookup service</span>
+<span class="sd">        instance (which can be created using the `create` method in this</span>
+<span class="sd">        factory class), the path of the model location file, the path of</span>
+<span class="sd">        output file, and the format of the output file which can be an</span>
+<span class="sd">        Oasis keys file (``oasis_keys``) or a simple listing of the records</span>
+<span class="sd">        to file (``list_keys``).</span>
+
+<span class="sd">        The optional keyword argument ``success_only`` indicates whether only</span>
+<span class="sd">        records with successful lookups should be returned (default), or all</span>
+<span class="sd">        records.</span>
+
+<span class="sd">        Returns a pair ``(f, n)`` where ``f`` is the output file object</span>
+<span class="sd">        and ``n`` is the number of records written to the file.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">lookup</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">OasisException</span><span class="p">(</span><span class="s1">&#39;No keys lookup service provided&#39;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">any</span><span class="p">([</span><span class="n">model_exposures</span><span class="p">,</span> <span class="n">model_exposures_file_path</span><span class="p">]):</span>
+            <span class="k">raise</span> <span class="n">OasisException</span><span class="p">(</span><span class="s1">&#39;No model exposures or model exposures file path provided&#39;</span><span class="p">)</span>
+
+        <span class="n">model_exposures_file_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">model_exposures_file_path</span><span class="p">)</span> <span class="k">if</span> <span class="n">model_exposures_file_path</span> <span class="k">else</span> <span class="kc">None</span>    
+        <span class="n">output_file_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">output_file_path</span><span class="p">)</span>
+        
+        <span class="n">keys</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">get_keys</span><span class="p">(</span>
+            <span class="n">lookup</span><span class="o">=</span><span class="n">lookup</span><span class="p">,</span>
+            <span class="n">model_exposures</span><span class="o">=</span><span class="n">model_exposures</span><span class="p">,</span>
+            <span class="n">model_exposures_file_path</span><span class="o">=</span><span class="n">model_exposures_file_path</span><span class="p">,</span>
+            <span class="n">success_only</span><span class="o">=</span><span class="n">success_only</span>
+        <span class="p">)</span>
+
+        <span class="k">if</span> <span class="nb">format</span> <span class="o">==</span> <span class="s1">&#39;oasis_keys&#39;</span><span class="p">:</span>
+            <span class="n">f</span><span class="p">,</span> <span class="n">n</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">write_oasis_keys_file</span><span class="p">(</span><span class="n">keys</span><span class="p">,</span> <span class="n">output_file_path</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">format</span> <span class="o">==</span> <span class="s1">&#39;list_keys&#39;</span><span class="p">:</span>
+            <span class="n">f</span><span class="p">,</span> <span class="n">n</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">write_json_keys_file</span><span class="p">(</span><span class="n">keys</span><span class="p">,</span> <span class="n">output_file_path</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">f</span><span class="p">,</span> <span class="n">n</span></div></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../index.html">omdk</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../repository-management.html">Repository Management</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sphinx.html">Sphinx Docs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../first-steps.html">First Steps</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../generating-oasis-files.html">Generating Oasis Files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">Module Documentation</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, Oasis Loss Modelling Framework (v. 1.0, 30 November, 2017).
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>
