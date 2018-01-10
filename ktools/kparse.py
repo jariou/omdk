@@ -227,7 +227,7 @@ def do_summarycalcs(runtype, analysis_settings, process_id):
         for summary in analysis_settings["{}_summaries".format(runtype)]:
             if "id" in summary:
                 summary_set = summary["id"]
-                cmd = cmd + "-{} fifo/{}_S{}_summary_P{} ".format(
+                cmd = cmd + "-{0} fifo/{1}_S{0}_summary_P{2} ".format(
                     summary_set, runtype, process_id)
         cmd = cmd + " < fifo/{}_P{} &".format(runtype, process_id)
         print_command(cmd)
@@ -626,7 +626,7 @@ if __name__ == '__main__':
         with io.open(args['analysis_settings_json_file_path'], 'r', encoding='utf-8') as f:
             analysis_settings = json.load(f)['analysis_settings']
     except (IOError, ValueError):
-        raise OasisException("Invalid analysis settings JSON file or file path: {}.".format(args['analysis_settings_json_file_path']))    
+        raise OasisException("Invalid analysis settings JSON file or file path: {}.".format(args['analysis_settings_json_file_path']))
 
     logging.info('Analysis settings: {}'.format(analysis_settings))
     try:
