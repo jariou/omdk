@@ -13,22 +13,22 @@
     The script can be executed in two ways: (1) directly by providing all the
     resources in the script call using the following syntax::
 
-        ./oasis_files_generator.py -k '/path/to/keys/data/folder'
-                                   -v '/path/to/model/version/file'
-                                   -l '/path/to/model/keys/lookup/service/package'
-                                   -p '/path/to/canonical/exposures/profile/JSON/file'
-                                   -e '/path/to/source/exposures/file'
-                                   -a '/path/to/source/exposures/validation/file'
-                                   -b '/path/to/source/to/canonical/exposures/transformation/file'
-                                   -c '/path/to/canonical/exposures/validation/file'
-                                   -d '/path/to/canonical/to/model/exposures/transformation/file'
-                                   -x '/path/to/xtrans/executable'
-                                   -o '/path/to/oasis/files/directory'
+        ./generate_oasis_files.py -k '/path/to/keys/data/folder'
+                                  -v '/path/to/model/version/file'
+                                  -l '/path/to/model/keys/lookup/service/package'
+                                  -p '/path/to/canonical/exposures/profile/JSON/file'
+                                  -e '/path/to/source/exposures/file'
+                                  -a '/path/to/source/exposures/validation/file'
+                                  -b '/path/to/source/to/canonical/exposures/transformation/file'
+                                  -c '/path/to/canonical/exposures/validation/file'
+                                  -d '/path/to/canonical/to/model/exposures/transformation/file'
+                                  -x '/path/to/xtrans/executable'
+                                  -o '/path/to/oasis/files/directory'
 
     or by providing the path to a JSON script config file which defines all
     the script resources - the syntax for the latter option is::
 
-        ./oasis_files_generator.py -f '/path/to/model/resources/JSON/config/file'
+        ./generate_oasis_files.py -f '/path/to/model/resources/JSON/config/file'
 
     and the keys of the JSON config file should be named as follows::
 
@@ -163,6 +163,7 @@ def __set_logging__():
         format='%(asctime)s - %(levelname)s - %(message)s',
         filemode='w'
     )
+    return logging.getLogger()
 
 
 def __parse_args__():
@@ -211,8 +212,7 @@ def __load_args_from_config_file__(config_file_path):
 
 if __name__ == '__main__':
 
-    __set_logging__()
-    logger = logging.getLogger()
+    logger = __set_logging__()
     logger.info('Console logging set')
     
     try:
@@ -221,7 +221,12 @@ if __name__ == '__main__':
 
         if args['config_file_path']:
             logger.info('Loading script resources from config file {}'.format(args['config_file_path']))
-            args = __load_args_from_config_file__(args['config_file_path'])
+            try:
+                args = __load_args_from_config_file__(args['config_file_path'])
+            except OasisException as e:
+                logger.error(str(e))
+                sys.exit(-1)
+
             logger.info('Script resources: {}'.format(args))
         else:
             args.pop('config_file_path')

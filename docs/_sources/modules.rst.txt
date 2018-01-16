@@ -37,14 +37,20 @@ Module Documentation
    :members:
    :undoc-members:
 
-``omdk.oasis_files_generator``
-------------------------------
+``omdk.generate_oasis_files``
+-----------------------------
 
-.. automodule:: oasis_files_generator
+.. automodule:: generate_oasis_files
 
 ``omdk.ktools.kparse``
 ----------------------
 
 .. automodule:: ktools.kparse
+   :members:
+   :undoc-members:
+
+``omdk.run_model``
+------------------
+.. automodule:: run_model
    :members:
    :undoc-members:

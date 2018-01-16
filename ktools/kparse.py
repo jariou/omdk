@@ -8,6 +8,7 @@ import io
 import json
 import logging
 import os
+import subprocess
 import sys
 
 sys.path.insert(0, os.path.abspath(os.pardir))
@@ -581,6 +582,7 @@ def __set_logging__():
         format='%(asctime)s - %(levelname)s - %(message)s',
         filemode='w'
     )
+    return logging.getLogger()
 
 
 def __parse_args__():
@@ -616,28 +618,33 @@ def __parse_args__():
 
 if __name__ == '__main__':
 
-    __set_logging__()
+    logger = __set_logging__()
 
-    logging.info('Parsing script arguments')
+    logger.info('Parsing script arguments')
     args = __parse_args__()
-    logging.info(args)
+    logger.info(args)
 
     try:
+        logger.info('Loading analysis settings JSON file')
         with io.open(args['analysis_settings_json_file_path'], 'r', encoding='utf-8') as f:
             analysis_settings = json.load(f)['analysis_settings']
     except (IOError, ValueError):
         raise OasisException("Invalid analysis settings JSON file or file path: {}.".format(args['analysis_settings_json_file_path']))
 
-    logging.info('Analysis settings: {}'.format(analysis_settings))
+    logging.info('Loaded analysis settings JSON: {}'.format(analysis_settings))
     try:
+        logger.info('Generating ktools script')
         genbash(
             max_process_id=args['num_processes'],
             analysis_settings=analysis_settings,
             output_filename=args['output_file_path']
         )
     except Exception as e:
-        logging.error(str(e))
+        logger.error(str(e))
         sys.exit(-1)
 
-    logging.info('Generated script {}'.format(args['output_file_path']))
+    logger.info('Making ktools script executable')
+    subprocess.call("chmod +x {}".format(args['output_file_path']), shell=True)
+
+    logger.info('Generated ktools script {}'.format(args['output_file_path']))
     sys.exit(0)

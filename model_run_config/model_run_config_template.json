@@ -1,0 +1,17 @@
+{
+    "keys_data_path": null,
+    "model_version_file_path": null, 
+    "lookup_package_path": null,
+    "canonical_exposures_profile_json_path": null,
+    "source_exposures_file_path": null,
+    "source_exposures_validation_file_path": null,
+    "source_to_canonical_exposures_transformation_file_path": null,
+    "canonical_exposures_validation_file_path": null,
+    "canonical_to_model_exposures_transformation_file_path": null,
+    "xtrans_path": null,
+    "oasis_files_path": null,
+    "analysis_settings_json_file_path": null,
+    "ktools_script_name": null,
+    "model_run_dir_path": null,
+    "ktools_num_processes": null
+}

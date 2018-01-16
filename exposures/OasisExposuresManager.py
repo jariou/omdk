@@ -67,7 +67,7 @@ class OasisExposuresManager(implements(OasisExposuresManagerInterface)):
 
         self.logger.info('Creating keys lookup service factory for exposures manager {}'.format(self))
         self._keys_lookup_factory = oklf()
-        self.logger.info('Created keys lookup service factory {} for exposures manager {}'.format(self._keys_lookup_service_factory, self))
+        self.logger.info('Created keys lookup service factory {} for exposures manager {}'.format(self._keys_lookup_factory, self))
         
         self.logger.info('Adding models')
         self._models = {}
@@ -454,7 +454,7 @@ class OasisExposuresManager(implements(OasisExposuresManagerInterface)):
             try:
                 with io.open(canonical_exposures_profile_json_path, 'r', encoding='utf-8') as f:
                     canonical_exposures_profile = json.load(f)
-            except (IOError, ValueError):
+            except (IOError, ValueError, TypeError):
                 raise OasisException("Canonical exposures profile JSON file path invalid or file is not valid JSON for {}.".format(oasis_model))
 
         if not with_model_resources:

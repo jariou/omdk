@@ -832,8 +832,8 @@ and <code class="docutils literal"><span class="pre">n</span></code> is the numb
 </dd></dl>
 
 </div>
-<div class="section" id="module-oasis_files_generator">
-<span id="omdk-oasis-files-generator"></span><h2><code class="docutils literal"><span class="pre">omdk.oasis_files_generator</span></code><a class="headerlink" href="#module-oasis_files_generator" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="module-generate_oasis_files">
+<span id="omdk-generate-oasis-files"></span><h2><code class="docutils literal"><span class="pre">omdk.generate_oasis_files</span></code><a class="headerlink" href="#module-generate_oasis_files" title="Permalink to this headline">¶</a></h2>
 <p>Executable script for generating Oasis files for a given model. Requires
 that the necessary model meta information, such as the model version file,
 and resources required to create its keys lookup service, such as the
@@ -844,22 +844,22 @@ tool for exposures files, the necessary validation and transformation files,
 and the source exposures file.</p>
 <p>The script can be executed in two ways: (1) directly by providing all the
 resources in the script call using the following syntax:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">./</span><span class="n">oasis_files_generator</span><span class="o">.</span><span class="n">py</span> <span class="o">-</span><span class="n">k</span> <span class="s1">&#39;/path/to/keys/data/folder&#39;</span>
-                           <span class="o">-</span><span class="n">v</span> <span class="s1">&#39;/path/to/model/version/file&#39;</span>
-                           <span class="o">-</span><span class="n">l</span> <span class="s1">&#39;/path/to/model/keys/lookup/service/package&#39;</span>
-                           <span class="o">-</span><span class="n">p</span> <span class="s1">&#39;/path/to/canonical/exposures/profile/JSON/file&#39;</span>
-                           <span class="o">-</span><span class="n">e</span> <span class="s1">&#39;/path/to/source/exposures/file&#39;</span>
-                           <span class="o">-</span><span class="n">a</span> <span class="s1">&#39;/path/to/source/exposures/validation/file&#39;</span>
-                           <span class="o">-</span><span class="n">b</span> <span class="s1">&#39;/path/to/source/to/canonical/exposures/transformation/file&#39;</span>
-                           <span class="o">-</span><span class="n">c</span> <span class="s1">&#39;/path/to/canonical/exposures/validation/file&#39;</span>
-                           <span class="o">-</span><span class="n">d</span> <span class="s1">&#39;/path/to/canonical/to/model/exposures/transformation/file&#39;</span>
-                           <span class="o">-</span><span class="n">x</span> <span class="s1">&#39;/path/to/xtrans/executable&#39;</span>
-                           <span class="o">-</span><span class="n">o</span> <span class="s1">&#39;/path/to/oasis/files/directory&#39;</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">./</span><span class="n">generate_oasis_files</span><span class="o">.</span><span class="n">py</span> <span class="o">-</span><span class="n">k</span> <span class="s1">&#39;/path/to/keys/data/folder&#39;</span>
+                          <span class="o">-</span><span class="n">v</span> <span class="s1">&#39;/path/to/model/version/file&#39;</span>
+                          <span class="o">-</span><span class="n">l</span> <span class="s1">&#39;/path/to/model/keys/lookup/service/package&#39;</span>
+                          <span class="o">-</span><span class="n">p</span> <span class="s1">&#39;/path/to/canonical/exposures/profile/JSON/file&#39;</span>
+                          <span class="o">-</span><span class="n">e</span> <span class="s1">&#39;/path/to/source/exposures/file&#39;</span>
+                          <span class="o">-</span><span class="n">a</span> <span class="s1">&#39;/path/to/source/exposures/validation/file&#39;</span>
+                          <span class="o">-</span><span class="n">b</span> <span class="s1">&#39;/path/to/source/to/canonical/exposures/transformation/file&#39;</span>
+                          <span class="o">-</span><span class="n">c</span> <span class="s1">&#39;/path/to/canonical/exposures/validation/file&#39;</span>
+                          <span class="o">-</span><span class="n">d</span> <span class="s1">&#39;/path/to/canonical/to/model/exposures/transformation/file&#39;</span>
+                          <span class="o">-</span><span class="n">x</span> <span class="s1">&#39;/path/to/xtrans/executable&#39;</span>
+                          <span class="o">-</span><span class="n">o</span> <span class="s1">&#39;/path/to/oasis/files/directory&#39;</span>
 </pre></div>
 </div>
 <p>or by providing the path to a JSON script config file which defines all
 the script resources - the syntax for the latter option is:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">./</span><span class="n">oasis_files_generator</span><span class="o">.</span><span class="n">py</span> <span class="o">-</span><span class="n">f</span> <span class="s1">&#39;/path/to/model/resources/JSON/config/file&#39;</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">./</span><span class="n">generate_oasis_files</span><span class="o">.</span><span class="n">py</span> <span class="o">-</span><span class="n">f</span> <span class="s1">&#39;/path/to/model/resources/JSON/config/file&#39;</span>
 </pre></div>
 </div>
 <p>and the keys of the JSON config file should be named as follows:</p>
@@ -1013,6 +1013,59 @@ to use, and the path and name of the output script.</p>
 <dd></dd></dl>
 
 </div>
+<div class="section" id="module-run_model">
+<span id="omdk-run-model"></span><h2><code class="docutils literal"><span class="pre">omdk.run_model</span></code><a class="headerlink" href="#module-run_model" title="Permalink to this headline">¶</a></h2>
+<p>Master script for end-to-end model run.</p>
+<p>Ensure that a model run directory exists, containing the analysis settings JSON
+file and also the model static data (in a subfolder named ‘static’). Also ensure
+that you have the ktools binaries installed on your system.</p>
+<p>The script can then be executed in two ways: (1) directly by providing all the
+resources in the script call using the following syntax:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">./</span><span class="n">run_model</span><span class="o">.</span><span class="n">py</span> <span class="o">-</span><span class="n">k</span> <span class="s1">&#39;/path/to/keys/data/folder&#39;</span>
+               <span class="o">-</span><span class="n">v</span> <span class="s1">&#39;/path/to/model/version/file&#39;</span>
+               <span class="o">-</span><span class="n">l</span> <span class="s1">&#39;/path/to/model/keys/lookup/service/package&#39;</span>
+               <span class="o">-</span><span class="n">p</span> <span class="s1">&#39;/path/to/canonical/exposures/profile/JSON/file&#39;</span>
+               <span class="o">-</span><span class="n">e</span> <span class="s1">&#39;/path/to/source/exposures/file&#39;</span>
+               <span class="o">-</span><span class="n">a</span> <span class="s1">&#39;/path/to/source/exposures/validation/file&#39;</span>
+               <span class="o">-</span><span class="n">b</span> <span class="s1">&#39;/path/to/source/to/canonical/exposures/transformation/file&#39;</span>
+               <span class="o">-</span><span class="n">c</span> <span class="s1">&#39;/path/to/canonical/exposures/validation/file&#39;</span>
+               <span class="o">-</span><span class="n">d</span> <span class="s1">&#39;/path/to/canonical/to/model/exposures/transformation/file&#39;</span>
+               <span class="o">-</span><span class="n">x</span> <span class="s1">&#39;/path/to/xtrans/executable&#39;</span>
+               <span class="o">-</span><span class="n">o</span> <span class="s1">&#39;/path/to/oasis/files/directory&#39;</span>
+               <span class="o">-</span><span class="n">j</span> <span class="s1">&#39;/path/to/analysis/settings/json/file&#39;</span>
+               <span class="o">-</span><span class="n">s</span> <span class="s1">&#39;&lt;ktools script name (without file extension)&gt;&#39;</span>
+               <span class="o">-</span><span class="n">r</span> <span class="s1">&#39;/path/to/model/run/directory&#39;</span>
+               <span class="o">-</span><span class="n">n</span> <span class="s1">&#39;&lt;number of processes to use for ktools calcs.&gt;&#39;</span>
+</pre></div>
+</div>
+<p>or by providing the path to a JSON script config file which defines all
+the script resources - the syntax for the latter option is:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">./</span><span class="n">run_model</span><span class="o">.</span><span class="n">py</span> <span class="o">-</span><span class="n">f</span> <span class="s1">&#39;/path/to/model/resources/JSON/config/file&#39;</span>
+</pre></div>
+</div>
+<p>and the keys of the JSON config file should be named as follows:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="s2">&quot;keys_data_path&quot;</span>
+<span class="s2">&quot;model_version_file_path&quot;</span>
+<span class="s2">&quot;lookup_package_path&quot;</span>
+<span class="s2">&quot;canonical_exposures_profile_json_path&quot;</span>
+<span class="s2">&quot;source_exposures_file_path&quot;</span>
+<span class="s2">&quot;source_exposures_validation_file_path&quot;</span>
+<span class="s2">&quot;source_to_canonical_exposures_transformation_file_path&quot;</span>
+<span class="s2">&quot;canonical_exposures_validation_file_path&quot;</span>
+<span class="s2">&quot;canonical_to_model_exposures_transformation_file_path&quot;</span>
+<span class="s2">&quot;xtrans_path&quot;</span>
+<span class="s2">&quot;oasis_files_path&quot;</span>
+<span class="s2">&quot;analysis_settings_json_file_path&quot;</span>
+<span class="s2">&quot;ktools_script_name&quot;</span>
+<span class="s2">&quot;model_run_dir_path&quot;</span>
+<span class="s2">&quot;ktools_num_processes&quot;</span>
+</pre></div>
+</div>
+<p>The file and folder paths can be relative to the path of the script. If you’ve cloned
+the OMDK repository then script configs for models can be placed in the <code class="docutils literal"><span class="pre">model_run_config</span></code>
+subfolder, and the canonical exposures profiles can be placed in the
+<code class="docutils literal"><span class="pre">canonical_exposures_profiles</span></code> subfolder.</p>
+</div>
 </div>
 
 
@@ -1043,8 +1096,9 @@ to use, and the path and name of the output script.</p>
 <li class="toctree-l2"><a class="reference internal" href="#module-exposures.OasisExposuresManager"><code class="docutils literal"><span class="pre">omdk.exposures.OasisExposuresManager</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#module-exposures.OasisFilesPipeline"><code class="docutils literal"><span class="pre">omdk.exposures.OasisFilesPipeline</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#module-keys.OasisKeysLookupFactory"><code class="docutils literal"><span class="pre">omdk.keys.OasisKeysLookupFactory</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="#module-oasis_files_generator"><code class="docutils literal"><span class="pre">omdk.oasis_files_generator</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-generate_oasis_files"><code class="docutils literal"><span class="pre">omdk.generate_oasis_files</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#module-ktools.kparse"><code class="docutils literal"><span class="pre">omdk.ktools.kparse</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-run_model"><code class="docutils literal"><span class="pre">omdk.run_model</span></code></a></li>
 </ul>
 </li>
 </ul>
