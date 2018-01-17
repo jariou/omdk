@@ -231,6 +231,11 @@ def __load_args_from_config_file__(config_file_path):
                 args = json.load(f)
         except (IOError, ValueError, TypeError) as e:
             raise OasisException('Error parsing resources config file {}: {}'.format(config_file_path, str(e)))
+        
+        map(
+            lambda arg: args.update({arg: os.path.abspath(args[arg])}) if arg.endswith('path') and args[arg] else None,
+            args
+        )
     elif config_file_path.endswith('yaml') or config_file_path.endswith('yml'):
         pass
 
@@ -293,8 +298,8 @@ if __name__ == '__main__':
         try:
             logger.info('Calling Oasis files generator script - to generate Oasis input files')
             subprocess.check_call(cmd_str, stderr=subprocess.STDOUT, shell=True)
-        except CalledProcessError as e:
-            logger.error("Error generating Oasis files: {}".format(str(e)))
+        except subprocess.CalledProcessError as e:
+            raise OasisException("Error generating Oasis files: {}".format(str(e)))
 
         logger.info('Generating ktools binary files')
         create_binary_files(args['oasis_files_path'], os.path.join(args['model_run_dir_path'], 'input'))
@@ -304,7 +309,7 @@ if __name__ == '__main__':
                 analysis_settings = json.load(f)
                 if 'analysis_settings' in analysis_settings:
                     analysis_settings = analysis_settings['analysis_settings']
-        except (IOError, ValueError, TypeError):
+        except (IOError, ValueError, TypeError) as e:
             raise OasisException("Error loading analysis settings JSON file: {}".format(str(e)))
 
         logger.info('Preparing model run inputs')
@@ -327,7 +332,7 @@ if __name__ == '__main__':
             logger.info('Calling kparse - to generate model run ktools script')
             subprocess.check_call(cmd_str, stderr=subprocess.STDOUT, shell=True)
         except subprocess.CalledProcessError as e:
-            raise logger.error("Error generating ktools script: {}".format(str(e)))
+            raise OasisException("Error generating ktools script: {}".format(str(e)))
 
         os.chdir(args['model_run_dir_path'])
         cmd_str = "bash {}".format(ktools_script_path)
@@ -335,7 +340,7 @@ if __name__ == '__main__':
             logger.info('Running model run ktools script {}'.format(ktools_script_path))
             subprocess.check_call(cmd_str, stderr=subprocess.STDOUT, shell=True)
         except subprocess.CalledProcessError as e:
-            logger.error("Error running ktools script: {}".format(str(e)))
+            raise OasisException("Error running ktools script: {}".format(str(e)))
     except OasisException as e:
         logger.error(str(e))
         sys.exit(-1)
