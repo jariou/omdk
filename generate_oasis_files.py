@@ -13,28 +13,28 @@
     The script can be executed in two ways: (1) directly by providing all the
     resources in the script call using the following syntax::
 
-        ./oasis_files_generator.py -k '/path/to/keys/data/folder'
-                                   -v '/path/to/model/version/file'
-                                   -l '/path/to/model/keys/lookup/service/package'
-                                   -p '/path/to/canonical/exposures/profile/JSON/file'
-                                   -e '/path/to/source/exposures/file'
-                                   -a '/path/to/source/exposures/validation/file'
-                                   -b '/path/to/source/to/canonical/exposures/transformation/file'
-                                   -c '/path/to/canonical/exposures/validation/file'
-                                   -d '/path/to/canonical/to/model/exposures/transformation/file'
-                                   -x '/path/to/xtrans/executable'
-                                   -o '/path/to/output/files/parent/directory'
+        ./generate_oasis_files.py -k '/path/to/keys/data/folder'
+                                  -v '/path/to/model/version/file'
+                                  -l '/path/to/model/keys/lookup/service/package'
+                                  -p '/path/to/canonical/exposures/profile/JSON/file'
+                                  -e '/path/to/source/exposures/file'
+                                  -a '/path/to/source/exposures/validation/file'
+                                  -b '/path/to/source/to/canonical/exposures/transformation/file'
+                                  -c '/path/to/canonical/exposures/validation/file'
+                                  -d '/path/to/canonical/to/model/exposures/transformation/file'
+                                  -x '/path/to/xtrans/executable'
+                                  -o '/path/to/oasis/files/directory'
 
     or by providing the path to a JSON script config file which defines all
     the script resources - the syntax for the latter option is::
 
-        ./oasis_files_generator.py -f '/path/to/model/resources/JSON/config/file'
+        ./generate_oasis_files.py -f '/path/to/model/resources/JSON/config/file'
 
     and the keys of the JSON config file should be named as follows::
 
         "keys_data_path"
         "model_version_file_path"
-        "lookup_service_package_path"
+        "lookup_package_path"
         "canonical_exposures_profile_json_path"
         "source_exposures_file_path"
         "source_exposures_validation_file_path"
@@ -42,7 +42,7 @@
         "canonical_exposures_validation_file_path"
         "canonical_to_model_exposures_transformation_file_path"
         "xtrans_path"
-        "output_basedirpath"
+        "output_dirpath"
 
     The file and folder paths can be relative to the path of the script. If you've cloned
     the OMDK repository then script configs for models can be placed in the ``script_config``
@@ -59,17 +59,17 @@ import sys
 import time
 
 from oasis_utils import (
-    KeysLookupServiceFactory as klsf,
     OasisException,
 )
 from models import OasisModelFactory as omf
 from exposures import OasisExposuresManager as oem
+from keys import OasisKeysLookupFactory as oklf
 
 __author__ = "Sandeep Murthy"
 __copyright__ = "2017, Oasis Loss Modelling Framework"
 
 
-SCRIPT_RESOURCES = {
+SCRIPT_ARGS = {
     'config_file_path': {
         'arg_name': 'config_file_path',
         'flag': 'f',
@@ -91,8 +91,8 @@ SCRIPT_RESOURCES = {
         'help_text': 'Model version file path',
         'directly_required': False
     },
-    'lookup_service_package_path': {
-        'arg_name': 'lookup_service_package_path',
+    'lookup_package_path': {
+        'arg_name': 'lookup_package_path',
         'flag': 'l',
         'type': str,
         'help_text': 'Package path for model keys lookup service - usually in the `src/keys_server` folder of the relevant supplier repository',
@@ -147,11 +147,11 @@ SCRIPT_RESOURCES = {
         'help_text': 'Path of the xtrans executable which performs the source -> canonical and canonical -> model exposures transformations',
         'directly_required': False
     },
-    'output_basedirpath': {
-        'arg_name': 'output_basedirpath',
+    'output_dirpath': {
+        'arg_name': 'output_dirpath',
         'flag': 'o',
         'type': str,
-        'help_text': 'Parent directory to place generated Oasis files for the model',
+        'help_text': 'Directory to place generated Oasis files for the model',
         'directly_required': False
     }
 }
@@ -163,6 +163,7 @@ def __set_logging__():
         format='%(asctime)s - %(levelname)s - %(message)s',
         filemode='w'
     )
+    return logging.getLogger()
 
 
 def __parse_args__():
@@ -171,7 +172,7 @@ def __parse_args__():
     """
     parser = argparse.ArgumentParser(description='Generate Oasis files for a given model')
 
-    di = SCRIPT_RESOURCES
+    di = SCRIPT_ARGS
 
     map(
         lambda res: parser.add_argument(
@@ -211,8 +212,7 @@ def __load_args_from_config_file__(config_file_path):
 
 if __name__ == '__main__':
 
-    __set_logging__()
-    logger = logging.getLogger()
+    logger = __set_logging__()
     logger.info('Console logging set')
     
     try:
@@ -221,27 +221,32 @@ if __name__ == '__main__':
 
         if args['config_file_path']:
             logger.info('Loading script resources from config file {}'.format(args['config_file_path']))
-            args = __load_args_from_config_file__(args['config_file_path'])
+            try:
+                args = __load_args_from_config_file__(args['config_file_path'])
+            except OasisException as e:
+                logger.error(str(e))
+                sys.exit(-1)
+
             logger.info('Script resources: {}'.format(args))
         else:
             args.pop('config_file_path')
             logger.info('Script resources arguments: {}'.format(args))
-        
-        missing = filter(lambda res: not args[res] if res in args and res != 'config_file_path' else None, SCRIPT_RESOURCES)
+
+        missing = filter(lambda res: not args[res] if res in args and res not in ['config_file_path', 'output_dirpath'] else None, SCRIPT_ARGS)
 
         if missing:
             raise OasisException('Not all script resources arguments provided - missing {}'.format(missing))
 
         logger.info('Getting model info and creating lookup service instance')
-        model_info, model_kls = klsf.create(
+        model_info, model_klc = oklf.create(
             model_keys_data_path=args['keys_data_path'],
             model_version_file_path=args['model_version_file_path'],
-            lookup_service_package_path=args['lookup_service_package_path']
+            lookup_package_path=args['lookup_package_path']
         )
         time.sleep(3)
-        logger.info('\t{}, {}'.format(model_info, model_kls))
+        logger.info('\t{}, {}'.format(model_info, model_klc))
 
-        args['lookup_service'] = model_kls
+        args['lookup'] = model_klc
 
         logger.info('Creating model object')
         model = omf.create(
@@ -251,19 +256,29 @@ if __name__ == '__main__':
         )
         logger.info('\t{}'.format(model))
 
-        logger.info('Creating an Oasis exposures manager for the model')
+        logger.info('Setting up Oasis files directory for model {}'.format(model.key))
+        if 'output_dirpath' in args and args['output_dirpath']:
+            if not os.path.exists(args['output_dirpath']):
+                os.mkdir(args['output_dirpath'])
+        else:
+            base_dir = os.path.join(os.getcwd(), 'Files')
+            logger.info('No Oasis files directory provided - creating one in {}'.format(base_dir))
+            args['output_dirpath'] = os.path.join(os.getcwd(), 'Files', model.key.replace('/', '-'))
+            if not os.path.exists(args['output_dirpath']):
+                os.mkdir(args['output_dirpath'])
+        model.resources['output_dirpath'] = args['output_dirpath']
+        logger.info('Oasis files directory {} set up for model {}'.format(model.resources['output_dirpath'], model.key))
+
+        logger.info('Creating an Oasis exposures manager for model')
         manager = oem(oasis_models=[model])
         logger.info('\t{}'.format(manager))
 
-        logger.info('Adding output files directory path to `**args`')
-        args['output_dirpath'] = model.resources['output_dirpath']
-
-        logger.info('Generating Oasis files for the model')
+        logger.info('Generating Oasis files for model')
         oasis_files = manager.start_files_pipeline(model, with_model_resources=False, **args)
 
         logger.info('\t{}'.format(oasis_files))
     except OasisException as e:
         logger.error(str(e))
         sys.exit(-1)
-    else:
-        sys.exit(0)
+
+    sys.exit(0)

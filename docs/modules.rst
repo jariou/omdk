@@ -30,7 +30,27 @@ Module Documentation
    :members:
    :undoc-members:
 
-``omdk.oasis_files_generator``
-------------------------------
+``omdk.keys.OasisKeysLookupFactory``
+------------------------------------
 
-.. automodule:: oasis_files_generator
+.. automodule:: keys.OasisKeysLookupFactory
+   :members:
+   :undoc-members:
+
+``omdk.generate_oasis_files``
+-----------------------------
+
+.. automodule:: generate_oasis_files
+
+``omdk.ktools.kparse``
+----------------------
+
+.. automodule:: ktools.kparse
+   :members:
+   :undoc-members:
+
+``omdk.run_model``
+------------------
+.. automodule:: run_model
+   :members:
+   :undoc-members:

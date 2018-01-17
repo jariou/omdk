@@ -28,12 +28,13 @@ from interface import implements
 from OasisExposuresManagerInterface import OasisExposuresManagerInterface
 from OasisFilesPipeline import OasisFilesPipeline
 
+from keys import OasisKeysLookupFactory as oklf
+
 if os.getcwd().split(os.path.sep)[-1] == 'exposures':
     sys.path.insert(0, os.path.abspath(os.pardir))
 
 from oasis_utils import (
     get_utctimestamp,
-    KeysLookupServiceFactory as klsf,
     OasisException,
     run_mono_executable,
 )
@@ -62,19 +63,26 @@ class OasisExposuresManager(implements(OasisExposuresManagerInterface)):
 
         self.logger = logging.getLogger()
 
-        self.logger.info('Creating keys lookup service factory for manager {}'.format(self))
-        self._keys_lookup_service_factory = klsf()
+        self.logger.info('Exposures manager {} initialising'.format(self))
+
+        self.logger.info('Creating keys lookup service factory for exposures manager {}'.format(self))
+        self._keys_lookup_factory = oklf()
+        self.logger.info('Created keys lookup service factory {} for exposures manager {}'.format(self._keys_lookup_factory, self))
         
+        self.logger.info('Adding models')
         self._models = {}
         
         if oasis_models:
-            self.logger.info('Adding models to manager')
             for model in oasis_models:
-                self.logger.info('Adding model {}'.format(model.key))
+                self.logger.info('Adding model {} to exposures manager {}'.format(model.key, self))
 
                 self.add_model(model)
 
-                self.logger.info('Added model {}'.format(model))
+                self.logger.info('Added model {} to exposures manager {}'.format(model, self))
+        else:
+            self.logger.info('No models to add to exposures manager {}'.format(self))
+
+        self.logger.info('Exposures manager {} finished initialising'.format(self))
 
 
     def add_model(self, oasis_model):
@@ -89,26 +97,15 @@ class OasisExposuresManager(implements(OasisExposuresManagerInterface)):
         else:
             omr['oasis_files_pipeline'] = OasisFilesPipeline.create(model_key=oasis_model.key)
 
-        if 'output_basedirpath' in omr:
-            output_basedirpath = os.path.abspath(omr['output_basedirpath'])
-            if not os.path.exists(output_basedirpath):
-                raise OasisException(
-                    'Output base directory {} for model {} specified in resources dict but '
-                    'path does not exist on the filesystem!'.format(output_basedirpath, oasis_model)
-                )
+        if 'output_dirpath' in omr and omr['output_dirpath']:
+            output_dirpath = os.path.abspath(omr['output_dirpath'])
+            if not os.path.exists(output_dirpath):
+                os.mkdir(output_dirpath)
         else:
-            output_basedirpath = os.path.join(os.getcwd(), 'Files')
-            if not os.path.exists(output_basedirpath):
-                os.mkdir(output_basedirpath)
-
-        output_dirpath = os.path.join(
-            output_basedirpath,
-            oasis_model.key.replace('/', '-')
-        )
-        if not os.path.exists(output_dirpath):
-            os.mkdir(output_dirpath)
+            output_dirpath = os.path.join(os.getcwd(), 'Files', oasis_model.key.replace('/', '-'))
+            if not os.path.exists(output_dirpath):
+                os.mkdir(output_dirpath)
         
-        omr['output_basedirpath'] = output_basedirpath
         omr['output_dirpath'] = output_dirpath
 
         if 'source_exposures_file_path' in omr:
@@ -178,13 +175,13 @@ class OasisExposuresManager(implements(OasisExposuresManagerInterface)):
 
 
     @property
-    def keys_lookup_service_factory(self):
+    def keys_lookup_factory(self):
         """
         Keys lookup service factory property - getter only.
 
             :getter: Gets the current keys lookup service factory instance
         """
-        return self._keys_lookup_service_factory
+        return self._keys_lookup_factory
 
 
     @property
@@ -300,7 +297,8 @@ class OasisExposuresManager(implements(OasisExposuresManagerInterface)):
                 return f
 
             tfp.canonical_exposures_file = f
-            return oasis_model
+        
+        return oasis_model
 
 
     def transform_canonical_to_model(self, oasis_model, with_model_resources=True, **kwargs):
@@ -372,7 +370,8 @@ class OasisExposuresManager(implements(OasisExposuresManagerInterface)):
                 return f
 
             tfp.model_exposures_file = f
-            return oasis_model
+        
+        return oasis_model
 
 
     def get_keys(self, oasis_model, with_model_resources=True, **kwargs):
@@ -402,11 +401,11 @@ class OasisExposuresManager(implements(OasisExposuresManagerInterface)):
 
         if not with_model_resources:
             model_exposures_file_path = kwargs['model_exposures_file_path'] if 'model_exposures_file_path' in kwargs else None
-            lookup_service = kwargs['lookup_service']
+            lookup = kwargs['lookup']
             keys_file_path = kwargs['keys_file_path']
         else:
             model_exposures_file_path = tfp.model_exposures_file.name if tfp.model_exposures_file else None
-            lookup_service = omr['lookup_service']
+            lookup = omr['lookup']
             keys_file_path = tfp.keys_file.name
 
         (
@@ -414,8 +413,8 @@ class OasisExposuresManager(implements(OasisExposuresManagerInterface)):
             keys_file_path
         ) = map(os.path.abspath, [model_exposures_file_path, keys_file_path])
 
-        oasis_keys_file, _ = self.keys_lookup_service_factory.save_keys(
-            lookup_service=lookup_service,
+        oasis_keys_file, _ = self.keys_lookup_factory.save_keys(
+            lookup=lookup,
             model_exposures_file_path=model_exposures_file_path,
             output_file_path=keys_file_path,
             format='oasis_keys'
@@ -455,7 +454,7 @@ class OasisExposuresManager(implements(OasisExposuresManagerInterface)):
             try:
                 with io.open(canonical_exposures_profile_json_path, 'r', encoding='utf-8') as f:
                     canonical_exposures_profile = json.load(f)
-            except (IOError, ValueError):
+            except (IOError, ValueError, TypeError):
                 raise OasisException("Canonical exposures profile JSON file path invalid or file is not valid JSON for {}.".format(oasis_model))
 
         if not with_model_resources:
@@ -570,7 +569,7 @@ class OasisExposuresManager(implements(OasisExposuresManagerInterface)):
 
             tfp.items_file = f
 
-            return oasis_model
+        return oasis_model
 
 
     def generate_coverages_file(self, oasis_model, with_model_resources=True, **kwargs):
@@ -674,7 +673,7 @@ class OasisExposuresManager(implements(OasisExposuresManagerInterface)):
 
             tfp.coverages_file = f
 
-            return oasis_model
+        return oasis_model
 
 
     def generate_gulsummaryxref_file(self, oasis_model, with_model_resources=True, **kwargs):
@@ -779,7 +778,7 @@ class OasisExposuresManager(implements(OasisExposuresManagerInterface)):
 
             tfp.gulsummaryxref_file = f
 
-            return oasis_model
+        return oasis_model
 
 
     def generate_oasis_files(
@@ -1056,7 +1055,7 @@ class OasisExposuresManager(implements(OasisExposuresManagerInterface)):
 
                 keys_file = self.get_keys(oasis_model, with_model_resources=False, **kwargs)
                 
-                self.logger.info('Checking for canonical exposures profile for model')
+                self.logger.info('Checking for canonical exposures profile source for model')
 
                 canonical_exposures_profile_json_path = kwargs['canonical_exposures_profile_json_path']
 
@@ -1065,12 +1064,12 @@ class OasisExposuresManager(implements(OasisExposuresManagerInterface)):
                 elif not os.path.exists(canonical_exposures_profile_json_path):
                     raise OasisException("Canonical exposures profile JSON file path {} provided for {} in '**kwargs' is invalid.".format(canonical_exposures_profile_json_path, oasis_model))
                 
-                self.logger.info('Canonical exposures profile {} exists'.format(canonical_exposures_profile_json_path))
+                self.logger.info('Canonical exposures profile source {} exists'.format(canonical_exposures_profile_json_path))
 
                 self.logger.info('Loading canonical exposures profile into model resources')
-
                 canonical_exposures_profile = self.load_canonical_profile(oasis_model, with_model_resources=False, **kwargs)
                 kwargs['canonical_exposures_profile'] = canonical_exposures_profile
+                self.logger.info('Loaded canonical exposures profile {} into model resources'.format(canonical_exposures_profile))
 
                 kwargs['items_file_path'] = os.path.join(output_dirpath, 'items.csv')
                 kwargs['items_timestamped_file_path'] = os.path.join(output_dirpath, 'items-{}.csv'.format(utcnow))
@@ -1154,8 +1153,11 @@ class OasisExposuresManager(implements(OasisExposuresManagerInterface)):
                 self.logger.info('Checking for canonical exposures profile for model')
 
                 if not oasis_model.resources['canonical_exposures_profile']:
-                    self.logger.info('Loading canonical exposures profile into model resources')
+                    self.logger.info('Canonical exposures profile not found in model resources - attempting to load from source')
                     self.load_canonical_profile(oasis_model)
+                    self.logger.info('Loaded canonical exposures profile {} into model resources'.format(oasis_model.resources['canonical_exposures_profile']))
+                else:
+                    self.logger.info('Canonical exposures profile exists for model')
 
                 omr['items_file_path'] = os.path.join(output_dirpath, 'items.csv')
                 omr['items_timestamped_file_path'] = os.path.join(output_dirpath, 'items-{}.csv'.format(utcnow))

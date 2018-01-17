@@ -57,7 +57,7 @@ are as follows:</p>
 8. canonical exposures validation file (XSD) path
 9. canonical to model exposures file (XSLT) path
 10. `xtrans.exe` CSV transformation executable path
-11. output files parent directory
+11. Oasis files directory path
 </pre></div>
 </div>
 <p>The script can be executed in two ways: (1) directly by providing all
@@ -72,7 +72,7 @@ the resources in the script call using the following syntax:</p>
                            <span class="o">-</span><span class="n">c</span> <span class="s1">&#39;/path/to/canonical/exposures/validation/file&#39;</span>
                            <span class="o">-</span><span class="n">d</span> <span class="s1">&#39;/path/to/canonical/to/model/exposures/transformation/file&#39;</span>
                            <span class="o">-</span><span class="n">x</span> <span class="s1">&#39;/path/to/xtrans/executable&#39;</span>
-                           <span class="o">-</span><span class="n">o</span> <span class="s1">&#39;/path/to/output/files/parent/directory&#39;</span>
+                           <span class="o">-</span><span class="n">o</span> <span class="s1">&#39;/path/to/oasis/files/directory&#39;</span>
 </pre></div>
 </div>
 <p>or by providing the path to a JSON script config file which defines all
@@ -80,10 +80,11 @@ the script resources - the syntax for the latter option is:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">./</span><span class="n">oasis_files_generator</span><span class="o">.</span><span class="n">py</span> <span class="o">-</span><span class="n">f</span> <span class="s1">&#39;/path/to/model/resources/JSON/config/file&#39;</span>
 </pre></div>
 </div>
-<p>and the keys of the JSON config file should be named as follows:</p>
+<p>and the keys of the JSON config file, which correspond to the resources
+list, above, should be named as follows:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="s2">&quot;keys_data_path&quot;</span>
 <span class="s2">&quot;model_version_file_path&quot;</span>
-<span class="s2">&quot;lookup_service_package_path&quot;</span>
+<span class="s2">&quot;lookup_package_path&quot;</span>
 <span class="s2">&quot;canonical_exposures_profile_json_path&quot;</span>
 <span class="s2">&quot;source_exposures_file_path&quot;</span>
 <span class="s2">&quot;source_exposures_validation_file_path&quot;</span>
@@ -91,7 +92,7 @@ the script resources - the syntax for the latter option is:</p>
 <span class="s2">&quot;canonical_exposures_validation_file_path&quot;</span>
 <span class="s2">&quot;canonical_to_model_exposures_transformation_file_path&quot;</span>
 <span class="s2">&quot;xtrans_path&quot;</span>
-<span class="s2">&quot;output_basedirpath&quot;</span>
+<span class="s2">&quot;output_dirpath&quot;</span>
 </pre></div>
 </div>
 <p>The file and folder paths can be relative to the path of the script. If

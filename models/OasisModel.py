@@ -11,10 +11,8 @@ import os
 if os.getcwd().split(os.path.sep)[-1] == 'models':
     sys.path.insert(0, os.path.abspath(os.pardir))
 
-from oasis_utils import (
-    KeysLookupServiceFactory as klsf,
-    OasisException,
-)
+from oasis_utils import OasisException
+
 
 __author__ = "Sandeep Murthy"
 __copyright__ = "2017, Oasis Loss Modelling Framework"
@@ -23,11 +21,13 @@ __copyright__ = "2017, Oasis Loss Modelling Framework"
 class OasisModel(object):
     """
     A simple object representation of Oasis models and their resources - an
-    Oasis model is viewed as a combination of a specific supplier, model ID
-    and model version, and the constructor requires these three arguments
+    Oasis model is identified by a triple: a specific supplier ID, model ID
+    and model version. The constructor requires these three arguments
     for creating a new Oasis model object. Each model object also has a
     resources dictionary that can be used to "attach" any resources by clients,
-    e.g. a lookup service instance, a transforms files pipeline etc.
+    e.g. a lookup service instance, a transforms files pipeline, validation
+    and transformation files for the source -> canonical and canonical
+    -> model exposure transforms, etc.
     """
 
     def __init__(
