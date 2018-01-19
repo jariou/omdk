@@ -71,197 +71,144 @@ from oasis_utils import (
     prepare_model_run_inputs,
 )
 
+import utils as mdk_utils
+
 __author__ = "Sandeep Murthy"
 __copyright__ = "2017, Oasis Loss Modelling Framework"
 
 
-SCRIPT_ARGS = {
+SCRIPT_ARGS_METADICT = {
     'config_file_path': {
         'arg_name': 'config_file_path',
         'flag': 'f',
         'type': str,
         'help_text': 'Path for script config for model',
-        'directly_required': False
+        'required': False
     },
     'keys_data_path': {
         'arg_name': 'keys_data_path',
         'flag': 'k',
         'type': str,
         'help_text': 'Keys data folder path for model keys lookup service',
-        'directly_required': False
+        'required': False
     },
     'model_version_file_path': {
         'arg_name': 'model_version_file_path',
         'flag': 'v',
         'type': str,
         'help_text': 'Model version file path',
-        'directly_required': False
+        'required': False
     },
     'lookup_package_path': {
         'arg_name': 'lookup_package_path',
         'flag': 'l',
         'type': str,
         'help_text': 'Package path for model keys lookup service - usually in the `src/keys_server` folder of the relevant supplier repository',
-        'directly_required': False
+        'required': False
     },
     'canonical_exposures_profile_json_path': {
         'arg_name': 'canonical_exposures_profile_json_path',
         'flag': 'p',
         'type': str,
         'help_text': 'Path of the supplier canonical exposures profile JSON file',
-        'directly_required': False
+        'required': False
     },
     'source_exposures_file_path': {
         'arg_name': 'source_exposures_file_path',
         'flag': 'e',
         'type': str,
         'help_text': 'Source exposures file path',
-        'directly_required': False
+        'required': False
     },
     'source_exposures_validation_file_path': {
         'arg_name': 'source_exposures_validation_file_path',
         'flag': 'a',
         'type': str,
         'help_text': 'Source exposures validation file (XSD) path',
-        'directly_required': False
+        'required': False
     },
     'source_to_canonical_exposures_transformation_file_path': {
         'arg_name': 'source_to_canonical_exposures_transformation_file_path',
         'flag': 'b',
         'type': str,
         'help_text': 'Source -> canonical exposures transformation file (XSLT) path',
-        'directly_required': False
+        'required': False
     },
     'canonical_exposures_validation_file_path': {
         'arg_name': 'canonical_exposures_validation_file_path',
         'flag': 'c',
         'type': str,
         'help_text': 'Canonical exposures validation file (XSD) path',
-        'directly_required': False
+        'required': False
     },
     'canonical_to_model_exposures_transformation_file_path': {
         'arg_name': 'canonical_to_model_exposures_transformation_file_path',
         'flag': 'd',
         'type': str,
         'help_text': 'Canonical -> model exposures transformation file (XSLT) path',
-        'directly_required': False
+        'required': False
     },
     'xtrans_path': {
         'arg_name': 'xtrans_path',
         'flag': 'x',
         'type': str,
         'help_text': 'Path of the xtrans executable which performs the source -> canonical and canonical -> model exposures transformations',
-        'directly_required': False
+        'required': False
     },
     'analysis_settings_json_file_path': {
         'arg_name': 'analysis_settings_json_file_path',
         'flag': 'j',
         'type': str,
         'help_text': 'Model analysis settings JSON file path',
-        'directly_required': False
+        'required': False
     },
     'ktools_script_name': {
         'arg_name': 'ktools_script_name',
         'flag': 's',
         'type': str,
         'help_text': 'Name of ktools model run script',
-        'directly_required': False
+        'required': False
     },
     'model_run_dir_path': {
         'arg_name': 'model_run_dir_path',
         'flag': 'r',
         'type': str,
         'help_text': 'Model run directory path',
-        'directly_required': False
+        'required': False
     },
     'ktools_num_processes': {
         'arg_name': 'ktools_num_processes',
         'flag': 'n',
         'type': str,
         'help_text': 'Number of ktools calculation processes/streams to use',
-        'directly_required': False
+        'required': False
     }
 }
 
 
-def __set_logging__():
-    logging.basicConfig(
-        level=logging.INFO,
-        format='%(asctime)s - %(levelname)s - %(message)s',
-        filemode='w'
-    )
-    return logging.getLogger()
-
-
-def __parse_args__():
-    """
-    Parses script arguments and constructs an args dictionary.
-    """
-    parser = argparse.ArgumentParser(description='Generate Oasis files for a given model')
-
-    di = SCRIPT_ARGS
-
-    map(
-        lambda res: parser.add_argument(
-            '-{}'.format(di[res]['flag']),
-            '--{}'.format(di[res]['arg_name']),
-            type=di[res]['type'],
-            required=di[res]['directly_required'],
-            help=di[res]['help_text']
-        ),
-        di
-    )
-
-    args = parser.parse_args()
-
-    args_dict = vars(args)
-
-    map(
-        lambda arg: args_dict.update({arg: os.path.abspath(args_dict[arg])}) if arg.endswith('path') and args_dict[arg] else None,
-        args_dict
-    )
-
-    return args_dict
-
-
-def __load_args_from_config_file__(config_file_path):
-    if config_file_path.endswith('json'):
-        try:
-            with io.open(config_file_path, 'r', encoding='utf-8') as f:
-                args = json.load(f)
-        except (IOError, ValueError, TypeError) as e:
-            raise OasisException('Error parsing resources config file {}: {}'.format(config_file_path, str(e)))
-        
-        map(
-            lambda arg: args.update({arg: os.path.abspath(args[arg])}) if arg.endswith('path') and args[arg] else None,
-            args
-        )
-    elif config_file_path.endswith('yaml') or config_file_path.endswith('yml'):
-        pass
-
-    return args
-
 if __name__ == '__main__':
 
-    logger = __set_logging__()
+    logger = mdk_utils.set_logging()
     logger.info('MDK master script')
+
+    logger.info('Console logging set')
 
     try:
         logger.info('Processing script resources arguments')
-        args = __parse_args__()
+        args = mdk_utils.parse_script_args(SCRIPT_ARGS_METADICT, desc='Generates ktools outputs for a given model')
 
         if args['config_file_path']:
             logger.info('Loading script resources from config file {}'.format(args['config_file_path']))
-            try:
-                args = __load_args_from_config_file__(args['config_file_path'])
-            except OasisException as e:
-                logger.error(str(e))
-                sys.exit(-1)
-
+            args = mdk_utils.load_script_args_from_config_file(args['config_file_path'])
             logger.info('Script resources: {}'.format(args))
         else:
             args.pop('config_file_path')
             logger.info('Script resources arguments: {}'.format(args))
+
+        missing = filter(lambda res: not args[res] if res in args and res not in ['config_file_path'] else None, SCRIPT_ARGS_METADICT)
+
+        if missing:
+            raise OasisException('Not all script resources arguments provided - missing {}'.format(missing))
 
         logger.info('Preparing model run directory {}'.format(args['model_run_dir_path']))
         prepare_model_run_directory(args['model_run_dir_path'])
@@ -296,7 +243,7 @@ if __name__ == '__main__':
         )
 
         try:
-            logger.info('Calling Oasis files generator script - to generate Oasis input files')
+            logger.info('Calling script `generate_oasis_files.py` - to generate Oasis input files')
             subprocess.check_call(cmd_str, stderr=subprocess.STDOUT, shell=True)
         except subprocess.CalledProcessError as e:
             raise OasisException("Error generating Oasis files: {}".format(str(e)))
@@ -315,28 +262,29 @@ if __name__ == '__main__':
         logger.info('Preparing model run inputs')
         prepare_model_run_inputs(analysis_settings, args['model_run_dir_path'])
 
-        ktools_script_path = '{}.sh'.format(os.path.join(args['model_run_dir_path'], args['ktools_script_name']))
         cmd_str = (
-            "python {}"
-            " -a {}"
-            " -p {}"
-            " -o {}"
+            "python kparse.py"
+            " -j {}"
+            " -n {}"
+            " -r {}"
+            " -s {}"
         ).format(
-            os.path.join('ktools', 'kparse.py'),
             args['analysis_settings_json_file_path'],
             args['ktools_num_processes'],
-            ktools_script_path
+            args['model_run_dir_path'],
+            args['ktools_script_name']
         )
 
         try:
-            logger.info('Calling kparse - to generate model run ktools script')
+            logger.info('Calling script `kparse.py` - to generate model run ktools script')
             subprocess.check_call(cmd_str, stderr=subprocess.STDOUT, shell=True)
         except subprocess.CalledProcessError as e:
             raise OasisException("Error generating ktools script: {}".format(str(e)))
 
         os.chdir(args['model_run_dir_path'])
-        cmd_str = "bash {}".format(ktools_script_path)
+        cmd_str = "bash {}.sh".format(args['ktools_script_name'])
         try:
+            ktools_script_path = '{}.sh'.format(os.path.join(args['model_run_dir_path'], args['ktools_script_name']))
             logger.info('Running model run ktools script {}'.format(ktools_script_path))
             subprocess.check_call(cmd_str, stderr=subprocess.STDOUT, shell=True)
         except subprocess.CalledProcessError as e:
@@ -344,5 +292,8 @@ if __name__ == '__main__':
     except OasisException as e:
         logger.error(str(e))
         sys.exit(-1)
+
+    outputs_dir = os.path.join(args['model_run_dir_path'], 'output')
+    logger.info('Ktools output files generated in directory {}'.format(outputs_dir))
 
     sys.exit(0)

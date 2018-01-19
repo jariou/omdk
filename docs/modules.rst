@@ -42,15 +42,11 @@ Module Documentation
 
 .. automodule:: generate_oasis_files
 
-``omdk.ktools.kparse``
-----------------------
+``omdk.kparse``
+---------------
 
-.. automodule:: ktools.kparse
-   :members:
-   :undoc-members:
+.. automodule:: kparse
 
 ``omdk.run_model``
 ------------------
 .. automodule:: run_model
-   :members:
-   :undoc-members:

@@ -842,6 +842,16 @@ on the local filesystem, as well as the canonical exposures profile JSON
 file for the supplier/model, the <code class="docutils literal"><span class="pre">xtrans.exe</span></code> CSV conversion/ transformation
 tool for exposures files, the necessary validation and transformation files,
 and the source exposures file.</p>
+<p>In order to run this script you should recursively clone the MDK repository</p>
+<blockquote>
+<div><a class="reference external" href="https://github.com/OasisLMF/omdk">https://github.com/OasisLMF/omdk</a></div></blockquote>
+<p>and the model keys server repository at the top level of the same parent
+folder.:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">parent</span> <span class="n">folder</span><span class="o">&gt;</span>
+<span class="o">|</span><span class="n">__omdk</span><span class="o">/</span>
+<span class="o">|</span><span class="n">__</span><span class="o">&lt;</span><span class="n">model</span> <span class="n">repo</span><span class="o">&gt;/</span>
+</pre></div>
+</div>
 <p>The script can be executed in two ways: (1) directly by providing all the
 resources in the script call using the following syntax:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">./</span><span class="n">generate_oasis_files</span><span class="o">.</span><span class="n">py</span> <span class="o">-</span><span class="n">k</span> <span class="s1">&#39;/path/to/keys/data/folder&#39;</span>
@@ -873,145 +883,29 @@ the script resources - the syntax for the latter option is:</p>
 <span class="s2">&quot;canonical_exposures_validation_file_path&quot;</span>
 <span class="s2">&quot;canonical_to_model_exposures_transformation_file_path&quot;</span>
 <span class="s2">&quot;xtrans_path&quot;</span>
-<span class="s2">&quot;output_dirpath&quot;</span>
+<span class="s2">&quot;oasis_files_path&quot;</span>
 </pre></div>
 </div>
-<p>The file and folder paths can be relative to the path of the script. If you’ve cloned
-the OMDK repository then script configs for models can be placed in the <code class="docutils literal"><span class="pre">script_config</span></code>
-subfolder, and the canonical exposures profiles can be placed in the
-<code class="docutils literal"><span class="pre">canonical_exposures_profiles</span></code> subfolder.</p>
+<p>The paths for keys data, model version file, lookup service package,
+canonical profile JSON, source exposures file, transformation and
+validation files, and analysis settings JSON, should all exist in the
+model repository and must be given relative to its common parent folder.
+e.g.:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="s2">&quot;keys_data_path&quot;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">model</span> <span class="n">repo</span><span class="o">&gt;/</span><span class="n">keys_data</span><span class="o">/&lt;</span><span class="n">model</span> <span class="n">ID</span><span class="o">&gt;/</span>
+</pre></div>
 </div>
-<div class="section" id="module-ktools.kparse">
-<span id="omdk-ktools-kparse"></span><h2><code class="docutils literal"><span class="pre">omdk.ktools.kparse</span></code><a class="headerlink" href="#module-ktools.kparse" title="Permalink to this headline">¶</a></h2>
-<p>Code to generate bash script for execution from json</p>
-<dl class="function">
-<dt id="ktools.kparse.create_workfolders">
-<code class="descclassname">ktools.kparse.</code><code class="descname">create_workfolders</code><span class="sig-paren">(</span><em>runtype</em>, <em>analysis_settings</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ktools/kparse.html#create_workfolders"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ktools.kparse.create_workfolders" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="function">
-<dt id="ktools.kparse.do_any">
-<code class="descclassname">ktools.kparse.</code><code class="descname">do_any</code><span class="sig-paren">(</span><em>runtype</em>, <em>analysis_settings</em>, <em>process_id</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ktools/kparse.html#do_any"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ktools.kparse.do_any" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="function">
-<dt id="ktools.kparse.do_awaits">
-<code class="descclassname">ktools.kparse.</code><code class="descname">do_awaits</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/ktools/kparse.html#do_awaits"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ktools.kparse.do_awaits" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="function">
-<dt id="ktools.kparse.do_fifos">
-<code class="descclassname">ktools.kparse.</code><code class="descname">do_fifos</code><span class="sig-paren">(</span><em>action</em>, <em>runtype</em>, <em>analysis_settings</em>, <em>process_id</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ktools/kparse.html#do_fifos"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ktools.kparse.do_fifos" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="function">
-<dt id="ktools.kparse.do_gul">
-<code class="descclassname">ktools.kparse.</code><code class="descname">do_gul</code><span class="sig-paren">(</span><em>analysis_settings</em>, <em>max_process_id</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ktools/kparse.html#do_gul"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ktools.kparse.do_gul" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="function">
-<dt id="ktools.kparse.do_gul_make_fifo">
-<code class="descclassname">ktools.kparse.</code><code class="descname">do_gul_make_fifo</code><span class="sig-paren">(</span><em>analysis_settings</em>, <em>max_process_id</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ktools/kparse.html#do_gul_make_fifo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ktools.kparse.do_gul_make_fifo" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="function">
-<dt id="ktools.kparse.do_gul_remove_fifo">
-<code class="descclassname">ktools.kparse.</code><code class="descname">do_gul_remove_fifo</code><span class="sig-paren">(</span><em>analysis_settings</em>, <em>max_process_id</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ktools/kparse.html#do_gul_remove_fifo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ktools.kparse.do_gul_remove_fifo" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="function">
-<dt id="ktools.kparse.do_il">
-<code class="descclassname">ktools.kparse.</code><code class="descname">do_il</code><span class="sig-paren">(</span><em>analysis_settings</em>, <em>max_process_id</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ktools/kparse.html#do_il"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ktools.kparse.do_il" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="function">
-<dt id="ktools.kparse.do_il_make_fifo">
-<code class="descclassname">ktools.kparse.</code><code class="descname">do_il_make_fifo</code><span class="sig-paren">(</span><em>analysis_settings</em>, <em>max_process_id</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ktools/kparse.html#do_il_make_fifo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ktools.kparse.do_il_make_fifo" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="function">
-<dt id="ktools.kparse.do_il_remove_fifo">
-<code class="descclassname">ktools.kparse.</code><code class="descname">do_il_remove_fifo</code><span class="sig-paren">(</span><em>analysis_settings</em>, <em>max_process_id</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ktools/kparse.html#do_il_remove_fifo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ktools.kparse.do_il_remove_fifo" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="function">
-<dt id="ktools.kparse.do_kats">
-<code class="descclassname">ktools.kparse.</code><code class="descname">do_kats</code><span class="sig-paren">(</span><em>runtype</em>, <em>analysis_settings</em>, <em>max_process_id</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ktools/kparse.html#do_kats"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ktools.kparse.do_kats" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="function">
-<dt id="ktools.kparse.do_kwaits">
-<code class="descclassname">ktools.kparse.</code><code class="descname">do_kwaits</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/ktools/kparse.html#do_kwaits"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ktools.kparse.do_kwaits" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="function">
-<dt id="ktools.kparse.do_lwaits">
-<code class="descclassname">ktools.kparse.</code><code class="descname">do_lwaits</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/ktools/kparse.html#do_lwaits"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ktools.kparse.do_lwaits" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="function">
-<dt id="ktools.kparse.do_make_fifos">
-<code class="descclassname">ktools.kparse.</code><code class="descname">do_make_fifos</code><span class="sig-paren">(</span><em>runtype</em>, <em>analysis_settings</em>, <em>process_id</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ktools/kparse.html#do_make_fifos"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ktools.kparse.do_make_fifos" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="function">
-<dt id="ktools.kparse.do_post_wait_processing">
-<code class="descclassname">ktools.kparse.</code><code class="descname">do_post_wait_processing</code><span class="sig-paren">(</span><em>runtype</em>, <em>analysis_settings</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ktools/kparse.html#do_post_wait_processing"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ktools.kparse.do_post_wait_processing" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="function">
-<dt id="ktools.kparse.do_pwaits">
-<code class="descclassname">ktools.kparse.</code><code class="descname">do_pwaits</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/ktools/kparse.html#do_pwaits"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ktools.kparse.do_pwaits" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="function">
-<dt id="ktools.kparse.do_remove_fifos">
-<code class="descclassname">ktools.kparse.</code><code class="descname">do_remove_fifos</code><span class="sig-paren">(</span><em>runtype</em>, <em>analysis_settings</em>, <em>process_id</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ktools/kparse.html#do_remove_fifos"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ktools.kparse.do_remove_fifos" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="function">
-<dt id="ktools.kparse.do_summarycalcs">
-<code class="descclassname">ktools.kparse.</code><code class="descname">do_summarycalcs</code><span class="sig-paren">(</span><em>runtype</em>, <em>analysis_settings</em>, <em>process_id</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ktools/kparse.html#do_summarycalcs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ktools.kparse.do_summarycalcs" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="function">
-<dt id="ktools.kparse.do_tees">
-<code class="descclassname">ktools.kparse.</code><code class="descname">do_tees</code><span class="sig-paren">(</span><em>runtype</em>, <em>analysis_settings</em>, <em>process_id</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ktools/kparse.html#do_tees"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ktools.kparse.do_tees" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="function">
-<dt id="ktools.kparse.do_waits">
-<code class="descclassname">ktools.kparse.</code><code class="descname">do_waits</code><span class="sig-paren">(</span><em>wait_variable</em>, <em>wait_count</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ktools/kparse.html#do_waits"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ktools.kparse.do_waits" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="function">
-<dt id="ktools.kparse.genbash">
-<code class="descclassname">ktools.kparse.</code><code class="descname">genbash</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ktools/kparse.html#genbash"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ktools.kparse.genbash" title="Permalink to this definition">¶</a></dt>
-<dd><p>Generates a bash script containing ktools calculation instructions for an
-Oasis model, provided its analysis settings JSON file, the number of processes
-to use, and the path and name of the output script.</p>
-</dd></dl>
-
-<dl class="function">
-<dt id="ktools.kparse.get_getmodel_cmd">
-<code class="descclassname">ktools.kparse.</code><code class="descname">get_getmodel_cmd</code><span class="sig-paren">(</span><em>process_id_</em>, <em>max_process_id</em>, <em>number_of_samples</em>, <em>gul_threshold</em>, <em>use_random_number_file</em>, <em>coverage_output</em>, <em>item_output</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ktools/kparse.html#get_getmodel_cmd"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ktools.kparse.get_getmodel_cmd" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="function">
-<dt id="ktools.kparse.leccalc_enabled">
-<code class="descclassname">ktools.kparse.</code><code class="descname">leccalc_enabled</code><span class="sig-paren">(</span><em>lec_options</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ktools/kparse.html#leccalc_enabled"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ktools.kparse.leccalc_enabled" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="function">
-<dt id="ktools.kparse.print_command">
-<code class="descclassname">ktools.kparse.</code><code class="descname">print_command</code><span class="sig-paren">(</span><em>cmd</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ktools/kparse.html#print_command"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ktools.kparse.print_command" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="function">
-<dt id="ktools.kparse.remove_workfolders">
-<code class="descclassname">ktools.kparse.</code><code class="descname">remove_workfolders</code><span class="sig-paren">(</span><em>runtype</em>, <em>analysis_settings</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ktools/kparse.html#remove_workfolders"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ktools.kparse.remove_workfolders" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
+<p>The <cite>xtrans.exe</cite> transformation tool lies in the MDK repository and its
+path is preset in the config file:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="s2">&quot;xtrans_path&quot;</span><span class="p">:</span> <span class="s2">&quot;omdk/xtrans/test/xtrans.exe&quot;</span>
+</pre></div>
+</div>
+<p>The paths to the Oasis files and the model run directory (where the ktools
+script will be executed) can lie anywhere inside the common parent folder,
+and must be given relative to that folder.</p>
+</div>
+<div class="section" id="module-kparse">
+<span id="omdk-kparse"></span><h2><code class="docutils literal"><span class="pre">omdk.kparse</span></code><a class="headerlink" href="#module-kparse" title="Permalink to this headline">¶</a></h2>
+<p>Executable script to generate ktools model run scripts for given models.</p>
 </div>
 <div class="section" id="module-run_model">
 <span id="omdk-run-model"></span><h2><code class="docutils literal"><span class="pre">omdk.run_model</span></code><a class="headerlink" href="#module-run_model" title="Permalink to this headline">¶</a></h2>
@@ -1097,7 +991,7 @@ subfolder, and the canonical exposures profiles can be placed in the
 <li class="toctree-l2"><a class="reference internal" href="#module-exposures.OasisFilesPipeline"><code class="docutils literal"><span class="pre">omdk.exposures.OasisFilesPipeline</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#module-keys.OasisKeysLookupFactory"><code class="docutils literal"><span class="pre">omdk.keys.OasisKeysLookupFactory</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#module-generate_oasis_files"><code class="docutils literal"><span class="pre">omdk.generate_oasis_files</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="#module-ktools.kparse"><code class="docutils literal"><span class="pre">omdk.ktools.kparse</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-kparse"><code class="docutils literal"><span class="pre">omdk.kparse</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#module-run_model"><code class="docutils literal"><span class="pre">omdk.run_model</span></code></a></li>
 </ul>
 </li>
