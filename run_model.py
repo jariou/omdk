@@ -85,11 +85,18 @@ SCRIPT_ARGS_METADICT = {
         'help_text': 'Path for script config for model',
         'required': False
     },
+    'model_data_path': {
+        'arg_name': 'model_data_path',
+        'flag': 'm',
+        'type': str,
+        'help_text': 'Model data folder',
+        'required': False
+    },    
     'keys_data_path': {
         'arg_name': 'keys_data_path',
         'flag': 'k',
         'type': str,
-        'help_text': 'Keys data folder path for model keys lookup service',
+        'help_text': 'Keys data path for model keys lookup service',
         'required': False
     },
     'model_version_file_path': {
@@ -260,7 +267,7 @@ if __name__ == '__main__':
             raise OasisException("Error loading analysis settings JSON file: {}".format(str(e)))
 
         logger.info('Preparing model run inputs')
-        prepare_model_run_inputs(analysis_settings, args['model_run_dir_path'])
+        prepare_model_run_inputs(analysis_settings, args['model_run_dir_path'], args['model_data_path'])
 
         cmd_str = (
             "python kparse.py"
