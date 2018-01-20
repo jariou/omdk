@@ -66,6 +66,7 @@ import sys
 
 from oasis_utils import (
     create_binary_files,
+    get_utctimestamp,
     OasisException,
     prepare_model_run_directory,
     prepare_model_run_inputs,
@@ -217,8 +218,14 @@ if __name__ == '__main__':
         if missing:
             raise OasisException('Not all script resources arguments provided - missing {}'.format(missing))
 
+        if not os.path.exists(args['model_run_dir_path']):
+            os.mkdir(args['model_run_dir_path'])
+
+        utcnow = get_utctimestamp(fmt='%Y%m%d%H%M%S')
+        args['model_run_dir_path'] = os.path.join(args['model_run_dir_path'], 'ProgOasis-{}'.format(utcnow))
+        os.mkdir(args['model_run_dir_path'])
         logger.info('Preparing model run directory {}'.format(args['model_run_dir_path']))
-        prepare_model_run_directory(args['model_run_dir_path'])
+        prepare_model_run_directory(args['model_run_dir_path'], args['analysis_settings_json_file_path'])
 
         args['oasis_files_path'] = os.path.join(args['model_run_dir_path'], 'input', 'csv')
 
@@ -255,7 +262,7 @@ if __name__ == '__main__':
         except subprocess.CalledProcessError as e:
             raise OasisException("Error generating Oasis files: {}".format(str(e)))
 
-        logger.info('Generating ktools binary files')
+        logger.info('Converting Oasis files to ktools binary files')
         create_binary_files(args['oasis_files_path'], os.path.join(args['model_run_dir_path'], 'input'))
 
         try:
@@ -301,6 +308,6 @@ if __name__ == '__main__':
         sys.exit(-1)
 
     outputs_dir = os.path.join(args['model_run_dir_path'], 'output')
-    logger.info('Ktools output files generated in directory {}'.format(outputs_dir))
+    logger.info('Ktools output files generated in {}'.format(outputs_dir))
 
     sys.exit(0)
