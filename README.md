@@ -67,7 +67,7 @@ https://github.com/OasisLMF/ktools/releases
 
 ## Other requirements
 
-Ensure that this repository is cloned into the same parent folder as any model keys server repositories (which would contain the lookup service source for the models of interest), and at the same level, e.g.::
+Ensure that this repository is cloned into the same parent folder as any model keys server repositories (which would contain the lookup service source for the models of interest), and at the same level, e.g.
 
     <parent folder>/
     ├── omdk/
@@ -85,7 +85,7 @@ The repository provides a variety of Python tools to build, test and run models 
 
 ## Generating keys outputs
 
-`run_keys_lookup.py` is an executable script that can generate keys records and Oasis files keys for a model, given the following arguments (in no particular order)::
+`run_keys_lookup.py` is an executable script that can generate keys records and Oasis files keys for a model, given the following arguments (in no particular order)
 
     ./run_keys_lookup.py -k /path/to/keys/data
                          -v /path/to/model/version/csv/file
@@ -96,11 +96,11 @@ The repository provides a variety of Python tools to build, test and run models 
 
 When calling the script this way paths can be given relative to the script, in particular, file paths should include the filename and extension. The paths to the keys data, lookup service package, and model version file will usually be located in the model keys server (Git) repository, which would also contain the lookup service source code for the model (lookup service package. The lookup service package is usually located in the `src/keys_server` Python subpackage in the model keys serer repository (if it is managed by Oasis LMF).
 
-It is also possible to run the script by defining these arguments in a JSON configuration file and calling the script using the path to this file using the option `-f`. In this case the paths should be given relative to the parent folder in which the model keys server repository is located.::
+It is also possible to run the script by defining these arguments in a JSON configuration file and calling the script using the path to this file using the option `-f`. In this case the paths should be given relative to the parent folder in which the model keys server repository is located.
 
     ./run_keys_lookup.py -f /path/to/keys/script/config/file
 
-The JSON file should contain the following keys (in no particular order)::
+The JSON file should contain the following keys (in no particular order)
 
     "keys_data_path"
     "model_version_file_path"
@@ -111,9 +111,9 @@ The JSON file should contain the following keys (in no particular order)::
 
 and the values of these keys should be string paths, given relative to the parent folder in which the model keys server repository is located. The JSON file is usually placed in the model keys server repository.
 
-## Generating Oasis Files
+## Generating Oasis files
 
-`generate_oasis_files.py` is an executable script that can generate Oasis files for a model, given the following arguments (in no particular order)::
+`generate_oasis_files.py` is an executable script that can generate Oasis files for a model, given the following arguments (in no particular order)
 
     ./generate_oasis_files.py -k /path/to/keys/data
                               -v /path/to/model/version/csv/file
@@ -129,11 +129,11 @@ and the values of these keys should be string paths, given relative to the paren
 
 When calling the script this way paths can be given relative to the script, in particular, file paths should include the filename and extension. The paths to the keys data, lookup service package, model version file, canonical exposures profile JSON, source exposures file, transformation and validation files, will usually be located in the model keys server repository.
 
-It is also possible to run the script by defining these arguments in a JSON configuration file and calling the script using the path to this file using the option `-f`. In this case the paths should be given relative to the parent folder in which the model keys server repository is located.::
+It is also possible to run the script by defining these arguments in a JSON configuration file and calling the script using the path to this file using the option `-f`. In this case the paths should be given relative to the parent folder in which the model keys server repository is located.
 
     ./generate_oasis_files.py -f /path/to/model/resources/JSON/config/file
 
-The JSON file contain the following keys (in no particular order)::
+The JSON file contain the following keys (in no particular order)
 
     "keys_data_path"
     "model_version_file_path"
@@ -151,7 +151,7 @@ and the values of these keys should be string paths, given relative to the paren
 
 ## Generating loss outputs
 
-`generate_loss_outputs.py` is an executable script that, given a model analysis settings JSON file, model data and some other parameters, can generate a (Bash) shell script which can be used to generate loss outputs for the model using the installed ktools framework, given the following arguments (in no particular order)::
+`generate_loss_outputs.py` is an executable script that, given a model analysis settings JSON file, model data and some other parameters, can generate a (Bash) shell script which can be used to generate loss outputs for the model using the installed ktools framework, given the following arguments (in no particular order)
 
     ./generate_loss_outputs.py -j /path/to/analysis/settings/json/file
                                -s <ktools script name (without file extension)>
@@ -161,11 +161,11 @@ and the values of these keys should be string paths, given relative to the paren
 
 When calling the script this way paths can be given relative to the script, in particular, file paths should include the filename and extension. The ktools script name should not contain any filename extension, and the model run directory can be placed anywhere in the parent folder common to `omdk` and the model keys server repository.
 
-It is also possible to run the script by defining these arguments in a JSON configuration file and calling the script using the path to this file using the option `-f`. In this case the paths should be given relative to the parent folder in which the model keys server repository is located.::
+It is also possible to run the script by defining these arguments in a JSON configuration file and calling the script using the path to this file using the option `-f`. In this case the paths should be given relative to the parent folder in which the model keys server repository is located.
 
     ./generate_loss_outputs.py -f /path/to/model/resources/JSON/config/file'
 
-The JSON file should contain the following keys (in no particular order)::
+The JSON file should contain the following keys (in no particular order)
 
     "analysis_settings_json_file_path"
     "ktools_script_name"
@@ -175,7 +175,7 @@ The JSON file should contain the following keys (in no particular order)::
 
 and the values of the path-related keys should be string paths, given relative to the parent folder in which the model keys server repository is located. The JSON file is usually placed in the model keys server repository.
 
-**Note**: The output of `generate_loss_outputs.py` is an executable Bash shell script, containing ktools commands for generating loss outputs for the givem model and placed in the model run directory. You will have to execute the shell script in the model run directory in order to see the outputs. The model run directory must contain the analysis settings JSON file and either the actual model data or at least symlinked model data files (in the `static` subfolder). It must have the following structure::
+**Note**: The output of `generate_loss_outputs.py` is an executable Bash shell script, containing ktools commands for generating loss outputs for the givem model and placed in the model run directory. You will have to execute the shell script in the model run directory in order to see the outputs. The model run directory must contain the analysis settings JSON file and either the actual model data or at least symlinked model data files (in the `static` subfolder). It must have the following structure
 
     ├── analysis_settings.json
     ├── fifo/
@@ -188,7 +188,7 @@ The outputs are written in the `output` subfolder, and the model data should eit
 
 ## Running a model end-to-end
 
-`run_model.py` is an executable script that can run models end-to-end, i.e. generate ktools outputs from model resources, including keys data, model data, analysis settings etc., given the following arguments (in no particular order)::
+`run_model.py` is an executable script that can run models end-to-end, i.e. generate ktools outputs from model resources, including keys data, model data, analysis settings etc., given the following arguments (in no particular order)
 
     ./run_model.py -k /path/to/keys/data/folder
                    -v /path/to/model/version/file
@@ -208,11 +208,11 @@ The outputs are written in the `output` subfolder, and the model data should eit
 
 When calling the script this way paths can be given relative to the script, in particular, file paths should include the filename and extension. The paths to the keys data, lookup service package, model version file, canonical exposures profile JSON, source exposures file, transformation and validation files, and analysis settings JSON file, will usually be located in the model keys server repository. The ktools script name should not contain any filename extension, and the model run directory can be placed anywhere in the parent folder common to `omdk` and the model keys server repository.
 
-It is also possible to run the script by defining these arguments in a JSON configuration file and calling the script using the path to this file using the option `-f`. In this case the paths should be given relative to the parent folder in which the model keys server repository is located.::
+It is also possible to run the script by defining these arguments in a JSON configuration file and calling the script using the path to this file using the option `-f`. In this case the paths should be given relative to the parent folder in which the model keys server repository is located.
 
     ./run_model.py -f /path/to/model/resources/JSON/config/file'
 
-The JSON file should contain the following keys (in no particular order)::
+The JSON file should contain the following keys (in no particular order)
 
     "keys_data_path"
     "model_version_file_path"
