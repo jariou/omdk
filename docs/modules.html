@@ -834,7 +834,9 @@ and <code class="docutils literal"><span class="pre">n</span></code> is the numb
 </div>
 <div class="section" id="module-run_keys_lookup">
 <span id="omdk-run-keys-lookup"></span><h2><code class="docutils literal"><span class="pre">omdk.run_keys_lookup</span></code><a class="headerlink" href="#module-run_keys_lookup" title="Permalink to this headline">¶</a></h2>
-<p><cite>run_keys_lookup.py</cite> is an executable script that can generate keys records and Oasis files keys for a model, given the following arguments (in no particular order):</p>
+<p><cite>run_keys_lookup.py</cite> is an executable script that can generate keys records and
+Oasis files keys for a model, given the following arguments (in no particular
+order):</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span>./run_keys_lookup.py -k /path/to/keys/data
                      -v /path/to/model/version/csv/file
                      -l /path/to/lookup/service/package
@@ -843,8 +845,17 @@ and <code class="docutils literal"><span class="pre">n</span></code> is the numb
                      -f &lt;output format - `oasis_keys` or `list_keys`&gt;
 </pre></div>
 </div>
-<p>When calling the script this way paths can be given relative to the script, in particular, file paths should include the filename and extension. The paths to the keys data, lookup service package, and model version file will usually be located in the model keys server (Git) repository, which would also contain the lookup service source code for the model (lookup service package. The lookup service package is usually located in the <cite>src/keys_server</cite> Python subpackage in the model keys serer repository (if it is managed by Oasis LMF).</p>
-<p>It is also possible to run the script by defining these arguments in a JSON configuration file and calling the script using the path to this file using the option <cite>-f</cite>. In this case the paths should be given relative to the parent folder in which the model keys server repository is located.:</p>
+<p>When calling the script this way paths can be given relative to the script, in
+particular, file paths should include the filename and extension. The paths to
+the keys data, lookup service package, and model version file will usually be
+located in the model keys server (Git) repository, which would also contain the
+lookup service source code for the model (lookup service package. The lookup
+service package is usually located in the <cite>src/keys_server</cite> Python subpackage
+in the model keys serer repository (if it is managed by Oasis LMF).</p>
+<p>It is also possible to run the script by defining these arguments in a JSON
+configuration file and calling the script using the path to this file using the
+option <cite>-f</cite>. In this case the paths should be given relative to the parent
+folder in which the model keys server repository is located.:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">./</span><span class="n">run_keys_lookup</span><span class="o">.</span><span class="n">py</span> <span class="o">-</span><span class="n">f</span> <span class="o">/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">keys</span><span class="o">/</span><span class="n">script</span><span class="o">/</span><span class="n">config</span><span class="o">/</span><span class="n">file</span>
 </pre></div>
 </div>
@@ -857,11 +868,14 @@ and <code class="docutils literal"><span class="pre">n</span></code> is the numb
 <span class="s2">&quot;output_format&quot;</span>
 </pre></div>
 </div>
-<p>and the values of these keys should be string paths, given relative to the parent folder in which the model keys server repository is located. The JSON file is usually placed in the model keys server repository.</p>
+<p>and the values of these keys should be string paths, given relative to the
+parent folder in which the model keys server repository is located. The JSON
+file is usually placed in the model keys server repository.</p>
 </div>
 <div class="section" id="module-generate_oasis_files">
 <span id="omdk-generate-oasis-files"></span><h2><code class="docutils literal"><span class="pre">omdk.generate_oasis_files</span></code><a class="headerlink" href="#module-generate_oasis_files" title="Permalink to this headline">¶</a></h2>
-<p><cite>generate_oasis_files.py</cite> is an executable script that can generate Oasis files for a model, given the following arguments (in no particular order):</p>
+<p><cite>generate_oasis_files.py</cite> is an executable script that can generate Oasis files
+for a model, given the following arguments (in no particular order):</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">./</span><span class="n">generate_oasis_files</span><span class="o">.</span><span class="n">py</span> <span class="o">-</span><span class="n">k</span> <span class="o">/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">keys</span><span class="o">/</span><span class="n">data</span>
                           <span class="o">-</span><span class="n">v</span> <span class="o">/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">model</span><span class="o">/</span><span class="n">version</span><span class="o">/</span><span class="n">csv</span><span class="o">/</span><span class="n">file</span>
                           <span class="o">-</span><span class="n">l</span> <span class="o">/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">lookup</span><span class="o">/</span><span class="n">service</span><span class="o">/</span><span class="n">package</span>
@@ -875,8 +889,15 @@ and <code class="docutils literal"><span class="pre">n</span></code> is the numb
                           <span class="o">-</span><span class="n">o</span> <span class="o">/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">oasis</span><span class="o">/</span><span class="n">files</span><span class="o">/</span><span class="n">directory</span>
 </pre></div>
 </div>
-<p>When calling the script this way paths can be given relative to the script, in particular, file paths should include the filename and extension. The paths to the keys data, lookup service package, model version file, canonical exposures profile JSON, source exposures file, transformation and validation files, will usually be located in the model keys server repository.</p>
-<p>It is also possible to run the script by defining these arguments in a JSON configuration file and calling the script using the path to this file using the option <cite>-f</cite>. In this case the paths should be given relative to the parent folder in which the model keys server repository is located.:</p>
+<p>When calling the script this way paths can be given relative to the script, in
+particular, file paths should include the filename and extension. The paths to
+the keys data, lookup service package, model version file, canonical exposures
+profile JSON, source exposures file, transformation and validation files, will
+usually be located in the model keys server repository.</p>
+<p>It is also possible to run the script by defining these arguments in a JSON
+configuration file and calling the script using the path to this file using the
+option <cite>-f</cite>. In this case the paths should be given relative to the parent
+folder in which the model keys server repository is located.:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">./</span><span class="n">generate_oasis_files</span><span class="o">.</span><span class="n">py</span> <span class="o">-</span><span class="n">f</span> <span class="o">/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">model</span><span class="o">/</span><span class="n">resources</span><span class="o">/</span><span class="n">JSON</span><span class="o">/</span><span class="n">config</span><span class="o">/</span><span class="n">file</span>
 </pre></div>
 </div>
@@ -894,46 +915,77 @@ and <code class="docutils literal"><span class="pre">n</span></code> is the numb
 <span class="s2">&quot;oasis_files_path&quot;</span>
 </pre></div>
 </div>
-<p>and the values of these keys should be string paths, given relative to the parent folder in which the model keys server repository is located. The JSON file is usually placed in the model keys server repository.</p>
+<p>and the values of these keys should be string paths, given relative to the
+parent folder in which the model keys server repository is located. The JSON
+file is usually placed in the model keys server repository.</p>
 </div>
 <div class="section" id="module-generate_loss_outputs">
 <span id="omdk-generate-loss-outputs"></span><h2><code class="docutils literal"><span class="pre">omdk.generate_loss_outputs</span></code><a class="headerlink" href="#module-generate_loss_outputs" title="Permalink to this headline">¶</a></h2>
-<p><cite>generate_loss_outputs.py</cite> is an executable script that, given a model analysis settings JSON file, model data and some other parameters, can generate a (Bash) shell script which can be used to generate loss outputs for the model using the installed ktools framework, given the following arguments (in no particular order):</p>
+<p><cite>generate_loss_outputs.py</cite> is an executable script which, given a model
+analysis settings JSON file, model data and some other parameters, can
+generate a (Bash) shell script containing ktools commands to calculate loss
+outputs, and also execute the generated script to generate those outputs using
+the installed ktools framework. The script can be called directly from the
+command line given the following arguments (in no particular order):</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">./</span><span class="n">generate_loss_outputs</span><span class="o">.</span><span class="n">py</span> <span class="o">-</span><span class="n">j</span> <span class="o">/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">analysis</span><span class="o">/</span><span class="n">settings</span><span class="o">/</span><span class="n">json</span><span class="o">/</span><span class="n">file</span>
                            <span class="o">-</span><span class="n">s</span> <span class="o">&lt;</span><span class="n">ktools</span> <span class="n">script</span> <span class="n">name</span> <span class="p">(</span><span class="n">without</span> <span class="n">file</span> <span class="n">extension</span><span class="p">)</span><span class="o">&gt;</span>
                            <span class="o">-</span><span class="n">m</span> <span class="o">/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">model</span><span class="o">/</span><span class="n">data</span>
                            <span class="o">-</span><span class="n">r</span> <span class="o">/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">model</span><span class="o">/</span><span class="n">run</span><span class="o">/</span><span class="n">directory</span>
                            <span class="o">-</span><span class="n">n</span> <span class="o">&lt;</span><span class="n">number</span> <span class="n">of</span> <span class="n">ktools</span> <span class="n">calculation</span> <span class="n">processes</span> <span class="n">to</span> <span class="n">use</span><span class="o">&gt;</span>
+                           <span class="p">[</span><span class="o">--</span><span class="n">execute</span> <span class="o">|</span> <span class="o">--</span><span class="n">no</span><span class="o">-</span><span class="n">execute</span><span class="p">]</span>
 </pre></div>
 </div>
-<p>When calling the script this way paths can be given relative to the script, in particular, file paths should include the filename and extension. The ktools script name should not contain any filename extension, and the model run directory can be placed anywhere in the parent folder common to <cite>omdk</cite> and the model keys server repository.</p>
-<p>It is also possible to run the script by defining these arguments in a JSON configuration file and calling the script using the path to this file using the option <cite>-f</cite>. In this case the paths should be given relative to the parent folder in which the model keys server repository is located.:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">./</span><span class="n">generate_loss_outputs</span><span class="o">.</span><span class="n">py</span> <span class="o">-</span><span class="n">f</span> <span class="o">/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">model</span><span class="o">/</span><span class="n">resources</span><span class="o">/</span><span class="n">JSON</span><span class="o">/</span><span class="n">config</span><span class="o">/</span><span class="n">file</span><span class="s1">&#39;</span>
-</pre></div>
-</div>
-<p>The JSON file should contain the following keys (in no particular order):</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="s2">&quot;analysis_settings_json_file_path&quot;</span>
-<span class="s2">&quot;ktools_script_name&quot;</span>
-<span class="s2">&quot;model_data_path&quot;</span>
-<span class="s2">&quot;model_run_dir_path&quot;</span>
-<span class="s2">&quot;ktools_num_processes&quot;</span>
-</pre></div>
-</div>
-<p>and the values of the path-related keys should be string paths, given relative to the parent folder in which the model keys server repository is located. The JSON file is usually placed in the model keys server repository.</p>
-<p><strong>Note</strong>: The output of <cite>generate_loss_outputs.py</cite> is an executable Bash shell script, containing ktools commands for generating loss outputs for the givem model and placed in the model run directory. You will have to execute the shell script in the model run directory in order to see the outputs. The model run directory must contain the analysis settings JSON file and either the actual model data or at least symlinked model data files (in the <cite>static</cite> subfolder). It must have the following structure:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span>├── analysis_settings.json
+<p>The model run directory must contain the analysis settings JSON file and either
+the actual model data or at least symlinked model data files (in the <cite>static</cite>
+subfolder). It must have the following folder structure</p>
+<blockquote>
+<div>├── analysis_settings.json
 ├── fifo/
 ├── input/
 ├── output/
 ├── static/
-└── work/
-</pre></div>
-</div>
-<p>The outputs are written in the <cite>output</cite> subfolder, and the model data should either be placed directly in the <cite>static</cite> subfolder or the actual folder should be symlinked to the <cite>static</cite> subfolder.</p>
+└── work/</div></blockquote>
+<p>The outputs are written in the <cite>output</cite> subfolder, and the model data should
+either be placed directly in the <cite>static</cite> subfolder or the actual folder should
+be symlinked to the <cite>static</cite> subfolder.</p>
+<p>By default executing <cite>generate_loss_outputs.py</cite> will not only generate the
+ktools loss outputs script but also execute it to generate loss outputs. If you
+want to simply inspect the generated script without executing it then provide
+the (optional) <cite>–no-execute</cite> argument. The default here is automatic
+execution.</p>
+<p>When calling the script this way paths can be given relative to the script, in
+particular, file paths should include the filename and extension. The ktools
+script name should not contain any filename extension, and the model run
+directory can be placed anywhere in the parent folder common to <cite>omdk</cite> and the
+model keys server repository.</p>
+<p>It is also possible to run the script by defining these arguments in a JSON
+configuration file and calling the script using the path to this file using the
+option <cite>-f</cite>. In this case the paths should be given relative to the parent
+folder in which the model keys server repository is located.</p>
+<blockquote>
+<div>./generate_loss_outputs.py -f /path/to/model/resources/JSON/config/file’</div></blockquote>
+<p>The JSON file should contain the following keys (in no particular order)</p>
+<blockquote>
+<div>“analysis_settings_json_file_path”
+“ktools_script_name”
+“model_data_path”
+“model_run_dir_path”
+“ktools_num_processes”
+“execute”</div></blockquote>
+<p>and the values of the path-related keys should be string paths, given relative
+to the parent folder in which the model keys server repository is located. The
+JSON file is usually placed in the model keys server repository. The value of
+the (optional) <cite>“exectute”</cite> key should be either <cite>true</cite> or <cite>false</cite> depending on
+whether you want the generated ktools loss output scripts to be automatically
+executed or not. The default here is automatic execution.</p>
 </div>
 <div class="section" id="module-run_model">
 <span id="omdk-run-model"></span><h2><code class="docutils literal"><span class="pre">omdk.run_model</span></code><a class="headerlink" href="#module-run_model" title="Permalink to this headline">¶</a></h2>
-<p><cite>run_model.py</cite> is an executable script that can run models end-to-end, i.e. generate ktools outputs from model resources, including keys data, model data, analysis settings etc., given the following arguments (in no particular order):</p>
+<p><cite>run_model.py</cite> is an executable script that can run models end-to-end, i.e.
+generate loss outputs given model resources, including keys data, canonical
+exposure profiles, exposure transformation and validation files, model data,
+analysis settings etc., given the following arguments (in no particular
+order):</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">./</span><span class="n">run_model</span><span class="o">.</span><span class="n">py</span> <span class="o">-</span><span class="n">k</span> <span class="o">/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">keys</span><span class="o">/</span><span class="n">data</span><span class="o">/</span><span class="n">folder</span>
                <span class="o">-</span><span class="n">v</span> <span class="o">/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">model</span><span class="o">/</span><span class="n">version</span><span class="o">/</span><span class="n">file</span>
                <span class="o">-</span><span class="n">l</span> <span class="o">/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">model</span><span class="o">/</span><span class="n">keys</span><span class="o">/</span><span class="n">lookup</span><span class="o">/</span><span class="n">service</span><span class="o">/</span><span class="n">package</span>
@@ -951,8 +1003,18 @@ and <code class="docutils literal"><span class="pre">n</span></code> is the numb
                <span class="o">-</span><span class="n">n</span> <span class="o">&lt;</span><span class="n">number</span> <span class="n">of</span> <span class="n">ktools</span> <span class="n">calculation</span> <span class="n">processes</span> <span class="n">to</span> <span class="n">use</span><span class="o">&gt;</span>
 </pre></div>
 </div>
-<p>When calling the script this way paths can be given relative to the script, in particular, file paths should include the filename and extension. The paths to the keys data, lookup service package, model version file, canonical exposures profile JSON, source exposures file, transformation and validation files, and analysis settings JSON file, will usually be located in the model keys server repository. The ktools script name should not contain any filename extension, and the model run directory can be placed anywhere in the parent folder common to <cite>omdk</cite> and the model keys server repository.</p>
-<p>It is also possible to run the script by defining these arguments in a JSON configuration file and calling the script using the path to this file using the option <cite>-f</cite>. In this case the paths should be given relative to the parent folder in which the model keys server repository is located.:</p>
+<p>When calling the script this way paths can be given relative to the script, in
+particular, file paths should include the filename and extension. The paths to
+the keys data, lookup service package, model version file, canonical exposures
+profile JSON, source exposures file, transformation and validation files, and
+analysis settings JSON file, will usually be located in the model keys server
+repository. The ktools script name should not contain any filename extension,
+and the model run directory can be placed anywhere in the parent folder common
+to <cite>omdk</cite> and the model keys server repository.</p>
+<p>It is also possible to run the script by defining these arguments in a JSON
+configuration file and calling the script using the path to this file using the
+option <cite>-f</cite>. In this case the paths should be given relative to the parent
+folder in which the model keys server repository is located.:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">./</span><span class="n">run_model</span><span class="o">.</span><span class="n">py</span> <span class="o">-</span><span class="n">f</span> <span class="o">/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">model</span><span class="o">/</span><span class="n">resources</span><span class="o">/</span><span class="n">JSON</span><span class="o">/</span><span class="n">config</span><span class="o">/</span><span class="n">file</span><span class="s1">&#39;</span>
 </pre></div>
 </div>
@@ -974,8 +1036,14 @@ and <code class="docutils literal"><span class="pre">n</span></code> is the numb
 <span class="s2">&quot;ktools_num_processes&quot;</span>
 </pre></div>
 </div>
-<p>and the values of the path-related keys should be string paths, given relative to the parent folder in which the model keys server repository is located. The JSON file is usually placed in the model keys server repository.</p>
-<p><strong>NOTE</strong>:  As the JSON configuration files for <cite>generate_oasis_files.py</cite> and <cite>generate_loss_outputs.py</cite> defines a subset of the resources required for <cite>run_model.py</cite> you can use the <cite>run_model.py</cite> configuration file to also run <cite>generate_oasis_files.py</cite>.</p>
+<p>and the values of the path-related keys should be string paths, given relative
+to the parent folder in which the model keys server repository is located. The
+JSON file is usually placed in the model keys server repository.</p>
+<p><strong>NOTE</strong>:  As the JSON script configuration files for <cite>generate_oasis_files.py</cite>
+and <cite>generate_loss_outputs.py</cite> define a subset of the resources required for
+the master script <cite>run_model.py</cite> you can use the master script configuration
+file to independently run <cite>generate_oasis_files.py</cite> and
+<cite>generate_loss_outputs.py</cite>, and vice versa.</p>
 </div>
 </div>
 

@@ -47,7 +47,7 @@ Add and commit these files to the local repository, and then update the remote r
 
 ## Python
 
-After cloning the repository (see the GitHub instructions on repository home page) and entering the repository folder you should install the package Python requirements using
+After cloning the repository and entering the repository folder you should install the package Python requirements using
 
     sudo pip install -r requirements.txt
 
@@ -57,7 +57,7 @@ Provided that `sys.path` contains the absolute path to the repository folder you
 
 ## xtrans
 
-There is one non-Python package requirement which is a .NET executable called `xtrans.exe` - this is used to convert source exposure files to canonical (Oasis) exposure files, and then also canonical exposure files to model exposure files. The source file `xrans.cs` is included in the `xtrans` subfolder. The executable requires a .NET engine like Mono (http://www.mono-project.com/) and the NDesk.Options library (http://www.ndesk.org/Options) which is included as a DLL in the `xtrans` subfolder. Assuming you've installed Mono you should be able to build the executable by running the `xtrans/make-trans` script - if successful it will be placed in `xtrans`.
+There is one non-Python package requirement which is a .NET executable called `xtrans.exe` - this is used to convert source exposure files to canonical (Oasis) exposure files, and also canonical exposure files to Oasis model exposure files. The source file `xrans.cs` is included in the `xtrans` subfolder. The executable requires a .NET engine like Mono (http://www.mono-project.com/) and the NDesk.Options library (http://www.ndesk.org/Options) which is included as a DLL in the `xtrans` subfolder. Assuming you've installed Mono you should be able to build the executable by running the `xtrans/make-trans` script - if successful it will be placed in `xtrans`.
 
 ## ktools
 
@@ -85,7 +85,7 @@ The repository provides a variety of Python tools to build, test and run models 
 
 ## Generating keys outputs
 
-`run_keys_lookup.py` is an executable script that can generate keys records and Oasis files keys for a model, given the following arguments (in no particular order)
+`run_keys_lookup.py` is an executable script which can generate keys records and Oasis files keys for a model, given the following arguments (in no particular order)
 
     ./run_keys_lookup.py -k /path/to/keys/data
                          -v /path/to/model/version/csv/file
@@ -113,7 +113,7 @@ and the values of these keys should be string paths, given relative to the paren
 
 ## Generating Oasis files
 
-`generate_oasis_files.py` is an executable script that can generate Oasis files for a model, given the following arguments (in no particular order)
+`generate_oasis_files.py` is an executable script which can generate Oasis files for a model, given the following arguments (in no particular order)
 
     ./generate_oasis_files.py -k /path/to/keys/data
                               -v /path/to/model/version/csv/file
@@ -151,13 +151,27 @@ and the values of these keys should be string paths, given relative to the paren
 
 ## Generating loss outputs
 
-`generate_loss_outputs.py` is an executable script that, given a model analysis settings JSON file, model data and some other parameters, can generate a (Bash) shell script which can be used to generate loss outputs for the model using the installed ktools framework, given the following arguments (in no particular order)
+`generate_loss_outputs.py` is an executable script which, given a model analysis settings JSON file, model data and some other parameters, can generate a (Bash) shell script containing ktools commands to calculate loss outputs, and also execute the generated script to generate those outputs using the installed ktools framework. The script can be called directly from the command line given the following arguments (in no particular order)::
 
     ./generate_loss_outputs.py -j /path/to/analysis/settings/json/file
                                -s <ktools script name (without file extension)>
                                -m /path/to/model/data
                                -r /path/to/model/run/directory
                                -n <number of ktools calculation processes to use>
+                               [--execute | --no-execute]
+
+The model run directory must contain the analysis settings JSON file and either the actual model data or at least symlinked model data files (in the `static` subfolder). It must have the following folder structure
+
+    ├── analysis_settings.json
+    ├── fifo/
+    ├── input/
+    ├── output/
+    ├── static/
+    └── work/
+
+The outputs are written in the `output` subfolder, and the model data should either be placed directly in the `static` subfolder or the actual folder should be symlinked to the `static` subfolder.
+
+By default executing `generate_loss_outputs.py` will not only generate the ktools loss outputs script but also execute it to generate loss outputs. If you want to simply inspect the generated script without executing it then provide the (optional) `--no-execute` argument. The default here is automatic execution.
 
 When calling the script this way paths can be given relative to the script, in particular, file paths should include the filename and extension. The ktools script name should not contain any filename extension, and the model run directory can be placed anywhere in the parent folder common to `omdk` and the model keys server repository.
 
@@ -172,23 +186,13 @@ The JSON file should contain the following keys (in no particular order)
     "model_data_path"
     "model_run_dir_path"
     "ktools_num_processes"
+    "execute"
 
-and the values of the path-related keys should be string paths, given relative to the parent folder in which the model keys server repository is located. The JSON file is usually placed in the model keys server repository.
-
-**Note**: The output of `generate_loss_outputs.py` is an executable Bash shell script, containing ktools commands for generating loss outputs for the givem model and placed in the model run directory. You will have to execute the shell script in the model run directory in order to see the outputs. The model run directory must contain the analysis settings JSON file and either the actual model data or at least symlinked model data files (in the `static` subfolder). It must have the following structure
-
-    ├── analysis_settings.json
-    ├── fifo/
-    ├── input/
-    ├── output/
-    ├── static/
-    └── work/
-
-The outputs are written in the `output` subfolder, and the model data should either be placed directly in the `static` subfolder or the actual folder should be symlinked to the `static` subfolder.
+and the values of the path-related keys should be string paths, given relative to the parent folder in which the model keys server repository is located. The JSON file is usually placed in the model keys server repository. The value of the (optional) `"exectute"` key should be either `true` or `false` depending on whether you want the generated ktools loss output scripts to be automatically executed or not. The default here is automatic execution.
 
 ## Running a model end-to-end
 
-`run_model.py` is an executable script that can run models end-to-end, i.e. generate ktools outputs from model resources, including keys data, model data, analysis settings etc., given the following arguments (in no particular order)
+`run_model.py` is an executable script which can run models end-to-end, i.e. generate ktools outputs from model resources, including keys data, model data, analysis settings etc., given the following arguments (in no particular order)
 
     ./run_model.py -k /path/to/keys/data/folder
                    -v /path/to/model/version/file
@@ -232,4 +236,4 @@ The JSON file should contain the following keys (in no particular order)
 
 and the values of the path-related keys should be string paths, given relative to the parent folder in which the model keys server repository is located. The JSON file is usually placed in the model keys server repository.
 
-**NOTE**:  As the JSON configuration files for `generate_oasis_files.py` and `generate_loss_outputs.py` defines a subset of the resources required for `run_model.py` you can use the `run_model.py` configuration file to also run `generate_oasis_files.py`.
+**NOTE**:  As the JSON script configuration files for `generate_oasis_files.py` and `generate_loss_outputs.py` define a subset of the resources required for the master script `run_model.py` you can use the master script configuration file to independently run `generate_oasis_files.py` and `generate_loss_outputs.py`, and vice versa.

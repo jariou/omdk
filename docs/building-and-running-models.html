@@ -65,22 +65,17 @@ script that can perform all these steps to run the model end-to-end
 </ul>
 <div class="section" id="generating-keys-outputs">
 <h2>Generating keys outputs<a class="headerlink" href="#generating-keys-outputs" title="Permalink to this headline">¶</a></h2>
-<p><code class="docutils literal"><span class="pre">run_keys_lookup.py</span></code> is an executable script that can generate keys
+<p><code class="docutils literal"><span class="pre">run_keys_lookup.py</span></code> is an executable script which can generate keys
 records and Oasis files keys for a model, given the following arguments
-(in no particular order):</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="p">::</span>
+(in no particular order)</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>./run_keys_lookup.py -k /path/to/keys/data
+                     -v /path/to/model/version/csv/file
+                     -l /path/to/lookup/service/package
+                     -e /path/to/model/exposures/csv/file
+                     -o /path/to/output/file
+                     -f &lt;output format - `oasis_keys` or `list_keys`&gt;
 </pre></div>
 </div>
-<blockquote>
-<div><dl class="docutils">
-<dt>./run_keys_lookup.py -k /path/to/keys/data</dt>
-<dd>-v /path/to/model/version/csv/file
--l /path/to/lookup/service/package
--e /path/to/model/exposures/csv/file
--o /path/to/output/file
--f &lt;output format - <cite>oasis_keys</cite> or <cite>list_keys</cite>&gt;</dd>
-</dl>
-</div></blockquote>
 <p>When calling the script this way paths can be given relative to the
 script, in particular, file paths should include the filename and
 extension. The paths to the keys data, lookup service package, and model
@@ -93,51 +88,41 @@ serer repository (if it is managed by Oasis LMF).</p>
 JSON configuration file and calling the script using the path to this
 file using the option <code class="docutils literal"><span class="pre">-f</span></code>. In this case the paths should be given
 relative to the parent folder in which the model keys server repository
-is located.:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="p">::</span>
+is located.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">./</span><span class="n">run_keys_lookup</span><span class="o">.</span><span class="n">py</span> <span class="o">-</span><span class="n">f</span> <span class="o">/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">keys</span><span class="o">/</span><span class="n">script</span><span class="o">/</span><span class="n">config</span><span class="o">/</span><span class="n">file</span>
 </pre></div>
 </div>
-<blockquote>
-<div>./run_keys_lookup.py -f /path/to/keys/script/config/file</div></blockquote>
-<p>The JSON file should contain the following keys (in no particular
-order):</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="p">::</span>
+<p>The JSON file should contain the following keys (in no particular order)</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="s2">&quot;keys_data_path&quot;</span>
+<span class="s2">&quot;model_version_file_path&quot;</span>
+<span class="s2">&quot;lookup_package_path&quot;</span>
+<span class="s2">&quot;model_exposures_file_path&quot;</span>
+<span class="s2">&quot;output_file_path&quot;</span>
+<span class="s2">&quot;output_format&quot;</span>
 </pre></div>
 </div>
-<blockquote>
-<div>“keys_data_path”
-“model_version_file_path”
-“lookup_package_path”
-“model_exposures_file_path”
-“output_file_path”
-“output_format”</div></blockquote>
 <p>and the values of these keys should be string paths, given relative to
 the parent folder in which the model keys server repository is located.
 The JSON file is usually placed in the model keys server repository.</p>
 </div>
 <div class="section" id="generating-oasis-files">
-<h2>Generating Oasis Files<a class="headerlink" href="#generating-oasis-files" title="Permalink to this headline">¶</a></h2>
-<p><code class="docutils literal"><span class="pre">generate_oasis_files.py</span></code> is an executable script that can generate
+<h2>Generating Oasis files<a class="headerlink" href="#generating-oasis-files" title="Permalink to this headline">¶</a></h2>
+<p><code class="docutils literal"><span class="pre">generate_oasis_files.py</span></code> is an executable script which can generate
 Oasis files for a model, given the following arguments (in no particular
-order):</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="p">::</span>
+order)</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">./</span><span class="n">generate_oasis_files</span><span class="o">.</span><span class="n">py</span> <span class="o">-</span><span class="n">k</span> <span class="o">/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">keys</span><span class="o">/</span><span class="n">data</span>
+                          <span class="o">-</span><span class="n">v</span> <span class="o">/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">model</span><span class="o">/</span><span class="n">version</span><span class="o">/</span><span class="n">csv</span><span class="o">/</span><span class="n">file</span>
+                          <span class="o">-</span><span class="n">l</span> <span class="o">/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">lookup</span><span class="o">/</span><span class="n">service</span><span class="o">/</span><span class="n">package</span>
+                          <span class="o">-</span><span class="n">p</span> <span class="o">/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">canonical</span><span class="o">/</span><span class="n">exposures</span><span class="o">/</span><span class="n">profile</span><span class="o">/</span><span class="n">JSON</span><span class="o">/</span><span class="n">file</span>
+                          <span class="o">-</span><span class="n">e</span> <span class="o">/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">source</span><span class="o">/</span><span class="n">exposures</span><span class="o">/</span><span class="n">file</span>
+                          <span class="o">-</span><span class="n">a</span> <span class="o">/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">source</span><span class="o">/</span><span class="n">exposures</span><span class="o">/</span><span class="n">validation</span><span class="o">/</span><span class="n">file</span>
+                          <span class="o">-</span><span class="n">b</span> <span class="o">/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">source</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">canonical</span><span class="o">/</span><span class="n">exposures</span><span class="o">/</span><span class="n">transformation</span><span class="o">/</span><span class="n">file</span>
+                          <span class="o">-</span><span class="n">c</span> <span class="o">/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">canonical</span><span class="o">/</span><span class="n">exposures</span><span class="o">/</span><span class="n">validation</span><span class="o">/</span><span class="n">file</span>
+                          <span class="o">-</span><span class="n">d</span> <span class="o">/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">canonical</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">model</span><span class="o">/</span><span class="n">exposures</span><span class="o">/</span><span class="n">transformation</span><span class="o">/</span><span class="n">file</span>
+                          <span class="o">-</span><span class="n">x</span> <span class="o">/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">xtrans</span><span class="o">/</span><span class="n">executable</span>
+                          <span class="o">-</span><span class="n">o</span> <span class="o">/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">oasis</span><span class="o">/</span><span class="n">files</span><span class="o">/</span><span class="n">directory</span>
 </pre></div>
 </div>
-<blockquote>
-<div><dl class="docutils">
-<dt>./generate_oasis_files.py -k /path/to/keys/data</dt>
-<dd>-v /path/to/model/version/csv/file
--l /path/to/lookup/service/package
--p /path/to/canonical/exposures/profile/JSON/file
--e /path/to/source/exposures/file
--a /path/to/source/exposures/validation/file
--b /path/to/source/to/canonical/exposures/transformation/file
--c /path/to/canonical/exposures/validation/file
--d /path/to/canonical/to/model/exposures/transformation/file
--x /path/to/xtrans/executable
--o /path/to/oasis/files/directory</dd>
-</dl>
-</div></blockquote>
 <p>When calling the script this way paths can be given relative to the
 script, in particular, file paths should include the filename and
 extension. The paths to the keys data, lookup service package, model
@@ -148,39 +133,37 @@ model keys server repository.</p>
 JSON configuration file and calling the script using the path to this
 file using the option <code class="docutils literal"><span class="pre">-f</span></code>. In this case the paths should be given
 relative to the parent folder in which the model keys server repository
-is located.:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="p">::</span>
+is located.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">./</span><span class="n">generate_oasis_files</span><span class="o">.</span><span class="n">py</span> <span class="o">-</span><span class="n">f</span> <span class="o">/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">model</span><span class="o">/</span><span class="n">resources</span><span class="o">/</span><span class="n">JSON</span><span class="o">/</span><span class="n">config</span><span class="o">/</span><span class="n">file</span>
 </pre></div>
 </div>
-<blockquote>
-<div>./generate_oasis_files.py -f /path/to/model/resources/JSON/config/file</div></blockquote>
-<p>The JSON file contain the following keys (in no particular order):</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="p">::</span>
+<p>The JSON file contain the following keys (in no particular order)</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="s2">&quot;keys_data_path&quot;</span>
+<span class="s2">&quot;model_version_file_path&quot;</span>
+<span class="s2">&quot;lookup_package_path&quot;</span>
+<span class="s2">&quot;canonical_exposures_profile_json_path&quot;</span>
+<span class="s2">&quot;source_exposures_file_path&quot;</span>
+<span class="s2">&quot;source_exposures_validation_file_path&quot;</span>
+<span class="s2">&quot;source_to_canonical_exposures_transformation_file_path&quot;</span>
+<span class="s2">&quot;canonical_exposures_validation_file_path&quot;</span>
+<span class="s2">&quot;canonical_to_model_exposures_transformation_file_path&quot;</span>
+<span class="s2">&quot;xtrans_path&quot;</span>
+<span class="s2">&quot;oasis_files_path&quot;</span>
 </pre></div>
 </div>
-<blockquote>
-<div>“keys_data_path”
-“model_version_file_path”
-“lookup_package_path”
-“canonical_exposures_profile_json_path”
-“source_exposures_file_path”
-“source_exposures_validation_file_path”
-“source_to_canonical_exposures_transformation_file_path”
-“canonical_exposures_validation_file_path”
-“canonical_to_model_exposures_transformation_file_path”
-“xtrans_path”
-“oasis_files_path”</div></blockquote>
 <p>and the values of these keys should be string paths, given relative to
 the parent folder in which the model keys server repository is located.
 The JSON file is usually placed in the model keys server repository.</p>
 </div>
 <div class="section" id="generating-loss-outputs">
 <h2>Generating loss outputs<a class="headerlink" href="#generating-loss-outputs" title="Permalink to this headline">¶</a></h2>
-<p><code class="docutils literal"><span class="pre">generate_loss_outputs.py</span></code> is an executable script that, given a model
-analysis settings JSON file, model data and some other parameters, can
-generate a (Bash) shell script which can be used to generate loss
-outputs for the model using the installed ktools framework, given the
-following arguments (in no particular order):</p>
+<p><code class="docutils literal"><span class="pre">generate_loss_outputs.py</span></code> is an executable script which, given a
+model analysis settings JSON file, model data and some other parameters,
+can generate a (Bash) shell script containing ktools commands to
+calculate loss outputs, and also execute the generated script to
+generate those outputs using the installed ktools framework. The script
+can be called directly from the command line given the following
+arguments (in no particular order):</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="p">::</span>
 </pre></div>
 </div>
@@ -190,9 +173,29 @@ following arguments (in no particular order):</p>
 <dd>-s &lt;ktools script name (without file extension)&gt;
 -m /path/to/model/data
 -r /path/to/model/run/directory
--n &lt;number of ktools calculation processes to use&gt;</dd>
+-n &lt;number of ktools calculation processes to use&gt;
+[–execute | –no-execute]</dd>
 </dl>
 </div></blockquote>
+<p>The model run directory must contain the analysis settings JSON file and
+either the actual model data or at least symlinked model data files (in
+the <code class="docutils literal"><span class="pre">static</span></code> subfolder). It must have the following folder structure</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>├── analysis_settings.json
+├── fifo/
+├── input/
+├── output/
+├── static/
+└── work/
+</pre></div>
+</div>
+<p>The outputs are written in the <code class="docutils literal"><span class="pre">output</span></code> subfolder, and the model data
+should either be placed directly in the <code class="docutils literal"><span class="pre">static</span></code> subfolder or the
+actual folder should be symlinked to the <code class="docutils literal"><span class="pre">static</span></code> subfolder.</p>
+<p>By default executing <code class="docutils literal"><span class="pre">generate_loss_outputs.py</span></code> will not only generate
+the ktools loss outputs script but also execute it to generate loss
+outputs. If you want to simply inspect the generated script without
+executing it then provide the (optional) <code class="docutils literal"><span class="pre">--no-execute</span></code> argument. The
+default here is automatic execution.</p>
 <p>When calling the script this way paths can be given relative to the
 script, in particular, file paths should include the filename and
 extension. The ktools script name should not contain any filename
@@ -202,77 +205,50 @@ parent folder common to <code class="docutils literal"><span class="pre">omdk</s
 JSON configuration file and calling the script using the path to this
 file using the option <code class="docutils literal"><span class="pre">-f</span></code>. In this case the paths should be given
 relative to the parent folder in which the model keys server repository
-is located.:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="p">::</span>
+is located.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">./</span><span class="n">generate_loss_outputs</span><span class="o">.</span><span class="n">py</span> <span class="o">-</span><span class="n">f</span> <span class="o">/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">model</span><span class="o">/</span><span class="n">resources</span><span class="o">/</span><span class="n">JSON</span><span class="o">/</span><span class="n">config</span><span class="o">/</span><span class="n">file</span><span class="s1">&#39;</span>
 </pre></div>
 </div>
-<blockquote>
-<div>./generate_loss_outputs.py -f /path/to/model/resources/JSON/config/file’</div></blockquote>
-<p>The JSON file should contain the following keys (in no particular
-order):</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="p">::</span>
+<p>The JSON file should contain the following keys (in no particular order)</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="s2">&quot;analysis_settings_json_file_path&quot;</span>
+<span class="s2">&quot;ktools_script_name&quot;</span>
+<span class="s2">&quot;model_data_path&quot;</span>
+<span class="s2">&quot;model_run_dir_path&quot;</span>
+<span class="s2">&quot;ktools_num_processes&quot;</span>
+<span class="s2">&quot;execute&quot;</span>
 </pre></div>
 </div>
-<blockquote>
-<div>“analysis_settings_json_file_path”
-“ktools_script_name”
-“model_data_path”
-“model_run_dir_path”
-“ktools_num_processes”</div></blockquote>
 <p>and the values of the path-related keys should be string paths, given
 relative to the parent folder in which the model keys server repository
 is located. The JSON file is usually placed in the model keys server
-repository.</p>
-<p><strong>Note</strong>: The output of <code class="docutils literal"><span class="pre">generate_loss_outputs.py</span></code> is an executable
-Bash shell script, containing ktools commands for generating loss
-outputs for the givem model and placed in the model run directory. You
-will have to execute the shell script in the model run directory in
-order to see the outputs. The model run directory must contain the
-analysis settings JSON file and either the actual model data or at least
-symlinked model data files (in the <code class="docutils literal"><span class="pre">static</span></code> subfolder). It must have
-the following structure:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="p">::</span>
-</pre></div>
-</div>
-<blockquote>
-<div>├── analysis_settings.json
-├── fifo/
-├── input/
-├── output/
-├── static/
-└── work/</div></blockquote>
-<p>The outputs are written in the <code class="docutils literal"><span class="pre">output</span></code> subfolder, and the model data
-should either be placed directly in the <code class="docutils literal"><span class="pre">static</span></code> subfolder or the
-actual folder should be symlinked to the <code class="docutils literal"><span class="pre">static</span></code> subfolder.</p>
+repository. The value of the (optional) <code class="docutils literal"><span class="pre">&quot;exectute&quot;</span></code> key should be
+either <code class="docutils literal"><span class="pre">true</span></code> or <code class="docutils literal"><span class="pre">false</span></code> depending on whether you want the generated
+ktools loss output scripts to be automatically executed or not. The
+default here is automatic execution.</p>
 </div>
 <div class="section" id="running-a-model-end-to-end">
 <h2>Running a model end-to-end<a class="headerlink" href="#running-a-model-end-to-end" title="Permalink to this headline">¶</a></h2>
-<p><code class="docutils literal"><span class="pre">run_model.py</span></code> is an executable script that can run models end-to-end,
-i.e. generate ktools outputs from model resources, including keys data,
-model data, analysis settings etc., given the following arguments (in no
-particular order):</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="p">::</span>
+<p><code class="docutils literal"><span class="pre">run_model.py</span></code> is an executable script which can run models
+end-to-end, i.e. generate ktools outputs from model resources, including
+keys data, model data, analysis settings etc., given the following
+arguments (in no particular order)</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">./</span><span class="n">run_model</span><span class="o">.</span><span class="n">py</span> <span class="o">-</span><span class="n">k</span> <span class="o">/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">keys</span><span class="o">/</span><span class="n">data</span><span class="o">/</span><span class="n">folder</span>
+               <span class="o">-</span><span class="n">v</span> <span class="o">/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">model</span><span class="o">/</span><span class="n">version</span><span class="o">/</span><span class="n">file</span>
+               <span class="o">-</span><span class="n">l</span> <span class="o">/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">model</span><span class="o">/</span><span class="n">keys</span><span class="o">/</span><span class="n">lookup</span><span class="o">/</span><span class="n">service</span><span class="o">/</span><span class="n">package</span>
+               <span class="o">-</span><span class="n">p</span> <span class="o">/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">canonical</span><span class="o">/</span><span class="n">exposures</span><span class="o">/</span><span class="n">profile</span><span class="o">/</span><span class="n">JSON</span><span class="o">/</span><span class="n">file</span>
+               <span class="o">-</span><span class="n">e</span> <span class="o">/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">source</span><span class="o">/</span><span class="n">exposures</span><span class="o">/</span><span class="n">file</span>
+               <span class="o">-</span><span class="n">a</span> <span class="o">/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">source</span><span class="o">/</span><span class="n">exposures</span><span class="o">/</span><span class="n">validation</span><span class="o">/</span><span class="n">file</span>
+               <span class="o">-</span><span class="n">b</span> <span class="o">/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">source</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">canonical</span><span class="o">/</span><span class="n">exposures</span><span class="o">/</span><span class="n">transformation</span><span class="o">/</span><span class="n">file</span>
+               <span class="o">-</span><span class="n">c</span> <span class="o">/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">canonical</span><span class="o">/</span><span class="n">exposures</span><span class="o">/</span><span class="n">validation</span><span class="o">/</span><span class="n">file</span>
+               <span class="o">-</span><span class="n">d</span> <span class="o">/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">canonical</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">model</span><span class="o">/</span><span class="n">exposures</span><span class="o">/</span><span class="n">transformation</span><span class="o">/</span><span class="n">file</span>
+               <span class="o">-</span><span class="n">x</span> <span class="o">/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">xtrans</span><span class="o">/</span><span class="n">executable</span>
+               <span class="o">-</span><span class="n">j</span> <span class="o">/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">analysis</span><span class="o">/</span><span class="n">settings</span><span class="o">/</span><span class="n">json</span><span class="o">/</span><span class="n">file</span>
+               <span class="o">-</span><span class="n">s</span> <span class="o">&lt;</span><span class="n">ktools</span> <span class="n">script</span> <span class="n">name</span> <span class="p">(</span><span class="n">without</span> <span class="n">file</span> <span class="n">extension</span><span class="p">)</span><span class="o">&gt;</span>
+               <span class="o">-</span><span class="n">m</span> <span class="o">/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">model</span><span class="o">/</span><span class="n">data</span>
+               <span class="o">-</span><span class="n">r</span> <span class="o">/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">model</span><span class="o">/</span><span class="n">run</span><span class="o">/</span><span class="n">directory</span>
+               <span class="o">-</span><span class="n">n</span> <span class="o">&lt;</span><span class="n">number</span> <span class="n">of</span> <span class="n">ktools</span> <span class="n">calculation</span> <span class="n">processes</span> <span class="n">to</span> <span class="n">use</span><span class="o">&gt;</span>
 </pre></div>
 </div>
-<blockquote>
-<div><dl class="docutils">
-<dt>./run_model.py -k /path/to/keys/data/folder</dt>
-<dd>-v /path/to/model/version/file
--l /path/to/model/keys/lookup/service/package
--p /path/to/canonical/exposures/profile/JSON/file
--e /path/to/source/exposures/file
--a /path/to/source/exposures/validation/file
--b /path/to/source/to/canonical/exposures/transformation/file
--c /path/to/canonical/exposures/validation/file
--d /path/to/canonical/to/model/exposures/transformation/file
--x /path/to/xtrans/executable
--j /path/to/analysis/settings/json/file
--s &lt;ktools script name (without file extension)&gt;
--m /path/to/model/data
--r /path/to/model/run/directory
--n &lt;number of ktools calculation processes to use&gt;</dd>
-</dl>
-</div></blockquote>
 <p>When calling the script this way paths can be given relative to the
 script, in particular, file paths should include the filename and
 extension. The paths to the keys data, lookup service package, model
@@ -286,42 +262,38 @@ and the model keys server repository.</p>
 JSON configuration file and calling the script using the path to this
 file using the option <code class="docutils literal"><span class="pre">-f</span></code>. In this case the paths should be given
 relative to the parent folder in which the model keys server repository
-is located.:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="p">::</span>
+is located.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">./</span><span class="n">run_model</span><span class="o">.</span><span class="n">py</span> <span class="o">-</span><span class="n">f</span> <span class="o">/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">model</span><span class="o">/</span><span class="n">resources</span><span class="o">/</span><span class="n">JSON</span><span class="o">/</span><span class="n">config</span><span class="o">/</span><span class="n">file</span><span class="s1">&#39;</span>
 </pre></div>
 </div>
-<blockquote>
-<div>./run_model.py -f /path/to/model/resources/JSON/config/file’</div></blockquote>
-<p>The JSON file should contain the following keys (in no particular
-order):</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="p">::</span>
+<p>The JSON file should contain the following keys (in no particular order)</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="s2">&quot;keys_data_path&quot;</span>
+<span class="s2">&quot;model_version_file_path&quot;</span>
+<span class="s2">&quot;lookup_package_path&quot;</span>
+<span class="s2">&quot;canonical_exposures_profile_json_path&quot;</span>
+<span class="s2">&quot;source_exposures_file_path&quot;</span>
+<span class="s2">&quot;source_exposures_validation_file_path&quot;</span>
+<span class="s2">&quot;source_to_canonical_exposures_transformation_file_path&quot;</span>
+<span class="s2">&quot;canonical_exposures_validation_file_path&quot;</span>
+<span class="s2">&quot;canonical_to_model_exposures_transformation_file_path&quot;</span>
+<span class="s2">&quot;xtrans_path&quot;</span>
+<span class="s2">&quot;analysis_settings_json_file_path&quot;</span>
+<span class="s2">&quot;ktools_script_name&quot;</span>
+<span class="s2">&quot;model_data_path&quot;</span>
+<span class="s2">&quot;model_run_dir_path&quot;</span>
+<span class="s2">&quot;ktools_num_processes&quot;</span>
 </pre></div>
 </div>
-<blockquote>
-<div>“keys_data_path”
-“model_version_file_path”
-“lookup_package_path”
-“canonical_exposures_profile_json_path”
-“source_exposures_file_path”
-“source_exposures_validation_file_path”
-“source_to_canonical_exposures_transformation_file_path”
-“canonical_exposures_validation_file_path”
-“canonical_to_model_exposures_transformation_file_path”
-“xtrans_path”
-“analysis_settings_json_file_path”
-“ktools_script_name”
-“model_data_path”
-“model_run_dir_path”
-“ktools_num_processes”</div></blockquote>
 <p>and the values of the path-related keys should be string paths, given
 relative to the parent folder in which the model keys server repository
 is located. The JSON file is usually placed in the model keys server
 repository.</p>
-<p><strong>NOTE</strong>: As the JSON configuration files for
-<code class="docutils literal"><span class="pre">generate_oasis_files.py</span></code> and <code class="docutils literal"><span class="pre">generate_loss_outputs.py</span></code> defines a
-subset of the resources required for <code class="docutils literal"><span class="pre">run_model.py</span></code> you can use the
-<code class="docutils literal"><span class="pre">run_model.py</span></code> configuration file to also run
-<code class="docutils literal"><span class="pre">generate_oasis_files.py</span></code>.</p>
+<p><strong>NOTE</strong>: As the JSON script configuration files for
+<code class="docutils literal"><span class="pre">generate_oasis_files.py</span></code> and <code class="docutils literal"><span class="pre">generate_loss_outputs.py</span></code> define a
+subset of the resources required for the master script <code class="docutils literal"><span class="pre">run_model.py</span></code>
+you can use the master script configuration file to independently run
+<code class="docutils literal"><span class="pre">generate_oasis_files.py</span></code> and <code class="docutils literal"><span class="pre">generate_loss_outputs.py</span></code>, and vice
+versa.</p>
 </div>
 </div>
 
@@ -348,7 +320,7 @@ subset of the resources required for <code class="docutils literal"><span class=
 <li class="toctree-l1"><a class="reference internal" href="requirements.html">Requirements</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Building and running models</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#generating-keys-outputs">Generating keys outputs</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#generating-oasis-files">Generating Oasis Files</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#generating-oasis-files">Generating Oasis files</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#generating-loss-outputs">Generating loss outputs</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#running-a-model-end-to-end">Running a model end-to-end</a></li>
 </ul>

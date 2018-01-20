@@ -2,7 +2,9 @@
 # -*- coding: utf-8 -*-
 
 """
-`run_keys_lookup.py` is an executable script that can generate keys records and Oasis files keys for a model, given the following arguments (in no particular order)::
+`run_keys_lookup.py` is an executable script that can generate keys records and
+Oasis files keys for a model, given the following arguments (in no particular
+order)::
 
     ./run_keys_lookup.py -k /path/to/keys/data
                          -v /path/to/model/version/csv/file
@@ -11,9 +13,18 @@
                          -o /path/to/output/file
                          -f <output format - `oasis_keys` or `list_keys`>
 
-When calling the script this way paths can be given relative to the script, in particular, file paths should include the filename and extension. The paths to the keys data, lookup service package, and model version file will usually be located in the model keys server (Git) repository, which would also contain the lookup service source code for the model (lookup service package. The lookup service package is usually located in the `src/keys_server` Python subpackage in the model keys serer repository (if it is managed by Oasis LMF).
+When calling the script this way paths can be given relative to the script, in
+particular, file paths should include the filename and extension. The paths to
+the keys data, lookup service package, and model version file will usually be
+located in the model keys server (Git) repository, which would also contain the
+lookup service source code for the model (lookup service package. The lookup
+service package is usually located in the `src/keys_server` Python subpackage
+in the model keys serer repository (if it is managed by Oasis LMF).
 
-It is also possible to run the script by defining these arguments in a JSON configuration file and calling the script using the path to this file using the option `-f`. In this case the paths should be given relative to the parent folder in which the model keys server repository is located.::
+It is also possible to run the script by defining these arguments in a JSON
+configuration file and calling the script using the path to this file using the
+option `-f`. In this case the paths should be given relative to the parent
+folder in which the model keys server repository is located.::
 
     ./run_keys_lookup.py -f /path/to/keys/script/config/file
 
@@ -26,7 +37,9 @@ The JSON file should contain the following keys (in no particular order)::
     "output_file_path"
     "output_format"
 
-and the values of these keys should be string paths, given relative to the parent folder in which the model keys server repository is located. The JSON file is usually placed in the model keys server repository.
+and the values of these keys should be string paths, given relative to the
+parent folder in which the model keys server repository is located. The JSON
+file is usually placed in the model keys server repository.
 """
 
 import argparse
@@ -47,49 +60,49 @@ __copyright__ = "2017, Oasis Loss Modelling Framework"
 
 SCRIPT_ARGS_METADICT = {
     'config_file_path': {
-        'arg_name': 'config_file_path',
+        'name': 'config_file_path',
         'flag': 'f',
         'type': str,
         'help_text': 'Model config path',
         'required': False
     },
     'keys_data_path': {
-        'arg_name': 'keys_data_path',
+        'name': 'keys_data_path',
         'flag': 'k',
         'type': str,
         'help_text': 'Keys data folder path',
         'required': False
     },
     'model_exposures_file_path': {
-        'arg_name': 'model_exposures_file_path',
+        'name': 'model_exposures_file_path',
         'flag': 'e',
         'type': str,
         'help_text': 'Model exposures file path',
         'required': False
     },
     'output_format': {
-        'arg_name': 'output_format',
+        'name': 'output_format',
         'flag': 't',
         'type': str,
         'help_text': 'Keys records file output format: choices are `oasis_keys` and `list_keys`',
         'required': False
     },
     'lookup_package_path': {
-        'arg_name': 'lookup_package_path',
+        'name': 'lookup_package_path',
         'flag': 'l',
         'type': str,
         'help_text': 'Path of the lookup service package - in the supplier repository this is usually the `src/keys_server` folder',
         'required': False
     },
     'output_file_path': {
-        'arg_name': 'output_file_path',
+        'name': 'output_file_path',
         'flag': 'o',
         'type': str,
         'help_text': 'Keys records output file path',
         'required': False
     },
     'model_version_file_path': {
-        'arg_name': 'model_version_file_path',
+        'name': 'model_version_file_path',
         'flag': 'v',
         'type': str,
         'help_text': 'Model version file path',

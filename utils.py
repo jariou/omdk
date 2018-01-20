@@ -55,15 +55,36 @@ def parse_script_args(script_args_metadict, desc=None):
     di = script_args_metadict
 
     try:
+        non_bools = filter(lambda arg: di[arg]['type'] != bool, di)
         map(
-            lambda res: parser.add_argument(
-                '-{}'.format(di[res]['flag']),
-                '--{}'.format(di[res]['arg_name']),
-                type=di[res]['type'],
-                required=di[res]['required'],
-                help=di[res]['help_text']
+            lambda arg: parser.add_argument(
+                '--{}'.format(di[arg]['name']),
+                '-{}'.format(di[arg]['flag']),
+                type=di[arg]['type'],
+                required=di[arg]['required'],
+                help=di[arg]['help_text']
             ),
-            di
+            non_bools
+        )
+
+        bools = filter(lambda arg: arg not in non_bools, di)
+        map(
+            lambda arg: (
+                parser.add_argument(
+                    '--{}'.format(di[arg]['name']),
+                    dest=di[arg]['dest'],
+                    action='store_true',
+                    default=(True if di[arg]['default'] else False),
+                    help=di[arg]['help_text']
+                ),
+                parser.add_argument(
+                    '--no-{}'.format(di[arg]['name']),
+                    dest=di[arg]['dest'],
+                    action='store_false',
+                    help=di[arg]['help_text']
+                ),
+            ),
+            bools
         )
 
         args = vars(parser.parse_args())

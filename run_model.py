@@ -2,7 +2,11 @@
 # -*- coding: utf-8 -*-
 
 """
-`run_model.py` is an executable script that can run models end-to-end, i.e. generate ktools outputs from model resources, including keys data, model data, analysis settings etc., given the following arguments (in no particular order)::
+`run_model.py` is an executable script that can run models end-to-end, i.e.
+generate loss outputs given model resources, including keys data, canonical
+exposure profiles, exposure transformation and validation files, model data,
+analysis settings etc., given the following arguments (in no particular
+order)::
 
     ./run_model.py -k /path/to/keys/data/folder
                    -v /path/to/model/version/file
@@ -20,9 +24,19 @@
                    -r /path/to/model/run/directory
                    -n <number of ktools calculation processes to use>
 
-When calling the script this way paths can be given relative to the script, in particular, file paths should include the filename and extension. The paths to the keys data, lookup service package, model version file, canonical exposures profile JSON, source exposures file, transformation and validation files, and analysis settings JSON file, will usually be located in the model keys server repository. The ktools script name should not contain any filename extension, and the model run directory can be placed anywhere in the parent folder common to `omdk` and the model keys server repository.
+When calling the script this way paths can be given relative to the script, in
+particular, file paths should include the filename and extension. The paths to
+the keys data, lookup service package, model version file, canonical exposures
+profile JSON, source exposures file, transformation and validation files, and
+analysis settings JSON file, will usually be located in the model keys server
+repository. The ktools script name should not contain any filename extension,
+and the model run directory can be placed anywhere in the parent folder common
+to `omdk` and the model keys server repository.
 
-It is also possible to run the script by defining these arguments in a JSON configuration file and calling the script using the path to this file using the option `-f`. In this case the paths should be given relative to the parent folder in which the model keys server repository is located.::
+It is also possible to run the script by defining these arguments in a JSON
+configuration file and calling the script using the path to this file using the
+option `-f`. In this case the paths should be given relative to the parent
+folder in which the model keys server repository is located.::
 
     ./run_model.py -f /path/to/model/resources/JSON/config/file'
 
@@ -44,9 +58,15 @@ The JSON file should contain the following keys (in no particular order)::
     "model_run_dir_path"
     "ktools_num_processes"
 
-and the values of the path-related keys should be string paths, given relative to the parent folder in which the model keys server repository is located. The JSON file is usually placed in the model keys server repository.
+and the values of the path-related keys should be string paths, given relative
+to the parent folder in which the model keys server repository is located. The
+JSON file is usually placed in the model keys server repository.
 
-**NOTE**:  As the JSON configuration files for `generate_oasis_files.py` and `generate_loss_outputs.py` defines a subset of the resources required for `run_model.py` you can use the `run_model.py` configuration file to also run `generate_oasis_files.py`.
+**NOTE**:  As the JSON script configuration files for `generate_oasis_files.py`
+and `generate_loss_outputs.py` define a subset of the resources required for
+the master script `run_model.py` you can use the master script configuration
+file to independently run `generate_oasis_files.py` and
+`generate_loss_outputs.py`, and vice versa.
 """
 
 import argparse
@@ -73,112 +93,112 @@ __copyright__ = "2017, Oasis Loss Modelling Framework"
 
 SCRIPT_ARGS_METADICT = {
     'config_file_path': {
-        'arg_name': 'config_file_path',
+        'name': 'config_file_path',
         'flag': 'f',
         'type': str,
         'help_text': 'Path for script config for model',
         'required': False
     },
     'model_data_path': {
-        'arg_name': 'model_data_path',
+        'name': 'model_data_path',
         'flag': 'm',
         'type': str,
         'help_text': 'Model data folder',
         'required': False
     },    
     'keys_data_path': {
-        'arg_name': 'keys_data_path',
+        'name': 'keys_data_path',
         'flag': 'k',
         'type': str,
         'help_text': 'Keys data path for model keys lookup service',
         'required': False
     },
     'model_version_file_path': {
-        'arg_name': 'model_version_file_path',
+        'name': 'model_version_file_path',
         'flag': 'v',
         'type': str,
         'help_text': 'Model version file path',
         'required': False
     },
     'lookup_package_path': {
-        'arg_name': 'lookup_package_path',
+        'name': 'lookup_package_path',
         'flag': 'l',
         'type': str,
         'help_text': 'Package path for model keys lookup service - usually in the `src/keys_server` folder of the relevant supplier repository',
         'required': False
     },
     'canonical_exposures_profile_json_path': {
-        'arg_name': 'canonical_exposures_profile_json_path',
+        'name': 'canonical_exposures_profile_json_path',
         'flag': 'p',
         'type': str,
         'help_text': 'Path of the supplier canonical exposures profile JSON file',
         'required': False
     },
     'source_exposures_file_path': {
-        'arg_name': 'source_exposures_file_path',
+        'name': 'source_exposures_file_path',
         'flag': 'e',
         'type': str,
         'help_text': 'Source exposures file path',
         'required': False
     },
     'source_exposures_validation_file_path': {
-        'arg_name': 'source_exposures_validation_file_path',
+        'name': 'source_exposures_validation_file_path',
         'flag': 'a',
         'type': str,
         'help_text': 'Source exposures validation file (XSD) path',
         'required': False
     },
     'source_to_canonical_exposures_transformation_file_path': {
-        'arg_name': 'source_to_canonical_exposures_transformation_file_path',
+        'name': 'source_to_canonical_exposures_transformation_file_path',
         'flag': 'b',
         'type': str,
         'help_text': 'Source -> canonical exposures transformation file (XSLT) path',
         'required': False
     },
     'canonical_exposures_validation_file_path': {
-        'arg_name': 'canonical_exposures_validation_file_path',
+        'name': 'canonical_exposures_validation_file_path',
         'flag': 'c',
         'type': str,
         'help_text': 'Canonical exposures validation file (XSD) path',
         'required': False
     },
     'canonical_to_model_exposures_transformation_file_path': {
-        'arg_name': 'canonical_to_model_exposures_transformation_file_path',
+        'name': 'canonical_to_model_exposures_transformation_file_path',
         'flag': 'd',
         'type': str,
         'help_text': 'Canonical -> model exposures transformation file (XSLT) path',
         'required': False
     },
     'xtrans_path': {
-        'arg_name': 'xtrans_path',
+        'name': 'xtrans_path',
         'flag': 'x',
         'type': str,
         'help_text': 'Path of the xtrans executable which performs the source -> canonical and canonical -> model exposures transformations',
         'required': False
     },
     'analysis_settings_json_file_path': {
-        'arg_name': 'analysis_settings_json_file_path',
+        'name': 'analysis_settings_json_file_path',
         'flag': 'j',
         'type': str,
         'help_text': 'Model analysis settings JSON file path',
         'required': False
     },
     'ktools_script_name': {
-        'arg_name': 'ktools_script_name',
+        'name': 'ktools_script_name',
         'flag': 's',
         'type': str,
         'help_text': 'Name of ktools model run script',
         'required': False
     },
     'model_run_dir_path': {
-        'arg_name': 'model_run_dir_path',
+        'name': 'model_run_dir_path',
         'flag': 'r',
         'type': str,
         'help_text': 'Model run directory path',
         'required': False
     },
     'ktools_num_processes': {
-        'arg_name': 'ktools_num_processes',
+        'name': 'ktools_num_processes',
         'flag': 'n',
         'type': str,
         'help_text': 'Number of ktools calculation processes/streams to use',
@@ -275,6 +295,7 @@ if __name__ == '__main__':
             " -n {}"
             " -r {}"
             " -s {}"
+            " --no-execute"
         ).format(
             args['analysis_settings_json_file_path'],
             args['ktools_num_processes'],
@@ -283,24 +304,24 @@ if __name__ == '__main__':
         )
 
         try:
-            logger.info('Calling script `kparse.py` - to generate model run ktools script')
+            logger.info('Calling script `generate_loss_outputs.py` to generate model ktools loss outputs script')
             subprocess.check_call(cmd_str, stderr=subprocess.STDOUT, shell=True)
         except subprocess.CalledProcessError as e:
-            raise OasisException("Error generating ktools script: {}".format(str(e)))
+            raise OasisException("Error generating ktools loss outputs script: {}".format(str(e)))
 
         os.chdir(args['model_run_dir_path'])
         cmd_str = "bash {}.sh".format(args['ktools_script_name'])
         try:
             ktools_script_path = '{}.sh'.format(os.path.join(args['model_run_dir_path'], args['ktools_script_name']))
-            logger.info('Running model run ktools script {}'.format(ktools_script_path))
+            logger.info('Running model ktools loss outputs script {}'.format(ktools_script_path))
             subprocess.check_call(cmd_str, stderr=subprocess.STDOUT, shell=True)
         except subprocess.CalledProcessError as e:
-            raise OasisException("Error running ktools script: {}".format(str(e)))
+            raise OasisException("Error running ktools loss outputs script: {}".format(str(e)))
     except OasisException as e:
         logger.error(str(e))
         sys.exit(-1)
 
     outputs_dir = os.path.join(args['model_run_dir_path'], 'output')
-    logger.info('Ktools output files generated in {}'.format(outputs_dir))
+    logger.info('Model loss outputs generated in {}'.format(outputs_dir))
 
     sys.exit(0)

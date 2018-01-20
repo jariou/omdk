@@ -3,7 +3,8 @@
 
 """
 
-`generate_oasis_files.py` is an executable script that can generate Oasis files for a model, given the following arguments (in no particular order)::
+`generate_oasis_files.py` is an executable script that can generate Oasis files
+for a model, given the following arguments (in no particular order)::
 
     ./generate_oasis_files.py -k /path/to/keys/data
                               -v /path/to/model/version/csv/file
@@ -17,9 +18,16 @@
                               -x /path/to/xtrans/executable
                               -o /path/to/oasis/files/directory
 
-When calling the script this way paths can be given relative to the script, in particular, file paths should include the filename and extension. The paths to the keys data, lookup service package, model version file, canonical exposures profile JSON, source exposures file, transformation and validation files, will usually be located in the model keys server repository.
+When calling the script this way paths can be given relative to the script, in
+particular, file paths should include the filename and extension. The paths to
+the keys data, lookup service package, model version file, canonical exposures
+profile JSON, source exposures file, transformation and validation files, will
+usually be located in the model keys server repository.
 
-It is also possible to run the script by defining these arguments in a JSON configuration file and calling the script using the path to this file using the option `-f`. In this case the paths should be given relative to the parent folder in which the model keys server repository is located.::
+It is also possible to run the script by defining these arguments in a JSON
+configuration file and calling the script using the path to this file using the
+option `-f`. In this case the paths should be given relative to the parent
+folder in which the model keys server repository is located.::
 
     ./generate_oasis_files.py -f /path/to/model/resources/JSON/config/file
 
@@ -37,7 +45,9 @@ The JSON file contain the following keys (in no particular order)::
     "xtrans_path"
     "oasis_files_path"
 
-and the values of these keys should be string paths, given relative to the parent folder in which the model keys server repository is located. The JSON file is usually placed in the model keys server repository.
+and the values of these keys should be string paths, given relative to the
+parent folder in which the model keys server repository is located. The JSON
+file is usually placed in the model keys server repository.
 """
 
 import argparse
@@ -63,84 +73,84 @@ __copyright__ = "2017, Oasis Loss Modelling Framework"
 
 SCRIPT_ARGS_METADICT = {
     'config_file_path': {
-        'arg_name': 'config_file_path',
+        'name': 'config_file_path',
         'flag': 'f',
         'type': str,
         'help_text': 'Model config path',
         'required': False
     },
     'keys_data_path': {
-        'arg_name': 'keys_data_path',
+        'name': 'keys_data_path',
         'flag': 'k',
         'type': str,
         'help_text': 'Keys data folder path for model keys lookup service',
         'required': False
     },
     'model_version_file_path': {
-        'arg_name': 'model_version_file_path',
+        'name': 'model_version_file_path',
         'flag': 'v',
         'type': str,
         'help_text': 'Model version file path',
         'required': False
     },
     'lookup_package_path': {
-        'arg_name': 'lookup_package_path',
+        'name': 'lookup_package_path',
         'flag': 'l',
         'type': str,
         'help_text': 'Package path for model keys lookup service - usually in the `src/keys_server` folder of the relevant supplier repository',
         'required': False
     },
     'canonical_exposures_profile_json_path': {
-        'arg_name': 'canonical_exposures_profile_json_path',
+        'name': 'canonical_exposures_profile_json_path',
         'flag': 'p',
         'type': str,
         'help_text': 'Path of the supplier canonical exposures profile JSON file',
         'required': False
     },
     'source_exposures_file_path': {
-        'arg_name': 'source_exposures_file_path',
+        'name': 'source_exposures_file_path',
         'flag': 'e',
         'type': str,
         'help_text': 'Source exposures file path',
         'required': False
     },
     'source_exposures_validation_file_path': {
-        'arg_name': 'source_exposures_validation_file_path',
+        'name': 'source_exposures_validation_file_path',
         'flag': 'a',
         'type': str,
         'help_text': 'Source exposures validation file (XSD) path',
         'required': False
     },
     'source_to_canonical_exposures_transformation_file_path': {
-        'arg_name': 'source_to_canonical_exposures_transformation_file_path',
+        'name': 'source_to_canonical_exposures_transformation_file_path',
         'flag': 'b',
         'type': str,
         'help_text': 'Source -> canonical exposures transformation file (XSLT) path',
         'required': False
     },
     'canonical_exposures_validation_file_path': {
-        'arg_name': 'canonical_exposures_validation_file_path',
+        'name': 'canonical_exposures_validation_file_path',
         'flag': 'c',
         'type': str,
         'help_text': 'Canonical exposures validation file (XSD) path',
         'required': False
     },
     'canonical_to_model_exposures_transformation_file_path': {
-        'arg_name': 'canonical_to_model_exposures_transformation_file_path',
+        'name': 'canonical_to_model_exposures_transformation_file_path',
         'flag': 'd',
         'type': str,
         'help_text': 'Canonical -> model exposures transformation file (XSLT) path',
         'required': False
     },
     'xtrans_path': {
-        'arg_name': 'xtrans_path',
+        'name': 'xtrans_path',
         'flag': 'x',
         'type': str,
         'help_text': 'Path of the xtrans executable which performs the source -> canonical and canonical -> model exposures transformations',
         'required': False
     },
     'oasis_files_path': {
-        'arg_name': 'oasis_files_path',
+        'name': 'oasis_files_path',
         'flag': 'o',
         'type': str,
         'help_text': 'Directory to place generated Oasis files for the model',

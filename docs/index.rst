@@ -26,8 +26,6 @@ process. These tools include:
    script that can perform all these steps to run the model end-to-end
    (``run_model.py``).
 
-The package documentation can be found at https://oasislmf.github.io/omdk/.
-
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
