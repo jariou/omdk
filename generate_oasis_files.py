@@ -2,47 +2,28 @@
 # -*- coding: utf-8 -*-
 
 """
-Executable script for generating Oasis files for a given model. Requires
-that the necessary model meta information, such as the model version file,
-and resources required to create its keys lookup service, such as the
-path to the keys data folder and the lookup service source package, exist
-on the local filesystem, as well as the canonical exposures profile JSON
-file for the supplier/model, the ``xtrans.exe`` CSV conversion/ transformation
-tool for exposures files, the necessary validation and transformation files,
-and the source exposures file.
 
-In order to run this script you should recursively clone the MDK repository
+`generate_oasis_files.py` is an executable script that can generate Oasis files for a model, given the following arguments (in no particular order)::
 
-    https://github.com/OasisLMF/omdk
+    ./generate_oasis_files.py -k /path/to/keys/data
+                              -v /path/to/model/version/csv/file
+                              -l /path/to/lookup/service/package
+                              -p /path/to/canonical/exposures/profile/JSON/file
+                              -e /path/to/source/exposures/file
+                              -a /path/to/source/exposures/validation/file
+                              -b /path/to/source/to/canonical/exposures/transformation/file
+                              -c /path/to/canonical/exposures/validation/file
+                              -d /path/to/canonical/to/model/exposures/transformation/file
+                              -x /path/to/xtrans/executable
+                              -o /path/to/oasis/files/directory
 
-and the model keys server repository at the top level of the same parent
-folder.::
+When calling the script this way paths can be given relative to the script, in particular, file paths should include the filename and extension. The paths to the keys data, lookup service package, model version file, canonical exposures profile JSON, source exposures file, transformation and validation files, will usually be located in the model keys server repository.
 
-    <parent folder>
-    |__omdk/
-    |__<model repo>/
+It is also possible to run the script by defining these arguments in a JSON configuration file and calling the script using the path to this file using the option `-f`. In this case the paths should be given relative to the parent folder in which the model keys server repository is located.::
 
-The script can be executed in two ways: (1) directly by providing all the
-resources in the script call using the following syntax::
+    ./generate_oasis_files.py -f /path/to/model/resources/JSON/config/file
 
-    ./generate_oasis_files.py -k '/path/to/keys/data/folder'
-                              -v '/path/to/model/version/file'
-                              -l '/path/to/model/keys/lookup/service/package'
-                              -p '/path/to/canonical/exposures/profile/JSON/file'
-                              -e '/path/to/source/exposures/file'
-                              -a '/path/to/source/exposures/validation/file'
-                              -b '/path/to/source/to/canonical/exposures/transformation/file'
-                              -c '/path/to/canonical/exposures/validation/file'
-                              -d '/path/to/canonical/to/model/exposures/transformation/file'
-                              -x '/path/to/xtrans/executable'
-                              -o '/path/to/oasis/files/directory'
-
-or by providing the path to a JSON script config file which defines all
-the script resources - the syntax for the latter option is::
-
-    ./generate_oasis_files.py -f '/path/to/model/resources/JSON/config/file'
-
-and the keys of the JSON config file should be named as follows::
+The JSON file contain the following keys (in no particular order)::
 
     "keys_data_path"
     "model_version_file_path"
@@ -56,22 +37,7 @@ and the keys of the JSON config file should be named as follows::
     "xtrans_path"
     "oasis_files_path"
 
-The paths for keys data, model version file, lookup service package,
-canonical profile JSON, source exposures file, transformation and
-validation files, and analysis settings JSON, should all exist in the
-model repository and must be given relative to its common parent folder.
-e.g.::
-
-    "keys_data_path": <model repo>/keys_data/<model ID>/
-
-The `xtrans.exe` transformation tool lies in the MDK repository and its
-path is preset in the config file::
-
-    "xtrans_path": "omdk/xtrans/test/xtrans.exe"
-
-The paths to the Oasis files and the model run directory (where the ktools
-script will be executed) can lie anywhere inside the common parent folder,
-and must be given relative to that folder.
+and the values of these keys should be string paths, given relative to the parent folder in which the model keys server repository is located. The JSON file is usually placed in the model keys server repository.
 """
 
 import argparse

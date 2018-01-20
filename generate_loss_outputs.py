@@ -2,7 +2,40 @@
 # -*- coding: utf-8 -*-
 
 """
-Executable script to generate ktools model run scripts for given models.
+`generate_loss_outputs.py` is an executable script that, given a model analysis settings JSON file, model data and some other parameters, can generate a (Bash) shell script which can be used to generate loss outputs for the model using the installed ktools framework, given the following arguments (in no particular order)::
+
+    ./generate_loss_outputs.py -j /path/to/analysis/settings/json/file
+                               -s <ktools script name (without file extension)>
+                               -m /path/to/model/data
+                               -r /path/to/model/run/directory
+                               -n <number of ktools calculation processes to use>
+
+When calling the script this way paths can be given relative to the script, in particular, file paths should include the filename and extension. The ktools script name should not contain any filename extension, and the model run directory can be placed anywhere in the parent folder common to `omdk` and the model keys server repository.
+
+It is also possible to run the script by defining these arguments in a JSON configuration file and calling the script using the path to this file using the option `-f`. In this case the paths should be given relative to the parent folder in which the model keys server repository is located.::
+
+    ./generate_loss_outputs.py -f /path/to/model/resources/JSON/config/file'
+
+The JSON file should contain the following keys (in no particular order)::
+
+    "analysis_settings_json_file_path"
+    "ktools_script_name"
+    "model_data_path"
+    "model_run_dir_path"
+    "ktools_num_processes"
+
+and the values of the path-related keys should be string paths, given relative to the parent folder in which the model keys server repository is located. The JSON file is usually placed in the model keys server repository.
+
+**Note**: The output of `generate_loss_outputs.py` is an executable Bash shell script, containing ktools commands for generating loss outputs for the givem model and placed in the model run directory. You will have to execute the shell script in the model run directory in order to see the outputs. The model run directory must contain the analysis settings JSON file and either the actual model data or at least symlinked model data files (in the `static` subfolder). It must have the following structure::
+
+    ├── analysis_settings.json
+    ├── fifo/
+    ├── input/
+    ├── output/
+    ├── static/
+    └── work/
+
+The outputs are written in the `output` subfolder, and the model data should either be placed directly in the `static` subfolder or the actual folder should be symlinked to the `static` subfolder.
 """
 
 import argparse

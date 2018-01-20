@@ -42,7 +42,26 @@
             
   <div class="section" id="oasis-model-development-kit-omdk">
 <h1>Oasis Model Development Kit (OMDK)<a class="headerlink" href="#oasis-model-development-kit-omdk" title="Permalink to this headline">¶</a></h1>
-<p>OMDK provides a Python framework and utilities for building, developing, running and testing Oasis models.</p>
+<p>The repository provides a variety of Python tools to build, test and run
+models end-to-end, including performing individual steps in this
+process. These tools include:</p>
+<ul class="simple">
+<li>a Python class framework for working with Oasis models and model
+resources as Python objects (the <code class="docutils literal"><span class="pre">models</span></code> subpackage)</li>
+<li>a Python class framework for managing model exposures and resources,
+and also for generating Oasis files from these (the <code class="docutils literal"><span class="pre">exposures</span></code>
+subpackage)</li>
+<li>a Python factory class for instantiating keys lookup services for
+models, and generating and saving keys outputs from these lookup
+services</li>
+<li>executable scripts, based on these class frameworks, for writing keys
+outputs from model lookup services (<code class="docutils literal"><span class="pre">run_keys_lookup.py</span></code>),
+generating Oasis files from model source exposures and other
+resources (<code class="docutils literal"><span class="pre">generate_oasis_files.py</span></code>), and generating loss outputs
+for models (<code class="docutils literal"><span class="pre">generate_loss_outputs.py</span></code>). This includes a “master”
+script that can perform all these steps to run the model end-to-end
+(<code class="docutils literal"><span class="pre">run_model.py</span></code>).</li>
+</ul>
 <p>The package documentation can be found at <a class="reference external" href="https://oasislmf.github.io/omdk/">https://oasislmf.github.io/omdk/</a>.</p>
 <div class="toctree-wrapper compound">
 <p class="caption"><span class="caption-text">Contents:</span></p>
@@ -56,16 +75,28 @@
 <li class="toctree-l2"><a class="reference internal" href="sphinx.html#building-and-publishing">Building and publishing</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="first-steps.html">First Steps</a></li>
-<li class="toctree-l1"><a class="reference internal" href="generating-oasis-files.html">Generating Oasis Files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="requirements.html">Requirements</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="requirements.html#xtrans">xtrans</a></li>
+<li class="toctree-l2"><a class="reference internal" href="requirements.html#ktools">ktools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="requirements.html#other-requirements">Other requirements</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="building-and-running-models.html">Building and running models</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="building-and-running-models.html#generating-keys-outputs">Generating keys outputs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="building-and-running-models.html#generating-oasis-files">Generating Oasis Files</a></li>
+<li class="toctree-l2"><a class="reference internal" href="building-and-running-models.html#generating-loss-outputs">Generating loss outputs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="building-and-running-models.html#running-a-model-end-to-end">Running a model end-to-end</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="modules.html">Module Documentation</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="modules.html#module-models.OasisModel"><code class="docutils literal"><span class="pre">omdk.models.OasisModel</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="modules.html#module-exposures.OasisExposuresManagerInterface"><code class="docutils literal"><span class="pre">omdk.exposures.OasisExposuresManagerInterface</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="modules.html#module-exposures.OasisExposuresManager"><code class="docutils literal"><span class="pre">omdk.exposures.OasisExposuresManager</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="modules.html#module-exposures.OasisFilesPipeline"><code class="docutils literal"><span class="pre">omdk.exposures.OasisFilesPipeline</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="modules.html#module-keys.OasisKeysLookupFactory"><code class="docutils literal"><span class="pre">omdk.keys.OasisKeysLookupFactory</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules.html#module-run_keys_lookup"><code class="docutils literal"><span class="pre">omdk.run_keys_lookup</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="modules.html#module-generate_oasis_files"><code class="docutils literal"><span class="pre">omdk.generate_oasis_files</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="modules.html#module-kparse"><code class="docutils literal"><span class="pre">omdk.kparse</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules.html#module-generate_loss_outputs"><code class="docutils literal"><span class="pre">omdk.generate_loss_outputs</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="modules.html#module-run_model"><code class="docutils literal"><span class="pre">omdk.run_model</span></code></a></li>
 </ul>
 </li>
@@ -101,8 +132,8 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="repository-management.html">Repository Management</a></li>
 <li class="toctree-l1"><a class="reference internal" href="sphinx.html">Sphinx Docs</a></li>
-<li class="toctree-l1"><a class="reference internal" href="first-steps.html">First Steps</a></li>
-<li class="toctree-l1"><a class="reference internal" href="generating-oasis-files.html">Generating Oasis Files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="requirements.html">Requirements</a></li>
+<li class="toctree-l1"><a class="reference internal" href="building-and-running-models.html">Building and running models</a></li>
 <li class="toctree-l1"><a class="reference internal" href="modules.html">Module Documentation</a></li>
 </ul>
 

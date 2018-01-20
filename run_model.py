@@ -2,37 +2,31 @@
 # -*- coding: utf-8 -*-
 
 """
-Master script for end-to-end model run.
+`run_model.py` is an executable script that can run models end-to-end, i.e. generate ktools outputs from model resources, including keys data, model data, analysis settings etc., given the following arguments (in no particular order)::
 
-Ensure that a model run directory exists, containing the analysis settings JSON
-file and also the model static data (in a subfolder named 'static'). Also ensure
-that you have the ktools binaries installed on your system.
+    ./run_model.py -k /path/to/keys/data/folder
+                   -v /path/to/model/version/file
+                   -l /path/to/model/keys/lookup/service/package
+                   -p /path/to/canonical/exposures/profile/JSON/file
+                   -e /path/to/source/exposures/file
+                   -a /path/to/source/exposures/validation/file
+                   -b /path/to/source/to/canonical/exposures/transformation/file
+                   -c /path/to/canonical/exposures/validation/file
+                   -d /path/to/canonical/to/model/exposures/transformation/file
+                   -x /path/to/xtrans/executable
+                   -j /path/to/analysis/settings/json/file
+                   -s <ktools script name (without file extension)>
+                   -m /path/to/model/data
+                   -r /path/to/model/run/directory
+                   -n <number of ktools calculation processes to use>
 
-The script can then be executed in two ways: (1) directly by providing all the
-resources in the script call using the following syntax::
+When calling the script this way paths can be given relative to the script, in particular, file paths should include the filename and extension. The paths to the keys data, lookup service package, model version file, canonical exposures profile JSON, source exposures file, transformation and validation files, and analysis settings JSON file, will usually be located in the model keys server repository. The ktools script name should not contain any filename extension, and the model run directory can be placed anywhere in the parent folder common to `omdk` and the model keys server repository.
 
-    ./run_model.py -k '/path/to/keys/data/folder'
-                   -v '/path/to/model/version/file'
-                   -l '/path/to/model/keys/lookup/service/package'
-                   -p '/path/to/canonical/exposures/profile/JSON/file'
-                   -e '/path/to/source/exposures/file'
-                   -a '/path/to/source/exposures/validation/file'
-                   -b '/path/to/source/to/canonical/exposures/transformation/file'
-                   -c '/path/to/canonical/exposures/validation/file'
-                   -d '/path/to/canonical/to/model/exposures/transformation/file'
-                   -x '/path/to/xtrans/executable'
-                   -o '/path/to/oasis/files/directory'
-                   -j '/path/to/analysis/settings/json/file'
-                   -s '<ktools script name (without file extension)>'
-                   -r '/path/to/model/run/directory'
-                   -n '<number of processes to use for ktools calcs.>'
+It is also possible to run the script by defining these arguments in a JSON configuration file and calling the script using the path to this file using the option `-f`. In this case the paths should be given relative to the parent folder in which the model keys server repository is located.::
 
-or by providing the path to a JSON script config file which defines all
-the script resources - the syntax for the latter option is::
+    ./run_model.py -f /path/to/model/resources/JSON/config/file'
 
-    ./run_model.py -f '/path/to/model/resources/JSON/config/file'
-
-and the keys of the JSON config file should be named as follows::
+The JSON file should contain the following keys (in no particular order)::
 
     "keys_data_path"
     "model_version_file_path"
@@ -44,16 +38,15 @@ and the keys of the JSON config file should be named as follows::
     "canonical_exposures_validation_file_path"
     "canonical_to_model_exposures_transformation_file_path"
     "xtrans_path"
-    "oasis_files_path"
     "analysis_settings_json_file_path"
     "ktools_script_name"
+    "model_data_path"
     "model_run_dir_path"
     "ktools_num_processes"
 
-The file and folder paths can be relative to the path of the script. If you've cloned
-the OMDK repository then script configs for models can be placed in the ``model_run_config``
-subfolder, and the canonical exposures profiles can be placed in the
-``canonical_exposures_profiles`` subfolder.
+and the values of the path-related keys should be string paths, given relative to the parent folder in which the model keys server repository is located. The JSON file is usually placed in the model keys server repository.
+
+**NOTE**:  As the JSON configuration files for `generate_oasis_files.py` and `generate_loss_outputs.py` defines a subset of the resources required for `run_model.py` you can use the `run_model.py` configuration file to also run `generate_oasis_files.py`.
 """
 
 import argparse
@@ -277,7 +270,7 @@ if __name__ == '__main__':
         prepare_model_run_inputs(analysis_settings, args['model_run_dir_path'], args['model_data_path'])
 
         cmd_str = (
-            "python kparse.py"
+            "python generate_loss_outputs.py"
             " -j {}"
             " -n {}"
             " -r {}"
