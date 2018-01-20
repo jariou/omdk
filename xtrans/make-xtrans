@@ -1,0 +1,22 @@
+#!/bin/bash
+
+SOURCE="${BASH_SOURCE[0]}"
+while [ -h "$SOURCE" ]; do # resolve $SOURCE until the file is no longer a symlink
+  DIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
+  SOURCE="$(readlink "$SOURCE")"
+  [[ $SOURCE != /* ]] && SOURCE="$DIR/$SOURCE" # if $SOURCE was a relative symlink, we need to resolve it relative to the path where the symlink file was located
+done
+DIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
+
+cd "$DIR"
+
+sleep 0.2 
+
+rm -f xtrans.exe
+
+OS="`uname`"
+if [ "$OS" == "CYGWIN"* ] || [ "$OS" == "Windows"* ]; then
+    /cygdrive/c/Windows/Microsoft.NET/Framework64/v4.0.30319/csc -r:NDesk.Options.dll -out:xtrans.exe -t:exe xtrans.cs
+elif [ "$OS" == "Linux" ] || [ "$OS" == "Darwin" ]; then
+    mcs -r:NDesk.Options.dll -r:System.Xml.Linq.dll -out:xtrans.exe -t:exe xtrans.cs
+fi

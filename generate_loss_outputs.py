@@ -1,8 +1,43 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+
 """
-    Code to generate bash script for execution from json
+`generate_loss_outputs.py` is an executable script that, given a model analysis settings JSON file, model data and some other parameters, can generate a (Bash) shell script which can be used to generate loss outputs for the model using the installed ktools framework, given the following arguments (in no particular order)::
+
+    ./generate_loss_outputs.py -j /path/to/analysis/settings/json/file
+                               -s <ktools script name (without file extension)>
+                               -m /path/to/model/data
+                               -r /path/to/model/run/directory
+                               -n <number of ktools calculation processes to use>
+
+When calling the script this way paths can be given relative to the script, in particular, file paths should include the filename and extension. The ktools script name should not contain any filename extension, and the model run directory can be placed anywhere in the parent folder common to `omdk` and the model keys server repository.
+
+It is also possible to run the script by defining these arguments in a JSON configuration file and calling the script using the path to this file using the option `-f`. In this case the paths should be given relative to the parent folder in which the model keys server repository is located.::
+
+    ./generate_loss_outputs.py -f /path/to/model/resources/JSON/config/file'
+
+The JSON file should contain the following keys (in no particular order)::
+
+    "analysis_settings_json_file_path"
+    "ktools_script_name"
+    "model_data_path"
+    "model_run_dir_path"
+    "ktools_num_processes"
+
+and the values of the path-related keys should be string paths, given relative to the parent folder in which the model keys server repository is located. The JSON file is usually placed in the model keys server repository.
+
+**Note**: The output of `generate_loss_outputs.py` is an executable Bash shell script, containing ktools commands for generating loss outputs for the givem model and placed in the model run directory. You will have to execute the shell script in the model run directory in order to see the outputs. The model run directory must contain the analysis settings JSON file and either the actual model data or at least symlinked model data files (in the `static` subfolder). It must have the following structure::
+
+    ├── analysis_settings.json
+    ├── fifo/
+    ├── input/
+    ├── output/
+    ├── static/
+    └── work/
+
+The outputs are written in the `output` subfolder, and the model data should either be placed directly in the `static` subfolder or the actual folder should be symlinked to the `static` subfolder.
 """
+
 import argparse
 import io
 import json
@@ -11,14 +46,12 @@ import os
 import subprocess
 import sys
 
-sys.path.insert(0, os.path.abspath(os.pardir))
-
 from oasis_utils import (
     OasisException,
     oasis_log_utils,
 )
 
-#pylint: disable=I0011,C0111,C0103,C0301,W0603
+import utils as mdk_utils
 
 pid_monitor_count = 0
 apid_monitor_count = 0
@@ -28,8 +61,8 @@ command_file = ""
 
 
 def print_command(cmd):
-    with open(command_file, "a") as myfile:
-        myfile.writelines(cmd + "\n")
+    with io.open(command_file, "a", encoding='utf-8') as myfile:
+        myfile.writelines(cmd.decode() + "\n")
 
 
 def leccalc_enabled(lec_options):
@@ -551,100 +584,92 @@ def genbash(
         remove_workfolders("il", analysis_settings)
 
 
-SCRIPT_ARGS = {
-    'num_processes': {
-        'arg_name': 'num_processes',
-        'flag': 'p',
+SCRIPT_ARGS_METADICT = {
+    'config_file_path': {
+        'arg_name': 'config_file_path',
+        'flag': 'f',
+        'type': str,
+        'help_text': 'Model config path',
+        'required': False
+    },
+    'ktools_num_processes': {
+        'arg_name': 'ktools_num_processes',
+        'flag': 'n',
         'type': int,
         'help_text': 'Number of processes to use',
-        'required': True
+        'required': False
     },
     'analysis_settings_json_file_path': {
         'arg_name': 'analysis_settings_json_file_path',
-        'flag': 'a',
+        'flag': 'j',
         'type': str,
         'help_text': 'Relative or absolute path of the model analysis settings JSON file',
-        'required': True
+        'required': False
     },
-    'output_file_path': {
-        'arg_name': 'output_file_path',
-        'flag': 'o',
+    'ktools_script_name': {
+        'arg_name': 'ktools_script_name',
+        'flag': 's',
         'type': str,
         'help_text': 'Relative or absolute path of the output file',
-        'required': True
+        'required': False
+    },
+    'model_run_dir_path': {
+        'arg_name': 'model_run_dir_path',
+        'flag': 'r',
+        'type': str,
+        'help_text': 'Model run directory path',
+        'required': False
     }
 }
 
 
-def __set_logging__():
-    logging.basicConfig(
-        level=logging.INFO,
-        format='%(asctime)s - %(levelname)s - %(message)s',
-        filemode='w'
-    )
-    return logging.getLogger()
-
-
-def __parse_args__():
-    """
-    Parses script arguments and constructs and returns an arguments dict.
-    """
-    parser = argparse.ArgumentParser(description='Run kparse')
-
-    di = SCRIPT_ARGS
-
-    map(
-        lambda res: parser.add_argument(
-            '-{}'.format(di[res]['flag']),
-            '--{}'.format(di[res]['arg_name']),
-            type=di[res]['type'],
-            required=di[res]['required'],
-            help=di[res]['help_text']
-        ),
-        di
-    )
-
-    args = parser.parse_args()
-
-    args_dict = vars(args)
-
-    map(
-        lambda arg: args_dict.update({arg: os.path.abspath(args_dict[arg])}) if arg.endswith('path') and args_dict[arg] else None,
-        args_dict
-    )
-
-    return args_dict
-
-
 if __name__ == '__main__':
 
-    logger = __set_logging__()
-
-    logger.info('Parsing script arguments')
-    args = __parse_args__()
-    logger.info(args)
+    logger = mdk_utils.set_logging()
+    logger.info('Console logging set')
 
     try:
-        logger.info('Loading analysis settings JSON file')
-        with io.open(args['analysis_settings_json_file_path'], 'r', encoding='utf-8') as f:
-            analysis_settings = json.load(f)['analysis_settings']
-    except (IOError, ValueError):
-        raise OasisException("Invalid analysis settings JSON file or file path: {}.".format(args['analysis_settings_json_file_path']))
+        logger.info('Parsing script resources arguments')
+        args = mdk_utils.parse_script_args(SCRIPT_ARGS_METADICT, desc='Generate ktools script for model')
 
-    logging.info('Loaded analysis settings JSON: {}'.format(analysis_settings))
-    try:
-        logger.info('Generating ktools script')
-        genbash(
-            max_process_id=args['num_processes'],
-            analysis_settings=analysis_settings,
-            output_filename=args['output_file_path']
-        )
-    except Exception as e:
+        if args['config_file_path']:
+            logger.info('Loading script resources from config file {}'.format(args['config_file_path']))
+            args = mdk_utils.load_script_args_from_config_file(args['config_file_path'])
+            logger.info('Script resources: {}'.format(args))
+        else:
+            args.pop('config_file_path')
+            logger.info('Script resources arguments: {}'.format(args))
+
+        try:
+            logger.info('Loading analysis settings JSON file')
+            with io.open(args['analysis_settings_json_file_path'], 'r', encoding='utf-8') as f:
+                analysis_settings = json.load(f)
+                if 'analysis_settings' in analysis_settings:
+                    analysis_settings = analysis_settings['analysis_settings']
+        except (IOError, TypeError, ValueError):
+            raise OasisException("Invalid analysis settings JSON file or file path: {}.".format(args['analysis_settings_json_file_path']))
+
+        logging.info('Loaded analysis settings JSON: {}'.format(analysis_settings))
+
+        output_file_path = os.path.join(args['model_run_dir_path'], '{}.sh'.format(args['ktools_script_name']))
+        try:
+            logger.info('Generating ktools script')
+            genbash(
+                max_process_id=args['ktools_num_processes'],
+                analysis_settings=analysis_settings,
+                output_filename=output_file_path
+            )
+        except Exception as e:
+            raise OasisException(e)
+
+        try:
+            logger.info('Making ktools script executable')
+            subprocess.check_call("chmod +x {}".format(output_file_path), stderr=subprocess.STDOUT, shell=True)
+        except (OSError, IOError) as e:
+            raise OasisException(e)
+    except OasisException as e:
         logger.error(str(e))
         sys.exit(-1)
-
-    logger.info('Making ktools script executable')
-    subprocess.call("chmod +x {}".format(args['output_file_path']), shell=True)
-
-    logger.info('Generated ktools script {}'.format(args['output_file_path']))
+    
+    logger.info('Generated ktools script {}'.format(output_file_path))
     sys.exit(0)

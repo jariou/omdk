@@ -5,7 +5,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>First Steps &#8212; omdk 0.1 documentation</title>
+    <title>Requirements &#8212; omdk 0.1 documentation</title>
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <script type="text/javascript">
@@ -24,7 +24,7 @@
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Generating Oasis Files" href="generating-oasis-files.html" />
+    <link rel="next" title="Building and running models" href="building-and-running-models.html" />
     <link rel="prev" title="Sphinx Docs" href="sphinx.html" />
    
   <link rel="stylesheet" href="_static/custom.css" type="text/css" />
@@ -41,11 +41,11 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="first-steps">
-<h1>First Steps<a class="headerlink" href="#first-steps" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="requirements">
+<h1>Requirements<a class="headerlink" href="#requirements" title="Permalink to this headline">¶</a></h1>
 <p>After cloning the repository (see the GitHub instructions on repository
 home page) and entering the repository folder you should install the
-package requirements using</p>
+package Python requirements using</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">pip</span> <span class="n">install</span> <span class="o">-</span><span class="n">r</span> <span class="n">requirements</span><span class="o">.</span><span class="n">txt</span>
 </pre></div>
 </div>
@@ -53,6 +53,39 @@ package requirements using</p>
 <p>Provided that <code class="docutils literal"><span class="pre">sys.path</span></code> contains the absolute path to the repository
 folder you can now import the package or its components in the normal
 way.</p>
+<div class="section" id="xtrans">
+<h2>xtrans<a class="headerlink" href="#xtrans" title="Permalink to this headline">¶</a></h2>
+<p>There is one non-Python package requirement which is a .NET executable
+called <code class="docutils literal"><span class="pre">xtrans.exe</span></code> - this is used to convert source exposure files to
+canonical (Oasis) exposure files, and then also canonical exposure files
+to model exposure files. The source file <code class="docutils literal"><span class="pre">xrans.cs</span></code> is included in the
+<code class="docutils literal"><span class="pre">xtrans</span></code> subfolder. The executable requires a .NET engine like Mono
+(<a class="reference external" href="http://www.mono-project.com/">http://www.mono-project.com/</a>) and the NDesk.Options library
+(<a class="reference external" href="http://www.ndesk.org/Options">http://www.ndesk.org/Options</a>) which is included as a DLL in the
+<code class="docutils literal"><span class="pre">xtrans</span></code> subfolder. Assuming you’ve installed Mono you should be able
+to build the executable by running the <code class="docutils literal"><span class="pre">xtrans/make-trans</span></code> script - if
+successful it will be placed in <code class="docutils literal"><span class="pre">xtrans</span></code>.</p>
+</div>
+<div class="section" id="ktools">
+<h2>ktools<a class="headerlink" href="#ktools" title="Permalink to this headline">¶</a></h2>
+<p>An installed ktools release suitable for your platform is required. You
+can obtain from</p>
+<p><a class="reference external" href="https://github.com/OasisLMF/ktools/releases">https://github.com/OasisLMF/ktools/releases</a></p>
+</div>
+<div class="section" id="other-requirements">
+<h2>Other requirements<a class="headerlink" href="#other-requirements" title="Permalink to this headline">¶</a></h2>
+<p>Ensure that this repository is cloned into the same parent folder as any
+model keys server repositories (which would contain the lookup service
+source for the models of interest), and at the same level, e.g.:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="p">::</span>
+</pre></div>
+</div>
+<blockquote>
+<div>&lt;parent folder&gt;/
+├── omdk/
+├── &lt;model keys server repository&gt;/
+├── …</div></blockquote>
+</div>
 </div>
 
 
@@ -75,8 +108,13 @@ way.</p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="repository-management.html">Repository Management</a></li>
 <li class="toctree-l1"><a class="reference internal" href="sphinx.html">Sphinx Docs</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">First Steps</a></li>
-<li class="toctree-l1"><a class="reference internal" href="generating-oasis-files.html">Generating Oasis Files</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Requirements</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#xtrans">xtrans</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#ktools">ktools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#other-requirements">Other requirements</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="building-and-running-models.html">Building and running models</a></li>
 <li class="toctree-l1"><a class="reference internal" href="modules.html">Module Documentation</a></li>
 </ul>
 
@@ -85,7 +123,7 @@ way.</p>
 <ul>
   <li><a href="index.html">Documentation overview</a><ul>
       <li>Previous: <a href="sphinx.html" title="previous chapter">Sphinx Docs</a></li>
-      <li>Next: <a href="generating-oasis-files.html" title="next chapter">Generating Oasis Files</a></li>
+      <li>Next: <a href="building-and-running-models.html" title="next chapter">Building and running models</a></li>
   </ul></li>
 </ul>
 </div>
@@ -111,7 +149,7 @@ way.</p>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
       |
-      <a href="_sources/first-steps.rst.txt"
+      <a href="_sources/requirements.rst.txt"
           rel="nofollow">Page source</a>
     </div>
 
