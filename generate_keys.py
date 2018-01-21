@@ -2,31 +2,33 @@
 # -*- coding: utf-8 -*-
 
 """
-`run_keys_lookup.py` is an executable script that can generate keys records and
-Oasis files keys for a model, given the following arguments (in no particular
-order)::
+``generate_keys.py`` is an executable script which can generate and write Oasis
+keys (area peril ID, vulnerability ID) for a model, given the following
+arguments (in no particular order)::
 
-    ./run_keys_lookup.py -k /path/to/keys/data
-                         -v /path/to/model/version/csv/file
-                         -l /path/to/lookup/service/package
-                         -e /path/to/model/exposures/csv/file
-                         -o /path/to/output/file
-                         -f <output format - `oasis_keys` or `list_keys`>
+    ./generate_keys.py -k /path/to/keys/data
+                       -v /path/to/model/version/csv/file
+                       -l /path/to/lookup/service/package
+                       -e /path/to/model/exposures/csv/file
+                       -o /path/to/output/file
+                       -f <output format - 'oasis_keys' or 'list_keys'>
 
 When calling the script this way paths can be given relative to the script, in
 particular, file paths should include the filename and extension. The paths to
-the keys data, lookup service package, and model version file will usually be
-located in the model keys server (Git) repository, which would also contain the
-lookup service source code for the model (lookup service package. The lookup
-service package is usually located in the `src/keys_server` Python subpackage
-in the model keys serer repository (if it is managed by Oasis LMF).
+the keys data, lookup service package (Python package containing the lookup
+source code), and model version file will usually be located in the model keys
+server (Git) repository. If the repository was created by or is managed by
+Oasis LMF then the lookup service package will usually be contained in the
+``src/keys_server`` Python subpackage and can be given as the path to that
+subpackage (see the `OasisPiWind <https://github.com/OasisLMF/OasisPiWind>`_
+repository as a reference for how to structure an Oasis keys server repository)
 
 It is also possible to run the script by defining these arguments in a JSON
-configuration file and calling the script using the path to this file using the
-option `-f`. In this case the paths should be given relative to the parent
-folder in which the model keys server repository is located.::
+configuration file and calling the script with option ``-f`` and the path to the
+file. In this case the paths should be given relative to the parent folder in
+which the model keys server repository is located.::
 
-    ./run_keys_lookup.py -f /path/to/keys/script/config/file
+    ./generate_keys.py -f /path/to/keys/script/config/file
 
 The JSON file should contain the following keys (in no particular order)::
 
@@ -40,6 +42,32 @@ The JSON file should contain the following keys (in no particular order)::
 and the values of these keys should be string paths, given relative to the
 parent folder in which the model keys server repository is located. The JSON
 file is usually placed in the model keys server repository.
+
+Keys records returned by an Oasis keys lookup service (see the `PiWind repository <https://github.com/OasisLMF/OasisPiWind/blob/master/src/keys_server/PiWindKeysLookup.py>`_ for reference)
+will be Python dicts with the following structure::
+
+    {
+        "id": <loc. ID>,
+        "peril_id": <Oasis peril type ID - see oasis_utils/oasis_utils.py>,
+        "coverage": <coverage type ID - see oasis_utils/oasis_utils.py>,
+        "area_peril_id": <area peril ID>,
+        "vulnerability_id": <vulnerability ID>,
+        "message": <lookup status message>,
+        "status": <lookup status code - see oasis_utils/oasis_utils.py>
+    }
+
+The ``generate_keys.py`` script can generate keys records in this format, and
+write them to file.
+
+For model loss calculations however ktools requires a keys CSV file with the
+following format::
+
+    LocID,PerilID,CoverageID,AreaPerilID,VulnerabilityID
+    ..
+    ..
+
+where the headers correspond to the relevant Oasis keys record fields. The
+``generate_keys.py`` script can also generate and write Oasis keys files.
 """
 
 import argparse
@@ -145,7 +173,7 @@ if __name__ == '__main__':
         )
         logging.info('\t{}, {}'.format(model_info, model_klc))
 
-        logging.info('Saving keys lookup records to file')
+        logging.info('Saving keys records to file')
         f, n = oklf.save_keys(
             lookup=model_klc,
             model_exposures_file_path=args['model_exposures_file_path'],
@@ -156,5 +184,5 @@ if __name__ == '__main__':
         logging.error(str(e))
         sys.exit(-1)
 
-    logging.info('{} keys lookup records saved to file {}'.format(n, f))
+    logging.info('{} keys records saved to file {}'.format(n, f))
     sys.exit(0)

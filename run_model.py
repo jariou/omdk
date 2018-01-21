@@ -2,11 +2,10 @@
 # -*- coding: utf-8 -*-
 
 """
-`run_model.py` is an executable script that can run models end-to-end, i.e.
-generate loss outputs given model resources, including keys data, canonical
+``run_model.py`` is an executable "master" script that can run models end-to-end,
+i.e. generate losses given model resources, including keys data, canonical
 exposure profiles, exposure transformation and validation files, model data,
-analysis settings etc., given the following arguments (in no particular
-order)::
+analysis settings etc., given the following arguments (in no particular order)::
 
     ./run_model.py -k /path/to/keys/data/folder
                    -v /path/to/model/version/file
@@ -29,13 +28,13 @@ particular, file paths should include the filename and extension. The paths to
 the keys data, lookup service package, model version file, canonical exposures
 profile JSON, source exposures file, transformation and validation files, and
 analysis settings JSON file, will usually be located in the model keys server
-repository. The ktools script name should not contain any filename extension,
+repository. The ktools script name should not contain any filetype extension,
 and the model run directory can be placed anywhere in the parent folder common
 to `omdk` and the model keys server repository.
 
 It is also possible to run the script by defining these arguments in a JSON
 configuration file and calling the script using the path to this file using the
-option `-f`. In this case the paths should be given relative to the parent
+option ``-f``. In this case the paths should be given relative to the parent
 folder in which the model keys server repository is located.::
 
     ./run_model.py -f /path/to/model/resources/JSON/config/file'
@@ -62,11 +61,33 @@ and the values of the path-related keys should be string paths, given relative
 to the parent folder in which the model keys server repository is located. The
 JSON file is usually placed in the model keys server repository.
 
-**NOTE**:  As the JSON script configuration files for `generate_oasis_files.py`
-and `generate_loss_outputs.py` define a subset of the resources required for
-the master script `run_model.py` you can use the master script configuration
-file to independently run `generate_oasis_files.py` and
-`generate_loss_outputs.py`, and vice versa.
+**NOTE**:  For a given model the JSON script configuration files for
+``generate_oasis_files.py``, ``generate_losses.py`` and ``run_model.py`` should
+complement each other, so you can run any of these scripts against a single
+master script configuration file.
+
+As an example, this is the master script configuration file for PiWind::
+
+    {
+        "model_data_path": "OasisPiWind/model_data/PiWind",
+        "keys_data_path": "OasisPiWind/keys_data/PiWind",
+        "model_version_file_path": "OasisPiWind/keys_data/PiWind/ModelVersion.csv", 
+        "lookup_package_path": "OasisPiWind/src/keys_server",
+        "canonical_exposures_profile_json_path": "OasisPiWind/oasislmf-piwind-canonical-profile.json",
+        "source_exposures_file_path": "OasisPiWind/tests/data/SourceLocPiWind.csv",
+        "source_exposures_validation_file_path": "OasisPiWind/flamingo/PiWind/Files/ValidationFiles/Generic_Windstorm_SourceLoc.xsd",
+        "source_to_canonical_exposures_transformation_file_path": "OasisPiWind/flamingo/PiWind/Files/TransformationFiles/MappingMapToGeneric_Windstorm_CanLoc_A.xslt",
+        "canonical_exposures_validation_file_path": "OasisPiWind/flamingo/PiWind/Files/ValidationFiles/Generic_Windstorm_CanLoc_B.xsd",
+        "canonical_to_model_exposures_transformation_file_path": "OasisPiWind/flamingo/PiWind/Files/TransformationFiles/MappingMapTopiwind_modelloc.xslt",
+        "xtrans_path": "omdk/xtrans/xtrans.exe",
+        "oasis_files_path": "omdk/tests/data/oasislmf-piwind-0.0.0.1",
+        "model_run_dir_path": "omdk/tests/data/oasislmf-piwind-0.0.0.1",
+        "analysis_settings_json_file_path": "OasisPiWind/analysis_settings.json",
+        "ktools_script_name": "run_ktools",
+        "ktools_num_processes": 2
+    }
+
+It can also be obtained from `https://github.com/OasisLMF/OasisPiWind/blob/master/mdk-oasislmf-piwind.json <https://github.com/OasisLMF/OasisPiWind/blob/master/mdk-oasislmf-piwind.json>`_.
 """
 
 import argparse
@@ -290,7 +311,7 @@ if __name__ == '__main__':
         prepare_model_run_inputs(analysis_settings, args['model_run_dir_path'], args['model_data_path'])
 
         cmd_str = (
-            "python generate_loss_outputs.py"
+            "python generate_losses.py"
             " -j {}"
             " -n {}"
             " -r {}"
@@ -304,7 +325,7 @@ if __name__ == '__main__':
         )
 
         try:
-            logger.info('Calling script `generate_loss_outputs.py` to generate model ktools loss outputs script')
+            logger.info('Calling script `generate_losses.py` to generate model ktools loss outputs script')
             subprocess.check_call(cmd_str, stderr=subprocess.STDOUT, shell=True)
         except subprocess.CalledProcessError as e:
             raise OasisException("Error generating ktools loss outputs script: {}".format(str(e)))
@@ -313,7 +334,7 @@ if __name__ == '__main__':
         cmd_str = "bash {}.sh".format(args['ktools_script_name'])
         try:
             ktools_script_path = '{}.sh'.format(os.path.join(args['model_run_dir_path'], args['ktools_script_name']))
-            logger.info('Running model ktools loss outputs script {}'.format(ktools_script_path))
+            logger.info('Running ktools loss outputs script {}'.format(ktools_script_path))
             subprocess.check_call(cmd_str, stderr=subprocess.STDOUT, shell=True)
         except subprocess.CalledProcessError as e:
             raise OasisException("Error running ktools loss outputs script: {}".format(str(e)))
@@ -322,6 +343,6 @@ if __name__ == '__main__':
         sys.exit(-1)
 
     outputs_dir = os.path.join(args['model_run_dir_path'], 'output')
-    logger.info('Model loss outputs generated in {}'.format(outputs_dir))
+    logger.info('Loss outputs generated in {}'.format(outputs_dir))
 
     sys.exit(0)

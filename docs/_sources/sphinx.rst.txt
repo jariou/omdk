@@ -3,18 +3,15 @@ Sphinx Docs
 
 This repository is enabled with Sphinx documentation for the Python
 modules, and the documentation is published to
-\ https://oasislmf.github.io/omdk\  automatically via GitHub pages on
+`https://oasislmf.github.io/omdk <https://oasislmf.github.io/omdk>`_ automatically via GitHub pages on
 updates to the GitHub repository.
 
 Setting up Sphinx
 -----------------
 
-Firstly, to work on the Sphinx docs for this package you must have
-Sphinx installed on your system or in your virtual environment
-(``virtualenv`` is recommended).
-
-You should also clone the Oasis publication repository
-OasisLMF.github.io.
+To work on the Sphinx docs for this package you must have Sphinx
+installed on your system or in your virtual environment (``virtualenv``
+is recommended).
 
 Building and publishing
 -----------------------
@@ -40,5 +37,4 @@ copy the files from ``_build/html`` to ``docs`` using
 
 Add and commit these files to the local repository, and then update the
 remote repository on GitHub - GitHub pages will automatically publish
-the new documents to the documentation site
-https://oasislmf.github.io/omdk/.
+the new documents to `https://oasislmf.github.io/omdk <https://oasislmf.github.io/omdk>`_.

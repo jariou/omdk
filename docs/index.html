@@ -42,9 +42,9 @@
             
   <div class="section" id="oasis-model-development-kit-omdk">
 <h1>Oasis Model Development Kit (OMDK)<a class="headerlink" href="#oasis-model-development-kit-omdk" title="Permalink to this headline">¶</a></h1>
-<p>The repository provides a variety of Python tools to build, test and run
-models end-to-end, including performing individual steps in this
-process. These tools include:</p>
+<p>The repository provides a Python toolkit for building, running and
+testing Oasis models end-to-end, including performing individual steps
+in this process. It includes:</p>
 <ul class="simple">
 <li>a Python class framework for working with Oasis models and model
 resources as Python objects (the <code class="docutils literal"><span class="pre">models</span></code> subpackage)</li>
@@ -55,11 +55,11 @@ subpackage)</li>
 models, and generating and saving keys outputs from these lookup
 services</li>
 <li>executable scripts, based on these class frameworks, for writing keys
-outputs from model lookup services (<code class="docutils literal"><span class="pre">run_keys_lookup.py</span></code>),
-generating Oasis files from model source exposures and other
-resources (<code class="docutils literal"><span class="pre">generate_oasis_files.py</span></code>), and generating loss outputs
-for models (<code class="docutils literal"><span class="pre">generate_loss_outputs.py</span></code>). This includes a “master”
-script that can perform all these steps to run the model end-to-end
+outputs from model lookup services (<code class="docutils literal"><span class="pre">generate_keys.py</span></code>), generating
+Oasis files from model source exposures and other resources
+(<code class="docutils literal"><span class="pre">generate_oasis_files.py</span></code>), and generating losses for models
+(<code class="docutils literal"><span class="pre">generate_losses.py</span></code>). This includes a “master” script that can
+perform all these steps to run the model end-to-end
 (<code class="docutils literal"><span class="pre">run_model.py</span></code>).</li>
 </ul>
 <div class="toctree-wrapper compound">
@@ -82,9 +82,9 @@ script that can perform all these steps to run the model end-to-end
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="building-and-running-models.html">Building and running models</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="building-and-running-models.html#generating-keys-outputs">Generating keys outputs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="building-and-running-models.html#generating-keys">Generating keys</a></li>
 <li class="toctree-l2"><a class="reference internal" href="building-and-running-models.html#generating-oasis-files">Generating Oasis files</a></li>
-<li class="toctree-l2"><a class="reference internal" href="building-and-running-models.html#generating-loss-outputs">Generating loss outputs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="building-and-running-models.html#generating-losses">Generating losses</a></li>
 <li class="toctree-l2"><a class="reference internal" href="building-and-running-models.html#running-a-model-end-to-end">Running a model end-to-end</a></li>
 </ul>
 </li>
@@ -94,9 +94,9 @@ script that can perform all these steps to run the model end-to-end
 <li class="toctree-l2"><a class="reference internal" href="modules.html#module-exposures.OasisExposuresManager"><code class="docutils literal"><span class="pre">omdk.exposures.OasisExposuresManager</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="modules.html#module-exposures.OasisFilesPipeline"><code class="docutils literal"><span class="pre">omdk.exposures.OasisFilesPipeline</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="modules.html#module-keys.OasisKeysLookupFactory"><code class="docutils literal"><span class="pre">omdk.keys.OasisKeysLookupFactory</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="modules.html#module-run_keys_lookup"><code class="docutils literal"><span class="pre">omdk.run_keys_lookup</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules.html#module-generate_keys"><code class="docutils literal"><span class="pre">omdk.generate_keys</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="modules.html#module-generate_oasis_files"><code class="docutils literal"><span class="pre">omdk.generate_oasis_files</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="modules.html#module-generate_loss_outputs"><code class="docutils literal"><span class="pre">omdk.generate_loss_outputs</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules.html#module-generate_losses"><code class="docutils literal"><span class="pre">omdk.generate_losses</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="modules.html#module-run_model"><code class="docutils literal"><span class="pre">omdk.run_model</span></code></a></li>
 </ul>
 </li>
@@ -160,7 +160,7 @@ script that can perform all these steps to run the model end-to-end
       <div class="clearer"></div>
     </div>
     <div class="footer">
-      &copy;2017, Oasis Loss Modelling Framework (v. 1.0, 30 November, 2017).
+      &copy;2017-, Oasis Loss Modelling Framework (v. 1.1, 20 January, 2018).
       
       |
       Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.3</a>

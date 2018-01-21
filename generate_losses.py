@@ -2,23 +2,29 @@
 # -*- coding: utf-8 -*-
 
 """
-`generate_loss_outputs.py` is an executable script which, given a model
-analysis settings JSON file, model data and some other parameters, can
-generate a (Bash) shell script containing ktools commands to calculate loss
-outputs, and also execute the generated script to generate those outputs using
-the installed ktools framework. The script can be called directly from the
-command line given the following arguments (in no particular order)::
+``generate_losses.py`` is an executable script which, given a model analysis
+settings JSON file, model data and some other parameters, can generate a (Bash)
+shell script containing ktools commands to calculate losses, and also execute
+the generated script to generate those outputs using the installed ktools
+framework. The script can be called directly from the command line given the
+following arguments (in no particular order)::
 
-    ./generate_loss_outputs.py -j /path/to/analysis/settings/json/file
-                               -s <ktools script name (without file extension)>
-                               -m /path/to/model/data
-                               -r /path/to/model/run/directory
-                               -n <number of ktools calculation processes to use>
-                               [--execute | --no-execute]
+    ./generate_losses.py -j /path/to/analysis/settings/json/file
+                         -s <ktools script name (without file extension)>
+                         -m /path/to/model/data
+                         -r /path/to/model/run/directory
+                         -n <number of ktools calculation processes to use>
+                         [--execute | --no-execute]
+
+When calling the script this way paths can be given relative to the script, in
+particular, file paths should include the filename and extension. The ktools
+script name should not contain any filetype extension, and the model run
+directory can be placed anywhere in the parent folder common to `omdk` and the
+model keys server repository.
 
 The model run directory must contain the analysis settings JSON file and either
 the actual model data or at least symlinked model data files (in the `static`
-subfolder). It must have the following folder structure
+subfolder). It must have the following folder structure::
 
     ├── analysis_settings.json
     ├── fifo/
@@ -27,30 +33,22 @@ subfolder). It must have the following folder structure
     ├── static/
     └── work/
 
-The outputs are written in the `output` subfolder, and the model data should
-either be placed directly in the `static` subfolder or the actual folder should
-be symlinked to the `static` subfolder.
+The model data should either be placed directly in the ``static`` subfolder or
+the actual folder should be symlinked to the ``static`` subfolder.The losses are
+written in the ``output`` subfolder as CSV files. 
 
-By default executing `generate_loss_outputs.py` will not only generate the
-ktools loss outputs script but also execute it to generate loss outputs. If you
-want to simply inspect the generated script without executing it then provide
-the (optional) `--no-execute` argument. The default here is automatic
-execution.
-
-When calling the script this way paths can be given relative to the script, in
-particular, file paths should include the filename and extension. The ktools
-script name should not contain any filename extension, and the model run
-directory can be placed anywhere in the parent folder common to `omdk` and the
-model keys server repository.
+By default executing ``generate_losses.py`` will automatically execute the ktools
+losses script it generates. If you don't want this provide the (optional)
+``--no-execute`` argument. The default here is automatic execution.
 
 It is also possible to run the script by defining these arguments in a JSON
 configuration file and calling the script using the path to this file using the
-option `-f`. In this case the paths should be given relative to the parent
-folder in which the model keys server repository is located.
+option ``-f``. In this case the paths should be given relative to the parent
+folder in which the model keys server repository is located.::
 
-    ./generate_loss_outputs.py -f /path/to/model/resources/JSON/config/file'
+    ./generate_losses.py -f /path/to/model/resources/JSON/config/file'
 
-The JSON file should contain the following keys (in no particular order)
+The JSON file should contain the following keys (in no particular order)::
 
     "analysis_settings_json_file_path"
     "ktools_script_name"
@@ -62,8 +60,8 @@ The JSON file should contain the following keys (in no particular order)
 and the values of the path-related keys should be string paths, given relative
 to the parent folder in which the model keys server repository is located. The
 JSON file is usually placed in the model keys server repository. The value of
-the (optional) `"exectute"` key should be either `true` or `false` depending on
-whether you want the generated ktools loss output scripts to be automatically
+the (optional) ``"exectute"`` key should be either ``true`` or ``false`` depending on
+whether you want the generated ktools losses scripts to be automatically
 executed or not. The default here is automatic execution.
 """
 
@@ -678,7 +676,7 @@ if __name__ == '__main__':
             logger.info('Script resources arguments: {}'.format(args))
 
         try:
-            logger.info('Loading analysis settings JSON file')
+            logger.info('Reading analysis settings JSON file')
             with io.open(args['analysis_settings_json_file_path'], 'r', encoding='utf-8') as f:
                 analysis_settings = json.load(f)
                 if 'analysis_settings' in analysis_settings:

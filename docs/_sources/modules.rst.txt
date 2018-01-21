@@ -37,21 +37,22 @@ Module Documentation
    :members:
    :undoc-members:
 
-``omdk.run_keys_lookup``
+``omdk.generate_keys``
 ------------------------
 
-.. automodule:: run_keys_lookup
+.. automodule:: generate_keys
 
 ``omdk.generate_oasis_files``
 -----------------------------
 
 .. automodule:: generate_oasis_files
 
-``omdk.generate_loss_outputs``
+``omdk.generate_losses``
 ------------------------------
 
-.. automodule:: generate_loss_outputs
+.. automodule:: generate_losses
 
 ``omdk.run_model``
 ------------------
+
 .. automodule:: run_model

@@ -2,9 +2,9 @@
 # -*- coding: utf-8 -*-
 
 """
-
-`generate_oasis_files.py` is an executable script that can generate Oasis files
-for a model, given the following arguments (in no particular order)::
+``generate_oasis_files.py`` is an executable script which can generate Oasis files
+(items, coverages, GUL summary) for a model, given the following arguments (in
+no particular order)::
 
     ./generate_oasis_files.py -k /path/to/keys/data
                               -v /path/to/model/version/csv/file
@@ -26,7 +26,7 @@ usually be located in the model keys server repository.
 
 It is also possible to run the script by defining these arguments in a JSON
 configuration file and calling the script using the path to this file using the
-option `-f`. In this case the paths should be given relative to the parent
+option ``-f``. In this case the paths should be given relative to the parent
 folder in which the model keys server repository is located.::
 
     ./generate_oasis_files.py -f /path/to/model/resources/JSON/config/file

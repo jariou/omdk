@@ -55,7 +55,7 @@ master_doc = 'index'
 
 # General information about the project.
 project = u'omdk'
-copyright = u'2017, Oasis Loss Modelling Framework (v. 1.0, 30 November, 2017)'
+copyright = u'2017-, Oasis Loss Modelling Framework (v. 1.1, 20 January, 2018)'
 author = u'Sandeep Murthy'
 
 # The version info for the project you're documenting, acts as replacement for
