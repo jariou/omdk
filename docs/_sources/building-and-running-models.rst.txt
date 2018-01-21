@@ -12,7 +12,7 @@ in this process. It includes:
    subpackage)
 -  a Python factory class for instantiating keys lookup services for
    models, and generating and saving keys outputs from these lookup
-   services
+   services (the ``keys`` subpackage)
 -  executable scripts, based on these class frameworks, for writing keys
    outputs from model lookup services (``generate_keys.py``), generating
    Oasis files from model source exposures and other resources
@@ -199,10 +199,7 @@ the ``static`` subfolder). It must have the following folder structure
     ├── static/
     └── work/
 
-The model data should either be placed directly in the ``static``
-subfolder or the actual folder should be symlinked to the ``static``
-subfolder.The losses are written in the ``output`` subfolder as CSV
-files.
+The losses are written in the ``output`` subfolder as CSV files.
 
 By default executing ``generate_losses.py`` will automatically execute
 the ktools losses script it generates. If you don't want this provide

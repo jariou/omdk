@@ -968,7 +968,7 @@ script name should not contain any filetype extension, and the model run
 directory can be placed anywhere in the parent folder common to <cite>omdk</cite> and the
 model keys server repository.</p>
 <p>The model run directory must contain the analysis settings JSON file and either
-the actual model data or at least symlinked model data files (in the <cite>static</cite>
+the actual model data or at least symlinked model data files (in the <code class="docutils literal"><span class="pre">static</span></code>
 subfolder). It must have the following folder structure:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span>├── analysis_settings.json
 ├── fifo/
@@ -978,9 +978,7 @@ subfolder). It must have the following folder structure:</p>
 └── work/
 </pre></div>
 </div>
-<p>The model data should either be placed directly in the <code class="docutils literal"><span class="pre">static</span></code> subfolder or
-the actual folder should be symlinked to the <code class="docutils literal"><span class="pre">static</span></code> subfolder.The losses are
-written in the <code class="docutils literal"><span class="pre">output</span></code> subfolder as CSV files.</p>
+<p>The losses are written in the <code class="docutils literal"><span class="pre">output</span></code> subfolder as CSV files.</p>
 <p>By default executing <code class="docutils literal"><span class="pre">generate_losses.py</span></code> will automatically execute the ktools
 losses script it generates. If you don’t want this provide the (optional)
 <code class="docutils literal"><span class="pre">--no-execute</span></code> argument. The default here is automatic execution.</p>

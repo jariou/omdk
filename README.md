@@ -72,7 +72,7 @@ The repository provides a Python toolkit for building, running and testing Oasis
 
 * a Python class framework for working with Oasis models and model resources as Python objects (the `models` subpackage)
 * a Python class framework for managing model exposures and resources, and also for generating Oasis files from these (the `exposures` subpackage)
-* a Python factory class for instantiating keys lookup services for models, and generating and saving keys outputs from these lookup services
+* a Python factory class for instantiating keys lookup services for models, and generating and saving keys outputs from these lookup services (the `keys` subpackage)
 * executable scripts, based on these class frameworks, for writing keys outputs from model lookup services (`generate_keys.py`), generating Oasis files from model source exposures and other resources (`generate_oasis_files.py`), and generating losses for models (`generate_losses.py`). This includes a "master" script that can perform all these steps to run the model end-to-end (`run_model.py`).
 
 ## Generating keys
@@ -185,7 +185,7 @@ The model run directory must contain the analysis settings JSON file and either 
     ├── static/
     └── work/
 
-The model data should either be placed directly in the `static` subfolder or the actual folder should be symlinked to the `static` subfolder.The losses are written in the `output` subfolder as CSV files. 
+The losses are written in the `output` subfolder as CSV files.
 
 By default executing `generate_losses.py` will automatically execute the ktools losses script it generates. If you don't want this provide the (optional) `--no-execute` argument. The default here is automatic execution.
 

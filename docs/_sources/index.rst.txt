@@ -17,7 +17,7 @@ in this process. It includes:
    subpackage)
 -  a Python factory class for instantiating keys lookup services for
    models, and generating and saving keys outputs from these lookup
-   services
+   services (the ``keys`` subpackage)
 -  executable scripts, based on these class frameworks, for writing keys
    outputs from model lookup services (``generate_keys.py``), generating
    Oasis files from model source exposures and other resources

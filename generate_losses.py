@@ -23,7 +23,7 @@ directory can be placed anywhere in the parent folder common to `omdk` and the
 model keys server repository.
 
 The model run directory must contain the analysis settings JSON file and either
-the actual model data or at least symlinked model data files (in the `static`
+the actual model data or at least symlinked model data files (in the ``static``
 subfolder). It must have the following folder structure::
 
     ├── analysis_settings.json
@@ -33,9 +33,7 @@ subfolder). It must have the following folder structure::
     ├── static/
     └── work/
 
-The model data should either be placed directly in the ``static`` subfolder or
-the actual folder should be symlinked to the ``static`` subfolder.The losses are
-written in the ``output`` subfolder as CSV files. 
+The losses are written in the ``output`` subfolder as CSV files. 
 
 By default executing ``generate_losses.py`` will automatically execute the ktools
 losses script it generates. If you don't want this provide the (optional)

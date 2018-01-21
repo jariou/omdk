@@ -54,7 +54,7 @@ and also for generating Oasis files from these (the <code class="docutils litera
 subpackage)</li>
 <li>a Python factory class for instantiating keys lookup services for
 models, and generating and saving keys outputs from these lookup
-services</li>
+services (the <code class="docutils literal"><span class="pre">keys</span></code> subpackage)</li>
 <li>executable scripts, based on these class frameworks, for writing keys
 outputs from model lookup services (<code class="docutils literal"><span class="pre">generate_keys.py</span></code>), generating
 Oasis files from model source exposures and other resources
@@ -213,10 +213,7 @@ the <code class="docutils literal"><span class="pre">static</span></code> subfol
 └── work/
 </pre></div>
 </div>
-<p>The model data should either be placed directly in the <code class="docutils literal"><span class="pre">static</span></code>
-subfolder or the actual folder should be symlinked to the <code class="docutils literal"><span class="pre">static</span></code>
-subfolder.The losses are written in the <code class="docutils literal"><span class="pre">output</span></code> subfolder as CSV
-files.</p>
+<p>The losses are written in the <code class="docutils literal"><span class="pre">output</span></code> subfolder as CSV files.</p>
 <p>By default executing <code class="docutils literal"><span class="pre">generate_losses.py</span></code> will automatically execute
 the ktools losses script it generates. If you don’t want this provide
 the (optional) <code class="docutils literal"><span class="pre">--no-execute</span></code> argument. The default here is automatic
