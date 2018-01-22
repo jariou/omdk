@@ -548,6 +548,8 @@ class OasisExposuresManager(implements(OasisExposuresManagerInterface)):
 
         items_df = items_df.append(records)
 
+        items_df = items_df.astype(int)
+
         items_df.to_csv(
             columns=columns,
             path_or_buf=items_file_path,
@@ -651,6 +653,8 @@ class OasisExposuresManager(implements(OasisExposuresManagerInterface)):
                 records.append(rec)
 
         coverages_df = coverages_df.append(records)
+
+        coverages_df = coverages_df.astype(int)
 
         coverages_df.to_csv(
             columns=columns,
@@ -757,6 +761,8 @@ class OasisExposuresManager(implements(OasisExposuresManagerInterface)):
 
         gulsummaryxref_df = gulsummaryxref_df.append(records)
 
+        gulsummaryxref_df = gulsummaryxref_df.astype(int)
+
         gulsummaryxref_df.to_csv(
             columns=columns,
             path_or_buf=gulsummaryxref_file_path,
@@ -858,6 +864,7 @@ class OasisExposuresManager(implements(OasisExposuresManagerInterface)):
             'summaryset_id'
         ]
         master_df = pd.DataFrame(columns=columns)
+        master_df
 
         records = []
         ii = 0
@@ -895,6 +902,9 @@ class OasisExposuresManager(implements(OasisExposuresManagerInterface)):
         master_df = master_df.append(records)
 
         columns = ['item_id', 'coverage_id', 'areaperil_id', 'vulnerability_id', 'group_id']
+        for col in columns:
+            master_df[col] = master_df[col].astype(int)
+
         master_df.to_csv(
             columns=columns,
             path_or_buf=items_file_path,
@@ -911,6 +921,8 @@ class OasisExposuresManager(implements(OasisExposuresManagerInterface)):
         )
 
         columns = ['coverage_id', 'tiv']
+        master_df['coverage_id'] = master_df['coverage_id'].astype(int)
+
         master_df.to_csv(
             columns=columns,
             float_format='%.5f',
@@ -929,6 +941,9 @@ class OasisExposuresManager(implements(OasisExposuresManagerInterface)):
         )
 
         columns = ['coverage_id', 'summary_id', 'summaryset_id']
+        for col in columns:
+            master_df[col] = master_df[col].astype(int)
+
         master_df.to_csv(
             columns=columns,
             path_or_buf=gulsummaryxref_file_path,
