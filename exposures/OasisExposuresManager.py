@@ -28,7 +28,8 @@ from interface import implements
 from OasisExposuresManagerInterface import OasisExposuresManagerInterface
 from OasisFilesPipeline import OasisFilesPipeline
 
-sys.path.insert(0, os.path.abspath(os.pardir))
+if os.getcwd().split(os.path.sep)[-1] == 'exposures':
+    sys.path.insert(0, os.path.abspath(os.pardir))
 
 from keys import OasisKeysLookupFactory as oklf
 

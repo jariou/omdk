@@ -29,7 +29,8 @@ the ``xtrans`` subfolder. The executable requires a .NET engine like
 (included as a DLL in the ``xtrans`` subfolder). Assuming you've installed
 Mono you should be able to build the executable by running the
 ``xtrans/make-trans`` script - if successful it will be placed in
-``xtrans``.
+``xtrans``.  To build a new executable you can run the `make-trans`
+executable shell script.
 
 ktools
 ------

@@ -73,7 +73,7 @@ the following arguments (in no particular order)</p>
                    <span class="o">-</span><span class="n">l</span> <span class="o">/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">lookup</span><span class="o">/</span><span class="n">service</span><span class="o">/</span><span class="n">package</span>
                    <span class="o">-</span><span class="n">e</span> <span class="o">/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">model</span><span class="o">/</span><span class="n">exposures</span><span class="o">/</span><span class="n">csv</span><span class="o">/</span><span class="n">file</span>
                    <span class="o">-</span><span class="n">o</span> <span class="o">/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">output</span><span class="o">/</span><span class="n">file</span>
-                   <span class="o">-</span><span class="n">f</span> <span class="o">&lt;</span><span class="n">output</span> <span class="nb">format</span> <span class="o">-</span> <span class="s1">&#39;oasis_keys&#39;</span> <span class="ow">or</span> <span class="s1">&#39;list_keys&#39;</span><span class="o">&gt;</span>
+                   <span class="p">[</span><span class="o">-</span><span class="n">f</span> <span class="o">&lt;</span><span class="n">output</span> <span class="nb">format</span> <span class="o">-</span> <span class="s1">&#39;oasis_keys&#39;</span> <span class="ow">or</span> <span class="s1">&#39;list_keys&#39;</span><span class="o">&gt;</span><span class="p">]</span>
 </pre></div>
 </div>
 <p>When calling the script this way paths can be given relative to the
@@ -84,7 +84,7 @@ usually be located in the model keys server (Git) repository. If the
 repository was created by or is managed by Oasis LMF then the lookup
 service package will usually be contained in the <code class="docutils literal"><span class="pre">src/keys_server</span></code>
 Python subpackage and can be given as the path to that subpackage (see
-the <a class="reference external" href="https://github.com/OasisLMF/OasisPiWind">OasisPiWind</a> repository
+the <a class="reference external" href="https://github.com/OasisLMF/OasisPiWind">OasisPiWind repository</a>
 as a reference for how to structure an Oasis keys server repository).</p>
 <p>It is also possible to run the script by defining these arguments in a
 JSON configuration file and calling the script with option <code class="docutils literal"><span class="pre">-f</span></code> and
@@ -102,15 +102,17 @@ the parent folder in which the model keys server repository is located.</p>
 <span class="s2">&quot;output_format&quot;</span>
 </pre></div>
 </div>
-<p>and the values of these keys should be string paths, given relative to
-the parent folder in which the model keys server repository is located.
-The JSON file is usually placed in the model keys server repository.</p>
-<p>Keys records returned by an Oasis keys lookup service (see the <a class="reference external" href="https://github.com/OasisLMF/OasisPiWind/blob/master/src/keys_server/PiWindKeysLookup.py">PiWind lookup service</a>
-for reference) will be Python dicts with the following structure</p>
+<p>and the values of the path-related keys should be string paths, given
+relative to the parent folder in which the model keys server repository
+is located. The JSON file is usually placed in the model keys server
+repository. The <code class="docutils literal"><span class="pre">&quot;output_format&quot;</span></code> key is optional - by default the
+script will generate an Oasis keys file.</p>
+<p>Keys records returned by an Oasis keys lookup service (see the <a class="reference external" href="https://github.com/OasisLMF/OasisPiWind/blob/master/src/keys_server/PiWindKeysLookup.py">PiWind lookup service</a> for reference) will be Python dicts with the following
+structure</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="p">{</span>
     <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">loc</span><span class="o">.</span> <span class="n">ID</span><span class="o">&gt;</span><span class="p">,</span>
-    <span class="s2">&quot;peril_id&quot;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">Oasis</span> <span class="n">peril</span> <span class="nb">type</span> <span class="n">ID</span> <span class="o">-</span> <span class="n">see</span> <span class="n">oasis_utils</span><span class="o">/</span><span class="n">oasis_utils</span><span class="o">.</span><span class="n">py</span><span class="o">&gt;</span><span class="p">,</span>
-    <span class="s2">&quot;coverage&quot;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">coverage</span> <span class="nb">type</span> <span class="n">ID</span> <span class="o">-</span> <span class="n">see</span> <span class="n">oasis_utils</span><span class="o">/</span><span class="n">oasis_utils</span><span class="o">.</span><span class="n">py</span><span class="o">&gt;</span><span class="p">,</span>
+    <span class="s2">&quot;peril_id&quot;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">Oasis</span> <span class="n">peril</span> <span class="nb">type</span> <span class="n">ID</span> <span class="o">-</span> <span class="n">oasis_utils</span><span class="o">/</span><span class="n">oasis_utils</span><span class="o">.</span><span class="n">py</span><span class="o">&gt;</span><span class="p">,</span>
+    <span class="s2">&quot;coverage&quot;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">Oasis</span> <span class="n">coverage</span> <span class="nb">type</span> <span class="n">ID</span> <span class="o">-</span> <span class="n">see</span> <span class="n">oasis_utils</span><span class="o">/</span><span class="n">oasis_utils</span><span class="o">.</span><span class="n">py</span><span class="o">&gt;</span><span class="p">,</span>
     <span class="s2">&quot;area_peril_id&quot;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">area</span> <span class="n">peril</span> <span class="n">ID</span><span class="o">&gt;</span><span class="p">,</span>
     <span class="s2">&quot;vulnerability_id&quot;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">vulnerability</span> <span class="n">ID</span><span class="o">&gt;</span><span class="p">,</span>
     <span class="s2">&quot;message&quot;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">lookup</span> <span class="n">status</span> <span class="n">message</span><span class="o">&gt;</span><span class="p">,</span>
@@ -128,7 +130,8 @@ the following format</p>
 </pre></div>
 </div>
 <p>where the headers correspond to the relevant Oasis keys record fields.
-The <code class="docutils literal"><span class="pre">generate_keys.py</span></code> script can also generate and write Oasis keys files.</p>
+The <code class="docutils literal"><span class="pre">generate_keys.py</span></code> script can also generate and write Oasis keys
+files.</p>
 </div>
 <div class="section" id="generating-oasis-files">
 <h2>Generating Oasis files<a class="headerlink" href="#generating-oasis-files" title="Permalink to this headline">¶</a></h2>
@@ -182,18 +185,17 @@ The JSON file is usually placed in the model keys server repository.</p>
 </div>
 <div class="section" id="generating-losses">
 <h2>Generating losses<a class="headerlink" href="#generating-losses" title="Permalink to this headline">¶</a></h2>
-<p><code class="docutils literal"><span class="pre">generate_losses.py</span></code> is an executable script which, given a model
-analysis settings JSON file, model data and some other parameters, can
-generate a (Bash) shell script containing ktools commands to calculate
-losses, and also execute the generated script to generate those outputs
-using the installed ktools framework. The script can be called directly
-from the command line given the following arguments (in no particular
-order)</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">./</span><span class="n">generate_losses</span><span class="o">.</span><span class="n">py</span> <span class="o">-</span><span class="n">j</span> <span class="o">/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">analysis</span><span class="o">/</span><span class="n">settings</span><span class="o">/</span><span class="n">json</span><span class="o">/</span><span class="n">file</span>
-                     <span class="o">-</span><span class="n">s</span> <span class="o">&lt;</span><span class="n">ktools</span> <span class="n">script</span> <span class="n">name</span> <span class="p">(</span><span class="n">without</span> <span class="n">file</span> <span class="n">extension</span><span class="p">)</span><span class="o">&gt;</span>
+<p><code class="docutils literal"><span class="pre">generate_losses.py</span></code> is an executable script which, given Oasis files,
+model analysis settings JSON file, model data, and some other
+parameters, can generate losses using the installed ktools framework.
+The script can be called directly from the command line given the
+following arguments (in no particular order)</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">./</span><span class="n">generate_losses</span><span class="o">.</span><span class="n">py</span> <span class="o">-</span><span class="n">o</span> <span class="o">/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">oasis</span><span class="o">/</span><span class="n">files</span>
+                     <span class="o">-</span><span class="n">j</span> <span class="o">/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">analysis</span><span class="o">/</span><span class="n">settings</span><span class="o">/</span><span class="n">json</span><span class="o">/</span><span class="n">file</span>
                      <span class="o">-</span><span class="n">m</span> <span class="o">/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">model</span><span class="o">/</span><span class="n">data</span>
                      <span class="o">-</span><span class="n">r</span> <span class="o">/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">model</span><span class="o">/</span><span class="n">run</span><span class="o">/</span><span class="n">directory</span>
-                     <span class="o">-</span><span class="n">n</span> <span class="o">&lt;</span><span class="n">number</span> <span class="n">of</span> <span class="n">ktools</span> <span class="n">calculation</span> <span class="n">processes</span> <span class="n">to</span> <span class="n">use</span><span class="o">&gt;</span>
+                     <span class="p">[</span><span class="o">-</span><span class="n">s</span> <span class="o">&lt;</span><span class="n">ktools</span> <span class="n">script</span> <span class="n">name</span> <span class="p">(</span><span class="n">without</span> <span class="n">file</span> <span class="n">extension</span><span class="p">)</span><span class="o">&gt;</span><span class="p">]</span>
+                     <span class="p">[</span><span class="o">-</span><span class="n">n</span> <span class="o">&lt;</span><span class="n">number</span> <span class="n">of</span> <span class="n">ktools</span> <span class="n">calculation</span> <span class="n">processes</span> <span class="n">to</span> <span class="n">use</span><span class="o">&gt;</span><span class="p">]</span>
                      <span class="p">[</span><span class="o">--</span><span class="n">execute</span> <span class="o">|</span> <span class="o">--</span><span class="n">no</span><span class="o">-</span><span class="n">execute</span><span class="p">]</span>
 </pre></div>
 </div>
@@ -202,9 +204,10 @@ script, in particular, file paths should include the filename and
 extension. The ktools script name should not contain any filetype
 extension, and the model run directory can be placed anywhere in the
 parent folder common to <code class="docutils literal"><span class="pre">omdk</span></code> and the model keys server repository.</p>
-<p>The model run directory must contain the analysis settings JSON file and
-either the actual model data or at least symlinked model data files (in
-the <code class="docutils literal"><span class="pre">static</span></code> subfolder). It must have the following folder structure</p>
+<p>The script creates a time-stamped folder in the model run directory and
+sets that as the new model run directory, copies the analysis settings
+JSON file into the run directory and creates the following folder
+structure</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span>├── analysis_settings.json
 ├── fifo/
 ├── input/
@@ -213,7 +216,10 @@ the <code class="docutils literal"><span class="pre">static</span></code> subfol
 └── work/
 </pre></div>
 </div>
-<p>The losses are written in the <code class="docutils literal"><span class="pre">output</span></code> subfolder as CSV files.</p>
+<p>Depending on the OS type the model data is symlinked (Linux, Darwin) or
+copied (Cygwin, Windows) into the <code class="docutils literal"><span class="pre">static</span></code> subfolder. The input files
+are kept in the <code class="docutils literal"><span class="pre">input</span></code> subfolder and the losses are generated as CSV
+files in the <code class="docutils literal"><span class="pre">output</span></code> subfolder.</p>
 <p>By default executing <code class="docutils literal"><span class="pre">generate_losses.py</span></code> will automatically execute
 the ktools losses script it generates. If you don’t want this provide
 the (optional) <code class="docutils literal"><span class="pre">--no-execute</span></code> argument. The default here is automatic
@@ -227,10 +233,11 @@ is located.</p>
 </pre></div>
 </div>
 <p>The JSON file should contain the following keys (in no particular order)</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="s2">&quot;analysis_settings_json_file_path&quot;</span>
-<span class="s2">&quot;ktools_script_name&quot;</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="s2">&quot;oasis_files_path&quot;</span>
+<span class="s2">&quot;analysis_settings_json_file_path&quot;</span>
 <span class="s2">&quot;model_data_path&quot;</span>
 <span class="s2">&quot;model_run_dir_path&quot;</span>
+<span class="s2">&quot;ktools_script_name&quot;</span>
 <span class="s2">&quot;ktools_num_processes&quot;</span>
 <span class="s2">&quot;execute&quot;</span>
 </pre></div>
@@ -261,10 +268,10 @@ following arguments (in no particular order)</p>
                <span class="o">-</span><span class="n">d</span> <span class="o">/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">canonical</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">model</span><span class="o">/</span><span class="n">exposures</span><span class="o">/</span><span class="n">transformation</span><span class="o">/</span><span class="n">file</span>
                <span class="o">-</span><span class="n">x</span> <span class="o">/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">xtrans</span><span class="o">/</span><span class="n">executable</span>
                <span class="o">-</span><span class="n">j</span> <span class="o">/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">analysis</span><span class="o">/</span><span class="n">settings</span><span class="o">/</span><span class="n">json</span><span class="o">/</span><span class="n">file</span>
-               <span class="o">-</span><span class="n">s</span> <span class="o">&lt;</span><span class="n">ktools</span> <span class="n">script</span> <span class="n">name</span> <span class="p">(</span><span class="n">without</span> <span class="n">file</span> <span class="n">extension</span><span class="p">)</span><span class="o">&gt;</span>
                <span class="o">-</span><span class="n">m</span> <span class="o">/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">model</span><span class="o">/</span><span class="n">data</span>
                <span class="o">-</span><span class="n">r</span> <span class="o">/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">model</span><span class="o">/</span><span class="n">run</span><span class="o">/</span><span class="n">directory</span>
-               <span class="o">-</span><span class="n">n</span> <span class="o">&lt;</span><span class="n">number</span> <span class="n">of</span> <span class="n">ktools</span> <span class="n">calculation</span> <span class="n">processes</span> <span class="n">to</span> <span class="n">use</span><span class="o">&gt;</span>
+               <span class="p">[</span><span class="o">-</span><span class="n">s</span> <span class="o">&lt;</span><span class="n">ktools</span> <span class="n">script</span> <span class="n">name</span> <span class="p">(</span><span class="n">without</span> <span class="n">file</span> <span class="n">extension</span><span class="p">)</span><span class="o">&gt;</span><span class="p">]</span>
+               <span class="p">[</span><span class="o">-</span><span class="n">n</span> <span class="o">&lt;</span><span class="n">number</span> <span class="n">of</span> <span class="n">ktools</span> <span class="n">calculation</span> <span class="n">processes</span> <span class="n">to</span> <span class="n">use</span><span class="o">&gt;</span><span class="p">]</span>
 </pre></div>
 </div>
 <p>When calling the script this way paths can be given relative to the
@@ -296,23 +303,27 @@ is located.</p>
 <span class="s2">&quot;canonical_to_model_exposures_transformation_file_path&quot;</span>
 <span class="s2">&quot;xtrans_path&quot;</span>
 <span class="s2">&quot;analysis_settings_json_file_path&quot;</span>
-<span class="s2">&quot;ktools_script_name&quot;</span>
 <span class="s2">&quot;model_data_path&quot;</span>
 <span class="s2">&quot;model_run_dir_path&quot;</span>
+<span class="s2">&quot;ktools_script_name&quot;</span>
 <span class="s2">&quot;ktools_num_processes&quot;</span>
 </pre></div>
 </div>
 <p>and the values of the path-related keys should be string paths, given
 relative to the parent folder in which the model keys server repository
 is located. The JSON file is usually placed in the model keys server
-repository.</p>
+repository. The <code class="docutils literal"><span class="pre">&quot;ktools_script_name&quot;</span></code> and <code class="docutils literal"><span class="pre">&quot;ktools_num_processes&quot;</span></code>
+keys are optional - the script uses default values of <code class="docutils literal"><span class="pre">run_ktools.sh</span></code>
+and 2 respectively.</p>
 <p><strong>NOTE</strong>: For a given model the JSON script configuration files for
 <code class="docutils literal"><span class="pre">generate_oasis_files.py</span></code>, <code class="docutils literal"><span class="pre">generate_losses.py</span></code> and <code class="docutils literal"><span class="pre">run_model.py</span></code>
-should complement each other, so you can run any of these scripts
-against a single master script configuration file.</p>
+should complement each other, except for <code class="docutils literal"><span class="pre">generate_losses.py</span></code> which
+requires the path to Oasis files, not required by <code class="docutils literal"><span class="pre">run_model.py</span></code>. You
+can run any of these scripts against a single master script
+configuration file, provided that the path to an actual set of Oasis
+files is added in order to run <code class="docutils literal"><span class="pre">generate_losses.py</span></code></p>
 <p>As an example, this is the master script configuration file for PiWind</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="p">{</span>
-    <span class="s2">&quot;model_data_path&quot;</span><span class="p">:</span> <span class="s2">&quot;OasisPiWind/model_data/PiWind&quot;</span><span class="p">,</span>
     <span class="s2">&quot;keys_data_path&quot;</span><span class="p">:</span> <span class="s2">&quot;OasisPiWind/keys_data/PiWind&quot;</span><span class="p">,</span>
     <span class="s2">&quot;model_version_file_path&quot;</span><span class="p">:</span> <span class="s2">&quot;OasisPiWind/keys_data/PiWind/ModelVersion.csv&quot;</span><span class="p">,</span>
     <span class="s2">&quot;lookup_package_path&quot;</span><span class="p">:</span> <span class="s2">&quot;OasisPiWind/src/keys_server&quot;</span><span class="p">,</span>
@@ -323,15 +334,15 @@ against a single master script configuration file.</p>
     <span class="s2">&quot;canonical_exposures_validation_file_path&quot;</span><span class="p">:</span> <span class="s2">&quot;OasisPiWind/flamingo/PiWind/Files/ValidationFiles/Generic_Windstorm_CanLoc_B.xsd&quot;</span><span class="p">,</span>
     <span class="s2">&quot;canonical_to_model_exposures_transformation_file_path&quot;</span><span class="p">:</span> <span class="s2">&quot;OasisPiWind/flamingo/PiWind/Files/TransformationFiles/MappingMapTopiwind_modelloc.xslt&quot;</span><span class="p">,</span>
     <span class="s2">&quot;xtrans_path&quot;</span><span class="p">:</span> <span class="s2">&quot;omdk/xtrans/xtrans.exe&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;oasis_files_path&quot;</span><span class="p">:</span> <span class="s2">&quot;omdk/tests/data/oasislmf-piwind-0.0.0.1&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;model_run_dir_path&quot;</span><span class="p">:</span> <span class="s2">&quot;omdk/tests/data/oasislmf-piwind-0.0.0.1&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;oasis_files_path&quot;</span><span class="p">:</span> <span class="s2">&quot;/path/to/oasis/files&quot;</span><span class="p">,</span>
     <span class="s2">&quot;analysis_settings_json_file_path&quot;</span><span class="p">:</span> <span class="s2">&quot;OasisPiWind/analysis_settings.json&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;ktools_script_name&quot;</span><span class="p">:</span> <span class="s2">&quot;run_ktools&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;ktools_num_processes&quot;</span><span class="p">:</span> <span class="mi">2</span>
+    <span class="s2">&quot;model_data_path&quot;</span><span class="p">:</span> <span class="s2">&quot;OasisPiWind/model_data/PiWind&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;model_run_dir_path&quot;</span><span class="p">:</span> <span class="s2">&quot;omdk/tests/data/oasislmf-piwind-0.0.0.1&quot;</span>
 <span class="p">}</span>
 </pre></div>
 </div>
-<p>It can also be obtained from <a class="reference external" href="https://github.com/OasisLMF/OasisPiWind/blob/master/mdk-oasislmf-piwind.json">https://github.com/OasisLMF/OasisPiWind/blob/master/mdk-oasislmf-piwind.json</a>.</p>
+<p>It can also be obtained from
+<a class="reference external" href="https://github.com/OasisLMF/OasisPiWind/blob/master/mdk-oasislmf-piwind.json">https://github.com/OasisLMF/OasisPiWind/blob/master/mdk-oasislmf-piwind.json</a>.</p>
 </div>
 </div>
 

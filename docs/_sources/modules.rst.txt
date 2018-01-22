@@ -56,3 +56,10 @@ Module Documentation
 ------------------
 
 .. automodule:: run_model
+
+``omdk.utils``
+--------------
+
+.. automodule:: utils
+   :members:
+   :undoc-members:

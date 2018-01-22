@@ -70,7 +70,8 @@
 <span class="kn">from</span> <span class="nn">OasisExposuresManagerInterface</span> <span class="k">import</span> <span class="n">OasisExposuresManagerInterface</span>
 <span class="kn">from</span> <span class="nn">OasisFilesPipeline</span> <span class="k">import</span> <span class="n">OasisFilesPipeline</span>
 
-<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">pardir</span><span class="p">))</span>
+<span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">sep</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;exposures&#39;</span><span class="p">:</span>
+    <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">pardir</span><span class="p">))</span>
 
 <span class="kn">from</span> <span class="nn">keys</span> <span class="k">import</span> <span class="n">OasisKeysLookupFactory</span> <span class="k">as</span> <span class="n">oklf</span>
 
