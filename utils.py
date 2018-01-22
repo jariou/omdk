@@ -5,8 +5,6 @@
 MDK internal utilities
 """
 
-from __future__ import print_function
-
 __all__ = [
     'load_script_args_from_config_file',
     'parse_script_args',
