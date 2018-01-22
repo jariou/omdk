@@ -181,13 +181,13 @@ class OasisKeysLookupFactory(object):
             if type(record_container) in [list, tuple, set]:
                 for r in record_container:
                     if success_only:
-                        if r['status'] == 'success':
+                        if r['status'].lower() == 'success':
                             yield r
                     else:
                         yield r
             elif type(record_container) == dict:
                 if success_only:
-                    if record_container['status'] == 'success':
+                    if record_container['status'].lower() == 'success':
                         yield record_container
                 else:
                     yield record_container
