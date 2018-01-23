@@ -96,10 +96,10 @@ As an example, this is the master script configuration file for PiWind
         "canonical_exposures_validation_file_path": "OasisPiWind/flamingo/PiWind/Files/ValidationFiles/Generic_Windstorm_CanLoc_B.xsd",
         "canonical_to_model_exposures_transformation_file_path": "OasisPiWind/flamingo/PiWind/Files/TransformationFiles/MappingMapTopiwind_modelloc.xslt",
         "xtrans_path": "omdk/xtrans/xtrans.exe",
-        "oasis_files_path": "/path/to/oasis/files",
+        "oasis_files_path": "omdk/runs",
         "analysis_settings_json_file_path": "OasisPiWind/analysis_settings.json",
         "model_data_path": "OasisPiWind/model_data/PiWind",
-        "model_run_dir_path": "omdk/tests/data/oasislmf-piwind-0.0.0.1"
+        "model_run_dir_path": "omdk/runs"
     }
 
 It can also be obtained from
