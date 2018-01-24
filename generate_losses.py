@@ -13,21 +13,25 @@ following arguments (in no particular order)
     ./generate_losses.py -o /path/to/oasis/files
                          -j /path/to/analysis/settings/json/file
                          -m /path/to/model/data
-                         -r /path/to/model/run/directory
+                         [-r /path/to/model/run/directory]
                          [-s <ktools script name (without file extension)>]
                          [-n <number of ktools calculation processes to use>]
                          [--execute | --no-execute]
 
 When calling the script this way paths can be given relative to the
 script, in particular, file paths should include the filename and
-extension. The ktools script name should not contain any filetype
-extension, and the model run directory can be placed anywhere in the
-parent folder common to ``omdk`` and the model keys server repository.
+extension. The path to the model run directory is optional - by default
+the script will create a timestamped folder in ``omdk/runs`` with the
+prefix ``ProgOasis``. The ktools script name and number of calculation
+processes are optional - by default the script will create a ktools
+script named ``run_tools.sh`` and set the number of calculation
+processes to 2. By default executing ``generate_losses.py`` will
+automatically execute the ktools losses script it generates. If you
+don't want this provide the (optional) ``--no-execute`` argument. The
+default here is automatic execution.
 
-The script creates a time-stamped folder in the model run directory and
-sets that as the new model run directory, copies the analysis settings
-JSON file into the run directory and creates the following folder
-structure
+The script copies the analysis settings JSON file to the model run
+directory and sets up the following folder structure inside
 
 ::
 
@@ -43,20 +47,14 @@ copied (Cygwin, Windows) into the ``static`` subfolder. The input files
 are kept in the ``input`` subfolder and the losses are generated as CSV
 files in the ``output`` subfolder.
 
-By default executing ``generate_losses.py`` will automatically execute
-the ktools losses script it generates. If you don't want this provide
-the (optional) ``--no-execute`` argument. The default here is automatic
-execution.
-
 It is also possible to run the script by defining these arguments in a
 JSON configuration file and calling the script using the path to this
-file using the option ``-f``. In this case the paths should be given
-relative to the parent folder in which the model keys server repository
-is located.
+file using the option ``-f`` and the (relative or absolute) path to the
+file.
 
 ::
 
-    ./generate_losses.py -f /path/to/model/resources/JSON/config/file'
+    ./generate_losses.py -f /path/to/script/config/json/file'
 
 The JSON file should contain the following keys (in no particular order)
 
@@ -71,12 +69,17 @@ The JSON file should contain the following keys (in no particular order)
     "execute"
 
 and the values of the path-related keys should be string paths, given
-relative to the parent folder in which the model keys server repository
-is located. The JSON file is usually placed in the model keys server
-repository. The value of the (optional) ``"exectute"`` key should be
-either ``true`` or ``false`` depending on whether you want the generated
-ktools losses scripts to be automatically executed or not. The default
-here is automatic execution.
+relative to the location of the JSON file. The JSON file is usually
+placed in the model keys server repository. The ``"model_run_dir_path"``
+key is optional - by default the script will create a timestamped folder
+in ``omdk/runs`` with the prefix ``ProgOasis``. The
+``"ktools_script_name"`` and ``"ktools_num_processes"`` keys are
+optional - by default the script will create a ktools script named
+``run_tools.sh`` and set the number of calculation processes to 2. The
+``"execute"`` key is optional - if present it should be either ``true``
+or ``false`` depending on whether you want the generated ktools losses
+scripts to be automatically executed or not. The default here is
+automatic execution.
 """
 
 import argparse
@@ -646,7 +649,7 @@ SCRIPT_ARGS_METADICT = {
         'help_text': 'Path to Oasis files',
         'required_on_command_line': False,
         'required_for_script': True,
-        'preexists': False
+        'preexists': True
     },
     'analysis_settings_json_file_path': {
         'name': 'analysis_settings_json_file_path',
@@ -672,8 +675,8 @@ SCRIPT_ARGS_METADICT = {
         'type': str,
         'help_text': 'Model run directory path',
         'required_on_command_line': False,
-        'required_for_script': True,
-        'preexists': True
+        'required_for_script': False,
+        'preexists': False
     },
     'ktools_script_name': {
         'name': 'ktools_script_name',
@@ -681,7 +684,7 @@ SCRIPT_ARGS_METADICT = {
         'type': str,
         'help_text': 'Relative or absolute path of the output file',
         'required_on_command_line': False,
-        'required_for_script': True
+        'required_for_script': False
     },
     'ktools_num_processes': {
         'name': 'ktools_num_processes',
@@ -709,16 +712,16 @@ if __name__ == '__main__':
     logger.info('Console logging set')
 
     try:
-        logger.info('Parsing script resources arguments')
-        args = mdk_utils.parse_script_args(SCRIPT_ARGS_METADICT, desc='Generate ktools script for model')
+        logger.info('Parsing script arguments')
+        args = mdk_utils.parse_script_args(SCRIPT_ARGS_METADICT, desc='Generate ktools losses script for model')
 
         if args['config_file_path']:
-            logger.info('Loading script resources from config file {}'.format(SCRIPT_ARGS_METADICT, args['config_file_path']))
-            args = mdk_utils.load_script_args_from_config_file(args['config_file_path'])
-            logger.info('Script resources: {}'.format(args))
+            logger.info('Loading script arguments from config file {}'.format(args['config_file_path']))
+            args = mdk_utils.load_script_args_from_config_file(SCRIPT_ARGS_METADICT, args['config_file_path'])
         else:
             args.pop('config_file_path')
-            logger.info('Script resources arguments: {}'.format(args))
+
+        logger.info('Script arguments: {}'.format(json.dumps(args, indent=4, sort_keys=True)))
 
         di = SCRIPT_ARGS_METADICT
         missing = filter(lambda arg: not args[arg] if arg in args and di[arg]['required_for_script'] else None, di)
@@ -726,14 +729,23 @@ if __name__ == '__main__':
         if missing:
             raise OasisException('Not all required script resources arguments provided - missing {}'.format(missing))
 
-        if not os.path.exists(args['model_run_dir_path']):
-            os.mkdir(args['model_run_dir_path'])
-
         utcnow = get_utctimestamp(fmt='%Y%m%d%H%M%S')
-        model_run_dir_path = os.path.join(args['model_run_dir_path'], 'ProgOasis-{}'.format(utcnow))
-        logger.info('Creating time-stamped model run folder {}'.format(model_run_dir_path))
-        os.mkdir(model_run_dir_path)
-        
+
+        logger.info('Checking for model run directory')
+        try:
+            if 'model_run_dir_path' not in args or not args['model_run_dir_path']:
+                model_run_dir_path = os.path.join(os.getcwd(), 'runs', 'ProgOasis-{}'.format(utcnow))
+                logger.info('Model run directory not provided - creating one in omdk/runs')
+                os.mkdir(model_run_dir_path)
+            else:
+                if not os.path.exists(args['model_run_dir_path']):
+                    logger.info('Model run directory {} does not exist - creating one'.format(args['model_run_dir_path']))
+                    os.mkdir(args['model_run_dir_path'])
+
+                model_run_dir_path = args['model_run_dir_path']
+        except OSError as e:
+            raise OasisException('Error creating model run directory: {}'.format(str(e)))
+
         logger.info(
             'Preparing model run directory {} - '
             'copying Oasis files, analysis settings JSON file '
@@ -759,10 +771,9 @@ if __name__ == '__main__':
                 analysis_settings = json.load(f)
                 if 'analysis_settings' in analysis_settings:
                     analysis_settings = analysis_settings['analysis_settings']
-        except (IOError, TypeError, ValueError):
-            raise OasisException("Invalid analysis settings JSON file or file path: {}.".format(analysis_settings_json_file_path))
+        except (IOError, TypeError, ValueError):            raise OasisException("Invalid analysis settings JSON file or file path: {}.".format(analysis_settings_json_file_path))
 
-        logging.info('Loaded analysis settings JSON: {}'.format(analysis_settings))
+        logging.info('Loaded analysis settings JSON: {}'.format(json.dumps(analysis_settings, indent=4, sort_keys=True)))
 
         logger.info('Preparing model run inputs')
         model_data_path = os.path.join(model_run_dir_path, 'static')
@@ -810,7 +821,7 @@ if __name__ == '__main__':
         except (OSError, IOError, subprocess.CalledProcessError) as e:
             raise OasisException(e)
 
-        logger.info('Loss outputs generated in {}'.format(os.path.join(model_run_dir_path, 'output')))
+        logger.info('Losses generated in {}'.format(os.path.join(model_run_dir_path, 'output')))
     except OasisException as e:
         logger.error(str(e))
         sys.exit(-1)

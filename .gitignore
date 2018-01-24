@@ -105,3 +105,6 @@ ENV/
 
 # top-level CSV and JSON files
 .csv
+
+# xtrans/sxtrans.exe
+.exe

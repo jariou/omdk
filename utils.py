@@ -26,17 +26,19 @@ def load_script_args_from_config_file(script_args_metadict, config_file_path):
     """
     di = script_args_metadict
 
+    cfp = config_file_path if os.path.isabs(config_file_path) else os.path.abspath(config_file_path)
+    cfd = os.path.dirname(cfp)
+
     if config_file_path.endswith('json'):
         try:
-            with io.open(config_file_path, 'r', encoding='utf-8') as f:
+            with io.open(cfp, 'r', encoding='utf-8') as f:
                 args = json.load(f)
         except (IOError, TypeError, ValueError) as e:
-            raise OasisException('Error parsing script resources config file {}: {}'.format(config_file_path, str(e)))
+            raise OasisException('Error parsing script resources config file {}: {}'.format(cfp, str(e)))
 
         try:
-            parent_dir = os.path.abspath(os.pardir)
             map(
-                lambda arg: args.update({arg: os.path.join(parent_dir, args[arg])}) if arg.endswith('path') and args[arg] else None,
+                lambda arg: args.update({arg: os.path.join(cfd, args[arg])}) if arg.endswith('path') and args[arg] else None,
                 args
             )
 

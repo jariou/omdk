@@ -101,12 +101,6 @@ class OasisExposuresManager(implements(OasisExposuresManagerInterface)):
             oasis_files_path = os.path.abspath(omr['oasis_files_path'])
             if not os.path.exists(oasis_files_path):
                 os.mkdir(oasis_files_path)
-        else:
-            oasis_files_path = os.path.join(os.getcwd(), 'Files', oasis_model.key.replace('/', '-'))
-            if not os.path.exists(oasis_files_path):
-                os.mkdir(oasis_files_path)
-        
-        omr['oasis_files_path'] = oasis_files_path
 
         if 'source_exposures_file_path' in omr:
             with io.open(omr['source_exposures_file_path'], 'r', encoding='utf-8') as f:
@@ -1010,21 +1004,21 @@ class OasisExposuresManager(implements(OasisExposuresManagerInterface)):
         """
         try:
             if not with_model_resources:
-                self.logger.info('Checking output files directory exists for model')
+                self.logger.info('Checking Oasis files directory exists for model')
 
                 oasis_files_path = kwargs['oasis_files_path'] if 'oasis_files_path' in kwargs else None
                 
                 if not oasis_files_path:
                     raise OasisException(
-                        "No output directory provided for {} in '**kwargs'.".format(oasis_model)
+                        "No Oasis files directory provided for {} in '**kwargs'.".format(oasis_model)
                     )
                 elif not os.path.exists(oasis_files_path):
                     raise OasisException(
-                        "Output directory {} for {} provided in '**kwargs' "
+                        "Oasis files directory {} for {} provided in '**kwargs' "
                         "does not exist on the filesystem.".format(oasis_files_path, oasis_model)
                     )
 
-                self.logger.info('Output files directory {} exists'.format(oasis_files_path))
+                self.logger.info('Oasis files directory {} exists'.format(oasis_files_path))
 
                 self.logger.info('Checking for source exposures file')
                 
@@ -1037,7 +1031,7 @@ class OasisExposuresManager(implements(OasisExposuresManagerInterface)):
                 
                 self.logger.info('Source exposures file {} exists'.format(source_exposures_file_path))
 
-                self.logger.info('Copying source exposures file to model output files directory')
+                self.logger.info('Copying source exposures file to model Oasis files directory')
                 
                 source_exposures_file_name = source_exposures_file_path.split(os.path.sep)[-1]
                 target_file_path = os.path.join(oasis_files_path, source_exposures_file_name)
@@ -1084,7 +1078,7 @@ class OasisExposuresManager(implements(OasisExposuresManagerInterface)):
                 self.logger.info('Loading canonical exposures profile into model resources')
                 canonical_exposures_profile = self.load_canonical_profile(oasis_model, with_model_resources=False, **kwargs)
                 kwargs['canonical_exposures_profile'] = canonical_exposures_profile
-                self.logger.info('Loaded canonical exposures profile {} into model resources'.format(canonical_exposures_profile))
+                self.logger.info('Loaded canonical exposures profile {} into model resources'.format(json.dumps(canonical_exposures_profile, indent=4, sort_keys=True)))
 
                 kwargs['items_file_path'] = os.path.join(oasis_files_path, 'items.csv')
                 kwargs['items_timestamped_file_path'] = os.path.join(oasis_files_path, 'items-{}.csv'.format(utcnow))
@@ -1107,20 +1101,20 @@ class OasisExposuresManager(implements(OasisExposuresManagerInterface)):
                 omr = oasis_model.resources
                 tfp = omr['oasis_files_pipeline']
 
-                self.logger.info('Checking output files directory exists for model')
+                self.logger.info('Checking Oasis files directory exists for model')
 
                 oasis_files_path = omr['oasis_files_path'] if 'oasis_files_path' in omr else None
                 if not oasis_files_path:
                     raise OasisException(
-                        "No output directory provided for {} in resources dict.".format(oasis_model)
+                        "No Oasis files directory provided for {} in resources dict.".format(oasis_model)
                     )
                 elif not os.path.exists(oasis_files_path):
                     raise OasisException(
-                        "Output directory {} for {} provided in resources dict "
+                        "Oasis files directory {} for {} provided in resources dict "
                         "does not exist on the filesystem.".format(oasis_files_path, oasis_model)
                     )
 
-                self.logger.info('Output files directory {} exists'.format(oasis_files_path))
+                self.logger.info('Oasis files directory {} exists'.format(oasis_files_path))
 
                 self.logger.info('Checking for source exposures file in the model files pipeline')
 

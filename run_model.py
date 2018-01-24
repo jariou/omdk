@@ -22,7 +22,7 @@ following arguments (in no particular order)
                    -x /path/to/xtrans/executable
                    -j /path/to/analysis/settings/json/file
                    -m /path/to/model/data
-                   -r /path/to/model/run/directory
+                   [-r /path/to/model/run/directory]
                    [-s <ktools script name (without file extension)>]
                    [-n <number of ktools calculation processes to use>]
 
@@ -31,20 +31,21 @@ script, in particular, file paths should include the filename and
 extension. The paths to the keys data, lookup service package, model
 version file, canonical exposures profile JSON, source exposures file,
 transformation and validation files, and analysis settings JSON file,
-will usually be located in the model keys server repository. The ktools
-script name should not contain any filetype extension, and the model run
-directory can be placed anywhere in the parent folder common to ``omdk``
-and the model keys server repository.
+will usually be located in the model keys server repository. The path to
+the model run directory is optional - by default the script will create
+a timestamped folder in ``omdk/runs`` with the prefix ``ProgOasis``. The
+ktools script name and number of calculation processes are also optional
+- by default the script will create a ktools script named
+``run_tools.sh`` and set the number of calculation processes to 2.
 
 It is also possible to run the script by defining these arguments in a
 JSON configuration file and calling the script using the path to this
-file using the option ``-f``. In this case the paths should be given
-relative to the parent folder in which the model keys server repository
-is located.
+file using the option ``-f`` and the (relative or absolute) path to the
+file.
 
 ::
 
-    ./run_model.py -f /path/to/model/resources/JSON/config/file'
+    ./run_model.py -f /path/to/script/config/json/file'
 
 The JSON file should contain the following keys (in no particular order)
 
@@ -67,11 +68,17 @@ The JSON file should contain the following keys (in no particular order)
     "ktools_num_processes"
 
 and the values of the path-related keys should be string paths, given
-relative to the parent folder in which the model keys server repository
-is located. The JSON file is usually placed in the model keys server
-repository. The ``"ktools_script_name"`` and ``"ktools_num_processes"``
-keys are optional - the script uses default values of ``run_ktools.sh``
-and 2 respectively.
+relative to the location of the JSON file. The JSON file is usually placed in the model keys server
+repository. The ``"model_run_dir_path"`` key is optional - by default
+the script will create a timestamped folder in ``omdk/runs`` with the
+prefix ``ProgOasis``. The ``"ktools_script_name"`` and
+``"ktools_num_processes"`` keys are optional - by default the script
+will create a ktools script named ``run_tools.sh`` and set the number of
+calculation processes to 2.
+
+You can define a separate JSON configuration file for each model,
+provided you have the model keys server repository and other required
+model resources available locally.
 
 **NOTE**: For a given model the JSON script configuration files for
 ``generate_oasis_files.py``, ``generate_losses.py`` and ``run_model.py``
@@ -79,31 +86,7 @@ should complement each other, except for ``generate_losses.py`` which
 requires the path to Oasis files, not required by ``run_model.py``. You
 can run any of these scripts against a single master script
 configuration file, provided that the path to an actual set of Oasis
-files is added in order to run ``generate_losses.py``
-
-As an example, this is the master script configuration file for PiWind
-
-::
-
-    {
-        "keys_data_path": "OasisPiWind/keys_data/PiWind",
-        "model_version_file_path": "OasisPiWind/keys_data/PiWind/ModelVersion.csv", 
-        "lookup_package_path": "OasisPiWind/src/keys_server",
-        "canonical_exposures_profile_json_path": "OasisPiWind/oasislmf-piwind-canonical-profile.json",
-        "source_exposures_file_path": "OasisPiWind/tests/data/SourceLocPiWind.csv",
-        "source_exposures_validation_file_path": "OasisPiWind/flamingo/PiWind/Files/ValidationFiles/Generic_Windstorm_SourceLoc.xsd",
-        "source_to_canonical_exposures_transformation_file_path": "OasisPiWind/flamingo/PiWind/Files/TransformationFiles/MappingMapToGeneric_Windstorm_CanLoc_A.xslt",
-        "canonical_exposures_validation_file_path": "OasisPiWind/flamingo/PiWind/Files/ValidationFiles/Generic_Windstorm_CanLoc_B.xsd",
-        "canonical_to_model_exposures_transformation_file_path": "OasisPiWind/flamingo/PiWind/Files/TransformationFiles/MappingMapTopiwind_modelloc.xslt",
-        "xtrans_path": "omdk/xtrans/xtrans.exe",
-        "oasis_files_path": "omdk/runs",
-        "analysis_settings_json_file_path": "OasisPiWind/analysis_settings.json",
-        "model_data_path": "OasisPiWind/model_data/PiWind",
-        "model_run_dir_path": "omdk/runs"
-    }
-
-It can also be obtained from
-`https://github.com/OasisLMF/OasisPiWind/blob/master/mdk-oasislmf-piwind.json <https://github.com/OasisLMF/OasisPiWind/blob/master/mdk-oasislmf-piwind.json>`_.
+files is added in order to run ``generate_losses.py``.
 """
 
 import argparse
@@ -253,8 +236,8 @@ SCRIPT_ARGS_METADICT = {
         'type': str,
         'help_text': 'Model run directory path',
         'required_on_command_line': False,
-        'required_for_script': True,
-        'preexists': True
+        'required_for_script': False,
+        'preexists': False
     },
     'ktools_script_name': {
         'name': 'ktools_script_name',
@@ -283,16 +266,16 @@ if __name__ == '__main__':
     logger.info('Console logging set')
 
     try:
-        logger.info('Processing script resources arguments')
+        logger.info('Processing script arguments')
         args = mdk_utils.parse_script_args(SCRIPT_ARGS_METADICT, desc='Generates ktools outputs for a given model')
 
         if args['config_file_path']:
             logger.info('Loading script resources from config file {}'.format(args['config_file_path']))
             args = mdk_utils.load_script_args_from_config_file(SCRIPT_ARGS_METADICT, args['config_file_path'])
-            logger.info('Script resources: {}'.format(args))
         else:
             args.pop('config_file_path')
-            logger.info('Script resources arguments: {}'.format(args))
+
+        logger.info('Script arguments: {}'.format(json.dumps(args, indent=4, sort_keys=True)))
 
         di = SCRIPT_ARGS_METADICT
         missing = filter(lambda arg: not args[arg] if arg in args and di[arg]['required_for_script'] else None, di)
@@ -300,10 +283,23 @@ if __name__ == '__main__':
         if missing:
             raise OasisException('Not all script resources arguments provided - missing {}'.format(missing))
 
-        if not os.path.exists(args['model_run_dir_path']):
-            os.mkdir(args['model_run_dir_path'])
+        utcnow = get_utctimestamp(fmt='%Y%m%d%H%M%S')
 
-        tmp_oasis_files_path = os.path.join(args['model_run_dir_path'], 'tmp')
+        logger.info('Checking for model run directory')
+        try:
+            if 'model_run_dir_path' not in args or not args['model_run_dir_path']:
+                model_run_dir_path = os.path.join(os.getcwd(), 'runs', 'ProgOasis-{}'.format(utcnow))
+                logger.info('Model run directory not provided - creating one in omdk/runs')
+                os.mkdir(model_run_dir_path)
+            else:
+                if not os.path.exists(args['model_run_dir_path']):
+                    os.mkdir(args['model_run_dir_path'])
+
+                model_run_dir_path = args['model_run_dir_path']
+        except OSError as e:
+            raise OasisException('Error creating model run directory: {}'.format(str(e)))
+
+        tmp_oasis_files_path = os.path.join(model_run_dir_path, 'tmp')
         logger.info('Creating temporary folder {} for Oasis files'.format(tmp_oasis_files_path))
         os.mkdir(tmp_oasis_files_path)
 
@@ -362,7 +358,7 @@ if __name__ == '__main__':
             tmp_oasis_files_path,
             args['analysis_settings_json_file_path'],
             args['model_data_path'],
-            args['model_run_dir_path'],
+            model_run_dir_path,
             ktools_script_name,
             ktools_num_processes
         )

@@ -45,17 +45,16 @@ usually be located in the model keys server (Git) repository. If the
 repository was created by or is managed by Oasis LMF then the lookup
 service package will usually be contained in the ``src/keys_server``
 Python subpackage and can be given as the path to that subpackage (see
-the `OasisPiWind repository <https://github.com/OasisLMF/OasisPiWind>`_
-as a reference for how to structure an Oasis keys server repository).
+the OasisPiWind repository as a reference for how to structure an Oasis
+keys server repository)
 
 It is also possible to run the script by defining these arguments in a
 JSON configuration file and calling the script with option ``-f`` and
-the path to the file. In this case the paths should be given relative to
-the parent folder in which the model keys server repository is located.
+the (relative or absolute) path to the file.
 
 ::
 
-    ./generate_keys.py -f /path/to/keys/script/config/file
+    ./generate_keys.py -f /path/to/script/config/json/file
 
 The JSON file should contain the following keys (in no particular order)
 
@@ -69,12 +68,12 @@ The JSON file should contain the following keys (in no particular order)
     "output_format"
 
 and the values of the path-related keys should be string paths, given
-relative to the parent folder in which the model keys server repository
-is located. The JSON file is usually placed in the model keys server
-repository. The ``"output_format"`` key is optional - by default the
-script will generate an Oasis keys file.
+relative to the location of JSON file. The JSON file is usually placed
+in the model keys server repository. The ``"output_format"`` key is
+optional - by default the script will generate an Oasis keys file.
 
-Keys records returned by an Oasis keys lookup service (see the `PiWind lookup service <https://github.com/OasisLMF/OasisPiWind/blob/master/src/keys_server/PiWindKeysLookup.py>`_ for reference) will be Python dicts with the following
+Keys records returned by an Oasis keys lookup service (see the PiWind
+lookup service for reference) will be Python dicts with the following
 structure
 
 ::
@@ -101,9 +100,8 @@ the following format
     ..
     ..
 
-where the headers correspond to the relevant Oasis keys record fields.
-The ``generate_keys.py`` script can also generate and write Oasis keys
-files.
+where the headers correspond to the relevant Oasis keys record fields. The ``generate_keys.py`` script can also generate and
+write Oasis keys files.
 
 Generating Oasis files
 ----------------------
@@ -124,24 +122,25 @@ following arguments (in no particular order)
                               -c /path/to/canonical/exposures/validation/file
                               -d /path/to/canonical/to/model/exposures/transformation/file
                               -x /path/to/xtrans/executable
-                              -o /path/to/oasis/files/directory
+                              [-o /path/to/oasis/files/directory]
 
 When calling the script this way paths can be given relative to the
 script, in particular, file paths should include the filename and
 extension. The paths to the keys data, lookup service package, model
 version file, canonical exposures profile JSON, source exposures file,
 transformation and validation files, will usually be located in the
-model keys server repository.
+model keys server repository. The path to the Oasis files directory is
+optional - by default the script will create a timestamped folder in
+``omdk/runs`` with the prefix ``OasisFiles``.
 
 It is also possible to run the script by defining these arguments in a
 JSON configuration file and calling the script using the path to this
-file using the option ``-f``. In this case the paths should be given
-relative to the parent folder in which the model keys server repository
-is located.
+file using the option ``-f`` and the (relative or absolute) path to the
+file.
 
 ::
 
-    ./generate_oasis_files.py -f /path/to/model/resources/JSON/config/file
+    ./generate_oasis_files.py -f /path/to/script/config/json/file
 
 The JSON file contain the following keys (in no particular order)
 
@@ -160,8 +159,10 @@ The JSON file contain the following keys (in no particular order)
     "oasis_files_path"
 
 and the values of these keys should be string paths, given relative to
-the parent folder in which the model keys server repository is located.
-The JSON file is usually placed in the model keys server repository.
+the location of the JSON file. The JSON file is usually placed in the
+model keys server repository. The ``"oasis_files_path"`` key is optional
+- by default the script will create a timestamped folder in
+``omdk/runs`` with the prefix ``OasisFiles``.
 
 Generating losses
 -----------------
@@ -177,21 +178,25 @@ following arguments (in no particular order)
     ./generate_losses.py -o /path/to/oasis/files
                          -j /path/to/analysis/settings/json/file
                          -m /path/to/model/data
-                         -r /path/to/model/run/directory
+                         [-r /path/to/model/run/directory]
                          [-s <ktools script name (without file extension)>]
                          [-n <number of ktools calculation processes to use>]
                          [--execute | --no-execute]
 
 When calling the script this way paths can be given relative to the
 script, in particular, file paths should include the filename and
-extension. The ktools script name should not contain any filetype
-extension, and the model run directory can be placed anywhere in the
-parent folder common to ``omdk`` and the model keys server repository.
+extension. The path to the model run directory is optional - by default
+the script will create a timestamped folder in ``omdk/runs`` with the
+prefix ``ProgOasis``. The ktools script name and number of calculation
+processes are optional - by default the script will create a ktools
+script named ``run_tools.sh`` and set the number of calculation
+processes to 2. By default executing ``generate_losses.py`` will
+automatically execute the ktools losses script it generates. If you
+don't want this provide the (optional) ``--no-execute`` argument. The
+default here is automatic execution.
 
-The script creates a time-stamped folder in the model run directory and
-sets that as the new model run directory, copies the analysis settings
-JSON file into the run directory and creates the following folder
-structure
+The script copies the analysis settings JSON file to the model run
+directory and sets up the following folder structure inside
 
 ::
 
@@ -207,20 +212,14 @@ copied (Cygwin, Windows) into the ``static`` subfolder. The input files
 are kept in the ``input`` subfolder and the losses are generated as CSV
 files in the ``output`` subfolder.
 
-By default executing ``generate_losses.py`` will automatically execute
-the ktools losses script it generates. If you don't want this provide
-the (optional) ``--no-execute`` argument. The default here is automatic
-execution.
-
 It is also possible to run the script by defining these arguments in a
 JSON configuration file and calling the script using the path to this
-file using the option ``-f``. In this case the paths should be given
-relative to the parent folder in which the model keys server repository
-is located.
+file using the option ``-f`` and the (relative or absolute) path to the
+file.
 
 ::
 
-    ./generate_losses.py -f /path/to/model/resources/JSON/config/file'
+    ./generate_losses.py -f /path/to/script/config/json/file'
 
 The JSON file should contain the following keys (in no particular order)
 
@@ -235,12 +234,17 @@ The JSON file should contain the following keys (in no particular order)
     "execute"
 
 and the values of the path-related keys should be string paths, given
-relative to the parent folder in which the model keys server repository
-is located. The JSON file is usually placed in the model keys server
-repository. The value of the (optional) ``"exectute"`` key should be
-either ``true`` or ``false`` depending on whether you want the generated
-ktools losses scripts to be automatically executed or not. The default
-here is automatic execution.
+relative to the location of the JSON file. The JSON file is usually
+placed in the model keys server repository. The ``"model_run_dir_path"``
+key is optional - by default the script will create a timestamped folder
+in ``omdk/runs`` with the prefix ``ProgOasis``. The
+``"ktools_script_name"`` and ``"ktools_num_processes"`` keys are
+optional - by default the script will create a ktools script named
+``run_tools.sh`` and set the number of calculation processes to 2. The
+``"execute"`` key is optional - if present it should be either ``true``
+or ``false`` depending on whether you want the generated ktools losses
+scripts to be automatically executed or not. The default here is
+automatic execution.
 
 Running a model end-to-end
 --------------------------
@@ -265,7 +269,7 @@ following arguments (in no particular order)
                    -x /path/to/xtrans/executable
                    -j /path/to/analysis/settings/json/file
                    -m /path/to/model/data
-                   -r /path/to/model/run/directory
+                   [-r /path/to/model/run/directory]
                    [-s <ktools script name (without file extension)>]
                    [-n <number of ktools calculation processes to use>]
 
@@ -274,20 +278,21 @@ script, in particular, file paths should include the filename and
 extension. The paths to the keys data, lookup service package, model
 version file, canonical exposures profile JSON, source exposures file,
 transformation and validation files, and analysis settings JSON file,
-will usually be located in the model keys server repository. The ktools
-script name should not contain any filetype extension, and the model run
-directory can be placed anywhere in the parent folder common to ``omdk``
-and the model keys server repository.
+will usually be located in the model keys server repository. The path to
+the model run directory is optional - by default the script will create
+a timestamped folder in ``omdk/runs`` with the prefix ``ProgOasis``. The
+ktools script name and number of calculation processes are also optional
+- by default the script will create a ktools script named
+``run_tools.sh`` and set the number of calculation processes to 2.
 
 It is also possible to run the script by defining these arguments in a
 JSON configuration file and calling the script using the path to this
-file using the option ``-f``. In this case the paths should be given
-relative to the parent folder in which the model keys server repository
-is located.
+file using the option ``-f`` and the (relative or absolute) path to the
+file.
 
 ::
 
-    ./run_model.py -f /path/to/model/resources/JSON/config/file'
+    ./run_model.py -f /path/to/script/config/json/file'
 
 The JSON file should contain the following keys (in no particular order)
 
@@ -310,11 +315,17 @@ The JSON file should contain the following keys (in no particular order)
     "ktools_num_processes"
 
 and the values of the path-related keys should be string paths, given
-relative to the parent folder in which the model keys server repository
-is located. The JSON file is usually placed in the model keys server
-repository. The ``"ktools_script_name"`` and ``"ktools_num_processes"``
-keys are optional - the script uses default values of ``run_ktools.sh``
-and 2 respectively.
+relative to the location of the JSON file. The JSON file is usually placed in the model keys server
+repository. The ``"model_run_dir_path"`` key is optional - by default
+the script will create a timestamped folder in ``omdk/runs`` with the
+prefix ``ProgOasis``. The ``"ktools_script_name"`` and
+``"ktools_num_processes"`` keys are optional - by default the script
+will create a ktools script named ``run_tools.sh`` and set the number of
+calculation processes to 2.
+
+You can define a separate JSON configuration file for each model,
+provided you have the model keys server repository and other required
+model resources available locally.
 
 **NOTE**: For a given model the JSON script configuration files for
 ``generate_oasis_files.py``, ``generate_losses.py`` and ``run_model.py``
@@ -322,28 +333,48 @@ should complement each other, except for ``generate_losses.py`` which
 requires the path to Oasis files, not required by ``run_model.py``. You
 can run any of these scripts against a single master script
 configuration file, provided that the path to an actual set of Oasis
-files is added in order to run ``generate_losses.py``
+files is added in order to run ``generate_losses.py``.
 
-As an example, this is the master script configuration file for PiWind
+Running PiWind
+--------------
+
+PiWind is a reference windstorm model developed by Oasis. The lookup
+source code, keys server, keys data and model data and all other model
+resources are in the model GitHub repository which is
+
+https://github.com/OasisLMF/OasisPiWind
+
+The repository also contains a `JSON configuration file <ttps://github.com/OasisLMF/OasisPiWind/blob/master/mdk-oasislmf-piwind.json>`_ for the model
+which can be used to run it end-to-end with the MDK master script.
 
 ::
 
     {
-        "keys_data_path": "OasisPiWind/keys_data/PiWind",
-        "model_version_file_path": "OasisPiWind/keys_data/PiWind/ModelVersion.csv", 
-        "lookup_package_path": "OasisPiWind/src/keys_server",
-        "canonical_exposures_profile_json_path": "OasisPiWind/oasislmf-piwind-canonical-profile.json",
-        "source_exposures_file_path": "OasisPiWind/tests/data/SourceLocPiWind.csv",
-        "source_exposures_validation_file_path": "OasisPiWind/flamingo/PiWind/Files/ValidationFiles/Generic_Windstorm_SourceLoc.xsd",
-        "source_to_canonical_exposures_transformation_file_path": "OasisPiWind/flamingo/PiWind/Files/TransformationFiles/MappingMapToGeneric_Windstorm_CanLoc_A.xslt",
-        "canonical_exposures_validation_file_path": "OasisPiWind/flamingo/PiWind/Files/ValidationFiles/Generic_Windstorm_CanLoc_B.xsd",
-        "canonical_to_model_exposures_transformation_file_path": "OasisPiWind/flamingo/PiWind/Files/TransformationFiles/MappingMapTopiwind_modelloc.xslt",
-        "xtrans_path": "omdk/xtrans/xtrans.exe",
-        "oasis_files_path": "omdk/runs",
-        "analysis_settings_json_file_path": "OasisPiWind/analysis_settings.json",
-        "model_data_path": "OasisPiWind/model_data/PiWind",
-        "model_run_dir_path": "omdk/runs"
+        "keys_data_path": "keys_data/PiWind",
+        "model_version_file_path": "keys_data/PiWind/ModelVersion.csv", 
+        "lookup_package_path": "src/keys_server",
+        "canonical_exposures_profile_json_path": "oasislmf-piwind-canonical-profile.json",
+        "source_exposures_file_path": "tests/data/SourceLocPiWind.csv",
+        "source_exposures_validation_file_path": "flamingo/PiWind/Files/ValidationFiles/Generic_Windstorm_SourceLoc.xsd",
+        "source_to_canonical_exposures_transformation_file_path": "flamingo/PiWind/Files/TransformationFiles/MappingMapToGeneric_Windstorm_CanLoc_A.xslt",
+        "canonical_exposures_validation_file_path": "flamingo/PiWind/Files/ValidationFiles/Generic_Windstorm_CanLoc_B.xsd",
+        "canonical_to_model_exposures_transformation_file_path": "flamingo/PiWind/Files/TransformationFiles/MappingMapTopiwind_modelloc.xslt",
+        "xtrans_path": "../omdk/xtrans/xtrans.exe",
+        "analysis_settings_json_file_path": "analysis_settings.json",
+        "model_data_path": "model_data/PiWind"
     }
 
-It can also be obtained from
-`https://github.com/OasisLMF/OasisPiWind/blob/master/mdk-oasislmf-piwind.json <https://github.com/OasisLMF/OasisPiWind/blob/master/mdk-oasislmf-piwind.json>`_.
+**NOTE**: All the paths, except for the ``xtrans.exe`` executable, are
+given relative to the location of the PiWind repository. The
+``xtrans.exe`` executable is not part of the MDK repository, and you
+need to build it for your platform by running the ``make-trans``
+executable shell script - this will built it in the ``omdk/xtrans``
+folder. For the ``xtrans.exe`` path to be found you should locate the
+MDK repository adjacent to the PiWind repository, i.e.
+
+::
+
+    ...
+    |- OasisPiWind/
+    |- omdk/
+    ...
