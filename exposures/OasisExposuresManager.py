@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
 """
@@ -38,9 +37,6 @@ from oasis_utils import (
     OasisException,
     run_mono_executable,
 )
-
-__author__ = "Sandeep Murthy"
-__copyright__ = "2017, Oasis Loss Modelling Framework"
 
 
 class OasisExposuresManager(implements(OasisExposuresManagerInterface)):
