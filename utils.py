@@ -29,7 +29,7 @@ def load_script_args_from_config_file(script_args_metadict, config_file_path):
     cfp = config_file_path if os.path.isabs(config_file_path) else os.path.abspath(config_file_path)
     cfd = os.path.dirname(cfp)
 
-    if config_file_path.endswith('json'):
+    if cfp.endswith('json'):
         try:
             with io.open(cfp, 'r', encoding='utf-8') as f:
                 args = json.load(f)
@@ -50,7 +50,7 @@ def load_script_args_from_config_file(script_args_metadict, config_file_path):
                 raise OasisException('Error parsing script resources config file: paths {} are invalid'.format(invalid_paths))
         except OSError as e:
             raise OasisException('Error parsing script resources config file: {}'.format(str(e)))
-    elif config_file_path.endswith('yaml') or config_file_path.endswith('yml'):
+    elif cfp.endswith('yaml') or cfp.endswith('yml'):
         raise OasisException('Error parsing script resources config file: YAML file not supported')
 
     return args

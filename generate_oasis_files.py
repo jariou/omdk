@@ -200,7 +200,7 @@ if __name__ == '__main__':
     logger.info('Console logging set')
 
     try:
-        logger.info('Processing script arguments')
+        logger.info('Parsing script arguments')
         args = mdk_utils.parse_script_args(SCRIPT_ARGS_METADICT, desc='Generate Oasis files for a model')
 
         if args['config_file_path']:
