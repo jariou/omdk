@@ -87,11 +87,11 @@ There is one non-Python package requirement which is a .NET executable called `x
 
 The `xtrans.exe` executable is not part of the MDK repository, and you need to build it for your platform by running the `make-trans` executable shell script (in `omdk/xtrans`) - this will built it in the `xtrans` subfolder. For the `xtrans.exe` path to be found by the MDK scripts you should locate the MDK repository adjacent to the model keys server repositories, e.g.
 
-  ...
-  |- omdk/
-  |- OasisPiWind/
-  |- <some othe model keys server repository>
-  ...
+    ...
+    |- omdk/
+    |- OasisPiWind/
+    |- <some othe model keys server repository>
+    ...
 
 The source file `xrans.cs` is included in the `xtrans` subfolder. The executable requires a .NET engine like <a href="http://www.mono-project.com" target="_blank">Mono</a> and the <a href="http://www.ndesk.org/Options" target="_blank">NDesk.Options</a> library (included as a DLL in the `xtrans` subfolder).
 
