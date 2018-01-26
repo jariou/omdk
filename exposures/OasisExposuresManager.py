@@ -15,12 +15,13 @@ import io
 import json
 import logging
 import os
-import pandas as pd
 import shutil
 import subprocess
 import sys
 
 from datetime import datetime
+
+import pandas as pd
 
 from interface import implements
 
@@ -30,13 +31,15 @@ from OasisFilesPipeline import OasisFilesPipeline
 if os.getcwd().split(os.path.sep)[-1] == 'exposures':
     sys.path.insert(0, os.path.abspath(os.pardir))
 
-from keys import OasisKeysLookupFactory as oklf
-
 from oasis_utils import (
     get_utctimestamp,
     OasisException,
     run_mono_executable,
 )
+
+from keys import OasisKeysLookupFactory as oklf
+
+
 
 
 class OasisExposuresManager(implements(OasisExposuresManagerInterface)):
