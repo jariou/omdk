@@ -243,7 +243,7 @@ and the values of the path-related keys should be string paths, given relative t
 
     ./run_model.py -k /path/to/keys/data/folder
                    -v /path/to/model/version/file
-                   -l /path/to/model/keys/lookup/service/package
+                   -l /path/to/lookup/service/package
                    -p /path/to/canonical/exposures/profile/JSON/file
                    -e /path/to/source/exposures/file
                    -a /path/to/source/exposures/validation/file
