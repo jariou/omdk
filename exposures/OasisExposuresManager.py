@@ -40,8 +40,6 @@ from oasis_utils import (
 from keys import OasisKeysLookupFactory as oklf
 
 
-
-
 class OasisExposuresManager(implements(OasisExposuresManagerInterface)):
 
 
