@@ -23,17 +23,16 @@ usually be located in the model keys server (Git) repository. If the
 repository was created by or is managed by Oasis LMF then the lookup
 service package will usually be contained in the ``src/keys_server``
 Python subpackage and can be given as the path to that subpackage (see
-the `OasisPiWind repository <https://github.com/OasisLMF/OasisPiWind>`_
-as a reference for how to structure an Oasis keys server repository).
+the OasisPiWind repository as a reference for how to structure an Oasis
+keys server repository)
 
 It is also possible to run the script by defining these arguments in a
 JSON configuration file and calling the script with option ``-f`` and
-the path to the file. In this case the paths should be given relative to
-the parent folder in which the model keys server repository is located.
+the (relative or absolute) path to the file.
 
 ::
 
-    ./generate_keys.py -f /path/to/keys/script/config/file
+    ./generate_keys.py -f /path/to/script/config/json/file
 
 The JSON file should contain the following keys (in no particular order)
 
@@ -47,13 +46,13 @@ The JSON file should contain the following keys (in no particular order)
     "output_format"
 
 and the values of the path-related keys should be string paths, given
-relative to the parent folder in which the model keys server repository
-is located. The JSON file is usually placed in the model keys server
-repository. The ``"output_format"`` key is optional - by default the
-script will generate an Oasis keys file.
+relative to the location of JSON file. The JSON file is usually placed
+in the model keys server repository. The ``"output_format"`` key is
+optional - by default the script will generate an Oasis keys file.
 
-Keys records returned by an Oasis keys lookup service (see the `PiWind lookup service <https://github.com/OasisLMF/OasisPiWind/blob/master/src/keys_server/PiWindKeysLookup.py>`_
-for reference) will be Python dicts with the following structure
+Keys records returned by an Oasis keys lookup service (see the PiWind
+lookup service for reference) will be Python dicts with the following
+structure
 
 ::
 
@@ -79,10 +78,40 @@ the following format
     ..
     ..
 
-where the headers correspond to the relevant Oasis keys record fields.
-The ``generate_keys.py`` script can also generate and write Oasis keys
-files.
+where the headers correspond to the relevant Oasis keys record fields. The ``generate_keys.py`` script can also generate and
+write Oasis keys files. 
 """
+
+# BSD 3-Clause License
+# 
+# Copyright (c) 2017-2020, Oasis Loss Modelling Framework
+# All rights reserved.
+# 
+# Redistribution and use in source and binary forms, with or without
+# modification, are permitted provided that the following conditions are met:
+# 
+# * Redistributions of source code must retain the above copyright notice, this
+#   list of conditions and the following disclaimer.
+# 
+# * Redistributions in binary form must reproduce the above copyright notice,
+#   this list of conditions and the following disclaimer in the documentation
+#   and/or other materials provided with the distribution.
+# 
+# * Neither the name of the copyright holder nor the names of its
+#   contributors may be used to endorse or promote products derived from
+#   this software without specific prior written permission.
+# 
+# THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+# AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+# IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+# DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+# FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+# DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+# SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+# CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+# OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+# OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
 
 import argparse
 import logging
@@ -96,10 +125,6 @@ from keys import OasisKeysLookupFactory
 import utils as mdk_utils
 
 
-__author__ = "Sandeep Murthy"
-__copyright__ = "2017, Oasis Loss Modelling Framework"
-
-
 SCRIPT_ARGS_METADICT = {
     'config_file_path': {
         'name': 'config_file_path',
@@ -107,7 +132,7 @@ SCRIPT_ARGS_METADICT = {
         'type': str,
         'help_text': 'Model config path',
         'required_on_command_line': False,
-        'required_for_script': True,
+        'required_for_script': False,
         'preexists': True
     },
     'keys_data_path': {
@@ -172,16 +197,16 @@ if __name__ == '__main__':
     logger.info('Console logging set')
 
     try:
-        logging.info('Processing script resources arguments')
+        logging.info('Parsing script arguments')
         args = mdk_utils.parse_script_args(SCRIPT_ARGS_METADICT, desc='Generate Oasis keys file for a model')
         
         if args['config_file_path']:
             logger.info('Loading script resources from config file {}'.format(args['config_file_path']))
             args = mdk_utils.load_script_args_from_config_file(SCRIPT_ARGS_METADICT, args['config_file_path'])
-            logger.info('Script resources: {}'.format(args))
         else:
             args.pop('config_file_path')
-            logger.info('Script resources arguments: {}'.format(args))
+
+        logger.info('Script arguments: {}'.format(args))
 
         di = SCRIPT_ARGS_METADICT
         missing = filter(lambda arg: not args[arg] if arg in args and di[arg]['required_for_script'] else None, di)
@@ -191,7 +216,7 @@ if __name__ == '__main__':
 
         logging.info('Creating Oasis keys lookup factory')
         oklf = OasisKeysLookupFactory()
-        logging.info('\t{}'.format(oklf))
+        logging.info('{}'.format(oklf))
 
         logging.info('Getting model info and creating lookup service instance')
         model_info, model_klc = oklf.create(
@@ -199,7 +224,8 @@ if __name__ == '__main__':
             model_version_file_path=args['model_version_file_path'],
             lookup_package_path=args['lookup_package_path']
         )
-        logging.info('\t{}, {}'.format(model_info, model_klc))
+        logging.info('Loaded model info {}'.format(json.dumps(model_info, indent=4, sort_keys=True)))
+        logging.info('Loaded model lookup service {}'.format(model_klc))
 
         output_format = (
             args['output_format'] if 'output_format' in args and args['output_format']

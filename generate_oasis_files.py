@@ -18,24 +18,25 @@ following arguments (in no particular order)
                               -c /path/to/canonical/exposures/validation/file
                               -d /path/to/canonical/to/model/exposures/transformation/file
                               -x /path/to/xtrans/executable
-                              -o /path/to/oasis/files/directory
+                              [-o /path/to/oasis/files/directory]
 
 When calling the script this way paths can be given relative to the
 script, in particular, file paths should include the filename and
 extension. The paths to the keys data, lookup service package, model
 version file, canonical exposures profile JSON, source exposures file,
 transformation and validation files, will usually be located in the
-model keys server repository.
+model keys server repository. The path to the Oasis files directory is
+optional - by default the script will create a timestamped folder in
+``omdk/runs`` with the prefix ``OasisFiles``.
 
 It is also possible to run the script by defining these arguments in a
 JSON configuration file and calling the script using the path to this
-file using the option ``-f``. In this case the paths should be given
-relative to the parent folder in which the model keys server repository
-is located.
+file using the option ``-f`` and the (relative or absolute) path to the
+file.
 
 ::
 
-    ./generate_oasis_files.py -f /path/to/model/resources/JSON/config/file
+    ./generate_oasis_files.py -f /path/to/script/config/json/file
 
 The JSON file contain the following keys (in no particular order)
 
@@ -54,9 +55,42 @@ The JSON file contain the following keys (in no particular order)
     "oasis_files_path"
 
 and the values of these keys should be string paths, given relative to
-the parent folder in which the model keys server repository is located.
-The JSON file is usually placed in the model keys server repository.
+the location of the JSON file. The JSON file is usually placed in the
+model keys server repository. The ``"oasis_files_path"`` key is optional
+- by default the script will create a timestamped folder in
+``omdk/runs`` with the prefix ``OasisFiles``.
 """
+
+# BSD 3-Clause License
+# 
+# Copyright (c) 2017-2020, Oasis Loss Modelling Framework
+# All rights reserved.
+# 
+# Redistribution and use in source and binary forms, with or without
+# modification, are permitted provided that the following conditions are met:
+# 
+# * Redistributions of source code must retain the above copyright notice, this
+#   list of conditions and the following disclaimer.
+# 
+# * Redistributions in binary form must reproduce the above copyright notice,
+#   this list of conditions and the following disclaimer in the documentation
+#   and/or other materials provided with the distribution.
+# 
+# * Neither the name of the copyright holder nor the names of its
+#   contributors may be used to endorse or promote products derived from
+#   this software without specific prior written permission.
+# 
+# THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+# AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+# IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+# DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+# FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+# DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+# SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+# CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+# OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+# OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
 
 import argparse
 import io
@@ -67,6 +101,7 @@ import sys
 import time
 
 from oasis_utils import (
+    get_utctimestamp,
     OasisException,
 )
 
@@ -74,9 +109,6 @@ import utils as mdk_utils
 from models import OasisModelFactory as omf
 from exposures import OasisExposuresManager as oem
 from keys import OasisKeysLookupFactory as oklf
-
-__author__ = "Sandeep Murthy"
-__copyright__ = "2017, Oasis Loss Modelling Framework"
 
 
 SCRIPT_ARGS_METADICT = {
@@ -86,7 +118,7 @@ SCRIPT_ARGS_METADICT = {
         'type': str,
         'help_text': 'Model config path',
         'required_on_command_line': False,
-        'required_for_script': True,
+        'required_for_script': False,
         'preexists': True
     },
     'keys_data_path': {
@@ -185,7 +217,7 @@ SCRIPT_ARGS_METADICT = {
         'type': str,
         'help_text': 'Directory to place generated Oasis files for the model',
         'required_on_command_line': False,
-        'required_for_script': True,
+        'required_for_script': False,
         'preexists': False
     }
 }
@@ -197,16 +229,16 @@ if __name__ == '__main__':
     logger.info('Console logging set')
 
     try:
-        logger.info('Processing script resources arguments')
+        logger.info('Parsing script arguments')
         args = mdk_utils.parse_script_args(SCRIPT_ARGS_METADICT, desc='Generate Oasis files for a model')
 
         if args['config_file_path']:
-            logger.info('Loading script resources from config file {}'.format(args['config_file_path']))
+            logger.info('Loading script arguments from config file {}'.format(args['config_file_path']))
             args = mdk_utils.load_script_args_from_config_file(SCRIPT_ARGS_METADICT, args['config_file_path'])
-            logger.info('Script resources: {}'.format(args))
         else:
             args.pop('config_file_path')
-            logger.info('Script resources arguments: {}'.format(args))
+
+        logger.info('Script arguments: {}'.format(json.dumps(args, indent=4, sort_keys=True)))
 
         di = SCRIPT_ARGS_METADICT
         missing = filter(lambda arg: not args[arg] if arg in args and di[arg]['required_for_script'] else None, di)
@@ -231,14 +263,25 @@ if __name__ == '__main__':
             model_id=model_info['model_id'],
             model_version_id=model_info['model_version_id']
         )
-        logger.info('\t{}'.format(model))
+        logger.info('Created Oasis model object {}'.format(model))
 
-        logger.info('Setting up Oasis files directory for model {}'.format(model.key))
-        if not os.path.exists(args['oasis_files_path']):
-            os.mkdir(args['oasis_files_path'])
+        utcnow = get_utctimestamp(fmt='%Y%m%d%H%M%S')
 
-        model.resources['oasis_files_path'] = args['oasis_files_path']
-        logger.info('Oasis files directory {} set up for model {}'.format(model.resources['oasis_files_path'], model.key))
+        logger.info('Checking for Oasis files path')
+        try:
+            if 'oasis_files_path' not in args or not args['oasis_files_path']:
+                args['oasis_files_path'] = os.path.join(os.getcwd(), 'runs', 'OasisFiles-{}'.format(utcnow))
+                logger.info('Oasis files path not provided - creating one in omdk/runs')
+                os.mkdir(args['oasis_files_path'])
+            else:
+                if not os.path.exists(args['oasis_files_path']):
+                    logger.info('Oasis files path {} does not exist - creating one'.format(args['oasis_files_path']))
+                    os.mkdir(args['oasis_files_path'])
+                
+        except (IOError, OSError) as e:
+            raise OasisException('Error processing or creating Oasis files path: {}'.format(str(e)))
+
+        logger.info('Oasis files path {} set up for model {}'.format(args['oasis_files_path'], model.key))
 
         logger.info('Creating an Oasis exposures manager for model')
         manager = oem(oasis_models=[model])
