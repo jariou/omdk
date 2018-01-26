@@ -392,10 +392,10 @@ if __name__ == '__main__':
         )
 
         try:
-            logger.info('Calling script `generate_losses.py` to generate model ktools loss outputs script')
+            logger.info('Calling script `generate_losses.py` to generate model ktools losses script')
             subprocess.check_call(cmd_str, stderr=subprocess.STDOUT, shell=True)
         except subprocess.CalledProcessError as e:
-            raise OasisException("Error generating ktools loss outputs script: {}".format(str(e)))
+            raise OasisException("Error generating ktools losses script: {}".format(str(e)))
 
         shutil.rmtree(tmp_oasis_files_path)
     except OasisException as e:
