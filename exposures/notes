@@ -1,0 +1,83 @@
+
+
+
+ WORKING NOTES 
+
+
+should parse the following arguments 
+Options:
+  -d, --xsd=VALUE            xsd file name
+  -c, --csv=VALUE            csv file name
+  -t, --xslt=VALUE           xslt file name
+  -o, --output=VALUE         output file name
+  -s                         Add sequence number column
+  -h, --help                 show this message and exit
+
+----------------------------------------------------------
+
+execpt input as dict()
+
+xtrans_args = {
+       'd': validation_file_path,
+       'c': input_file_path,
+       't': transformation_file_path,
+       'o': output_file_path,
+       's': ''    						<--- Ask Ben about how this is used 
+}
+
+TEST CASE 0:
+	"source_exposures_file_path": "tests/data/SourceLocPiWind.csv",
+	"source_exposures_validation_file_path": "flamingo/PiWind/Files/ValidationFiles/Generic_Windstorm_SourceLoc.xsd",
+	"source_to_canonical_exposures_transformation_file_path": "flamingo/PiWind/Files/TransformationFiles/MappingMapToGeneric_Windstorm_CanLoc_A.xslt",
+
+TEST CASE 1: 
+	OUTPUT of CASE 0  (csv)
+	"canonical_exposures_validation_file_path": "flamingo/PiWind/Files/ValidationFiles/Generic_Windstorm_CanLoc_B.xsd",
+	"canonical_to_model_exposures_transformation_file_path": "flamingo/PiWind/Files/TransformationFiles/MappingMapTopiwind_modelloc.xslt",
+
+
+
+
+
+Support for UPX?  --> http://www.unicede.com/
+
+Example model: https://github.com/OasisLMF/ARA/
+
+	# code snippet, note the output format depends on the output filename given   
+
+	string ext = Path.GetExtension(outputcsvfile);                                                                                                                          
+		   if (ext == ".csv")
+		   {
+			   converttocsv(newDoc, outputcsvfile, "rec", RowDelimit.NewLine, ColumnDelimit.Comma, outputheader);
+		   }
+		   if (ext == ".upx")
+		   {   
+			   Console.WriteLine ("=======GENERATING UPX=========");
+			   converttoupx(newDoc, outputcsvfile, "rec", RowDelimit.NewLine, ColumnDelimit.Comma, outputheader,ref upx);
+		   }
+		   return 0;
+
+
+
+REFS:
+	https://dbader.org/blog/python-dunder-methods
+	https://docs.python.org/3/reference/datamodel.html
+	http://lxml.de/extensions.html
+
+	http://blog.appliedinformaticsinc.com/how-to-parse-and-convert-xml-to-csv-using-python/
+	http://lxml.de/xpathxslt.html#xslt
+
+
+-------------------------------------------------------------
+
+Current method: 
+    https://www.altova.com/ create the transforms 
+    Xtrans converstion
+
+
+
+Possibly update this method to newer ETL tools,  Quick google search will
+bring up some good open source examples.
+
+https://petl.readthedocs.io/en/latest/io.html#hdf5-files-pytables
+

@@ -36,113 +36,92 @@ __all__ = [
 ]
 
 import lxml
+import os
+from itertools import islice
 
-
-""" should parse the following arguments 
-Options:
-  -d, --xsd=VALUE            xsd file name
-  -c, --csv=VALUE            csv file name
-  -t, --xslt=VALUE           xslt file name
-  -o, --output=VALUE         output file name
-  -s                         Add sequence number column
-  -h, --help                 show this message and exit
-
-----------------------------------------------------------
-
-execpt input as dict()
-
-xtrans_args = {
-       'd': validation_file_path,
-       'c': input_file_path,
-       't': transformation_file_path,
-       'o': output_file_path,
-       's': ''    						<--- Ask Ben about how this is used 
-}
-
-TEST CASE 0:
-	"source_exposures_file_path": "tests/data/SourceLocPiWind.csv",
-	"source_exposures_validation_file_path": "flamingo/PiWind/Files/ValidationFiles/Generic_Windstorm_SourceLoc.xsd",
-	"source_to_canonical_exposures_transformation_file_path": "flamingo/PiWind/Files/TransformationFiles/MappingMapToGeneric_Windstorm_CanLoc_A.xslt",
-
-TEST CASE 1: 
-	OUTPUT of CASE 0  (csv)
-	"canonical_exposures_validation_file_path": "flamingo/PiWind/Files/ValidationFiles/Generic_Windstorm_CanLoc_B.xsd",
-	"canonical_to_model_exposures_transformation_file_path": "flamingo/PiWind/Files/TransformationFiles/MappingMapTopiwind_modelloc.xslt",
-
-
-
-REF:
-	https://dbader.org/blog/python-dunder-methods
-	https://docs.python.org/3/reference/datamodel.html
-	http://lxml.de/extensions.html
-
-	http://blog.appliedinformaticsinc.com/how-to-parse-and-convert-xml-to-csv-using-python/
-	http://lxml.de/xpathxslt.html#xslt
-
-
-
-Support for UPX?  --> http://www.unicede.com/
-	# code snippet, note the output format depends on the output filename given   
-
-	string ext = Path.GetExtension(outputcsvfile);                                                                                                                          
-		   if (ext == ".csv")
-		   {
-			   converttocsv(newDoc, outputcsvfile, "rec", RowDelimit.NewLine, ColumnDelimit.Comma, outputheader);
-		   }
-		   if (ext == ".upx")
-		   {   
-			   Console.WriteLine ("=======GENERATING UPX=========");
-			   converttoupx(newDoc, outputcsvfile, "rec", RowDelimit.NewLine, ColumnDelimit.Comma, outputheader,ref upx);
-		   }
-		   return 0;
-
-
-THINK ABOUT:  dealing with very large CSV files 
-
-
-"""
 class PyTrans:
-    def __init__(self, trans_args, rows=False):
-		try:
-			self.validation_fpath      = trans_args['d']  	# file.xsd
-			self.transformation_fpath  = trans_args['t']	# file.xslt
-			self.input_fpath           = trans_args['c']	# file_in.csv
-			self.output_fpath          = trans_args['o']	# file_out.csv
-			self.displayRows 		   = rows				# flag to add first col as row numbers
-		except KeyError as e:
-			print(e)
-			# handle the error 'missing variables' by throwing oasis Execption?
+    def __init__(self, trans_args, row_flag=False, chunk_size=5000):
+        self.validation_fpath      = trans_args['d']  	# file.xsd
+        self.transform_fpath       = trans_args['t']	# file.xslt
+        self.input_fpath           = trans_args['c']	# file_in.csv
+        self.output_fpath          = trans_args['o']	# file_out.csv
+        self.rows 		           = row_flag			# flag to add first col as row numbers
+        self.ext                   = os.path.splitext(self.output_fpath)[1]
+        self.threshold             = 100000000          # Max file size for file_ReadAll() method, in bytes [100MB]
+        #self.lineLimit             = chunk_size     
+        #self.lineCount             = -1                 # Points the the Row number of the first line read in current iter
+        if (self.ext == ''):
+            raise TypeError("Missing file extention for output file.")
 
-		def run(self):
-			pass
-			#main exec goes here
 
-			#read in files
 
-			#Convert CSV -> XML 
-            #Run Input validation 
+    def __call__(self):
+        first_row = ''  # read Row0 of input csv 
+        fd_xsd   = self.readFile(self.validation_fpath)
+        fd_xslt  = self.readFile(self.transform_fpath)
+ #      fd_input = 
+
+
+
+
+        pass
+        #main exec goes here
+
+        #read in files
+
+        #Convert CSV -> XML 
+        #Run Input validation 
+        
+        #Create lxml ElementTree 
+        #Apply Transform 
+        #Convert transform XML back to CSV 
+
+        # If output == UPX -> apply convent 
+        #Write output 
+        
+    def csvToUXP(self, xml_elementTree):
+        pass
+    def csvToXML(self, cvs_filedata):
+        pass
+    def xmlToCVS(self, xml_elementTree):
+        pass
+
+
+    def file_Append(self, fpath, payload):
+        pass
+        #with open(fpath,'w') as f:
             
-			#Create lxml ElementTree 
-			#Apply Transform 
-            #Convert transform XML back to CSV 
-            #Write output 
-			
+#    def file_ReadLines(self, file_object, line_limit):
+#        # if at start of file return only the first line
+#        if (file_object.tell() == 0):
+#            yield file_object.readline().strip()
+#
+#        # return lines upto 'line_limit' or untill EOL is found 
+#        else:    
+#            data = list()
+#            for (i=0, i<line_limit, i++)
+#                
+#                if not data:
+#                    break
+#                yield data
 
 
-		def toXML(self, cvs_filedata):
-			pass
+    def file_ReadLines(self, file_obj, l_start, l_end):
+        file_obj.seek(0)                                # return pointer to start of file
+        file_slice = islice(file_obj, l_start,l_end)    # create iterator for the file slice
+        return [line.strip() for line in file_slice]    # return selected lines as list()
 
-		def toCVS(self, xml_elementTree):
-			pass
-
-		def writeFile(self, fpath, payload):
-			pass
-			#with open(fpath,'w') as f:
-				
-		def readFile(self, fpath):
-			pass
-			#with open(fpath,'r') as f:
-				#for line in f ..
-			#return file_data
+    def file_ReadAll(self, fpath):
+        if self.file_isSmall(fpath):
+            with open(fpath,'r') as f:
+                return "".join([line.strip() for line in f])
+        else:
+            err_str  = "Large filesize protection, "
+            err_str += "check '%s' or set new size threshold" % (fpath) 
+            raise IOError(err_str)
 
 
+    def file_isSmall(self, fpath):
+        # threshold is max size in bytes
+        f_size = os.path.getsize(fpath)
+        return (f_size < self.threshold)
