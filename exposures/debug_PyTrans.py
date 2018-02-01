@@ -22,3 +22,4 @@ xtrans_args = {
 }
 
 TestObj = PyTrans(xtrans_args, chunk_size=5)
+f = open(TestObj.fpath_input, 'r')
