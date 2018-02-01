@@ -21,4 +21,4 @@ xtrans_args = {
 	's': ''
 }
 
-TestObj = PyTrans(xtrans_args)
+TestObj = PyTrans(xtrans_args, chunk_size=5)

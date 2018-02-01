@@ -41,33 +41,61 @@ from itertools import islice
 
 class PyTrans:
     def __init__(self, trans_args, row_flag=False, chunk_size=5000):
-        self.validation_fpath      = trans_args['d']  	# file.xsd
-        self.transform_fpath       = trans_args['t']	# file.xslt
-        self.input_fpath           = trans_args['c']	# file_in.csv
-        self.output_fpath          = trans_args['o']	# file_out.csv
-        self.rows 		           = row_flag			# flag to add first col as row numbers
-        self.ext                   = os.path.splitext(self.output_fpath)[1]
-        self.threshold             = 100000000          # Max file size for file_ReadAll() method, in bytes [100MB]
-        #self.lineLimit             = chunk_size     
-        #self.lineCount             = -1                 # Points the the Row number of the first line read in current iter
+        # file data, as single string
+        self.threshold = 100000000  # Max file size for file_ReadAll() method, in bytes [100MB]
+        self.xsd  = self.file_ReadAll(trans_args['d'])  # validation file
+        self.xslt = self.file_ReadAll(trans_args['t'])  # transform file
+    
+        # paths to I/O files
+        self.fpath_input   = trans_args['c']	# file_in.csv
+        self.fpath_output  = trans_args['o']	# file_out.csv
+        self.ext           = os.path.splitext(self.fpath_output)[1]
+
+        # Vars
+        self.row_nums   = row_flag      # flag to add first col as row numbers
+        self.row_header = ""            # CSV col header 
+        self.row_limit  = chunk_size    # MAX number of CSV input rows to process for each pass      
+        #self.lineCount = -1            # Points the the Row number of the first line read in current iter
+
+        # Input Validation  
         if (self.ext == ''):
             raise TypeError("Missing file extention for output file.")
 
 
 
-    def __call__(self):
-        first_row = ''  # read Row0 of input csv 
-        fd_xsd   = self.readFile(self.validation_fpath)
-        fd_xslt  = self.readFile(self.transform_fpath)
- #      fd_input = 
 
+# --- Main loop --------------------------------------------------------------#
 
-
-
-        pass
-        #main exec goes here
+    #def __call__(self):
+    def run(self):
 
         #read in files
+        # read Row0 of input csv 
+        fd_input = open(self.fpath_input, 'r')
+        self.row_header = self.file_ReadSlice(fd_input, 0, 1)
+
+
+        row_sliceStart = 1
+        row_sliceEnd   = self.row_limit
+        while True:
+            csv_chunk = self.file_ReadSlice(fd_input, 
+                                            row_sliceStart, 
+                                            row_sliceEnd)
+
+            # Check for EOF
+            if (csv_chunk == []):
+                print("File Slice EMPTY: rows[%d .. %d]\n" % (row_sliceStart, 
+                                                              row_sliceEnd))
+                break 
+            else:
+                #DEBUG
+                print("File Slice: rows[%d .. %d]" % (row_sliceStart, row_sliceEnd))
+                for row_line in csv_chunk:
+                    print(row_line)
+                print('\n')
+
+                row_sliceStart += self.row_limit
+                row_sliceEnd   += self.row_limit
 
         #Convert CSV -> XML 
         #Run Input validation 
@@ -78,13 +106,46 @@ class PyTrans:
 
         # If output == UPX -> apply convent 
         #Write output 
-        
+     
+
+
+
+
+
+
+# --- Transform Functions ----------------------------------------------------#
+#
+    def RunTransform(self):
+        pass
     def csvToUXP(self, xml_elementTree):
         pass
     def csvToXML(self, cvs_filedata):
         pass
     def xmlToCVS(self, xml_elementTree):
         pass
+
+
+
+# --- File I/O Functions -----------------------------------------------------#
+
+    def file_ReadSlice(self, file_obj, l_start, l_end):
+        file_obj.seek(0)                                # return pointer to start of file
+        file_slice = islice(file_obj, l_start,l_end+1)    # create iterator for the file slice
+        return [line.strip() for line in file_slice]    # return selected lines as list()
+
+    def file_ReadAll(self, fpath):
+        if self.file_isSmall(fpath):
+            with open(fpath,'r') as f:
+                return "".join([line.strip() for line in f])
+        else:
+            err_str  = "Large filesize protection, "
+            err_str += "check '%s' or set new size threshold" % (fpath) 
+            raise IOError(err_str)
+
+    def file_isSmall(self, fpath):
+        # threshold is max size in bytes
+        f_size = os.path.getsize(fpath)
+        return (f_size < self.threshold)
 
 
     def file_Append(self, fpath, payload):
@@ -105,23 +166,3 @@ class PyTrans:
 #                    break
 #                yield data
 
-
-    def file_ReadLines(self, file_obj, l_start, l_end):
-        file_obj.seek(0)                                # return pointer to start of file
-        file_slice = islice(file_obj, l_start,l_end)    # create iterator for the file slice
-        return [line.strip() for line in file_slice]    # return selected lines as list()
-
-    def file_ReadAll(self, fpath):
-        if self.file_isSmall(fpath):
-            with open(fpath,'r') as f:
-                return "".join([line.strip() for line in f])
-        else:
-            err_str  = "Large filesize protection, "
-            err_str += "check '%s' or set new size threshold" % (fpath) 
-            raise IOError(err_str)
-
-
-    def file_isSmall(self, fpath):
-        # threshold is max size in bytes
-        f_size = os.path.getsize(fpath)
-        return (f_size < self.threshold)
