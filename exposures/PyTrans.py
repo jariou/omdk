@@ -34,8 +34,8 @@
 __all__ = [
     'PyTrans'
 ]
-
-import lxml
+#import lxml
+import csv 
 import os
 from itertools import islice
 from lxml import etree
@@ -82,16 +82,13 @@ class PyTrans:
         self.row_header = self.file_ReadSlice(fd_input, 0, 0)
 
         for input_slice in self.file_NextSlice(fd_input):
-           
             """ input_slice[0]  == CSV data
                 input_slice[1]  == row Num for first element 
                 input_slice[2]  == row Num for last element 
             """
-            # Append Header row to slice of input file and convert to string for lxml
-            csvIn = self.row_header + input_slice[0]
-
-
-            self.csvToXML(csvIn, ',') 
+            #Conver row slice to XML
+            self.csvToXML(self.row_header,
+                          input_slice[0]) 
 
         #Convert CSV -> XML 
         #Run Input validation 
@@ -111,11 +108,11 @@ class PyTrans:
 
 
 # --- Transform Functions ----------------------------------------------------#
-#
-    def csvToXML(self, cvs_data, delimiter):
-        for row in cvs_data:
+# https://pymotw.com/2/xml/etree/ElementTree/create.html
+
+    def csvToXML(self, csv_header, csv_data, delimiter):
+        for row in csv_data:
             print(row)
-            print(row.split(delimiter))
 
 
     def RunTransform(self):
@@ -155,8 +152,9 @@ class PyTrans:
     # Return Line numbers of a file between [l_start .. l_end]
     def file_ReadSlice(self, file_obj, l_start, l_end):
         file_obj.seek(0)                                # return pointer to start of file
-        file_slice = islice(file_obj, l_start,l_end+1)  # create iterator for the file slice
-        return [line.strip() for line in file_slice]    # return selected lines as list()
+        input_reader = csv.reader(file_obj, delimiter=',') 
+        file_slice = islice(input_reader, l_start,l_end+1)  # create iterator for the file slice
+        return [line for line in file_slice]    # return selected lines as list()
 
     # Retrun entire file as single string (Used for 'xsd/xslt')    
     def file_ReadAll(self, fpath):
