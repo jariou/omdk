@@ -1,4 +1,3 @@
-
 # -*- coding: utf-8 -*-
 
 # BSD 3-Clause License
@@ -15,7 +14,7 @@
 # * Redistributions in binary form must reproduce the above copyright notice,
 #   this list of conditions and the following disclaimer in the documentation
 #   and/or other materials provided with the distribution.
-# 
+#
 # * Neither the name of the copyright holder nor the names of its
 #   contributors may be used to endorse or promote products derived from
 #   this software without specific prior written permission.
@@ -41,8 +40,10 @@ from itertools import islice
 from lxml import etree
 
 class PyTrans:
-    def __init__(self, trans_args, row_flag=False, chunk_size=5000):
+    def __init__(self, trans_args, chunk_size=5000, flg_row=False,
+                                                    flg_verbose=True):
         # file data, as single string
+        self.verbose   = flg_verbose
         self.threshold = 100000000  # Max file size for file_ReadAll() method, in bytes [100MB]
         self.xsd  = self.file_ReadAll(trans_args['d'])  # validation file
         self.xslt = self.file_ReadAll(trans_args['t'])  # transform file
@@ -53,7 +54,7 @@ class PyTrans:
         self.ext           = os.path.splitext(self.fpath_output)[1]
 
         #Row Control Vars
-        self.row_nums   = row_flag       # flag to add first col as row numbers
+        self.row_nums   = flg_row        # flag to add first col as row numbers
         self.row_limit  = chunk_size     # MAX number of CSV input rows to process for each pass      
         self.row_start  = 1              # Start of input file segment to process
         self.row_end    = self.row_limit # end of input file segment to process 
@@ -71,24 +72,24 @@ class PyTrans:
     #def __call__(self):
     def run(self):
 
-
         #Create lxml Objects 
         lxml_validation = etree.XMLSchema( etree.fromstring(self.xsd)) # http://lxml.de/2.0/validation.html
         lxml_transform = etree.XSLT( etree.fromstring(self.xslt))            # http://lxml.de/xpathxslt.html#xslt
 
-
         # read input CSV header 
         fd_input = open(self.fpath_input, 'r')
-        self.row_header = self.file_ReadSlice(fd_input, 0, 0)
+        self.row_header = self.file_ReadSlice(fd_input, 0, 0)[0]
 
-        for input_slice in self.file_NextSlice(fd_input):
-            """ input_slice[0]  == CSV data
-                input_slice[1]  == row Num for first element 
-                input_slice[2]  == row Num for last element 
-            """
-            #Conver row slice to XML
-            self.csvToXML(self.row_header,
-                          input_slice[0]) 
+        """ 
+        csv_input_slice[0]  == CSV data
+        csv_input_slice[1]  == row Num for first element 
+        csv_input_slice[2]  == row Num for last element 
+        """
+        for csv_input_slice in self.file_NextSlice(fd_input):
+            xml_input_slice = self.csvToXML(self.row_header, csv_input_slice[0])    #covert to lxml object
+            self.printXML(xml_input_slice)
+
+
 
         #Convert CSV -> XML 
         #Run Input validation 
@@ -109,10 +110,28 @@ class PyTrans:
 
 # --- Transform Functions ----------------------------------------------------#
 # https://pymotw.com/2/xml/etree/ElementTree/create.html
+# http://lxml.de/api/lxml.etree._Element-class.html
 
-    def csvToXML(self, csv_header, csv_data, delimiter):
+    def printXML(self, etree_obj):
+        if (self.verbose):
+            print(etree.tostring(etree_obj, pretty_print=True)) 
+
+
+    def csvToXML(self, csv_header, csv_data):
+        pass
+        root = etree.Element('root') 
+        
+        #fetch each row
         for row in csv_data:
-            print(row)
+            rec = etree.SubElement(root, 'rec')
+            for i in range(0,len(row)):
+                rec.set(self.row_header[i], row[i])
+                #print("i: %d  Attr:%s  Val:%s" % (i,
+                #                                  self.row_header[i],
+                #                                  row[i]))
+        #print('-------------------')        
+        #print(etree.tostring(root))
+        return root 
 
 
     def RunTransform(self):
@@ -122,7 +141,12 @@ class PyTrans:
     def xmlToCVS(self, xml_elementTree):
         pass
 
-
+    def csvInsertRowNums(self,csv_data,r_start,r_end):
+        row_index = range(r_start,r_end)
+        row_total = len(row_nums)
+        if(row_total != len(csv_data)):
+            raise TypeError('Size mismatch between row numbering and dataset')
+        return [[row_index[i]] + csv_data[i] for i in range(0,row_total)] 
 
 # --- File I/O Functions -----------------------------------------------------#
 
@@ -174,20 +198,5 @@ class PyTrans:
 
     # Function to append output as its processed in batches 
     def file_Append(self, fpath, payload):
+        #https://docs.python.org/2/library/csv.html
         pass
-        #with open(fpath,'w') as f:
-            
-#    def file_ReadLines(self, file_object, line_limit):
-#        # if at start of file return only the first line
-#        if (file_object.tell() == 0):
-#            yield file_object.readline().strip()
-#
-#        # return lines upto 'line_limit' or untill EOL is found 
-#        else:    
-#            data = list()
-#            for (i=0, i<line_limit, i++)
-#                
-#                if not data:
-#                    break
-#                yield data
-

@@ -1,7 +1,7 @@
-#   AutoReload modules in iPython
-# %load_ext autoreload
-# %autoreload 2
-
+"""   AutoReload modules in iPython
+%load_ext autoreload
+%autoreload 2
+"""
 
 from PyTrans import *
 
