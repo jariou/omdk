@@ -45,9 +45,11 @@ class PyTrans:
         # file data, as single string
         self.verbose   = flg_verbose
         self.threshold = 100000000  # Max file size for file_ReadAll() method, in bytes [100MB]
-        self.xsd  = self.file_ReadAll(trans_args['d'])  # validation file
-        self.xslt = self.file_ReadAll(trans_args['t'])  # transform file
-    
+        #self.xsd  = self.file_ReadAll(trans_args['d'])  # validation file
+        #self.xslt = self.file_ReadAll(trans_args['t'])  # transform file
+
+        self.xsd  = etree.parse(trans_args['d'])  # validation file
+        self.xslt = etree.parse(trans_args['t'])  # transform file
         # paths to I/O files
         self.fpath_input   = trans_args['c']	# file_in.csv
         self.fpath_output  = trans_args['o']	# file_out.csv
@@ -72,9 +74,6 @@ class PyTrans:
     #def __call__(self):
     def run(self):
 
-        #Create lxml Objects 
-        lxml_validation = etree.XMLSchema( etree.fromstring(self.xsd)) # http://lxml.de/2.0/validation.html
-        lxml_transform = etree.XSLT( etree.fromstring(self.xslt))            # http://lxml.de/xpathxslt.html#xslt
 
         # read input CSV header 
         fd_input = open(self.fpath_input, 'r')
@@ -86,20 +85,27 @@ class PyTrans:
         csv_input_slice[2]  == row Num for last element 
         """
         for csv_input_slice in self.file_NextSlice(fd_input):
+            # Convert CSV -> XML
             xml_input_slice = self.csvToXML(self.row_header, csv_input_slice[0])    #covert to lxml object
-            self.printXML(xml_input_slice)
+            self.xmlPrint(xml_input_slice)
+
+            # Transform
+            xml_output = self.xmlTransform(xml_input_slice, self.xslt)
+            self.xmlPrint(xml_output)
+
+            # Validate Output 
+            self.xmlValidate(xml_output,
+                             self.xsd)
 
 
+            # DEBUG
+            #return xml_output
 
-        #Convert CSV -> XML 
-        #Run Input validation 
-        
-        #Create lxml ElementTree 
-        #Apply Transform 
-        #Convert transform XML back to CSV 
+            #Convert transform XML back to CSV 
 
-        # If output == UPX -> apply convent 
-        #Write output 
+            # Write to Output 
+            # If output == UPX -> apply convent 
+            #Write output 
      
 
 
@@ -112,41 +118,59 @@ class PyTrans:
 # https://pymotw.com/2/xml/etree/ElementTree/create.html
 # http://lxml.de/api/lxml.etree._Element-class.html
 
-    def printXML(self, etree_obj):
-        if (self.verbose):
-            print(etree.tostring(etree_obj, pretty_print=True)) 
 
+    # --- CSV Funcs --- #
 
     def csvToXML(self, csv_header, csv_data):
-        pass
         root = etree.Element('root') 
-        
         #fetch each row
         for row in csv_data:
+            #Create new 'empty' record   
             rec = etree.SubElement(root, 'rec')
+            # Iter over columns and set attributs 
             for i in range(0,len(row)):
                 rec.set(self.row_header[i], row[i])
-                #print("i: %d  Attr:%s  Val:%s" % (i,
-                #                                  self.row_header[i],
-                #                                  row[i]))
-        #print('-------------------')        
-        #print(etree.tostring(root))
         return root 
-
-
-    def RunTransform(self):
-        pass
     def csvToUXP(self, xml_elementTree):
         pass
-    def xmlToCVS(self, xml_elementTree):
-        pass
-
     def csvInsertRowNums(self,csv_data,r_start,r_end):
         row_index = range(r_start,r_end)
         row_total = len(row_nums)
         if(row_total != len(csv_data)):
             raise TypeError('Size mismatch between row numbering and dataset')
         return [[row_index[i]] + csv_data[i] for i in range(0,row_total)] 
+
+
+    # --- XML Funcs --- #
+
+    # WARNING: abributes are stored as dict() object which means keys are returned in an arbitray order
+    # so long as the keys are consistrance with values this shouldnt be a problem.. i think?
+    def xmlToCVS(self, xml_elementTree):
+        root = xml_elementTree.getroot():
+
+
+        pass
+
+    # http://lxml.de/2.0/validation.html
+    def xmlValidate(self, xml_etree, xsd_etree):
+        xmlSchema = etree.XMLSchema(xsd_etree) 
+   
+        self.xmlPrint(xml_etree)
+        self.xmlPrint(xsd_etree)
+        # Calling 'assertValid' will raise execptions, --> should be handled above this level  
+        if (xmlSchema.assertValid(xml_etree)):
+            return True
+
+    # http://lxml.de/xpathxslt.html#xslt    
+    def xmlTransform(self, xml_doc, xslt):
+        lxml_transform = etree.XSLT(self.xslt)      
+        return lxml_transform(xml_doc)
+
+
+    def xmlPrint(self, etree_obj):
+        if (self.verbose):
+            print('___________________________________________')
+            print(etree.tostring(etree_obj, pretty_print=True)) 
 
 # --- File I/O Functions -----------------------------------------------------#
 
