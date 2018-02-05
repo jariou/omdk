@@ -92,8 +92,8 @@ class PyTrans:
             self.print_xml(xml_output)
 
             # Validate Output 
-            self.xmlValidate(xml_output,
-                             self.xsd)
+            print ( self.xmlValidate(xml_output,
+                             self.xsd) )
 
             #Convert transform XML back to CSV 
             csv_output = self.xmlToCVS(xml_output,          #XML etree
@@ -181,13 +181,22 @@ class PyTrans:
 
 
     # http://lxml.de/2.0/validation.html
+    # If valid   -> Return True 
+    #    invalid -> error_log 
     def xmlValidate(self, xml_etree, xsd_etree):
         xmlSchema = etree.XMLSchema(xsd_etree) 
         self.print_xml(xml_etree)
         self.print_xml(xsd_etree)
         # Calling 'assertValid' will raise execptions, --> should be handled above this level  
-        if (xmlSchema.assertValid(xml_etree)):
+        #if (xmlSchema.assertValid(xml_etree)):
+        if (xmlSchema.validate(xml_etree)):
             return True
+        else:
+            print("Wanining: Input failed to Valida")
+            log = xmlSchema.error_log
+            print(log.last_error)
+            return False
+
 
     # http://lxml.de/xpathxslt.html#xslt    
     def xmlTransform(self, xml_doc, xslt):
