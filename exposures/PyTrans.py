@@ -138,7 +138,6 @@ class PyTrans:
 
     # --- XML Funcs --- #
 
-
     def xmlToCVS(self, xml_elementTree, row_first, row_last):
         root = xml_elementTree.getroot()
         
@@ -184,7 +183,6 @@ class PyTrans:
     # http://lxml.de/2.0/validation.html
     def xmlValidate(self, xml_etree, xsd_etree):
         xmlSchema = etree.XMLSchema(xsd_etree) 
-   
         self.print_xml(xml_etree)
         self.print_xml(xsd_etree)
         # Calling 'assertValid' will raise execptions, --> should be handled above this level  
@@ -210,11 +208,6 @@ class PyTrans:
                 #print("File Slice EMPTY: rows[%d .. %d]\n" % (self.row_start, self.row_end)) 
                 break 
             else:
-                #DEBUG Print
-                #print("File Slice: rows[%d .. %d]" % (self.row_start, self.row_end))
-                #for row_line in csv_chunk:
-                #    print(row_line)
-                #print('\n')
                 slice_start = self.row_start 
                 slice_end   = self.row_end
 
@@ -229,7 +222,7 @@ class PyTrans:
         file_slice = islice(input_reader, l_start,l_end+1)  # create iterator for the file slice
         return [line for line in file_slice]    # return selected lines as list()
 
-    # Function to append output as its processed in batches 
+    ## Function to append output as its processed in batches 
     #
     # file_object: OutputFile 
     # row_names: list of row names  -->   ['ROW_ID', 'ACCNTNUM', .. ]
@@ -240,10 +233,9 @@ class PyTrans:
         writer = csv.DictWriter(file_out,
                                 fieldnames=row_names,
                                 extrasaction='raise')
-
         writer.writerow(row_data)
 
-    # WARNING: THIS WILL OVERWRITE THE FILE PATH
+    # WARNING: This will overwrite the file path
     def file_writeHeader(self, row_names):
         file_out = open(self.fpath_output, 'w')
         writer = csv.writer(file_out,
@@ -268,10 +260,8 @@ class PyTrans:
 if __name__ == "__main__":
     import argparse 
 
-
     # ---Input parser ------------------------------------------------------- #
     parser = argparse.ArgumentParser(prog='')
-
     parser.add_argument('-c','--input', required=True, type=str, 
                         dest='input_file_path',action='store',default=1,
                         help='Input file path.')
@@ -293,12 +283,6 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
 
-    ## test
-    #validation_file_path        = '../lxsl-testing/input/Generic_Windstorm_SourceLoc.xsd'
-    #transformation_file_path    = '../lxsl-testing/input/MappingMapToGeneric_Windstorm_CanLoc_A.xslt' 
-    #input_file_path             = '../lxsl-testing/input/SourceLocPiWind.csv' 
-    #output_file_path            = '../lxsl-testing/pyTrans_output/test_case_0.csv'
-
     # expected Arg dict()
     xtrans_args = { 
         'd': args.validation_file_path,
@@ -313,7 +297,3 @@ if __name__ == "__main__":
     #print(xtrans_args)
     PyTrans(xtrans_args,
             chunk_size=args.lines)()
-
-
-    
-
