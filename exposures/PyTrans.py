@@ -66,9 +66,7 @@ class PyTrans:
 
 # --- Main loop --------------------------------------------------------------#
 
-    #def __call__(self):
-    def run(self):
-
+    def __call__(self):
 
         # read input CSV header 
         fd_input = open(self.fpath_input, 'r')
@@ -265,3 +263,57 @@ class PyTrans:
         if (self.verbose):
             print('___________________________________________')
             print(etree.tostring(etree_obj, pretty_print=True)) 
+
+
+if __name__ == "__main__":
+    import argparse 
+
+
+    # ---Input parser ------------------------------------------------------- #
+    parser = argparse.ArgumentParser(prog='')
+
+    parser.add_argument('-c','--input', required=True, type=str, 
+                        dest='input_file_path',action='store',default=1,
+                        help='Input file path.')
+    parser.add_argument('-o','--output', required=True, type=str, 
+                        dest='output_file_path',action='store',default=1,
+                        help='output file path for writing CVS/UPX data.')
+    parser.add_argument('-t','--xslt', required=True, type=str, 
+                        dest='transformation_file_path',action='store',default=1,
+                        help='xslt file path.')
+    parser.add_argument('-d','--xls', required=True, type=str, 
+                        dest='validation_file_path',action='store',default=1,
+                        help='xsd file path.')
+    parser.add_argument('-s','--sequ', required=False, 
+                        dest='row_flag',action='store_true',default=False,
+                        help='Boolean to append ROW_ID to output file')
+    parser.add_argument('-l','--linebatch', required=False, type=int, 
+                        dest='lines',action='store',default=50000,
+                        help='Number of lines to process in each iteration')
+
+    args = parser.parse_args()
+
+    ## test
+    #validation_file_path        = '../lxsl-testing/input/Generic_Windstorm_SourceLoc.xsd'
+    #transformation_file_path    = '../lxsl-testing/input/MappingMapToGeneric_Windstorm_CanLoc_A.xslt' 
+    #input_file_path             = '../lxsl-testing/input/SourceLocPiWind.csv' 
+    #output_file_path            = '../lxsl-testing/pyTrans_output/test_case_0.csv'
+
+    # expected Arg dict()
+    xtrans_args = { 
+        'd': args.validation_file_path,
+        'c': args.input_file_path,
+        't': args.transformation_file_path,
+        'o': args.output_file_path,
+        's': ''
+    }
+    if args.row_flag:
+        xtrans_args['s'] = 's'
+
+    #print(xtrans_args)
+    PyTrans(xtrans_args,
+            chunk_size=args.lines)()
+
+
+    
+
