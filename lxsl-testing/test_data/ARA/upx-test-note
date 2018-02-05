@@ -1,0 +1,16 @@
+I'd use:
+
+```├── TransformationFiles
+│   ├── MappingMapToCanLocARA_A.xslt
+│   └── MappingMapToModelLocARA.xslt
+└── ValidationFiles
+    ├── CanLocARA_A.xsd
+    ├── CanLocARA_B.xsd
+    ├── ModelLocARA.xsd
+    └── SourceLocARA.xsd```
+
+
+`SourceLocARA.xsd -> MappingMapToCanLocARA_A.xslt -> CanLocARA_A.xsd`  (CSV OUTPUT)
+`CanLocARA_B.xsd -> MappingMapToModelLocARA.xslt -> ModelLocARA.xsd`    (UPX OUTPUT)
+Those are the two transforms that we're interested in
+and the second one (the one to model loc ARA) should have the `.upx` option
