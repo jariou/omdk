@@ -33,34 +33,29 @@
 __all__ = [
     'PyTrans'
 ]
-#import lxml
 import csv 
 import os
 from itertools import islice
 from lxml import etree
 
 class PyTrans:
-    def __init__(self, trans_args, chunk_size=5000, flg_row=False,
-                                                    flg_verbose=True):
-        # file data, as single string
+    def __init__(self, trans_args, chunk_size=5000, flg_verbose=True):
         self.verbose   = flg_verbose
         self.threshold = 100000000  # Max file size for file_ReadAll() method, in bytes [100MB]
-        #self.xsd  = self.file_ReadAll(trans_args['d'])  # validation file
-        #self.xslt = self.file_ReadAll(trans_args['t'])  # transform file
 
         self.xsd  = etree.parse(trans_args['d'])  # validation file
         self.xslt = etree.parse(trans_args['t'])  # transform file
-        # paths to I/O files
-        self.fpath_input   = trans_args['c']	# file_in.csv
-        self.fpath_output  = trans_args['o']	# file_out.csv
+        self.fpath_input   = trans_args['c']      # file_in.csv
+        self.fpath_output  = trans_args['o']      # file_out.csv
         self.ext           = os.path.splitext(self.fpath_output)[1]
 
         #Row Control Vars
-        self.row_nums   = flg_row        # flag to add first col as row numbers
-        self.row_limit  = chunk_size     # MAX number of CSV input rows to process for each pass      
-        self.row_start  = 1              # Start of input file segment to process
-        self.row_end    = self.row_limit # end of input file segment to process 
-        self.row_header = ""             # CSV col header 
+        self.row_nums   = (trans_args['s'] == 's')  # Is 's' or 'S' as well?
+        self.row_limit  = chunk_size      # MAX number of CSV input rows to process for each pass      
+        self.row_start  = 1               # Start of input file segment to process
+        self.row_end    = self.row_limit  # end of input file segment to process 
+        self.row_header_in  = None        # CSV col header 
+        self.row_header_out = None        # CSV col header Post Transform
 
         # Input Validation  
         if (self.ext == ''):
@@ -77,7 +72,7 @@ class PyTrans:
 
         # read input CSV header 
         fd_input = open(self.fpath_input, 'r')
-        self.row_header = self.file_ReadSlice(fd_input, 0, 0)[0]
+        self.row_header_in = self.file_ReadSlice(fd_input, 0, 0)[0]
 
         """ 
         csv_input_slice[0]  == CSV data
@@ -85,29 +80,31 @@ class PyTrans:
         csv_input_slice[2]  == row Num for last element 
         """
         for csv_input_slice in self.file_NextSlice(fd_input):
+
+
+            # DEBUG PRINT 
+            print("--- lines[%d .. %d] ----------------------------------------------" % (csv_input_slice[1],csv_input_slice[2]))
+
             # Convert CSV -> XML
-            xml_input_slice = self.csvToXML(self.row_header, csv_input_slice[0])    #covert to lxml object
-            self.xmlPrint(xml_input_slice)
+            xml_input_slice = self.csvToXML(self.row_header_in, csv_input_slice[0])    #covert to lxml object
+            self.print_xml(xml_input_slice)
 
             # Transform
             xml_output = self.xmlTransform(xml_input_slice, self.xslt)
-            self.xmlPrint(xml_output)
+            self.print_xml(xml_output)
 
             # Validate Output 
             self.xmlValidate(xml_output,
                              self.xsd)
 
-
-            # DEBUG
-            #return xml_output
-
             #Convert transform XML back to CSV 
+            csv_output = self.xmlToCVS(xml_output,          #XML etree
+                                       csv_input_slice[1],  #First Row in this slice
+                                       csv_input_slice[2])  #Last Row in this slice
 
             # Write to Output 
             # If output == UPX -> apply convent 
             #Write output 
-     
-
 
         
 
@@ -129,7 +126,7 @@ class PyTrans:
             rec = etree.SubElement(root, 'rec')
             # Iter over columns and set attributs 
             for i in range(0,len(row)):
-                rec.set(self.row_header[i], row[i])
+                rec.set(self.row_header_in[i], row[i])
         return root 
     def csvToUXP(self, xml_elementTree):
         pass
@@ -143,20 +140,55 @@ class PyTrans:
 
     # --- XML Funcs --- #
 
-    # WARNING: abributes are stored as dict() object which means keys are returned in an arbitray order
-    # so long as the keys are consistrance with values this shouldnt be a problem.. i think?
-    def xmlToCVS(self, xml_elementTree):
-        root = xml_elementTree.getroot():
+
+    def xmlToCVS(self, xml_elementTree, row_first, row_last):
+        root = xml_elementTree.getroot()
+        
+        # Check if this is the first file chunk processed
+        # and Extract the New CSV header 
+        if not (self.row_header_out):
+            self.row_header_out = root[0].keys()
+
+            if self.row_nums:
+                self.row_header_out.insert(0,'ROW_ID')
+            #Append first line to output csv file
+            self.file_writeHeader(self.row_header_out)
 
 
-        pass
+        # Convert each chunk into Python Dict then pass to:
+        #     class csv.DictWriter(csvfile ... )
+        #     see: https://docs.python.org/2/library/csv.html 
+
+        line_counter = row_first
+
+        for rec in root:
+            #print([rec.get(key) for key in self.row_header_out])
+
+            # Convert Row record to python dict() Object
+            rec_d = rec.attrib 
+
+            # append ROW_ID
+            if self.row_nums:
+                rec_d['ROW_ID'] = str(line_counter)
+                line_counter += 1 
+
+            # Append to output file 
+            self.print_dict(rec_d)
+            self.file_AppendRow(self.row_header_out, rec_d)
+
+        # guard for correct Row numbering
+        if ((self.row_nums) and (line_counter-1 != row_last)):
+            raise KeyError('Row_ID missmatch') 
+
+
+
 
     # http://lxml.de/2.0/validation.html
     def xmlValidate(self, xml_etree, xsd_etree):
         xmlSchema = etree.XMLSchema(xsd_etree) 
    
-        self.xmlPrint(xml_etree)
-        self.xmlPrint(xsd_etree)
+        self.print_xml(xml_etree)
+        self.print_xml(xsd_etree)
         # Calling 'assertValid' will raise execptions, --> should be handled above this level  
         if (xmlSchema.assertValid(xml_etree)):
             return True
@@ -166,11 +198,6 @@ class PyTrans:
         lxml_transform = etree.XSLT(self.xslt)      
         return lxml_transform(xml_doc)
 
-
-    def xmlPrint(self, etree_obj):
-        if (self.verbose):
-            print('___________________________________________')
-            print(etree.tostring(etree_obj, pretty_print=True)) 
 
 # --- File I/O Functions -----------------------------------------------------#
 
@@ -204,23 +231,37 @@ class PyTrans:
         file_slice = islice(input_reader, l_start,l_end+1)  # create iterator for the file slice
         return [line for line in file_slice]    # return selected lines as list()
 
-    # Retrun entire file as single string (Used for 'xsd/xslt')    
-    def file_ReadAll(self, fpath):
-        if self.file_isSmall(fpath):
-            with open(fpath,'r') as f:
-                return "".join([line.strip() for line in f])
-        else:
-            err_str  = "Large filesize protection, "
-            err_str += "check '%s' or set new size threshold" % (fpath) 
-            raise IOError(err_str)
-
-    # Guard function to halt 'file_ReadAll()' if filesize is > threshold value
-    def file_isSmall(self, fpath):
-        # threshold is max size in bytes
-        f_size = os.path.getsize(fpath)
-        return (f_size < self.threshold)
-
     # Function to append output as its processed in batches 
-    def file_Append(self, fpath, payload):
-        #https://docs.python.org/2/library/csv.html
-        pass
+    #
+    # file_object: OutputFile 
+    # row_names: list of row names  -->   ['ROW_ID', 'ACCNTNUM', .. ]
+    # row_data: dict mapping for XML Atribuites  {'ROW_ID': '1', 'ACCNTNUM': '0.02',   ....  }
+    # https://docs.python.org/2/library/csv.html
+    def file_AppendRow(self, row_names, row_data):
+        file_out = open(self.fpath_output, 'awb')
+        writer = csv.DictWriter(file_out,
+                                fieldnames=row_names,
+                                extrasaction='raise')
+
+        writer.writerow(row_data)
+
+    # WARNING: THIS WILL OVERWRITE THE FILE PATH
+    def file_writeHeader(self, row_names):
+        file_out = open(self.fpath_output, 'w')
+        writer = csv.writer(file_out,
+                            delimiter=',')
+        writer.writerow(row_names)
+                                
+
+
+# --- Verbose Print Funcs ----------------------------------------------------#
+
+    def print_dict(self,d):
+         import pprint
+         pp = pprint.PrettyPrinter(indent=4)
+         pp.pprint(d)
+
+    def print_xml(self, etree_obj):
+        if (self.verbose):
+            print('___________________________________________')
+            print(etree.tostring(etree_obj, pretty_print=True)) 

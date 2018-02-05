@@ -9,7 +9,7 @@ from PyTrans import *
 validation_file_path        = '../lxsl-testing/input/Generic_Windstorm_SourceLoc.xsd'
 transformation_file_path    = '../lxsl-testing/input/MappingMapToGeneric_Windstorm_CanLoc_A.xslt' 
 input_file_path             = '../lxsl-testing/input/SourceLocPiWind.csv' 
-output_file_path            = '../lxsl-testing/pytrans_output/test_case_0.csv'
+output_file_path            = '../lxsl-testing/pyTrans_output/test_case_0.csv'
 
 
 # expected Arg dict()
@@ -21,5 +21,7 @@ xtrans_args = {
 	's': ''
 }
 
-TestObj = PyTrans(xtrans_args, chunk_size=5)
-f = open(TestObj.fpath_input, 'r')
+testObj = PyTrans(xtrans_args, chunk_size=5)
+#f = open(testObj.fpath_input, 'r')
+testObj.run()
+
