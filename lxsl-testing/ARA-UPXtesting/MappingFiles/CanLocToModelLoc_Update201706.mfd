@@ -1,0 +1,1825 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Edited with Altova MapForce 2015r4 -->
+<mapping xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="22">
+	<resources/>
+	<component name="defaultmap1" blackbox="0" uid="1" editable="1">
+		<properties SelectedLanguage="xslt"/>
+		<structure>
+			<children>
+				<component name="constant" library="core" uid="14" kind="2">
+					<properties/>
+					<targets>
+						<datapoint pos="0" key="51"/>
+					</targets>
+					<view ltx="381" lty="241" rbx="428" rby="259"/>
+					<data>
+						<constant value="B" datatype="string"/>
+						<wsdl/>
+					</data>
+				</component>
+				<component name="constant" library="core" uid="5" kind="2">
+					<properties/>
+					<targets>
+						<datapoint pos="0" key="56"/>
+					</targets>
+					<view ltx="658" lty="90" rbx="702" rby="108"/>
+					<data>
+						<constant value="63" datatype="decimal"/>
+						<wsdl/>
+					</data>
+				</component>
+				<component name="constant" library="core" uid="6" kind="2">
+					<properties/>
+					<targets>
+						<datapoint pos="0" key="57"/>
+					</targets>
+					<view ltx="658" lty="162" rbx="702" rby="180"/>
+					<data>
+						<constant value="64" datatype="decimal"/>
+						<wsdl/>
+					</data>
+				</component>
+				<component name="constant" library="core" uid="10" kind="2">
+					<properties/>
+					<targets>
+						<datapoint pos="0" key="59"/>
+					</targets>
+					<view ltx="340" lty="107" rbx="428" rby="125"/>
+					<data>
+						<constant value="20160901" datatype="string"/>
+						<wsdl/>
+					</data>
+				</component>
+				<component name="constant" library="core" uid="19" kind="2">
+					<properties/>
+					<targets>
+						<datapoint pos="0" key="64"/>
+					</targets>
+					<view ltx="381" lty="213" rbx="428" rby="231"/>
+					<data>
+						<constant value="C" datatype="string"/>
+						<wsdl/>
+					</data>
+				</component>
+				<component name="constant" library="core" uid="20" kind="2">
+					<properties/>
+					<targets>
+						<datapoint pos="0" key="66"/>
+					</targets>
+					<view ltx="647" lty="111" rbx="702" rby="129"/>
+					<data>
+						<constant value="SA" datatype="string"/>
+						<wsdl/>
+					</data>
+				</component>
+				<component name="constant" library="core" uid="13" kind="2">
+					<properties/>
+					<targets>
+						<datapoint pos="0" key="63"/>
+					</targets>
+					<view ltx="365" lty="184" rbx="428" rby="202"/>
+					<data>
+						<constant value="PWH" datatype="string"/>
+						<wsdl/>
+					</data>
+				</component>
+				<component name="constant" library="core" uid="21" kind="2">
+					<properties/>
+					<targets>
+						<datapoint pos="0" key="133"/>
+					</targets>
+					<view ltx="662" lty="184" rbx="702" rby="202"/>
+					<data>
+						<constant datatype="string"/>
+						<wsdl/>
+					</data>
+				</component>
+				<component name="constant" library="core" uid="82" kind="2">
+					<properties/>
+					<targets>
+						<datapoint pos="0" key="510"/>
+					</targets>
+					<view ltx="381" lty="-33" rbx="428" rby="-15"/>
+					<data>
+						<constant value="X" datatype="string"/>
+						<wsdl/>
+					</data>
+				</component>
+				<component name="concat" library="core" uid="155" kind="5" growable="1" growablebasename="value">
+					<properties/>
+					<sources>
+						<datapoint pos="0" key="728"/>
+						<datapoint pos="1" key="729"/>
+					</sources>
+					<targets>
+						<datapoint pos="0" key="730"/>
+					</targets>
+					<view ltx="511" lty="-116" rbx="586" rby="-58"/>
+				</component>
+				<component name="constant" library="core" uid="4" kind="2">
+					<properties/>
+					<targets>
+						<datapoint pos="0" key="55"/>
+					</targets>
+					<view ltx="765" lty="-59" rbx="809" rby="-41"/>
+					<data>
+						<constant value="60" datatype="decimal"/>
+						<wsdl/>
+					</data>
+				</component>
+				<component name="constant" library="core" uid="17" kind="2">
+					<properties/>
+					<targets>
+						<datapoint pos="0" key="61"/>
+					</targets>
+					<view ltx="376" lty="128" rbx="428" rby="146"/>
+					<data>
+						<constant value="01" datatype="string"/>
+						<wsdl/>
+					</data>
+				</component>
+				<component name="constant" library="core" uid="15" kind="2">
+					<properties/>
+					<targets>
+						<datapoint pos="0" key="52"/>
+					</targets>
+					<view ltx="376" lty="262" rbx="428" rby="280"/>
+					<data>
+						<constant value="PP" datatype="string"/>
+						<wsdl/>
+					</data>
+				</component>
+				<component name="constant" library="core" uid="16" kind="2">
+					<properties/>
+					<targets>
+						<datapoint pos="0" key="54"/>
+					</targets>
+					<view ltx="376" lty="296" rbx="432" rby="314"/>
+					<data>
+						<constant value="1003" datatype="decimal"/>
+						<wsdl/>
+					</data>
+				</component>
+				<component name="value-map" library="core" uid="40" kind="23">
+					<properties/>
+					<sources>
+						<datapoint pos="0" key="410"/>
+					</sources>
+					<targets>
+						<datapoint pos="0" key="411"/>
+					</targets>
+					<view ltx="765" lty="204" rbx="842" rby="243"/>
+					<data>
+						<wsdl/>
+						<valuemap enableDefaultValue="1">
+							<valuemapTable>
+								<entry from="0" to="0"/>
+								<entry from="1" to="2"/>
+								<entry from="2" to="7"/>
+								<entry from="3" to="1"/>
+								<entry from="4" to="8"/>
+								<entry from="5" to="8"/>
+							</valuemapTable>
+							<input name="input" type="string"/>
+							<result name="result" type="string" defaultValue="0"/>
+						</valuemap>
+					</data>
+				</component>
+				<component name="constant" library="core" uid="9" kind="2">
+					<properties/>
+					<targets>
+						<datapoint pos="0" key="58"/>
+					</targets>
+					<view ltx="352" lty="73" rbx="432" rby="91"/>
+					<data>
+						<constant value="20150901" datatype="decimal"/>
+						<wsdl/>
+					</data>
+				</component>
+				<component name="constant" library="core" uid="157" kind="2">
+					<properties/>
+					<targets>
+						<datapoint pos="0" key="741"/>
+					</targets>
+					<view ltx="716" lty="261" rbx="754" rby="279"/>
+					<data>
+						<constant value="1" datatype="decimal"/>
+						<wsdl/>
+					</data>
+				</component>
+				<component name="constant" library="core" uid="64" kind="2">
+					<properties/>
+					<targets>
+						<datapoint pos="0" key="457"/>
+					</targets>
+					<view ltx="390" lty="279" rbx="428" rby="297"/>
+					<data>
+						<constant value="0" datatype="decimal"/>
+						<wsdl/>
+					</data>
+				</component>
+				<component name="constant" library="core" uid="18" kind="2">
+					<properties/>
+					<targets>
+						<datapoint pos="0" key="62"/>
+					</targets>
+					<view ltx="652" lty="136" rbx="702" rby="154"/>
+					<data>
+						<constant value="365" datatype="decimal"/>
+						<wsdl/>
+					</data>
+				</component>
+				<component name="constant" library="core" uid="8" kind="2">
+					<properties/>
+					<targets>
+						<datapoint pos="0" key="53"/>
+					</targets>
+					<view ltx="381" lty="52" rbx="428" rby="70"/>
+					<data>
+						<constant value="X" datatype="string"/>
+						<wsdl/>
+					</data>
+				</component>
+				<component name="value-map" library="core" uid="48" kind="23">
+					<properties/>
+					<sources>
+						<datapoint pos="0" key="435"/>
+					</sources>
+					<targets>
+						<datapoint pos="0" key="436"/>
+					</targets>
+					<view ltx="765" lty="366" rbx="842" rby="405"/>
+					<data>
+						<wsdl/>
+						<valuemap enableDefaultValue="1">
+							<valuemapTable>
+								<entry from="0" to="0"/>
+								<entry from="1" to="3"/>
+								<entry from="2" to="4"/>
+								<entry from="3" to="1"/>
+								<entry from="4" to="3"/>
+								<entry from="5" to="4"/>
+								<entry from="6" to="1"/>
+								<entry from="7" to="5"/>
+								<entry from="8" to="1"/>
+								<entry from="9" to="1"/>
+							</valuemapTable>
+							<input name="input" type="string"/>
+							<result name="result" type="string" defaultValue="0"/>
+						</valuemap>
+					</data>
+				</component>
+				<component name="constant" library="core" uid="7" kind="2">
+					<properties/>
+					<targets>
+						<datapoint pos="0" key="65"/>
+					</targets>
+					<view ltx="390" lty="27" rbx="428" rby="45"/>
+					<data>
+						<constant value="1" datatype="decimal"/>
+						<wsdl/>
+					</data>
+				</component>
+				<component name="substitute-missing" library="core" uid="78" kind="5">
+					<properties/>
+					<sources>
+						<datapoint pos="0" key="500"/>
+						<datapoint pos="1" key="501"/>
+					</sources>
+					<targets>
+						<datapoint pos="0" key="502"/>
+					</targets>
+					<view ltx="511" lty="224" rbx="625" rby="280"/>
+				</component>
+				<component name="constant" library="core" uid="11" kind="2">
+					<properties/>
+					<targets>
+						<datapoint pos="0" key="60"/>
+					</targets>
+					<view ltx="367" lty="157" rbx="428" rby="175"/>
+					<data>
+						<constant value="USD" datatype="string"/>
+						<wsdl/>
+					</data>
+				</component>
+				<component name="constant" library="core" uid="179" kind="2">
+					<properties/>
+					<targets>
+						<datapoint pos="0" key="810"/>
+					</targets>
+					<view ltx="664" lty="27" rbx="702" rby="45"/>
+					<data>
+						<constant value="6" datatype="decimal"/>
+						<wsdl/>
+					</data>
+				</component>
+				<component name="constant" library="core" uid="178" kind="2">
+					<properties/>
+					<targets>
+						<datapoint pos="0" key="809"/>
+					</targets>
+					<view ltx="664" lty="-3" rbx="702" rby="15"/>
+					<data>
+						<constant value="8" datatype="decimal"/>
+						<wsdl/>
+					</data>
+				</component>
+				<component name="constant" library="core" uid="182" kind="2">
+					<properties/>
+					<targets>
+						<datapoint pos="0" key="813"/>
+					</targets>
+					<view ltx="19" lty="387" rbx="57" rby="405"/>
+					<data>
+						<constant value="7" datatype="decimal"/>
+						<wsdl/>
+					</data>
+				</component>
+				<component name="contains" library="core" uid="170" kind="5">
+					<properties/>
+					<sources>
+						<datapoint pos="0" key="774"/>
+						<datapoint pos="1" key="775"/>
+					</sources>
+					<targets>
+						<datapoint pos="0" key="776"/>
+					</targets>
+					<view ltx="274" lty="328" rbx="362" rby="384"/>
+				</component>
+				<component name="contains" library="core" uid="173" kind="5">
+					<properties/>
+					<sources>
+						<datapoint pos="0" key="777"/>
+						<datapoint pos="1" key="778"/>
+					</sources>
+					<targets>
+						<datapoint pos="0" key="779"/>
+					</targets>
+					<view ltx="274" lty="421" rbx="362" rby="477"/>
+				</component>
+				<component name="constant" library="core" uid="171" kind="2">
+					<properties/>
+					<targets>
+						<datapoint pos="0" key="773"/>
+					</targets>
+					<view ltx="219" lty="398" rbx="275" rby="416"/>
+					<data>
+						<constant value="9999" datatype="decimal"/>
+						<wsdl/>
+					</data>
+				</component>
+				<component name="if-else" library="core" uid="174" kind="4">
+					<properties/>
+					<sources>
+						<datapoint pos="0" key="784"/>
+						<datapoint pos="1" key="785"/>
+						<datapoint pos="2" key="786"/>
+					</sources>
+					<targets>
+						<datapoint pos="0" key="787"/>
+					</targets>
+					<view ltx="418" lty="328" rbx="515" rby="404"/>
+				</component>
+				<component name="substring" library="core" uid="181" kind="5">
+					<properties/>
+					<sources>
+						<datapoint pos="0" key="815"/>
+						<datapoint pos="1" key="816"/>
+						<datapoint pos="2" key="817"/>
+					</sources>
+					<targets>
+						<datapoint pos="0" key="818"/>
+					</targets>
+					<view ltx="157" lty="328" rbx="229" rby="401"/>
+				</component>
+				<component name="substring" library="core" uid="184" kind="5">
+					<properties/>
+					<sources>
+						<datapoint pos="0" key="819"/>
+						<datapoint pos="1" key="820"/>
+						<datapoint pos="2" key="821"/>
+					</sources>
+					<targets>
+						<datapoint pos="0" key="822"/>
+					</targets>
+					<view ltx="157" lty="415" rbx="229" rby="488"/>
+				</component>
+				<component name="constant" library="core" uid="87" kind="2">
+					<properties/>
+					<targets>
+						<datapoint pos="0" key="523"/>
+					</targets>
+					<view ltx="390" lty="-4" rbx="428" rby="14"/>
+					<data>
+						<constant value="0" datatype="decimal"/>
+						<wsdl/>
+					</data>
+				</component>
+				<component name="if-else" library="core" uid="175" kind="4">
+					<properties/>
+					<sources>
+						<datapoint pos="0" key="780"/>
+						<datapoint pos="1" key="781"/>
+						<datapoint pos="2" key="782"/>
+					</sources>
+					<targets>
+						<datapoint pos="0" key="783"/>
+					</targets>
+					<view ltx="418" lty="421" rbx="515" rby="497"/>
+				</component>
+				<component name="equal-or-greater" library="core" uid="168" kind="5">
+					<properties/>
+					<sources>
+						<datapoint pos="0" key="767"/>
+						<datapoint pos="1" key="768"/>
+					</sources>
+					<targets>
+						<datapoint pos="0" key="769"/>
+					</targets>
+					<view ltx="580" lty="360" rbx="687" rby="416"/>
+				</component>
+				<component name="substitute-missing" library="core" uid="81" kind="5">
+					<properties/>
+					<sources>
+						<datapoint pos="0" key="511"/>
+						<datapoint pos="1" key="512"/>
+					</sources>
+					<targets>
+						<datapoint pos="0" key="513"/>
+					</targets>
+					<view ltx="511" lty="-54" rbx="625" rby="2"/>
+				</component>
+				<component name="substitute-missing" library="core" uid="84" kind="5">
+					<properties/>
+					<sources>
+						<datapoint pos="0" key="514"/>
+						<datapoint pos="1" key="515"/>
+					</sources>
+					<targets>
+						<datapoint pos="0" key="516"/>
+					</targets>
+					<view ltx="511" lty="-3" rbx="625" rby="53"/>
+				</component>
+				<component name="substitute-missing" library="core" uid="177" kind="5">
+					<properties/>
+					<sources>
+						<datapoint pos="0" key="803"/>
+						<datapoint pos="1" key="804"/>
+					</sources>
+					<targets>
+						<datapoint pos="0" key="805"/>
+					</targets>
+					<view ltx="511" lty="52" rbx="625" rby="108"/>
+				</component>
+				<component name="substitute-missing" library="core" uid="89" kind="5">
+					<properties/>
+					<sources>
+						<datapoint pos="0" key="527"/>
+						<datapoint pos="1" key="528"/>
+					</sources>
+					<targets>
+						<datapoint pos="0" key="529"/>
+					</targets>
+					<view ltx="511" lty="107" rbx="625" rby="163"/>
+				</component>
+				<component name="substitute-missing" library="core" uid="91" kind="5">
+					<properties/>
+					<sources>
+						<datapoint pos="0" key="530"/>
+						<datapoint pos="1" key="531"/>
+					</sources>
+					<targets>
+						<datapoint pos="0" key="532"/>
+					</targets>
+					<view ltx="511" lty="162" rbx="625" rby="218"/>
+				</component>
+				<component name="concat" library="core" uid="148" kind="5" growable="1" growablebasename="value">
+					<properties/>
+					<sources>
+						<datapoint pos="0" key="722"/>
+						<datapoint pos="1" key="723"/>
+					</sources>
+					<targets>
+						<datapoint pos="0" key="724"/>
+					</targets>
+					<view ltx="511" lty="-173" rbx="586" rby="-115"/>
+				</component>
+				<component name="value-map" library="core" uid="150" kind="23">
+					<properties/>
+					<sources>
+						<datapoint pos="0" key="720"/>
+					</sources>
+					<targets>
+						<datapoint pos="0" key="721"/>
+					</targets>
+					<view ltx="662" lty="-138" rbx="739" rby="-99"/>
+					<data>
+						<wsdl/>
+						<valuemap enableDefaultValue="1">
+							<valuemapTable>
+								<entry from="RMS0" to="100"/>
+								<entry from="RMS1" to="101"/>
+								<entry from="RMS2" to="111"/>
+								<entry from="RMS2A" to="114"/>
+								<entry from="RMS2B" to="114"/>
+								<entry from="RMS2C" to="116"/>
+								<entry from="RMS3" to="131"/>
+								<entry from="RMS4" to="151"/>
+								<entry from="RMS4B" to="152"/>
+								<entry from="RMS5" to="191"/>
+								<entry from="RMS5A" to="192"/>
+								<entry from="RMS5B" to="194"/>
+								<entry from="RMS6" to="201"/>
+								<entry from="RMS7" to="202"/>
+								<entry from="RMS8" to="203"/>
+								<entry from="ISO1" to="101"/>
+								<entry from="ISO2" to="119"/>
+								<entry from="ISO3" to="152"/>
+								<entry from="ISO4" to="111"/>
+								<entry from="ISO5" to="151"/>
+								<entry from="ISO0" to="100"/>
+								<entry from="ISO6" to="131"/>
+								<entry from="RMS1A" to="101"/>
+								<entry from="RMS1B" to="104"/>
+								<entry from="RMS3A" to="131"/>
+								<entry from="RMS3B" to="131"/>
+								<entry from="RMS3B4" to="131"/>
+								<entry from="RMS3C" to="151"/>
+								<entry from="RMS4A" to="151"/>
+								<entry from="RMS4C" to="131"/>
+								<entry from="ISO7" to="154"/>
+								<entry from="ISO8" to="134"/>
+								<entry from="ISO9" to="133"/>
+								<entry from="ATC0" to="100"/>
+								<entry from="ATC1" to="101"/>
+								<entry from="ATC2" to="152"/>
+								<entry from="ATC3" to="114"/>
+								<entry from="ATC4" to="115"/>
+								<entry from="ATC5" to="132"/>
+								<entry from="ATC6" to="133"/>
+								<entry from="ATC7" to="116"/>
+								<entry from="ATC8" to="117"/>
+								<entry from="ATC9" to="153"/>
+								<entry from="ATC10" to="154"/>
+								<entry from="ATC11" to="155"/>
+								<entry from="ATC12" to="134"/>
+								<entry from="ATC13" to="135"/>
+								<entry from="ATC14" to="137"/>
+								<entry from="ATC15" to="181"/>
+								<entry from="ATC16" to="136"/>
+								<entry from="ATC17" to="191"/>
+								<entry from="ATC18" to="151"/>
+								<entry from="FIRE0" to="100"/>
+								<entry from="FIRE1" to="101"/>
+								<entry from="FIRE2" to="111"/>
+								<entry from="FIRE3" to="131"/>
+								<entry from="FIRE4" to="111"/>
+								<entry from="FIRE5" to="111"/>
+								<entry from="FIRE6" to="111"/>
+								<entry from="FIRE7" to="104"/>
+								<entry from="FIRE8" to="111"/>
+								<entry from="FIRE9" to="111"/>
+								<entry from="ISO10" to="137"/>
+								<entry from="ISO11" to="135"/>
+								<entry from="ISO12" to="117"/>
+								<entry from="ISO13" to="136"/>
+								<entry from="ISO14" to="115"/>
+								<entry from="ISO15" to="114"/>
+								<entry from="ISO16" to="153"/>
+								<entry from="ISO17" to="191"/>
+								<entry from="ISO18" to="151"/>
+								<entry from="RMS2B3" to="114"/>
+								<entry from="RMS4A3" to="151"/>
+								<entry from="RMS53" to="191"/>
+								<entry from="RMS1B1" to="104"/>
+								<entry from="RMS3A3" to="131"/>
+								<entry from="RMS1A1" to="101"/>
+								<entry from="RMS1A2" to="101"/>
+								<entry from="RMS1B2" to="104"/>
+								<entry from="RMS2A1" to="114"/>
+								<entry from="RMS2B1" to="114"/>
+								<entry from="RMS2B2" to="114"/>
+								<entry from="RMS2C1" to="116"/>
+								<entry from="RMS2C2" to="116"/>
+								<entry from="RMS3A1" to="131"/>
+								<entry from="RMS3A2" to="131"/>
+								<entry from="RMS3A4" to="131"/>
+								<entry from="RMS3A5" to="131"/>
+								<entry from="RMS3A6" to="131"/>
+								<entry from="RMS3B1" to="131"/>
+								<entry from="RMS3B2" to="131"/>
+								<entry from="RMS3B3" to="131"/>
+								<entry from="RMS3B5" to="131"/>
+								<entry from="RMS3B6" to="131"/>
+								<entry from="RMS4A1" to="151"/>
+								<entry from="RMS4A2" to="151"/>
+								<entry from="RMS4A4" to="151"/>
+								<entry from="RMS4A5" to="151"/>
+								<entry from="RMS4B1" to="152"/>
+								<entry from="RMS4B2" to="152"/>
+							</valuemapTable>
+							<input name="input" type="string"/>
+							<result name="result" type="string" defaultValue="100"/>
+						</valuemap>
+					</data>
+				</component>
+				<component name="value-map" library="core" uid="156" kind="23">
+					<properties/>
+					<sources>
+						<datapoint pos="0" key="731"/>
+					</sources>
+					<targets>
+						<datapoint pos="0" key="732"/>
+					</targets>
+					<view ltx="662" lty="-100" rbx="739" rby="-61"/>
+					<data>
+						<wsdl/>
+						<valuemap enableDefaultValue="1">
+							<valuemapTable>
+								<entry from="ATC0" to="300"/>
+								<entry from="ATC1" to="302"/>
+								<entry from="ATC2" to="306"/>
+								<entry from="ATC3" to="304"/>
+								<entry from="ATC4" to="305"/>
+								<entry from="ATC5" to="312"/>
+								<entry from="ATC6" to="313"/>
+								<entry from="ATC7" to="314"/>
+								<entry from="ATC8" to="315"/>
+								<entry from="ATC9" to="316"/>
+								<entry from="ATC10" to="317"/>
+								<entry from="ATC11" to="318"/>
+								<entry from="ATC12" to="322"/>
+								<entry from="ATC13" to="323"/>
+								<entry from="ATC14" to="324"/>
+								<entry from="ATC15" to="325"/>
+								<entry from="ATC16" to="326"/>
+								<entry from="ATC17" to="327"/>
+								<entry from="ATC18" to="328"/>
+								<entry from="ATC19" to="329"/>
+								<entry from="ATC20" to="373"/>
+								<entry from="ATC21" to="330"/>
+								<entry from="ATC22" to="341"/>
+								<entry from="ATC23" to="343"/>
+								<entry from="ATC24" to="344"/>
+								<entry from="ATC25" to="346"/>
+								<entry from="ATC26" to="351"/>
+								<entry from="ATC27" to="352"/>
+								<entry from="ATC28" to="353"/>
+								<entry from="ATC29" to="354"/>
+								<entry from="ATC30" to="361"/>
+								<entry from="ATC31" to="362"/>
+								<entry from="ATC32" to="363"/>
+								<entry from="ATC33" to="364"/>
+								<entry from="ATC34" to="365"/>
+								<entry from="ATC35" to="371"/>
+								<entry from="ATC36" to="372"/>
+								<entry from="ATC37" to="311"/>
+								<entry from="ATC38" to="321"/>
+								<entry from="ATC39" to="300"/>
+								<entry from="ATC40" to="302"/>
+								<entry from="ATC41" to="302"/>
+								<entry from="ISO0" to="300"/>
+								<entry from="ISO1" to="302"/>
+								<entry from="ISO2" to="306"/>
+								<entry from="ISO3" to="328"/>
+								<entry from="ISO4" to="304"/>
+								<entry from="ISO5" to="321"/>
+								<entry from="ISO6" to="305"/>
+								<entry from="ISO7" to="311"/>
+								<entry from="ISO8" to="315"/>
+								<entry from="ISO9" to="314"/>
+								<entry from="ATC47" to="331"/>
+								<entry from="ATC42" to="306"/>
+								<entry from="ATC43" to="306"/>
+								<entry from="ATC44" to="335"/>
+								<entry from="ATC48" to="304"/>
+								<entry from="ATC49" to="316"/>
+								<entry from="ATC50" to="316"/>
+								<entry from="ATC51" to="304"/>
+								<entry from="ATC52" to="304"/>
+								<entry from="ATC53" to="311"/>
+								<entry from="ATC54" to="345"/>
+							</valuemapTable>
+							<input name="input" type="string"/>
+							<result name="result" type="string" defaultValue="300"/>
+						</valuemap>
+					</data>
+				</component>
+				<component name="value-map" library="core" uid="79" kind="23">
+					<properties/>
+					<sources>
+						<datapoint pos="0" key="506"/>
+					</sources>
+					<targets>
+						<datapoint pos="0" key="507"/>
+					</targets>
+					<view ltx="662" lty="-54" rbx="739" rby="-15"/>
+					<data>
+						<wsdl/>
+						<valuemap enableDefaultValue="1">
+							<valuemapTable>
+								<entry from="ME" to="13"/>
+								<entry from="NH" to="33"/>
+								<entry from="VT" to="50"/>
+								<entry from="MA" to="25"/>
+								<entry from="RI" to="44"/>
+								<entry from="CT" to="09"/>
+								<entry from="NY" to="36"/>
+								<entry from="NJ" to="34"/>
+								<entry from="PA" to="42"/>
+								<entry from="DE" to="10"/>
+								<entry from="MD" to="24"/>
+								<entry from="DC" to="11"/>
+								<entry from="WV" to="54"/>
+								<entry from="VA" to="51"/>
+								<entry from="NC" to="37"/>
+								<entry from="SC" to="45"/>
+								<entry from="GA" to="13"/>
+								<entry from="FL" to="12"/>
+								<entry from="AL" to="01"/>
+								<entry from="MS" to="28"/>
+								<entry from="LA" to="22"/>
+								<entry from="TX" to="48"/>
+								<entry from="X" to="00"/>
+							</valuemapTable>
+							<input name="input" type="string"/>
+							<result name="result" type="string" defaultValue="00"/>
+						</valuemap>
+					</data>
+				</component>
+				<component name="value-map" library="core" uid="43" kind="23">
+					<properties/>
+					<sources>
+						<datapoint pos="0" key="418"/>
+					</sources>
+					<targets>
+						<datapoint pos="0" key="419"/>
+					</targets>
+					<view ltx="765" lty="52" rbx="842" rby="91"/>
+					<data>
+						<wsdl/>
+						<valuemap>
+							<valuemapTable>
+								<entry from="ATC" to="AIR"/>
+								<entry from="FIRE" to="AIR"/>
+								<entry from="ISO" to="AIR"/>
+								<entry from="RMS" to="AIR"/>
+								<entry from="RMSIND" to="AIR"/>
+							</valuemapTable>
+							<input name="input" type="string"/>
+							<result name="result" type="string"/>
+						</valuemap>
+					</data>
+				</component>
+				<component name="value-map" library="core" uid="45" kind="23">
+					<properties/>
+					<sources>
+						<datapoint pos="0" key="420"/>
+					</sources>
+					<targets>
+						<datapoint pos="0" key="421"/>
+					</targets>
+					<view ltx="765" lty="90" rbx="842" rby="129"/>
+					<data>
+						<wsdl/>
+						<valuemap>
+							<valuemapTable>
+								<entry from="ATC" to="AIR"/>
+								<entry from="ISO" to="AIR"/>
+								<entry from="SIC" to="AIR"/>
+								<entry from="RMS" to="AIR"/>
+								<entry from="RMSIND" to="AIR"/>
+							</valuemapTable>
+							<input name="input" type="string"/>
+							<result name="result" type="string"/>
+						</valuemap>
+					</data>
+				</component>
+				<component name="value-map" library="core" uid="39" kind="23">
+					<properties/>
+					<sources>
+						<datapoint pos="0" key="406"/>
+					</sources>
+					<targets>
+						<datapoint pos="0" key="407"/>
+					</targets>
+					<view ltx="765" lty="128" rbx="842" rby="167"/>
+					<data>
+						<wsdl/>
+						<valuemap enableDefaultValue="1">
+							<valuemapTable>
+								<entry from="0" to="0"/>
+								<entry from="1" to="1"/>
+								<entry from="2" to="1"/>
+								<entry from="3" to="3"/>
+								<entry from="4" to="3"/>
+								<entry from="5" to="2"/>
+								<entry from="6" to="2"/>
+								<entry from="7" to="8"/>
+								<entry from="8" to="8"/>
+							</valuemapTable>
+							<input name="input" type="string"/>
+							<result name="result" type="string" defaultValue="0"/>
+						</valuemap>
+					</data>
+				</component>
+				<component name="value-map" library="core" uid="185" kind="23">
+					<properties/>
+					<sources>
+						<datapoint pos="0" key="840"/>
+					</sources>
+					<targets>
+						<datapoint pos="0" key="839"/>
+					</targets>
+					<view ltx="765" lty="415" rbx="842" rby="454"/>
+					<data>
+						<wsdl/>
+						<valuemap enableDefaultValue="1">
+							<valuemapTable>
+								<entry from="0" to="0"/>
+								<entry from="1" to="1"/>
+								<entry from="2" to="1"/>
+								<entry from="3" to="3"/>
+								<entry from="4" to="3"/>
+								<entry from="5" to="2"/>
+								<entry from="6" to="2"/>
+								<entry from="7" to="8"/>
+								<entry from="8" to="8"/>
+							</valuemapTable>
+							<input name="input" type="string"/>
+							<result name="result" type="string" defaultValue="0"/>
+						</valuemap>
+					</data>
+				</component>
+				<component name="value-map" library="core" uid="47" kind="23">
+					<properties/>
+					<sources>
+						<datapoint pos="0" key="431"/>
+					</sources>
+					<targets>
+						<datapoint pos="0" key="432"/>
+					</targets>
+					<view ltx="765" lty="328" rbx="842" rby="367"/>
+					<data>
+						<wsdl/>
+						<valuemap enableDefaultValue="1">
+							<valuemapTable>
+								<entry from="0" to="0"/>
+								<entry from="1" to="5"/>
+								<entry from="2" to="5"/>
+								<entry from="3" to="6"/>
+								<entry from="4" to="7"/>
+								<entry from="5" to="7"/>
+								<entry from="6" to="7"/>
+							</valuemapTable>
+							<input name="input" type="string"/>
+							<result name="result" type="string" defaultValue="0"/>
+						</valuemap>
+					</data>
+				</component>
+				<component name="value-map" library="core" uid="42" kind="23">
+					<properties/>
+					<sources>
+						<datapoint pos="0" key="412"/>
+					</sources>
+					<targets>
+						<datapoint pos="0" key="413"/>
+					</targets>
+					<view ltx="765" lty="252" rbx="842" rby="291"/>
+					<data>
+						<wsdl/>
+						<valuemap enableDefaultValue="1">
+							<valuemapTable>
+								<entry from="0" to="0"/>
+								<entry from="1" to="2012"/>
+								<entry from="2" to="2007"/>
+								<entry from="3" to="2000"/>
+								<entry from="4" to="1970"/>
+							</valuemapTable>
+							<input name="input" type="string"/>
+							<result name="result" type="string" defaultValue="0"/>
+						</valuemap>
+					</data>
+				</component>
+				<component name="value-map" library="core" uid="46" kind="23">
+					<properties/>
+					<sources>
+						<datapoint pos="0" key="427"/>
+					</sources>
+					<targets>
+						<datapoint pos="0" key="428"/>
+					</targets>
+					<view ltx="765" lty="290" rbx="842" rby="329"/>
+					<data>
+						<wsdl/>
+						<valuemap enableDefaultValue="1">
+							<valuemapTable>
+								<entry from="0" to="0"/>
+								<entry from="1" to="7"/>
+								<entry from="2" to="6"/>
+								<entry from="3" to="5"/>
+								<entry from="4" to="4"/>
+								<entry from="5" to="1"/>
+							</valuemapTable>
+							<input name="input" type="string"/>
+							<result name="result" type="string" defaultValue="0"/>
+						</valuemap>
+					</data>
+				</component>
+				<component name="value-map" library="core" uid="38" kind="23">
+					<properties/>
+					<sources>
+						<datapoint pos="0" key="402"/>
+					</sources>
+					<targets>
+						<datapoint pos="0" key="403"/>
+					</targets>
+					<view ltx="765" lty="166" rbx="842" rby="205"/>
+					<data>
+						<wsdl/>
+						<valuemap enableDefaultValue="1">
+							<valuemapTable>
+								<entry from="0" to="0"/>
+								<entry from="1" to="4"/>
+								<entry from="2" to="4"/>
+								<entry from="3" to="0"/>
+								<entry from="4" to="0"/>
+								<entry from="5" to="3"/>
+								<entry from="6" to="2"/>
+								<entry from="7" to="1"/>
+								<entry from="8" to="1"/>
+								<entry from="9" to="11"/>
+								<entry from="10" to="11"/>
+							</valuemapTable>
+							<input name="input" type="string"/>
+							<result name="result" type="string" defaultValue="0"/>
+						</valuemap>
+					</data>
+				</component>
+				<component name="constant" library="core" uid="12" kind="2">
+					<properties/>
+					<targets>
+						<datapoint pos="0" key="134"/>
+					</targets>
+					<view ltx="664" lty="63" rbx="702" rby="81"/>
+					<data>
+						<constant value="0" datatype="decimal"/>
+						<wsdl/>
+					</data>
+				</component>
+				<component name="CanLocARA_B" library="xml" uid="2" kind="14">
+					<properties XSLTTargetEncoding="UTF-8"/>
+					<view ltx="19" lty="-88" rbx="219" rby="268"/>
+					<data>
+						<root scrollposition="750">
+							<header>
+								<namespaces>
+									<namespace/>
+									<namespace uid="http://www.altova.com/mapforce"/>
+								</namespaces>
+							</header>
+							<entry name="FileInstance" ns="1" expanded="1">
+								<entry name="document" ns="1" expanded="1" casttotargettypemode="cast-in-subtree">
+									<entry name="root" outkey="18" expanded="1">
+										<entry name="rec" outkey="19" expanded="1">
+											<entry name="ROW_ID" type="attribute" outkey="836"/>
+											<entry name="POSTALCODE" type="attribute" outkey="21"/>
+											<entry name="STATECODE" type="attribute" outkey="394"/>
+											<entry name="COUNTYCODE" type="attribute" outkey="739"/>
+											<entry name="LATITUDE" type="attribute" outkey="23"/>
+											<entry name="LONGITUDE" type="attribute" outkey="24"/>
+											<entry name="BLDGSCHEME" type="attribute" outkey="26"/>
+											<entry name="BLDGCLASS" type="attribute" outkey="27"/>
+											<entry name="OCCSCHEME" type="attribute" outkey="28"/>
+											<entry name="OCCTYPE" type="attribute" outkey="29"/>
+											<entry name="YEARBUILT" type="attribute" outkey="30"/>
+											<entry name="YEARUPGRAD" type="attribute" outkey="752"/>
+											<entry name="NUMSTORIES" type="attribute" outkey="31"/>
+											<entry name="NUMBLDGS" type="attribute" outkey="25"/>
+											<entry name="FLOORAREA" type="attribute" outkey="333"/>
+											<entry name="ROOFSYS" type="attribute" outkey="401"/>
+											<entry name="ROOFGEOM" type="attribute" outkey="338"/>
+											<entry name="ROOFANCH" type="attribute" outkey="339"/>
+											<entry name="ROOFAGE" type="attribute" outkey="340"/>
+											<entry name="ROOFFRAME" type="attribute" outkey="426"/>
+											<entry name="CLADRATE" type="attribute" outkey="433"/>
+											<entry name="RESISTOPEN" type="attribute" outkey="434"/>
+										</entry>
+									</entry>
+								</entry>
+							</entry>
+						</root>
+						<document schema="..\ValidationFiles\CanLocARA_B.xsd" instanceroot="{}root"/>
+						<wsdl/>
+					</data>
+				</component>
+				<component name="constant" library="core" uid="183" kind="2">
+					<properties/>
+					<targets>
+						<datapoint pos="0" key="814"/>
+					</targets>
+					<view ltx="19" lty="404" rbx="57" rby="422"/>
+					<data>
+						<constant value="4" datatype="decimal"/>
+						<wsdl/>
+					</data>
+				</component>
+				<component name="if-else" library="core" uid="162" kind="4">
+					<properties/>
+					<sources>
+						<datapoint pos="0" key="755"/>
+						<datapoint pos="1" key="756"/>
+						<datapoint pos="2" key="757"/>
+					</sources>
+					<targets>
+						<datapoint pos="0" key="758"/>
+					</targets>
+					<view ltx="590" lty="432" rbx="687" rby="508"/>
+				</component>
+				<component name="constant" library="core" uid="188" kind="2">
+					<properties/>
+					<targets>
+						<datapoint pos="0" key="845"/>
+					</targets>
+					<view ltx="605" lty="603" rbx="649" rby="621"/>
+					<data>
+						<constant value="12" datatype="decimal"/>
+						<wsdl/>
+					</data>
+				</component>
+				<component name="value-map" library="core" uid="187" kind="23">
+					<properties/>
+					<sources>
+						<datapoint pos="0" key="843"/>
+					</sources>
+					<targets>
+						<datapoint pos="0" key="844"/>
+					</targets>
+					<view ltx="580" lty="518" rbx="657" rby="557"/>
+					<data>
+						<wsdl/>
+						<valuemap enableDefaultValue="1">
+							<valuemapTable>
+								<entry from="8" to="12"/>
+								<entry from="10" to="12"/>
+							</valuemapTable>
+							<input name="input" type="string"/>
+							<result name="result" type="string" defaultValue="0"/>
+						</valuemap>
+					</data>
+				</component>
+				<component name="equal" library="core" uid="190" kind="5">
+					<properties/>
+					<sources>
+						<datapoint pos="0" key="850"/>
+						<datapoint pos="1" key="851"/>
+					</sources>
+					<targets>
+						<datapoint pos="0" key="852"/>
+					</targets>
+					<view ltx="686" lty="551" rbx="739" rby="607"/>
+				</component>
+				<component name="value-map" library="core" uid="186" kind="23">
+					<properties/>
+					<sources>
+						<datapoint pos="0" key="841"/>
+					</sources>
+					<targets>
+						<datapoint pos="0" key="842"/>
+					</targets>
+					<view ltx="590" lty="637" rbx="667" rby="676"/>
+					<data>
+						<wsdl/>
+						<valuemap enableDefaultValue="1">
+							<valuemapTable>
+								<entry from="1" to="4"/>
+							</valuemapTable>
+							<input name="input" type="string"/>
+							<result name="result" type="string" defaultValue="0"/>
+						</valuemap>
+					</data>
+				</component>
+				<component name="if-else" library="core" uid="191" kind="4">
+					<properties/>
+					<sources>
+						<datapoint pos="0" key="848"/>
+						<datapoint pos="1" key="847"/>
+						<datapoint pos="2" key="846"/>
+					</sources>
+					<targets>
+						<datapoint pos="0" key="849"/>
+					</targets>
+					<view ltx="778" lty="579" rbx="875" rby="655"/>
+				</component>
+				<component name="ModelLocARA" library="xml" uid="3" kind="14">
+					<properties XSLTTargetEncoding="UTF-8" XSLTDefaultOutput="1"/>
+					<view ltx="959" lty="-138" rbx="1237" rby="318"/>
+					<data>
+						<root scrollposition="1774">
+							<header>
+								<namespaces>
+									<namespace/>
+									<namespace uid="http://www.altova.com/mapforce"/>
+								</namespaces>
+							</header>
+							<entry name="FileInstance" ns="1" expanded="1">
+								<entry name="document" ns="1" expanded="1" casttotargettypemode="cast-in-subtree">
+									<entry name="root" inpkey="1" expanded="1">
+										<entry name="rec" inpkey="2" expanded="1">
+											<entry name="RecTypeCode60" type="attribute" inpkey="67"/>
+											<entry name="PolID60" type="attribute" inpkey="68"/>
+											<entry name="Name60" type="attribute" inpkey="69"/>
+											<entry name="Address60" type="attribute" inpkey="70"/>
+											<entry name="UDF1" type="attribute" inpkey="71"/>
+											<entry name="UDF2" type="attribute" inpkey="72"/>
+											<entry name="UDF3" type="attribute" inpkey="73"/>
+											<entry name="UDF4" type="attribute" inpkey="74"/>
+											<entry name="UDF5" type="attribute" inpkey="75"/>
+											<entry name="InsuredIDType" type="attribute" inpkey="76"/>
+											<entry name="InsuredID" type="attribute" inpkey="77"/>
+											<entry name="EffFrom60" type="attribute" inpkey="78"/>
+											<entry name="EffTo60" type="attribute" inpkey="79"/>
+											<entry name="Currency60" type="attribute" inpkey="80"/>
+											<entry name="ExchRate60" type="attribute" inpkey="81"/>
+											<entry name="UserLOB" type="attribute" inpkey="82"/>
+											<entry name="Peril60" type="attribute" inpkey="83"/>
+											<entry name="PolForm" type="attribute" inpkey="84"/>
+											<entry name="Status" type="attribute" inpkey="85"/>
+											<entry name="ContractType" type="attribute" inpkey="86"/>
+											<entry name="RecTypeCode63" type="attribute" inpkey="87"/>
+											<entry name="PolID63" type="attribute" inpkey="88"/>
+											<entry name="LocID63" type="attribute" inpkey="3"/>
+											<entry name="ISOBIN" type="attribute" inpkey="89"/>
+											<entry name="Name63" type="attribute" inpkey="90"/>
+											<entry name="Address63" type="attribute" inpkey="91"/>
+											<entry name="City" type="attribute" inpkey="92"/>
+											<entry name="AreaScheme" type="attribute" inpkey="93"/>
+											<entry name="Area" type="attribute" inpkey="393"/>
+											<entry name="SubArea" type="attribute" inpkey="4"/>
+											<entry name="PostalArea" type="attribute" inpkey="5"/>
+											<entry name="Country" type="attribute" inpkey="94"/>
+											<entry name="GeoLat" type="attribute" inpkey="6"/>
+											<entry name="GeoLong" type="attribute" inpkey="7"/>
+											<entry name="EffFrom" type="attribute" inpkey="95"/>
+											<entry name="EffTo" type="attribute" inpkey="96"/>
+											<entry name="Currency" type="attribute" inpkey="97"/>
+											<entry name="ExchRate" type="attribute" inpkey="98"/>
+											<entry name="RiskCount" type="attribute" inpkey="8"/>
+											<entry name="RepValBldg" type="attribute" inpkey="9"/>
+											<entry name="RepValOStr" type="attribute" inpkey="10"/>
+											<entry name="RepValCont" type="attribute" inpkey="99"/>
+											<entry name="RepValTime" type="attribute" inpkey="100"/>
+											<entry name="RVDaysCovered" type="attribute" inpkey="101"/>
+											<entry name="Premium" type="attribute" inpkey="102"/>
+											<entry name="ConType" type="attribute" inpkey="11"/>
+											<entry name="ConBldg" type="attribute" inpkey="12"/>
+											<entry name="ConOStr" type="attribute" inpkey="103"/>
+											<entry name="DamageModFactor" type="attribute" inpkey="104"/>
+											<entry name="OccType" type="attribute" inpkey="13"/>
+											<entry name="Occ" type="attribute" inpkey="14"/>
+											<entry name="YearBuilt" type="attribute" inpkey="15"/>
+											<entry name="Stories" type="attribute" inpkey="16"/>
+											<entry name="GRCBldg" type="attribute" inpkey="105"/>
+											<entry name="GRCCont" type="attribute" inpkey="106"/>
+											<entry name="GrossArea" type="attribute" inpkey="107"/>
+											<entry name="PerilCount" type="attribute" inpkey="108"/>
+											<entry name="Peril" type="attribute" inpkey="109"/>
+											<entry name="LimitType" type="attribute" inpkey="110"/>
+											<entry name="Limit1" type="attribute" inpkey="703"/>
+											<entry name="Limit2" type="attribute" inpkey="112"/>
+											<entry name="Limit3" type="attribute" inpkey="704"/>
+											<entry name="Limit4" type="attribute" inpkey="705"/>
+											<entry name="Participation" type="attribute" inpkey="115"/>
+											<entry name="Participation2" type="attribute" inpkey="116"/>
+											<entry name="DedType" type="attribute" inpkey="117"/>
+											<entry name="Ded1" type="attribute" inpkey="706"/>
+											<entry name="Ded2" type="attribute" inpkey="119"/>
+											<entry name="Ded3" type="attribute" inpkey="707"/>
+											<entry name="Ded4" type="attribute" inpkey="708"/>
+											<entry name="Territory" type="attribute" inpkey="122"/>
+											<entry name="SublimitArea" type="attribute" inpkey="123"/>
+											<entry name="ReinsCount" type="attribute" inpkey="124"/>
+											<entry name="ReinsOrder" type="attribute" inpkey="125"/>
+											<entry name="ReinsType" type="attribute" inpkey="126"/>
+											<entry name="ReinsCID" type="attribute" inpkey="127"/>
+											<entry name="Reinsfield1" type="attribute" inpkey="128"/>
+											<entry name="Reinsfield2" type="attribute" inpkey="129"/>
+											<entry name="Reinsfield3" type="attribute" inpkey="130"/>
+											<entry name="Reinsfield4" type="attribute" inpkey="131"/>
+											<entry name="RecTypeCode64" type="attribute" inpkey="132"/>
+											<entry name="PolID64" type="attribute" inpkey="202"/>
+											<entry name="LocID64" type="attribute" inpkey="17"/>
+											<entry name="SealApprove" type="attribute" inpkey="207"/>
+											<entry name="IrFloorOfInterest" type="attribute" inpkey="208"/>
+											<entry name="IrBldCond" type="attribute" inpkey="209"/>
+											<entry name="Pounding" type="attribute" inpkey="210"/>
+											<entry name="IrTreeExposure" type="attribute" inpkey="211"/>
+											<entry name="IrSmallDebris" type="attribute" inpkey="212"/>
+											<entry name="IrLargeMissile" type="attribute" inpkey="213"/>
+											<entry name="IrTerrainRoughness" type="attribute" inpkey="214"/>
+											<entry name="IrAdBldHeight" type="attribute" inpkey="215"/>
+											<entry name="IrBldOrientation" type="attribute" inpkey="216"/>
+											<entry name="IrShape" type="attribute" inpkey="217"/>
+											<entry name="IrTorsion" type="attribute" inpkey="218"/>
+											<entry name="IrSoftStory" type="attribute" inpkey="219"/>
+											<entry name="IrStrucIrreg" type="attribute" inpkey="220"/>
+											<entry name="IrSpecial" type="attribute" inpkey="221"/>
+											<entry name="IrRetrofit" type="attribute" inpkey="222"/>
+											<entry name="IrRoofGeometry" type="attribute" inpkey="223"/>
+											<entry name="IrRoofPitch" type="attribute" inpkey="224"/>
+											<entry name="IrRoofCover" type="attribute" inpkey="225"/>
+											<entry name="IrRoofDeck" type="attribute" inpkey="226"/>
+											<entry name="IrRoofCoverAttch" type="attribute" inpkey="227"/>
+											<entry name="IrRoofDeckAttch" type="attribute" inpkey="228"/>
+											<entry name="IrRoofAnchorage" type="attribute" inpkey="229"/>
+											<entry name="IrRoofBuilt" type="attribute" inpkey="230"/>
+											<entry name="IrWall" type="attribute" inpkey="231"/>
+											<entry name="IrWallSiding" type="attribute" inpkey="232"/>
+											<entry name="IrGlassType" type="attribute" inpkey="233"/>
+											<entry name="IrGlassPercent" type="attribute" inpkey="234"/>
+											<entry name="IrWindowProt" type="attribute" inpkey="235"/>
+											<entry name="IrExteriorDoors" type="attribute" inpkey="236"/>
+											<entry name="IrBldFndConn" type="attribute" inpkey="237"/>
+											<entry name="IrFoundation" type="attribute" inpkey="238"/>
+											<entry name="IrIntPartition" type="attribute" inpkey="239"/>
+											<entry name="IrAttachStruct" type="attribute" inpkey="240"/>
+											<entry name="IrAppurtStruct" type="attribute" inpkey="241"/>
+											<entry name="IrMechSystem" type="attribute" inpkey="242"/>
+											<entry name="ShortColumn" type="attribute" inpkey="243"/>
+											<entry name="BigExtOpnh" type="attribute" inpkey="244"/>
+											<entry name="Omamentation" type="attribute" inpkey="245"/>
+											<entry name="Equipment" type="attribute" inpkey="246"/>
+											<entry name="WaterHeater" type="attribute" inpkey="247"/>
+											<entry name="Redundancy" type="attribute" inpkey="248"/>
+											<entry name="BrickVeneer" type="attribute" inpkey="249"/>
+											<entry name="TallOne-Story" type="attribute" inpkey="250"/>
+											<entry name="Tanks" type="attribute" inpkey="251"/>
+											<entry name="Chimney" type="attribute" inpkey="252"/>
+											<entry name="ColumnBasement" type="attribute" inpkey="253"/>
+											<entry name="Multi-StoryHall" type="attribute" inpkey="254"/>
+											<entry name="Lattice" type="attribute" inpkey="255"/>
+											<entry name="Welding" type="attribute" inpkey="256"/>
+											<entry name="TransitioninSRC" type="attribute" inpkey="257"/>
+											<entry name="ColdFormedTube" type="attribute" inpkey="258"/>
+											<entry name="ISValue" type="attribute" inpkey="259"/>
+											<entry name="CustomFloodZone" type="attribute" inpkey="260"/>
+											<entry name="CustomFloodStandardofProtection" type="attribute" inpkey="261"/>
+											<entry name="ProjectPhase" type="attribute" inpkey="262"/>
+											<entry name="ProjectCompletion" type="attribute" inpkey="263"/>
+										</entry>
+									</entry>
+								</entry>
+							</entry>
+						</root>
+						<document schema="..\ValidationFiles\ModelLocARA.xsd" instanceroot="{}root"/>
+						<wsdl/>
+					</data>
+				</component>
+			</children>
+			<graph directed="1">
+				<edges/>
+				<vertices>
+					<vertex vertexkey="18">
+						<edges>
+							<edge vertexkey="1" edgekey="34"/>
+						</edges>
+					</vertex>
+					<vertex vertexkey="19">
+						<edges>
+							<edge vertexkey="2" edgekey="35"/>
+						</edges>
+					</vertex>
+					<vertex vertexkey="21">
+						<edges>
+							<edge vertexkey="511" edgekey="517"/>
+						</edges>
+					</vertex>
+					<vertex vertexkey="23">
+						<edges>
+							<edge vertexkey="527" edgekey="533"/>
+						</edges>
+					</vertex>
+					<vertex vertexkey="24">
+						<edges>
+							<edge vertexkey="530" edgekey="534"/>
+						</edges>
+					</vertex>
+					<vertex vertexkey="25">
+						<edges>
+							<edge vertexkey="8" edgekey="42"/>
+						</edges>
+					</vertex>
+					<vertex vertexkey="26">
+						<edges>
+							<edge vertexkey="418" edgekey="422"/>
+							<edge vertexkey="722" edgekey="725"/>
+						</edges>
+					</vertex>
+					<vertex vertexkey="27">
+						<edges>
+							<edge vertexkey="723" edgekey="726"/>
+						</edges>
+					</vertex>
+					<vertex vertexkey="28">
+						<edges>
+							<edge vertexkey="420" edgekey="449"/>
+							<edge vertexkey="728" edgekey="733"/>
+						</edges>
+					</vertex>
+					<vertex vertexkey="29">
+						<edges>
+							<edge vertexkey="729" edgekey="734"/>
+						</edges>
+					</vertex>
+					<vertex vertexkey="30">
+						<edges>
+							<edge vertexkey="815" edgekey="823"/>
+						</edges>
+					</vertex>
+					<vertex vertexkey="31">
+						<edges>
+							<edge vertexkey="500" edgekey="503"/>
+						</edges>
+					</vertex>
+					<vertex vertexkey="51">
+						<edges>
+							<edge vertexkey="85" edgekey="138"/>
+						</edges>
+					</vertex>
+					<vertex vertexkey="52">
+						<edges>
+							<edge vertexkey="86" edgekey="139"/>
+						</edges>
+					</vertex>
+					<vertex vertexkey="53">
+						<edges>
+							<edge vertexkey="69" edgekey="140"/>
+							<edge vertexkey="70" edgekey="141"/>
+							<edge vertexkey="71" edgekey="142"/>
+							<edge vertexkey="72" edgekey="143"/>
+							<edge vertexkey="73" edgekey="144"/>
+							<edge vertexkey="74" edgekey="145"/>
+							<edge vertexkey="75" edgekey="146"/>
+							<edge vertexkey="76" edgekey="147"/>
+							<edge vertexkey="82" edgekey="149"/>
+							<edge vertexkey="84" edgekey="150"/>
+							<edge vertexkey="89" edgekey="151"/>
+							<edge vertexkey="90" edgekey="152"/>
+							<edge vertexkey="91" edgekey="153"/>
+							<edge vertexkey="92" edgekey="154"/>
+						</edges>
+					</vertex>
+					<vertex vertexkey="54">
+						<edges>
+							<edge vertexkey="93" edgekey="155"/>
+						</edges>
+					</vertex>
+					<vertex vertexkey="55">
+						<edges>
+							<edge vertexkey="67" edgekey="156"/>
+						</edges>
+					</vertex>
+					<vertex vertexkey="56">
+						<edges>
+							<edge vertexkey="87" edgekey="157"/>
+						</edges>
+					</vertex>
+					<vertex vertexkey="57">
+						<edges>
+							<edge vertexkey="132" edgekey="158"/>
+						</edges>
+					</vertex>
+					<vertex vertexkey="58">
+						<edges>
+							<edge vertexkey="95" edgekey="160"/>
+						</edges>
+					</vertex>
+					<vertex vertexkey="59">
+						<edges>
+							<edge vertexkey="96" edgekey="162"/>
+						</edges>
+					</vertex>
+					<vertex vertexkey="60">
+						<edges>
+							<edge vertexkey="80" edgekey="163"/>
+							<edge vertexkey="97" edgekey="164"/>
+						</edges>
+					</vertex>
+					<vertex vertexkey="61">
+						<edges>
+							<edge vertexkey="94" edgekey="165"/>
+						</edges>
+					</vertex>
+					<vertex vertexkey="62">
+						<edges>
+							<edge vertexkey="101" edgekey="166"/>
+						</edges>
+					</vertex>
+					<vertex vertexkey="63">
+						<edges>
+							<edge vertexkey="83" edgekey="167"/>
+							<edge vertexkey="109" edgekey="168"/>
+						</edges>
+					</vertex>
+					<vertex vertexkey="64">
+						<edges>
+							<edge vertexkey="110" edgekey="169"/>
+						</edges>
+					</vertex>
+					<vertex vertexkey="65">
+						<edges>
+							<edge vertexkey="68" edgekey="170"/>
+							<edge vertexkey="88" edgekey="171"/>
+							<edge vertexkey="104" edgekey="172"/>
+							<edge vertexkey="105" edgekey="173"/>
+							<edge vertexkey="106" edgekey="174"/>
+							<edge vertexkey="108" edgekey="175"/>
+							<edge vertexkey="115" edgekey="176"/>
+							<edge vertexkey="202" edgekey="203"/>
+						</edges>
+					</vertex>
+					<vertex vertexkey="66">
+						<edges>
+							<edge vertexkey="117" edgekey="177"/>
+						</edges>
+					</vertex>
+					<vertex vertexkey="133">
+						<edges>
+							<edge vertexkey="125" edgekey="178"/>
+							<edge vertexkey="126" edgekey="179"/>
+							<edge vertexkey="127" edgekey="180"/>
+							<edge vertexkey="128" edgekey="181"/>
+							<edge vertexkey="129" edgekey="182"/>
+							<edge vertexkey="131" edgekey="183"/>
+							<edge vertexkey="77" edgekey="204"/>
+							<edge vertexkey="78" edgekey="205"/>
+							<edge vertexkey="79" edgekey="206"/>
+						</edges>
+					</vertex>
+					<vertex vertexkey="134">
+						<edges>
+							<edge vertexkey="81" edgekey="184"/>
+							<edge vertexkey="98" edgekey="186"/>
+							<edge vertexkey="102" edgekey="189"/>
+							<edge vertexkey="116" edgekey="193"/>
+							<edge vertexkey="119" edgekey="195"/>
+							<edge vertexkey="122" edgekey="198"/>
+							<edge vertexkey="123" edgekey="199"/>
+							<edge vertexkey="124" edgekey="200"/>
+							<edge vertexkey="130" edgekey="201"/>
+							<edge vertexkey="207" edgekey="264"/>
+							<edge vertexkey="208" edgekey="265"/>
+							<edge vertexkey="209" edgekey="266"/>
+							<edge vertexkey="210" edgekey="267"/>
+							<edge vertexkey="211" edgekey="268"/>
+							<edge vertexkey="212" edgekey="269"/>
+							<edge vertexkey="213" edgekey="270"/>
+							<edge vertexkey="214" edgekey="271"/>
+							<edge vertexkey="215" edgekey="272"/>
+							<edge vertexkey="216" edgekey="273"/>
+							<edge vertexkey="217" edgekey="274"/>
+							<edge vertexkey="218" edgekey="275"/>
+							<edge vertexkey="219" edgekey="276"/>
+							<edge vertexkey="220" edgekey="277"/>
+							<edge vertexkey="221" edgekey="278"/>
+							<edge vertexkey="222" edgekey="279"/>
+							<edge vertexkey="227" edgekey="284"/>
+							<edge vertexkey="231" edgekey="288"/>
+							<edge vertexkey="232" edgekey="289"/>
+							<edge vertexkey="233" edgekey="290"/>
+							<edge vertexkey="234" edgekey="291"/>
+							<edge vertexkey="236" edgekey="293"/>
+							<edge vertexkey="237" edgekey="294"/>
+							<edge vertexkey="238" edgekey="295"/>
+							<edge vertexkey="239" edgekey="296"/>
+							<edge vertexkey="243" edgekey="300"/>
+							<edge vertexkey="244" edgekey="301"/>
+							<edge vertexkey="245" edgekey="302"/>
+							<edge vertexkey="246" edgekey="303"/>
+							<edge vertexkey="247" edgekey="304"/>
+							<edge vertexkey="248" edgekey="305"/>
+							<edge vertexkey="249" edgekey="306"/>
+							<edge vertexkey="250" edgekey="307"/>
+							<edge vertexkey="251" edgekey="308"/>
+							<edge vertexkey="252" edgekey="309"/>
+							<edge vertexkey="253" edgekey="310"/>
+							<edge vertexkey="254" edgekey="311"/>
+							<edge vertexkey="255" edgekey="312"/>
+							<edge vertexkey="256" edgekey="313"/>
+							<edge vertexkey="257" edgekey="314"/>
+							<edge vertexkey="258" edgekey="315"/>
+							<edge vertexkey="259" edgekey="316"/>
+							<edge vertexkey="260" edgekey="317"/>
+							<edge vertexkey="261" edgekey="318"/>
+							<edge vertexkey="262" edgekey="319"/>
+							<edge vertexkey="263" edgekey="320"/>
+							<edge vertexkey="112" edgekey="327"/>
+							<edge vertexkey="703" edgekey="710"/>
+							<edge vertexkey="704" edgekey="711"/>
+							<edge vertexkey="705" edgekey="712"/>
+							<edge vertexkey="706" edgekey="713"/>
+							<edge vertexkey="707" edgekey="714"/>
+							<edge vertexkey="708" edgekey="715"/>
+						</edges>
+					</vertex>
+					<vertex vertexkey="333">
+						<edges>
+							<edge vertexkey="107" edgekey="347"/>
+						</edges>
+					</vertex>
+					<vertex vertexkey="338">
+						<edges>
+							<edge vertexkey="406" edgekey="408"/>
+							<edge vertexkey="840" edgekey="853"/>
+							<edge vertexkey="841" edgekey="854"/>
+						</edges>
+					</vertex>
+					<vertex vertexkey="339">
+						<edges>
+							<edge vertexkey="410" edgekey="414"/>
+						</edges>
+					</vertex>
+					<vertex vertexkey="340">
+						<edges>
+							<edge vertexkey="412" edgekey="415"/>
+						</edges>
+					</vertex>
+					<vertex vertexkey="394">
+						<edges>
+							<edge vertexkey="514" edgekey="518"/>
+						</edges>
+					</vertex>
+					<vertex vertexkey="401">
+						<edges>
+							<edge vertexkey="402" edgekey="404"/>
+							<edge vertexkey="843" edgekey="855"/>
+						</edges>
+					</vertex>
+					<vertex vertexkey="403">
+						<edges>
+							<edge vertexkey="225" edgekey="405"/>
+						</edges>
+					</vertex>
+					<vertex vertexkey="407">
+						<edges>
+							<edge vertexkey="223" edgekey="409"/>
+						</edges>
+					</vertex>
+					<vertex vertexkey="411">
+						<edges>
+							<edge vertexkey="229" edgekey="416"/>
+						</edges>
+					</vertex>
+					<vertex vertexkey="413">
+						<edges>
+							<edge vertexkey="230" edgekey="417"/>
+						</edges>
+					</vertex>
+					<vertex vertexkey="419">
+						<edges>
+							<edge vertexkey="11" edgekey="424"/>
+						</edges>
+					</vertex>
+					<vertex vertexkey="421">
+						<edges>
+							<edge vertexkey="13" edgekey="450"/>
+						</edges>
+					</vertex>
+					<vertex vertexkey="426">
+						<edges>
+							<edge vertexkey="427" edgekey="429"/>
+						</edges>
+					</vertex>
+					<vertex vertexkey="428">
+						<edges>
+							<edge vertexkey="226" edgekey="430"/>
+						</edges>
+					</vertex>
+					<vertex vertexkey="432">
+						<edges>
+							<edge vertexkey="228" edgekey="437"/>
+						</edges>
+					</vertex>
+					<vertex vertexkey="433">
+						<edges>
+							<edge vertexkey="431" edgekey="438"/>
+						</edges>
+					</vertex>
+					<vertex vertexkey="434">
+						<edges>
+							<edge vertexkey="435" edgekey="439"/>
+						</edges>
+					</vertex>
+					<vertex vertexkey="436">
+						<edges>
+							<edge vertexkey="235" edgekey="440"/>
+						</edges>
+					</vertex>
+					<vertex vertexkey="457">
+						<edges>
+							<edge vertexkey="501" edgekey="504"/>
+						</edges>
+					</vertex>
+					<vertex vertexkey="502">
+						<edges>
+							<edge vertexkey="16" edgekey="505"/>
+						</edges>
+					</vertex>
+					<vertex vertexkey="507">
+						<edges>
+							<edge vertexkey="393" edgekey="509"/>
+						</edges>
+					</vertex>
+					<vertex vertexkey="510">
+						<edges>
+							<edge vertexkey="512" edgekey="519"/>
+							<edge vertexkey="515" edgekey="520"/>
+						</edges>
+					</vertex>
+					<vertex vertexkey="513">
+						<edges>
+							<edge vertexkey="5" edgekey="521"/>
+						</edges>
+					</vertex>
+					<vertex vertexkey="516">
+						<edges>
+							<edge vertexkey="506" edgekey="522"/>
+						</edges>
+					</vertex>
+					<vertex vertexkey="523">
+						<edges>
+							<edge vertexkey="528" edgekey="537"/>
+							<edge vertexkey="531" edgekey="538"/>
+							<edge vertexkey="785" edgekey="790"/>
+							<edge vertexkey="781" edgekey="791"/>
+							<edge vertexkey="804" edgekey="806"/>
+						</edges>
+					</vertex>
+					<vertex vertexkey="529">
+						<edges>
+							<edge vertexkey="6" edgekey="540"/>
+						</edges>
+					</vertex>
+					<vertex vertexkey="532">
+						<edges>
+							<edge vertexkey="7" edgekey="541"/>
+						</edges>
+					</vertex>
+					<vertex vertexkey="721">
+						<edges>
+							<edge vertexkey="12" edgekey="735"/>
+							<edge vertexkey="103" edgekey="736"/>
+						</edges>
+					</vertex>
+					<vertex vertexkey="724">
+						<edges>
+							<edge vertexkey="720" edgekey="727"/>
+						</edges>
+					</vertex>
+					<vertex vertexkey="730">
+						<edges>
+							<edge vertexkey="731" edgekey="737"/>
+						</edges>
+					</vertex>
+					<vertex vertexkey="732">
+						<edges>
+							<edge vertexkey="14" edgekey="738"/>
+						</edges>
+					</vertex>
+					<vertex vertexkey="739">
+						<edges>
+							<edge vertexkey="803" edgekey="807"/>
+						</edges>
+					</vertex>
+					<vertex vertexkey="741">
+						<edges>
+							<edge vertexkey="9" edgekey="742"/>
+							<edge vertexkey="10" edgekey="743"/>
+							<edge vertexkey="99" edgekey="744"/>
+							<edge vertexkey="100" edgekey="745"/>
+						</edges>
+					</vertex>
+					<vertex vertexkey="752">
+						<edges>
+							<edge vertexkey="819" edgekey="824"/>
+						</edges>
+					</vertex>
+					<vertex vertexkey="758">
+						<edges>
+							<edge vertexkey="15" edgekey="766"/>
+						</edges>
+					</vertex>
+					<vertex vertexkey="769">
+						<edges>
+							<edge vertexkey="755" edgekey="794"/>
+						</edges>
+					</vertex>
+					<vertex vertexkey="773">
+						<edges>
+							<edge vertexkey="775" edgekey="795"/>
+							<edge vertexkey="778" edgekey="796"/>
+						</edges>
+					</vertex>
+					<vertex vertexkey="776">
+						<edges>
+							<edge vertexkey="784" edgekey="797"/>
+						</edges>
+					</vertex>
+					<vertex vertexkey="779">
+						<edges>
+							<edge vertexkey="780" edgekey="798"/>
+						</edges>
+					</vertex>
+					<vertex vertexkey="783">
+						<edges>
+							<edge vertexkey="767" edgekey="799"/>
+							<edge vertexkey="756" edgekey="800"/>
+						</edges>
+					</vertex>
+					<vertex vertexkey="787">
+						<edges>
+							<edge vertexkey="768" edgekey="801"/>
+							<edge vertexkey="757" edgekey="802"/>
+						</edges>
+					</vertex>
+					<vertex vertexkey="805">
+						<edges>
+							<edge vertexkey="4" edgekey="808"/>
+						</edges>
+					</vertex>
+					<vertex vertexkey="809">
+						<edges>
+							<edge vertexkey="240" edgekey="811"/>
+						</edges>
+					</vertex>
+					<vertex vertexkey="810">
+						<edges>
+							<edge vertexkey="241" edgekey="812"/>
+						</edges>
+					</vertex>
+					<vertex vertexkey="813">
+						<edges>
+							<edge vertexkey="816" edgekey="825"/>
+							<edge vertexkey="820" edgekey="826"/>
+						</edges>
+					</vertex>
+					<vertex vertexkey="814">
+						<edges>
+							<edge vertexkey="817" edgekey="827"/>
+							<edge vertexkey="821" edgekey="828"/>
+						</edges>
+					</vertex>
+					<vertex vertexkey="818">
+						<edges>
+							<edge vertexkey="774" edgekey="829"/>
+							<edge vertexkey="786" edgekey="830"/>
+						</edges>
+					</vertex>
+					<vertex vertexkey="822">
+						<edges>
+							<edge vertexkey="777" edgekey="831"/>
+							<edge vertexkey="782" edgekey="832"/>
+						</edges>
+					</vertex>
+					<vertex vertexkey="836">
+						<edges>
+							<edge vertexkey="17" edgekey="837"/>
+							<edge vertexkey="3" edgekey="838"/>
+						</edges>
+					</vertex>
+					<vertex vertexkey="839">
+						<edges>
+							<edge vertexkey="224" edgekey="856"/>
+						</edges>
+					</vertex>
+					<vertex vertexkey="842">
+						<edges>
+							<edge vertexkey="846" edgekey="857"/>
+						</edges>
+					</vertex>
+					<vertex vertexkey="844">
+						<edges>
+							<edge vertexkey="850" edgekey="858"/>
+						</edges>
+					</vertex>
+					<vertex vertexkey="845">
+						<edges>
+							<edge vertexkey="847" edgekey="859"/>
+							<edge vertexkey="851" edgekey="860"/>
+						</edges>
+					</vertex>
+					<vertex vertexkey="849">
+						<edges>
+							<edge vertexkey="242" edgekey="861"/>
+						</edges>
+					</vertex>
+					<vertex vertexkey="852">
+						<edges>
+							<edge vertexkey="848" edgekey="862"/>
+						</edges>
+					</vertex>
+				</vertices>
+			</graph>
+		</structure>
+	</component>
+</mapping>
