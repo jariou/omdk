@@ -103,7 +103,7 @@ ENV/
 # OS X Finder meta file
 .DS_Store
 
-# top-level CSV and JSON files
+# top-level CSV files
 .csv
 
 # xtrans/sxtrans.exe
