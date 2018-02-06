@@ -26,11 +26,12 @@ class OasisModelTests(unittest.TestCase):
 
     def setUp(self):
 
-        self.tests_datadir = os.path.join(os.getcwd(), 'data', 'OasisPiWind')
-        self.model_version_file_path = os.path.join(self.tests_datadir, 'keys_data', 'PiWind', 'ModelVersion.csv')
+        self.tests_datadir = os.path.join(os.getcwd(), 'data')
+        self.model_version_file_path = os.path.join(self.tests_datadir, 'OasisPiWind', 'keys_data', 'PiWind', 'ModelVersion.csv')
 
-        with io.open(self.model_version_file_path, 'r', encoding='utf-8') as f:
-            self.test_model_supplier_id, self.test_model_id, self.test_model_version_id = map(lambda s: s.strip(), map(tuple, csv.reader(f))[0])
+        self.test_model_supplier_id = 'OasisLMF'
+        self.test_model_id = 'PiWind'
+        self.test_model_version_id = '0.0.0.1'
 
     
     def test_model_object_creation_with_no_resources(self):
