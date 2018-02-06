@@ -18,7 +18,10 @@ FILE_ROOT=$(pwd)/
         echo "transform:  "$FILE_TRANSFORM
         printf '\n'
 
-        mono $EXEC_PATH -d $FILE_VALIDATION -c $FILE_INPUT -t $FILE_TRANSFORM -o $FILE_OUTPUT -s
+        CMD=$EXEC_PATH' '$2' -d '$FILE_VALIDATION' -c '$FILE_INPUT' -t '$FILE_TRANSFORM' -o '$FILE_OUTPUT
+
+        mono --debug $CMD
+        #echo $CMD
         #cat $FILE_OUTPUT
     }
 
@@ -39,13 +42,13 @@ FILE_ROOT=$(pwd)/
     FILE_OUTPUT=$FILE_ROOT'output/xtrans/'$CASE'_case_xtrans.csv'
     FILE_VALIDATION=$FILE_ROOT'data/piWind/validation/Generic_Windstorm_SourceLoc.xsd'
     FILE_TRANSFORM=$FILE_ROOT'data/piWind/transformation/MappingMapToGeneric_Windstorm_CanLoc_A.xslt'
-    run_xtrans $CASE
+    run_xtrans $CASE -s
 
     CASE=1
     FILE_INPUT=$FILE_OUTPUT
     FILE_OUTPUT=$FILE_ROOT'output/xtrans/'$CASE'_case_xtrans.csv'
-    FILE_VALIDATION=$FILE_ROOT'/data/piWind/validation/Generic_Windstorm_SourceLoc.xsd'
-    FILE_TRANSFORM=$FILE_ROOT'/data/piWind/transformation/MappingMapToGeneric_Windstorm_CanLoc_A.xslt'
+    FILE_VALIDATION=$FILE_ROOT'/data/piWind/validation/Generic_Windstorm_CanLoc_B.xsd'
+    FILE_TRANSFORM=$FILE_ROOT'/data/piWind/transformation/MappingMapTopiwind_modelloc.xslt'
     run_xtrans $CASE
 
 
@@ -57,14 +60,14 @@ FILE_ROOT=$(pwd)/
     FILE_OUTPUT=$FILE_ROOT'output/xtrans/'$CASE'_case_xtrans.csv'
     FILE_VALIDATION=$FILE_ROOT'data/ARA/validation/SourceLocARA.xsd'
     FILE_TRANSFORM=$FILE_ROOT'data/ARA/transformation/MappingMapToCanLocARA_A.xslt'
-    run_xtrans $CASE
+    run_xtrans $CASE -s
 
-    CASE=3
-    FILE_INPUT=$FILE_OUTPUT
-    FILE_OUTPUT=$FILE_ROOT'output/xtrans/'$CASE'_case_xtrans.upx'
-    FILE_VALIDATION=$FILE_ROOT'data/ARA/validation/CanLocARA_B.xsd'
-    FILE_TRANSFORM=$FILE_ROOT'data/ARA/transformation/MappingMapToModelLocARA.xslt'
-    run_xtrans $CASE
+#    CASE=3
+#    FILE_INPUT=$FILE_OUTPUT
+#    FILE_OUTPUT=$FILE_ROOT'output/xtrans/'$CASE'_case_xtrans.upx'
+#    FILE_VALIDATION=$FILE_ROOT'data/ARA/validation/CanLocARA_B.xsd'
+#    FILE_TRANSFORM=$FILE_ROOT'data/ARA/transformation/MappingMapToModelLocARA.xslt'
+#    run_xtrans $CASE
 
 
 
