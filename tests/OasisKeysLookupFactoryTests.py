@@ -13,12 +13,15 @@ import sys
 import types
 import unittest
 
+import pandas as pd
+
 sys.path.insert(0, os.path.abspath(os.pardir))
 
 from keys import OasisKeysLookupFactory as oklf
 
 
 class OasisModelTests(unittest.TestCase):
+
 
     def setUp(self):
 
@@ -84,6 +87,32 @@ class OasisModelTests(unittest.TestCase):
 
         for method in oasis_base_keys_lookup_class_methods:
             self.assertIn(method, dir(test_lookup_class_instance))
+
+
+    def test_get_model_exposures(self):
+
+
+        columns = ['id', 'lat', 'lon', 'coverage', 'class_1', 'class_2']
+        recs = [
+            {'class_1': 'R','class_2': 'RD','coverage': 1,'id': 10002082046,'lat': 52.76698052,'lon': -0.895469856},
+            {'class_1': 'R','class_2': 'RD','coverage': 1,'id': 10002082047,'lat': 52.76697956,'lon': -0.89536613},
+            {'class_1': 'R','class_2': 'RD','coverage': 1,'id': 10002082048,'lat': 52.76697845,'lon': -0.895247587},
+            {'class_1': 'R','class_2': 'RD','coverage': 1,'id': 10002082049,'lat': 52.76696096,'lon': -0.895473908},
+            {'class_1': 'R','class_2': 'RD','coverage': 1,'id': 10002082050,'lat': 52.76695804,'lon': -0.895353484},
+            {'class_1': 'R','class_2': 'RD','coverage': 1,'id': 10002082051,'lat': 52.76695885,'lon': -0.89524749},
+            {'class_1': 'R','class_2': 'RD','coverage': 1,'id': 10002082052,'lat': 52.7670776,'lon': -0.895274721},
+            {'class_1': 'R','class_2': 'RD','coverage': 1,'id': 10002082053,'lat': 52.76712254,'lon': -0.895273583},
+            {'class_1': 'R','class_2': 'RD','coverage': 1,'id': 10002082054,'lat': 52.76718545,'lon': -0.895271991},
+            {'class_1': 'R','class_2': 'RD','coverage': 1,'id': 10002082055,'lat': 52.76724836,'lon': -0.895270399}
+        ]
+
+        model_exposures = pd.DataFrame(columns=columns, data=recs)
+        model_exposures = model_exposures.where(model_exposures.notnull(), None)
+
+        model_exposures_file_path = os.path.join(self.tests_datadir, 'OasisPiWind', 'keys_data', 'PiWind', 'oasislmf_piwind_model_loc_test.csv')
+        test_model_exposures = oklf.get_model_exposures(model_exposures_file_path=model_exposures_file_path)
+
+        self.assertTrue(model_exposures.equals(test_model_exposures))
 
 
 if __name__ == '__main__':
